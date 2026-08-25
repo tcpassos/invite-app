@@ -7,7 +7,7 @@ Esta pasta contém os artefatos do projeto em Markdown, organizados no **layout 
 - **Subpágina** é um arquivo `.md` mais uma pasta de mesmo nome no mesmo diretório (por exemplo `Sprints.md` e a pasta `Sprints`).
 - **`.order`** em cada pasta define a ordem das páginas na navegação.
 - **Links entre páginas** são relativos ao arquivo, com extensão `.md`, então funcionam no GitHub e no Azure. Caminhos absolutos como `/Página` só funcionam no Azure.
-- Diagramas em **Mermaid**: no GitHub a cerca é ` ```mermaid `; no Azure use `::: mermaid` (sintaxe limitada, prefira `graph`). Imagens ficam em `/.attachments`.
+- Diagramas em **Mermaid**: no GitHub a cerca é ` ```mermaid `. No Azure use `::: mermaid` (sintaxe limitada, prefira `graph`). Imagens ficam em `/.attachments`.
 - O índice `[[_TOC_]]` é do Azure. No GitHub o índice fica no botão de outline da página.
 
 ## Como espelhar no Azure DevOps

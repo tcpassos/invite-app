@@ -1,7 +1,12 @@
 # Diagrama de Casos de Uso
 
-> **A detalhar nesta Sprint 1.** Notação UML: fronteira do sistema, atores (Anfitrião, Convidado), casos de uso (mesmos nomes da [Especificação](Especificação-de-Casos-de-Uso.md)) e relações `<<include>>`/`<<extend>>`.
-> Diagrama final desenhado em draw.io, Astah ou PlantUML e anexado como imagem em `/.attachments`. Abaixo, um rascunho aproximado em Mermaid. No GitHub a cerca é ` ```mermaid `; no Azure Wiki use `::: mermaid`.
+Notação UML: fronteira do sistema, atores (Anfitrião, Convidado), casos de uso (mesmos nomes da [Especificação](Especificação-de-Casos-de-Uso.md)) e relações `<<include>>` e `<<extend>>`.
+
+Relações representadas:
+- UC002 `<<include>>` UC003: ao criar o convite, o fluxo abre a personalização.
+- UC005 `<<extend>>` UC006: registrar a observação alimentar é uma extensão opcional da confirmação de presença.
+
+O diagrama final costuma ser uma imagem UML desenhada no draw.io, Astah ou PlantUML e anexada em `/.attachments`. Abaixo, um rascunho aproximado em Mermaid. No GitHub a cerca é ` ```mermaid `. No Azure Wiki use `::: mermaid`.
 
 ```mermaid
 graph LR
@@ -25,4 +30,6 @@ graph LR
   Anfitriao --- UC008
   Convidado --- UC005
   Convidado --- UC006
+  UC002 -. «include» .-> UC003
+  UC006 -. «extend» .-> UC005
 ```

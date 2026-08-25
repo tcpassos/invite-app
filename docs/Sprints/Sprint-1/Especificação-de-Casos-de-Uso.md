@@ -6,7 +6,7 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 - Anfitrião (ator primário do painel)
 - Convidado (ator primário do convite público)
 
-## Casos de uso candidatos
+## Casos de uso
 | ID | Caso de uso | Ator |
 |---|---|---|
 | UC001 | Autenticar anfitrião | Anfitrião |
@@ -20,7 +20,42 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 
 ## Especificações detalhadas
 
-Abaixo estão detalhados os casos de uso centrais do MVP. UC001, UC003, UC004, UC007 e UC008 seguem o mesmo formato e serão completados na sequência.
+### UC001 - Autenticar anfitrião
+
+**Descrição:** o anfitrião cria conta e entra no sistema para gerenciar seus convites.
+
+**Atores:** Anfitrião
+
+**Pré-condições:** nenhuma.
+
+**Pós-condições:** o anfitrião fica autenticado e com acesso ao seu painel.
+
+**Fluxo Básico:**
+1. O anfitrião acessa a tela de acesso.
+2. O sistema exibe as opções de entrar e de criar conta.
+3. O anfitrião informa email e senha (RN1).
+4. O anfitrião confirma.
+5. O sistema valida as credenciais (RN2) e inicia a sessão (ED1).
+6. O sistema abre o painel do anfitrião.
+7. O caso de uso é encerrado.
+
+**Fluxos Alternativos:**
+(A1) Extensão no Passo 2, o anfitrião ainda não tem conta:
+1.1. O anfitrião escolhe criar conta.
+1.2. O anfitrião informa nome, email e senha (RN1).
+1.3. O sistema verifica que o email não está cadastrado (RN3) e cria a conta (ED1).
+1.4. O sistema segue para o Passo 5.
+(A2) Fluxo Alternativo ao Passo 5, credenciais inválidas:
+2.1. O sistema informa que email ou senha estão incorretos, sem dizer qual.
+2.2. O sistema retorna ao Passo 3.
+
+**Estruturas de Dados:**
+(ED1) Conta do anfitrião: nome, email e senha (armazenada de forma segura).
+
+**Regras de Negócio:**
+(RN1) Email e senha são obrigatórios. A senha tem no mínimo 8 caracteres.
+(RN2) A sessão expira após um período de inatividade.
+(RN3) Não pode haver dois cadastros com o mesmo email.
 
 ### UC002 - Criar convite
 
@@ -51,6 +86,71 @@ Abaixo estão detalhados os casos de uso centrais do MVP. UC001, UC003, UC004, U
 
 **Regras de Negócio:**
 (RN1) Nome, data, hora e local são obrigatórios. A data deve ser igual ou posterior ao dia atual.
+
+### UC003 - Personalizar visual do convite
+
+**Descrição:** o anfitrião ajusta a aparência do convite.
+
+**Atores:** Anfitrião
+
+**Pré-condições:** existe um convite em rascunho (UC002) e o anfitrião está autenticado.
+
+**Pós-condições:** as escolhas visuais ficam salvas no convite.
+
+**Fluxo Básico:**
+1. O sistema exibe o editor com um tema inicial e a prévia do convite.
+2. O anfitrião escolhe um tema entre os disponíveis (RN1).
+3. O anfitrião ajusta cores, imagem de fundo e os textos do convite.
+4. O sistema atualiza a prévia a cada mudança.
+5. O anfitrião salva as alterações.
+6. O sistema grava as escolhas no convite (ED1).
+7. O caso de uso é encerrado.
+
+**Fluxos Alternativos:**
+(A1) Fluxo Alternativo ao Passo 3, imagem em formato ou tamanho inválido:
+1.1. O sistema recusa a imagem e informa os formatos e o tamanho aceitos (RN2).
+1.2. O sistema retorna ao Passo 3.
+
+**Estruturas de Dados:**
+(ED1) Personalização: tema, cores, imagem de fundo e textos, ligados ao convite.
+
+**Regras de Negócio:**
+(RN1) O anfitrião parte sempre de um tema, que pode ser ajustado.
+(RN2) A imagem de fundo aceita os formatos JPG e PNG, com tamanho máximo definido pelo sistema.
+
+### UC004 - Compartilhar convite (gerar link)
+
+**Descrição:** o anfitrião publica o convite e obtém o link para enviar aos convidados.
+
+**Atores:** Anfitrião
+
+**Pré-condições:** existe um convite (UC002) e o anfitrião está autenticado.
+
+**Pós-condições:** o convite fica publicado e acessível por um link.
+
+**Fluxo Básico:**
+1. O anfitrião seleciona a opção de compartilhar.
+2. O sistema valida que o convite tem os dados obrigatórios (RN1).
+3. O sistema publica o convite e gera um link único (RN2, ED1).
+4. O sistema exibe o link com a opção de copiar.
+5. O anfitrião copia o link e o envia pelo canal que preferir.
+6. O caso de uso é encerrado.
+
+**Fluxos Alternativos:**
+(A1) Fluxo Alternativo ao Passo 2, faltam dados obrigatórios:
+1.1. O sistema informa o que falta e não publica.
+1.2. O sistema encerra o caso de uso.
+(A2) Extensão no Passo 4, o anfitrião quer encerrar as respostas:
+2.1. O anfitrião despublica o convite.
+2.2. O sistema desativa o link, que passa a não abrir mais (RN3).
+
+**Estruturas de Dados:**
+(ED1) Link do convite: identificador único e situação (ativo ou inativo).
+
+**Regras de Negócio:**
+(RN1) Só é possível publicar um convite com nome, data, hora e local preenchidos.
+(RN2) O link é único e não permite adivinhar outros convites.
+(RN3) Um convite despublicado não aceita novas respostas.
 
 ### UC005 - Confirmar presença
 
@@ -120,3 +220,60 @@ Abaixo estão detalhados os casos de uso centrais do MVP. UC001, UC003, UC004, U
 **Regras de Negócio:**
 (RN1) O convidado pode marcar mais de uma categoria.
 (RN2) Se a categoria alergia for marcada, a descrição no texto livre é obrigatória.
+
+### UC007 - Visualizar lista de presença
+
+**Descrição:** o anfitrião acompanha quem confirmou presença.
+
+**Atores:** Anfitrião
+
+**Pré-condições:** o anfitrião está autenticado e o convite existe.
+
+**Pós-condições:** nenhuma. É uma consulta e não altera dados.
+
+**Fluxo Básico:**
+1. O anfitrião abre o painel do convite.
+2. O sistema exibe os convidados agrupados por status: confirmados, pendentes e recusados (ED1).
+3. O sistema mostra o total de pessoas, somando os acompanhantes (RN1).
+4. O anfitrião consulta os dados.
+5. O caso de uso é encerrado.
+
+**Fluxos Alternativos:**
+(A1) Fluxo Alternativo ao Passo 2, ainda não há respostas:
+1.1. O sistema informa que nenhum convidado respondeu até o momento.
+
+**Estruturas de Dados:**
+(ED1) Lista de presença: por convidado, o nome, o status e o número de acompanhantes.
+
+**Regras de Negócio:**
+(RN1) O total de pessoas soma cada convidado confirmado mais os seus acompanhantes.
+
+### UC008 - Consolidar e exportar observações alimentares
+
+**Descrição:** o anfitrião vê a contagem das restrições alimentares e exporta os dados para o buffet.
+
+**Atores:** Anfitrião
+
+**Pré-condições:** o anfitrião está autenticado e há convidados que informaram restrição.
+
+**Pós-condições:** nenhuma. É uma consulta com exportação e não altera dados.
+
+**Fluxo Básico:**
+1. O anfitrião abre a consolidação de restrições no painel.
+2. O sistema apresenta a contagem por categoria, por exemplo quantos vegetarianos e quantos alérgicos (ED1, RN1).
+3. O sistema lista as descrições de alergia informadas.
+4. O anfitrião solicita a exportação.
+5. O sistema gera um arquivo CSV com os dados (RN2, ED2).
+6. O caso de uso é encerrado.
+
+**Fluxos Alternativos:**
+(A1) Fluxo Alternativo ao Passo 2, nenhum convidado informou restrição:
+1.1. O sistema informa que não há restrições registradas e não oferece a exportação.
+
+**Estruturas de Dados:**
+(ED1) Consolidação: por categoria, a contagem de convidados.
+(ED2) Arquivo de exportação: uma linha por convidado, com nome, status, categorias e observação.
+
+**Regras de Negócio:**
+(RN1) Um convidado com mais de uma categoria conta em cada categoria que marcou.
+(RN2) A exportação inclui apenas convidados confirmados ou em talvez.
