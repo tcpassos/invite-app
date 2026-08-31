@@ -1,0 +1,2 @@
+# Scripts precisam de LF, senao o Git Bash no Windows quebra com ": command not found".
+*.sh text eol=lf
