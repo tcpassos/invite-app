@@ -4,7 +4,7 @@ Baseadas nas [Personas](Personas.md) e na [Jornada de Usuário](Jornada-de-Usuá
 
 ## Cenário do problema
 
-Marina organiza festas da família e sempre se perde no controle de quem vai e do que cada pessoa pode comer. Os avisos de restrição chegam soltos no WhatsApp e às vezes somem antes de chegar ao buffet. Rafael, convidado, quer confirmar rápido pelo celular, sem instalar nada, e avisar que é vegetariano sem precisar mandar uma mensagem à parte. Jorge, do buffet, precisa de números confiáveis para planejar a comida.
+[Marina](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40MarinaAnfitriaPersona) organiza festas da família e sempre se perde no controle de quem vai e do que cada pessoa pode comer. Os avisos de restrição chegam soltos no WhatsApp e às vezes somem antes de chegar ao buffet. [Rafael](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40RafaelConvidadoPersona), convidado, quer confirmar rápido pelo celular, sem instalar nada, e avisar que é vegetariano sem precisar mandar uma mensagem à parte. [Jorge](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40JorgeBuffetPersona), do buffet, precisa de números confiáveis para planejar a comida.
 
 ## Épico 1: Conta e acesso do anfitrião
 

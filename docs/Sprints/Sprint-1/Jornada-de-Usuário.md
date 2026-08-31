@@ -2,7 +2,7 @@
 
 Percurso das [Personas](Personas.md) até seus objetivos. Cada linha é um passo da jornada, com o canal usado e o sentimento do usuário naquele momento. O diagrama final em post-its pode ser montado a partir destas tabelas.
 
-## Jornada da anfitriã (Marina): criar e acompanhar um convite
+## Jornada da anfitriã ([Marina](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40MarinaAnfitriaPersona)): criar e acompanhar um convite
 
 | Passo | O que faz | Canal | Como se sente |
 |---|---|---|---|
@@ -17,7 +17,7 @@ Percurso das [Personas](Personas.md) até seus objetivos. Cada linha é um passo
 | 9 | Consulta a consolidação das restrições alimentares | App | Segura |
 | 10 | Exporta a lista e as restrições para o buffet | App e arquivo CSV | Organizada |
 
-## Jornada do convidado (Rafael): confirmar presença e informar restrição
+## Jornada do convidado ([Rafael](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40RafaelConvidadoPersona)): confirmar presença e informar restrição
 
 | Passo | O que faz | Canal | Como se sente |
 |---|---|---|---|

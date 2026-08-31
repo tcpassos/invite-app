@@ -2,13 +2,15 @@
 
 Perfis que representam os usuários e stakeholders do produto. Servem de base para a [Jornada de Usuário](Jornada-de-Usuário.md), as [Histórias de Usuário](Histórias-de-Usuário.md) e os [Casos de Uso](Especificação-de-Casos-de-Uso.md).
 
-> Formato conforme a extensão **Personas** do Azure DevOps (Nome, Tag, Perfil, Comportamento e Necessidades). Recriar cada persona também na extensão do Boards.
+> Formato conforme a extensão **Personas** do Azure DevOps (Nome, Tag, Perfil, Comportamento e Necessidades). As três já estão cadastradas na extensão, e o nome de cada uma abaixo abre a ficha correspondente no Boards.
+
+As 12 histórias de usuário no Boards estão marcadas com a tag da persona a que atendem, que é o mecanismo que a extensão usa para associar persona e work item. Filtrando o backlog por `@MarinaAnfitriaPersona`, `@RafaelConvidadoPersona` ou `@JorgeBuffetPersona` aparecem os itens de cada uma.
 
 ---
 
 ## Persona 1, Anfitriã (usuária primária)
 
-**Nome:** Marina Alves
+**Nome:** [Marina Alves](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40MarinaAnfitriaPersona)
 **Tag:** `@MarinaAnfitriaPersona`
 
 ### Perfil
@@ -33,7 +35,7 @@ Perfis que representam os usuários e stakeholders do produto. Servem de base pa
 
 ## Persona 2, Convidado (usuário primário)
 
-**Nome:** Rafael Souza
+**Nome:** [Rafael Souza](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40RafaelConvidadoPersona)
 **Tag:** `@RafaelConvidadoPersona`
 
 ### Perfil
@@ -57,7 +59,7 @@ Perfis que representam os usuários e stakeholders do produto. Servem de base pa
 
 ## Persona 3, Buffet ou cerimonialista (stakeholder secundário)
 
-**Nome:** Jorge Martins
+**Nome:** [Jorge Martins](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40JorgeBuffetPersona)
 **Tag:** `@JorgeBuffetPersona`
 
 ### Perfil
