@@ -8,10 +8,7 @@ Esta é a página inicial da Wiki e serve de índice para as demais seções.
 Problema, solução, público-alvo, diferencial e escopo do MVP. Ver [Visão do Produto](Visão-do-Produto.md).
 
 ## Começando
-Instalação, configuração e padronização do projeto.
-- [Configuração de Ambiente](Começando/Configuração-de-Ambiente.md)
-- [Configuração do Projeto](Começando/Configuração-do-Projeto.md)
-- [Protótipo de Baixo Nível](Começando/Protótipo-de-Baixo-Nível.md)
+Instalação, configuração e padronização do projeto. Entra na Sprint 2, junto com a definição da stack e a preparação do ambiente. Os rascunhos ficam no repositório do GitHub em `docs/Começando` até terem conteúdo.
 
 ## Diretrizes do Projeto
 - [Guia da Arquitetura](Diretrizes-do-Projeto/Guia-da-Arquitetura.md)

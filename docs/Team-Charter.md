@@ -3,7 +3,7 @@
 > Documento que descreve por que a equipe foi formada, o que ela deve realizar e sob quais recursos e restrições vai trabalhar. Preencher em grupo. Campos com _[preencher]_ dependem do time.
 
 # Nome do Time
-- _[preencher]_
+- Invite People
 
 # Líder do Time
 - _[preencher]_
@@ -28,9 +28,9 @@
 - Sem treinamento formal. O time se apoia em estudo próprio e na troca de conhecimento entre os integrantes.
 
 # Papéis e Responsabilidades
-- **Scrum Master:** _[preencher]_
-- **Product Owner:** _[preencher]_
-- **Time de Desenvolvimento:** _[preencher]_
+- **Product Owner:** professor Kleinner Silva Farias de Oliveira. Define e prioriza o que entra em cada sprint e valida as entregas na Revisão. Não recebe itens do backlog nem tarefas atribuídas no Boards.
+- **Scrum Master:** _[preencher, pode rodar por sprint]_
+- **Time de Desenvolvimento:** Tiago Passos, Guilherme Toebe dos Santos, _[integrante 3]_ e _[integrante 4]_.
 - Tiago Passos tende à organização e à arquitetura do projeto, atuando também como desenvolvedor. Ver [Tiago Passos](Team-Charter/Tiago-Passos.md).
 - _[distribuir as demais responsabilidades: front-end, back-end, banco de dados, testes e documentação]_
 
@@ -46,7 +46,7 @@
 # Avaliação de Desempenho
 - Progresso medido pela conclusão dos itens do backlog a cada sprint, acompanhado no Azure Boards.
 - Revisão do que foi entregue na Revisão da Sprint e ajustes na Retrospectiva.
-- Avaliação final conforme os critérios definidos para o projeto. _[ajustar quem avalia]_
+- Avaliação final pelo professor, que atua como Product Owner, conforme os critérios da disciplina.
 
 # Atividades e Marcos
 - Sprint 1: Engenharia de Requisitos e Compreensão do Domínio (personas, jornada, histórias, casos de uso, diagrama e Team Charter).
@@ -56,7 +56,21 @@
 
 # Membros do Time
 - [Tiago Passos](Team-Charter/Tiago-Passos.md)
-- [Membro Exemplo](Team-Charter/Membro-Exemplo.md)
+- [Guilherme Toebe dos Santos](Team-Charter/Guilherme-Toebe-dos-Santos.md)
+- _[integrante 3, duplicar a página modelo]_
+- _[integrante 4, duplicar a página modelo]_
+
+Cada integrante tem a própria página com formação, experiência, tecnologias, pontos fortes, pontos de melhoria e papel no time. Quem ainda não preencheu deve copiar a página [Membro Exemplo](Team-Charter/Membro-Exemplo.md), renomear com o próprio nome e atualizar a lista acima e o arquivo `.order` da pasta.
+
+# Forças
+> Levantar em grupo na Sprint Planning, considerando o que cada integrante trouxe na própria página.
+
+- _[preencher: o que o time já domina, por exemplo linguagens, front-end, back-end, banco, testes, Scrum]_
+
+# Pontos de Melhoria
+> Mesma dinâmica das Forças. Serve para o time saber onde vai precisar de apoio ou de estudo extra.
+
+- _[preencher: lacunas de conhecimento, tempo disponível, experiência com a stack escolhida]_
 
 # Forças
 Com base nos perfis já cadastrados, a completar conforme os demais integrantes forem adicionados:
