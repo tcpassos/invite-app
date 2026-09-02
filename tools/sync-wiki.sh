@@ -9,8 +9,23 @@
 # Uso:
 #   bash tools/sync-wiki.sh            # mostra o que mudou e pede confirmacao
 #   bash tools/sync-wiki.sh --yes      # envia sem perguntar
+#   bash tools/sync-wiki.sh --force    # sobrescreve edicoes feitas direto na Wiki
+#
+# O sync e de mao unica, do GitHub para a Wiki. Se alguem editar pela interface
+# da Wiki, o proximo sync apagaria esse trabalho, entao o script para e avisa.
+# Nesse caso, traga as mudancas para docs/ antes de rodar de novo.
 #
 set -euo pipefail
+
+AUTO_YES=0
+FORCE=0
+for arg in "$@"; do
+  case "$arg" in
+    --yes)   AUTO_YES=1 ;;
+    --force) FORCE=1 ;;
+    *) echo "opcao desconhecida: $arg (use --yes ou --force)" >&2; exit 2 ;;
+  esac
+done
 
 WIKI_URL="https://dev.azure.com/GUITOEBE/invite-people/_git/invite-people.wiki"
 
@@ -46,6 +61,25 @@ WIKI="$WORK/wiki"
 git -C "$WIKI" config core.autocrlf false
 
 # Limpa o conteudo anterior, preservando o .git, o .gitignore e a lista KEEP.
+# Guarda contra sobrescrever quem editou a Wiki pela interface. Todo commit que
+# este script cria comeca com "Sincroniza docs/", entao qualquer commit acima do
+# ultimo desses veio de fora e ainda nao esta em docs/.
+EXTERNOS="$(git -C "$WIKI" log --format='  %h  %an  %s' -n 100 \
+  | awk '/Sincroniza docs\// { exit } { print }')"
+if [ -n "$EXTERNOS" ] && [ "$FORCE" != "1" ]; then
+  echo >&2
+  echo "PARADO. A Wiki tem edicoes feitas direto na interface desde o ultimo sync:" >&2
+  echo >&2
+  echo "$EXTERNOS" >&2
+  echo >&2
+  echo "Continuar apagaria esse trabalho. Traga as mudancas para docs/ primeiro." >&2
+  echo "Para ver o que mudou:" >&2
+  echo "  git clone $WIKI_URL wiki-tmp && cd wiki-tmp && git log -p" >&2
+  echo >&2
+  echo "Se tiver certeza de que da para descartar, rode com --force." >&2
+  exit 1
+fi
+
 echo "Limpando o conteudo anterior..."
 find "$WIKI" -mindepth 1 -maxdepth 1 \
   ! -name ".git" \
@@ -109,7 +143,7 @@ echo "Mudancas a enviar:"
 git diff --cached --stat
 echo
 
-if [ "${1:-}" != "--yes" ]; then
+if [ "$AUTO_YES" != "1" ]; then
   resposta=""
   read -r -p "Enviar para a Wiki? [s/N] " resposta || true
   case "$resposta" in

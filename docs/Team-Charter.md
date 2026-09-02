@@ -30,7 +30,7 @@
 # Papéis e Responsabilidades
 - **Product Owner:** professor Kleinner Silva Farias de Oliveira. Define e prioriza o que entra em cada sprint e valida as entregas na Revisão. Não recebe itens do backlog nem tarefas atribuídas no Boards.
 - **Scrum Master:** _[preencher, pode rodar por sprint]_
-- **Time de Desenvolvimento:** Tiago Passos, Guilherme Toebe dos Santos, _[integrante 3]_ e _[integrante 4]_.
+- **Time de Desenvolvimento:** Tiago Passos, Guilherme Toebe dos Santos, Andreas Grings e Gabriel.
 - Tiago Passos tende à organização e à arquitetura do projeto, atuando também como desenvolvedor. Ver [Tiago Passos](Team-Charter/Tiago-Passos.md).
 - _[distribuir as demais responsabilidades: front-end, back-end, banco de dados, testes e documentação]_
 
@@ -55,12 +55,12 @@
 - Marcos: MVP funcional e apresentação final. Datas em _[definir]_.
 
 # Membros do Time
+- [Andreas Grings](Team-Charter/Andreas-Grings.md)
 - [Tiago Passos](Team-Charter/Tiago-Passos.md)
 - [Guilherme Toebe dos Santos](Team-Charter/Guilherme-Toebe-dos-Santos.md)
-- _[integrante 3, duplicar a página modelo]_
-- _[integrante 4, duplicar a página modelo]_
+- [Gabriel](Team-Charter/Gabriel.md)
 
-Cada integrante tem a própria página com formação, experiência, tecnologias, pontos fortes, pontos de melhoria e papel no time. Quem ainda não preencheu deve copiar a página [Membro Exemplo](Team-Charter/Membro-Exemplo.md), renomear com o próprio nome e atualizar a lista acima e o arquivo `.order` da pasta.
+Cada integrante tem a própria página com formação, experiência, tecnologias, pontos fortes, pontos de melhoria e papel no time. As páginas do Andreas e do Gabriel ainda estão em branco, e o Guilherme ainda não definiu o papel dele no time.
 
 # Forças
 > Levantar em grupo na Sprint Planning, considerando o que cada integrante trouxe na própria página.

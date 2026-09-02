@@ -1,6 +1,4 @@
-# Nome do Integrante
-
-> Duplicar esta página para cada integrante (renomear o arquivo, adicionar à `.order` e à seção "Membros do Time" do Team Charter).
+# Andreas Grings
 
 _[Uma linha de resumo: quem é a pessoa e o foco principal dela.]_
 

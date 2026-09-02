@@ -26,6 +26,3 @@ Tratar a observação alimentar como recurso principal do app. Ela é capturada 
 
 ### Fora do escopo (MVP)
 Lembretes automáticos, check-in por QR code, geração de arte ou texto por IA, lista de presentes e pagamentos. Ficam como candidatos a sprints futuras.
-
-## Referência de mercado
-Análise de concorrentes (Paperless Post, Evite, Greenvelope, RSVPify, Partiful, e no Brasil convite.in, Convitin e FestaLab) em [`pesquisa-de-mercado.md`](../pesquisa-de-mercado.md) no repositório.

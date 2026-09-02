@@ -6,7 +6,6 @@ Relações representadas:
 - UC002 `<<include>>` UC003: ao criar o convite, o fluxo abre a personalização.
 - UC005 `<<extend>>` UC006: registrar a observação alimentar é uma extensão opcional da confirmação de presença.
 
-O diagrama final costuma ser uma imagem UML desenhada no draw.io, Astah ou PlantUML e anexada em `/.attachments`. Abaixo, um rascunho aproximado em Mermaid. No GitHub a cerca é ` ```mermaid `. No Azure Wiki use `::: mermaid`.
 
 ```mermaid
 graph LR
