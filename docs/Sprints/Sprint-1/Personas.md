@@ -4,7 +4,9 @@ Perfis que representam os usuários e stakeholders do produto. Servem de base pa
 
 > Formato conforme a extensão **Personas** do Azure DevOps (Nome, Tag, Perfil, Comportamento e Necessidades). As três já estão cadastradas na extensão, e o nome de cada uma abaixo abre a ficha correspondente no Boards.
 
-As 12 histórias de usuário no Boards estão marcadas com a tag da persona a que atendem, que é o mecanismo que a extensão usa para associar persona e work item. Filtrando o backlog por `@MarinaAnfitriaPersona`, `@RafaelConvidadoPersona` ou `@JorgeBuffetPersona` aparecem os itens de cada uma.
+As 12 histórias de usuário no Boards estão marcadas com a tag da persona a que atendem, que é o mecanismo que a extensão usa para associar persona e work item.
+
+Atenção ao formato, porque são duas formas do mesmo nome. Na tag do work item o nome vai **sem** o `@`, por exemplo `MarinaAnfitriaPersona`. O `@` aparece só na exibição da extensão e na referência à persona dentro do texto.
 
 ---
 
