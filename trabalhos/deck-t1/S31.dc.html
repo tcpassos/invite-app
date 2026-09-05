@@ -8,12 +8,12 @@
 <x-dc>
 <helmet>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&family=Roboto+Mono:wght@400&display=swap">
   <style>
     body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
     a { color: #E94D1C; text-decoration: none; }
     a:hover { color: #21049A; }
-    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #21049A; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
     .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
     .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
     .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
@@ -23,14 +23,55 @@
     .cc { font-weight: 900; color: #E94D1C; flex: none; }
   </style>
 </helmet>
-<div class="sl" style="background:#21049A; display:flex; align-items:center; padding:0 96px">
-  <div>
-    <div class="cartola" style="color:#E94D1C">Pelos nossos próprios critérios</div>
-    <h2 class="titulo" style="color:#fff; font-size:54px; margin-top:20px; max-width:1000px">Estamos na zona cinzenta.</h2>
-    <p class="corpo" style="color:rgba(255,255,255,.75); font-size:20px; margin-top:26px; max-width:840px">Não temos integração contínua nem hospedagem decidida, então dois dos três retornos clássicos não valem para nós hoje. O que sustenta a adoção é um motivo só, e ele basta: ambiente igual para quatro pessoas com stacks diferentes, com banco rodando sem instalação local, antes de começar a escrever código.</p>
+<div class="sl" style="background:#fff">
+  <div style="position:absolute; left:72px; top:66px; right:72px">
+    <div class="cartola" style="color:#E94D1C">Quando não compensa</div>
+    <h2 class="titulo" style="color:#21049A; font-size:34px; margin-top:14px; max-width:1000px">Dois destes critérios<br>descrevem o nosso caso</h2>
   </div>
-  <div class="rodape" style="color: rgba(255,255,255,.55)">
-    <span>Bloco D · Honestidade</span><span style="font-weight:900; color: #fff">31</span>
+  <div style="position:absolute; left:72px; top:214px; right:72px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:56px">
+    <div>
+      <div class="cartola" style="color:#21049A; font-size:12px">QUANDO NÃO COMPENSA</div>
+      <div style="height:3px; background:#21049A; margin:11px 0 20px; width:44px"></div>
+      <div style="display:flex; flex-direction:column; gap:15px">
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Monolito num servidor que nunca escala.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Time sem integração contínua, que só ganha um passo de build a mais.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Aplicação sensível a latência de cauda.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Sistema dominado por estado.</p>
+      </div>
+      </div>
+    </div>
+    <div>
+      <div class="cartola" style="color:#E94D1C; font-size:12px">ONDE NÓS ESTAMOS</div>
+      <div style="height:3px; background:#E94D1C; margin:11px 0 20px; width:44px"></div>
+      <div style="display:flex; flex-direction:column; gap:15px">
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Não temos integração contínua definida. Não temos hospedagem decidida. Estamos na zona cinzenta.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O que sustenta a adoção é um motivo só, e ele basta: ambiente igual para quatro pessoas com stacks diferentes, com banco rodando sem instalação local, antes de escrever a primeira linha.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Compose é de host único. O MVP cabe num host. Kubernetes entraria com múltiplos nós, e é tema de outro grupo.</p>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="rodape" style="color: #6B6B78">
+    <span>Bloco D · Honestidade</span><span style="font-weight:900; color: #21049A">31</span>
   </div>
 </div>
 </x-dc>

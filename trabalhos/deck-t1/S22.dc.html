@@ -8,7 +8,7 @@
 <x-dc>
 <helmet>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&family=Roboto+Mono:wght@400&display=swap">
   <style>
     body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
     a { color: #E94D1C; text-decoration: none; }
@@ -35,11 +35,19 @@
       <div style="display:flex; flex-direction:column; gap:15px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Mais coesão: uma responsabilidade por imagem.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
         <p class="corpo" style="font-size:19px; color:#1A1A1E">O código do front não está na imagem da API, então a API não depende dele nem por acidente.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
         <p class="corpo" style="font-size:19px; color:#1A1A1E">Só o serviço de fronteira publica porta. O banco fica na rede interna sem mapeamento.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Regra na wiki depende de revisão. Regra virando topologia é sustentada pela estrutura, contra a degradação arquitetural da Aula 02.</p>
       </div>
       </div>
     </div>
@@ -49,11 +57,11 @@
       <div style="display:flex; flex-direction:column; gap:15px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A regra entre as nossas três camadas, porque elas ficam na mesma imagem do back-end.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A regra entre as nossas três camadas. Elas ficam na mesma imagem do back-end.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">O acoplamento não some, muda de forma e passa a ter latência, falha parcial e ordem de subida.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Redução de acoplamento. Ele muda de forma e passa a ter latência, falha parcial e ordem de subida.</p>
       </div>
       </div>
     </div>

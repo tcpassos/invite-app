@@ -8,7 +8,7 @@
 <x-dc>
 <helmet>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&family=Roboto+Mono:wght@400&display=swap">
   <style>
     body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
     a { color: #E94D1C; text-decoration: none; }
@@ -41,21 +41,27 @@
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">        condition: service_healthy</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  db:</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: postgres:16</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    healthcheck:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      test: ["CMD-SHELL", "pg_isready -U app"]</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    volumes:</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      - dados:/var/lib/postgresql/data</div>
   </div>
   <div style="position:absolute; right:72px; top:206px; width:468px; display:flex; flex-direction:column; gap:17px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A porta publicada mais o contrato HTTP é a interface provida.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong>, o pirulito da UML.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A variável de conexão mais a dependência declarada é a interface requerida.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>, o soquete.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
         <p class="corpo" style="font-size:19px; color:#1A1A1E">A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E"><strong style="font-weight:900">As imagens são exemplo.</strong> A stack ainda não foi decidida, é assunto do ADR #63.</p>
       </div>
   </div>
   <div class="rodape" style="color: #6B6B78">

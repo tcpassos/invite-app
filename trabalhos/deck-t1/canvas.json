@@ -12,7 +12,7 @@
     },
     {
       "file": "S02.dc.html",
-      "title": "02. Capa",
+      "title": "02. A frase da Aula 05",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -22,7 +22,7 @@
     },
     {
       "file": "S03.dc.html",
-      "title": "03. E descreve, sem citar, um serviço de container",
+      "title": "03. E descreve, sem citar, um serviço de",
       "x": 2760,
       "y": 0,
       "w": 1280,
@@ -32,7 +32,7 @@
     },
     {
       "file": "S04.dc.html",
-      "title": "04. Está registrado no board antes desta apresenta",
+      "title": "04. Está registrado no board antes desta",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -52,7 +52,7 @@
     },
     {
       "file": "S06.dc.html",
-      "title": "06. A implementação começa na Sprint 4. A demonstr",
+      "title": "06. A implementação começa na Sprint 4. A",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -92,7 +92,7 @@
     },
     {
       "file": "S10.dc.html",
-      "title": "10. O que existe é um processo comum com a visão r",
+      "title": "10. O que existe é um processo comum com a visão",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -102,7 +102,7 @@
     },
     {
       "file": "S11.dc.html",
-      "title": "11. Namespaces isolam a visão. Cgroups limitam o c",
+      "title": "11. Namespaces isolam a visão. Cgroups limitam o",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -142,7 +142,7 @@
     },
     {
       "file": "S15.dc.html",
-      "title": "15. Docker é a implementação de um padrão aberto, ",
+      "title": "15. Docker é a implementação de um padrão aberto,",
       "x": 0,
       "y": 1760,
       "w": 1280,
@@ -162,7 +162,7 @@
     },
     {
       "file": "S17.dc.html",
-      "title": "17. Quatro termos que não podem ser trocados entre",
+      "title": "17. Cinco termos que não podem ser trocados entre",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -172,7 +172,7 @@
     },
     {
       "file": "S18.dc.html",
-      "title": "18. Layer é camada lógica. Tier é separação física",
+      "title": "18. Layer é camada lógica. Tier é separação",
       "x": 2760,
       "y": 0,
       "w": 1280,
@@ -182,7 +182,7 @@
     },
     {
       "file": "S19.dc.html",
-      "title": "19. Container é ambiente de execução, imagem é art",
+      "title": "19. Container é ambiente de execução, imagem é",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -192,7 +192,7 @@
     },
     {
       "file": "S20.dc.html",
-      "title": "20. O compose é a forma executável do diagrama que",
+      "title": "20. O compose é a forma executável do diagrama",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -212,7 +212,7 @@
     },
     {
       "file": "S22.dc.html",
-      "title": "22. O que a fronteira garante e o que ela não gara",
+      "title": "22. O que a fronteira garante e o que ela não",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -222,7 +222,7 @@
     },
     {
       "file": "S23.dc.html",
-      "title": "23. Duas views sobre o mesmo Model, dois perfis de",
+      "title": "23. Duas views sobre o mesmo Model, dois perfis",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -252,7 +252,7 @@
     },
     {
       "file": "S26.dc.html",
-      "title": "26. Removeram o Docker Engine e nenhuma imagem par",
+      "title": "26. Removeram o dockershim e nenhuma imagem parou",
       "x": 2760,
       "y": 0,
       "w": 1280,
@@ -282,7 +282,7 @@
     },
     {
       "file": "S29.dc.html",
-      "title": "29. Container é fronteira de isolamento. Não é fro",
+      "title": "29. Container é fronteira de isolamento. Não é",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -302,7 +302,7 @@
     },
     {
       "file": "S31.dc.html",
-      "title": "31. Estamos na zona cinzenta.",
+      "title": "31. Dois destes critérios descrevem o nosso caso",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -312,7 +312,7 @@
     },
     {
       "file": "S32.dc.html",
-      "title": "32. Ganho e custo, nos quatro atributos das Questõ",
+      "title": "32. Ganho e custo, nos quatro atributos das",
       "x": 0,
       "y": 1760,
       "w": 1280,
