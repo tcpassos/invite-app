@@ -44,7 +44,11 @@ Além dos artefatos de arquitetura, a sprint carrega a entrega do primeiro traba
 
 As tasks dos itens #59 e #60 seguem a decomposição em sete passos sugerida pelo professor, de identificar os elementos até a revisão por pares.
 
-O tema do T1 foi escolhido de propósito para alimentar o #60. Estudar conteinerização define como as camadas são empacotadas, e é isso que transforma os nós do diagrama de implantação em artefatos concretos em vez de caixas genéricas. O `docker-compose` montado para a demonstração fica como artefato do projeto e resolve a página Configuração de Ambiente.
+O tema do T1 foi escolhido de propósito para alimentar o #60. Estudar conteinerização obriga a decidir em quantos tiers as camadas lógicas serão empacotadas, e é essa decisão que transforma os nós do diagrama de implantação em artefatos concretos em vez de caixas genéricas.
+
+Atenção a uma distinção que vale para o #58, o #59 e o #60: as três camadas do back-end são camadas lógicas e ficam na mesma imagem. O que o container separa são tiers, ou seja, front, API e banco. Camada lógica e separação física não são a mesma coisa.
+
+O `docker-compose` montado para a demonstração deve ficar como artefato do projeto e preencher a página Configuração de Ambiente, hoje um marcador. É entrega prevista desta sprint, ainda não concluída.
 
 Uma ordem que evita retrabalho: o #58 define as camadas, o #59 detalha os componentes dentro delas, e o #60 aloca esses componentes nos nós. O #61 e o #62 podem correr em paralelo, porque saem dos casos de uso e não dependem dos componentes. O #63 vai sendo escrito conforme as decisões aparecem, não no fim.
 
