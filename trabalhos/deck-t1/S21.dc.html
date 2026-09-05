@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap">
+  <style>
+    body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
+    a { color: #E94D1C; text-decoration: none; }
+    a:hover { color: #21049A; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
+    .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
+    .rodape { position: absolute; left: 72px; right: 72px; bottom: 34px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 400; }
+    .barra { width: 64px; height: 5px; border-radius: 3px; background: #E94D1C; }
+    .item { display: flex; gap: 14px; align-items: flex-start; }
+    .cc { font-weight: 900; color: #E94D1C; flex: none; }
+  </style>
+</helmet>
+<div class="sl" style="background:#fff">
+  <div style="position:absolute; left:72px; top:66px; right:72px">
+    <div class="cartola" style="color:#E94D1C">Notação de componente sobre o arquivo</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Pirulito e soquete<br>estão no compose</h2>
+  </div>
+  <div style="position:absolute; left:72px; top:206px; width:620px; background:#F4F4F8; border-radius:8px; border:1px solid #D9D9D9; padding:22px 26px; font-family:'Roboto Mono', ui-monospace, Menlo, Consolas, monospace">
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">services:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  api:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: node:22-alpine</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    ports:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      - "3000:3000"        # interface provida</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    environment:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      DATABASE_URL: ...    # interface requerida</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    depends_on:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      db:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">        condition: service_healthy</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  db:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: postgres:16</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    volumes:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      - dados:/var/lib/postgresql/data</div>
+  </div>
+  <div style="position:absolute; right:72px; top:206px; width:468px; display:flex; flex-direction:column; gap:17px">
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A porta publicada mais o contrato HTTP é a interface provida.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A variável de conexão mais a dependência declarada é a interface requerida.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.</p>
+      </div>
+  </div>
+  <div class="rodape" style="color: #6B6B78">
+    <span>Bloco C · Aplicação</span><span style="font-weight:900; color: #21049A">21</span>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,424 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "title": "01. Do diagrama à execução",
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-a",
+      "print": "fixed"
+    },
+    {
+      "file": "S02.dc.html",
+      "title": "02. Capa",
+      "x": 1380,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-a",
+      "print": "fixed"
+    },
+    {
+      "file": "S03.dc.html",
+      "title": "03. E descreve, sem citar, um serviço de container",
+      "x": 2760,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-a",
+      "print": "fixed"
+    },
+    {
+      "file": "S04.dc.html",
+      "title": "04. Está registrado no board antes desta apresenta",
+      "x": 4140,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-a",
+      "print": "fixed"
+    },
+    {
+      "file": "S05.dc.html",
+      "title": "05. Invite People",
+      "x": 0,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-a",
+      "print": "fixed"
+    },
+    {
+      "file": "S06.dc.html",
+      "title": "06. A implementação começa na Sprint 4. A demonstr",
+      "x": 1380,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-a",
+      "print": "fixed"
+    },
+    {
+      "file": "S07.dc.html",
+      "title": "07. Definições e arquitetura",
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S08.dc.html",
+      "title": "08. O mecanismo é antigo",
+      "x": 1380,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S09.dc.html",
+      "title": "09. Container e imagem",
+      "x": 2760,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S10.dc.html",
+      "title": "10. O que existe é um processo comum com a visão r",
+      "x": 4140,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S11.dc.html",
+      "title": "11. Namespaces isolam a visão. Cgroups limitam o c",
+      "x": 0,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S12.dc.html",
+      "title": "12. Camadas empilhadas, uma só de escrita",
+      "x": 1380,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S13.dc.html",
+      "title": "13. Do comando ao processo",
+      "x": 2760,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S14.dc.html",
+      "title": "14. O que separa o container do host",
+      "x": 4140,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S15.dc.html",
+      "title": "15. Docker é a implementação de um padrão aberto, ",
+      "x": 0,
+      "y": 1760,
+      "w": 1280,
+      "h": 720,
+      "page": "p-b",
+      "print": "fixed"
+    },
+    {
+      "file": "S16.dc.html",
+      "title": "16. Aplicação no Invite People",
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-c",
+      "print": "fixed"
+    },
+    {
+      "file": "S17.dc.html",
+      "title": "17. Quatro termos que não podem ser trocados entre",
+      "x": 1380,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-c",
+      "print": "fixed"
+    },
+    {
+      "file": "S18.dc.html",
+      "title": "18. Layer é camada lógica. Tier é separação física",
+      "x": 2760,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-c",
+      "print": "fixed"
+    },
+    {
+      "file": "S19.dc.html",
+      "title": "19. Container é ambiente de execução, imagem é art",
+      "x": 4140,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-c",
+      "print": "fixed"
+    },
+    {
+      "file": "S20.dc.html",
+      "title": "20. O compose é a forma executável do diagrama que",
+      "x": 0,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-c",
+      "print": "fixed"
+    },
+    {
+      "file": "S21.dc.html",
+      "title": "21. Pirulito e soquete estão no compose",
+      "x": 1380,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-c",
+      "print": "fixed"
+    },
+    {
+      "file": "S22.dc.html",
+      "title": "22. O que a fronteira garante e o que ela não gara",
+      "x": 2760,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-c",
+      "print": "fixed"
+    },
+    {
+      "file": "S23.dc.html",
+      "title": "23. Duas views sobre o mesmo Model, dois perfis de",
+      "x": 4140,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-c",
+      "print": "fixed"
+    },
+    {
+      "file": "S24.dc.html",
+      "title": "24. Vantagens, desvantagens e demonstração",
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S25.dc.html",
+      "title": "25. Persistência é decisão declarada",
+      "x": 1380,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S26.dc.html",
+      "title": "26. Removeram o Docker Engine e nenhuma imagem par",
+      "x": 2760,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S27.dc.html",
+      "title": "27. No vocabulário da disciplina",
+      "x": 4140,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S28.dc.html",
+      "title": "28. O que conteinerizar custa",
+      "x": 0,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S29.dc.html",
+      "title": "29. Container é fronteira de isolamento. Não é fro",
+      "x": 1380,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S30.dc.html",
+      "title": "30. Avaliação crítica exige alternativa",
+      "x": 2760,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S31.dc.html",
+      "title": "31. Estamos na zona cinzenta.",
+      "x": 4140,
+      "y": 880,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S32.dc.html",
+      "title": "32. Ganho e custo, nos quatro atributos das Questõ",
+      "x": 0,
+      "y": 1760,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S33.dc.html",
+      "title": "33. Três frases",
+      "x": 1380,
+      "y": 1760,
+      "w": 1280,
+      "h": 720,
+      "page": "p-d",
+      "print": "fixed"
+    },
+    {
+      "file": "S34.dc.html",
+      "title": "34. Do sintoma ao arquivo",
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-f",
+      "print": "fixed"
+    },
+    {
+      "file": "S35.dc.html",
+      "title": "35. Pendências, com número de item",
+      "x": 1380,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-f",
+      "print": "fixed"
+    },
+    {
+      "file": "S36.dc.html",
+      "title": "36. Referências",
+      "x": 2760,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "page": "p-f",
+      "print": "fixed"
+    }
+  ],
+  "pages": [
+    {
+      "id": "p-a",
+      "name": "Capa e Bloco A"
+    },
+    {
+      "id": "p-b",
+      "name": "Bloco B"
+    },
+    {
+      "id": "p-c",
+      "name": "Bloco C"
+    },
+    {
+      "id": "p-d",
+      "name": "Bloco D"
+    },
+    {
+      "id": "p-f",
+      "name": "Fecho"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "nota-tempo",
+      "x": 0,
+      "y": -150,
+      "w": 560,
+      "text": "Bloco A 4 min · Bloco B 6 min · Bloco C 6 min · Bloco D 7 min\nMais 1 min para as três trocas de apresentador. Total 24, dentro da faixa de 20 a 25.",
+      "page": "p-a"
+    },
+    {
+      "id": "nota-b",
+      "x": 0,
+      "y": -130,
+      "w": 520,
+      "text": "Este bloco carrega os 30% de domínio técnico. Os dois diagramas não entram na ordem de corte.",
+      "page": "p-b"
+    },
+    {
+      "id": "nota-c",
+      "x": 0,
+      "y": -130,
+      "w": 520,
+      "text": "Este bloco carrega os 25% de relação com o projeto, o critério que mais separa uma apresentação genérica de uma boa.",
+      "page": "p-c"
+    },
+    {
+      "id": "nota-d",
+      "x": 0,
+      "y": -130,
+      "w": 520,
+      "text": "A demonstração vale 10% e não tem substituto. Imagens baixadas na véspera e nenhuma instrução build no compose.",
+      "page": "p-d"
+    }
+  ],
+  "launch": {
+    "view": "canvas",
+    "page": "p-a"
+  }
+}

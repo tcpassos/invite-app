@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap">
+  <style>
+    body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
+    a { color: #E94D1C; text-decoration: none; }
+    a:hover { color: #21049A; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
+    .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
+    .rodape { position: absolute; left: 72px; right: 72px; bottom: 34px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 400; }
+    .barra { width: 64px; height: 5px; border-radius: 3px; background: #E94D1C; }
+    .item { display: flex; gap: 14px; align-items: flex-start; }
+    .cc { font-weight: 900; color: #E94D1C; flex: none; }
+  </style>
+</helmet>
+<div class="sl" style="background:#fff">
+  <div style="position:absolute; left:72px; top:66px; right:72px">
+    <div class="cartola" style="color:#E94D1C">Contrato e agenda</div>
+    <h2 class="titulo" style="color:#21049A; font-size:30px; margin-top:14px; max-width:1000px">A implementação começa na Sprint 4.<br>A demonstração de hoje é do ambiente.</h2>
+  </div>
+  <div style="position:absolute; left:72px; top:210px; right:72px; display:flex; flex-direction:column; gap:0">
+    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
+      <span style="font-weight:900; font-size:15px; color:#E94D1C">01</span>
+      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Definições e arquitetura da tecnologia</span>
+      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right">Tiago</span>
+    </div>
+    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
+      <span style="font-weight:900; font-size:15px; color:#E94D1C">02</span>
+      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Aplicação no projeto</span>
+      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right">Gabriel</span>
+    </div>
+    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
+      <span style="font-weight:900; font-size:15px; color:#E94D1C">03</span>
+      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Vantagens, desvantagens e considerações finais</span>
+      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right">Andreas</span>
+    </div>
+    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
+      <span style="font-weight:900; font-size:15px; color:#E94D1C">04</span>
+      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Referências</span>
+      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right"></span>
+    </div>
+  </div>
+  <div style="position:absolute; left:72px; bottom:80px; font-size:15px; color:#6B6B78; font-weight:300">Cada integrante responde pelo próprio bloco na arguição. Segurança e mecanismos de kernel são com o Tiago, em qualquer bloco.</div>
+  <div class="rodape" style="color: #6B6B78">
+    <span>Bloco A · Introdução</span><span style="font-weight:900; color: #21049A">06</span>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

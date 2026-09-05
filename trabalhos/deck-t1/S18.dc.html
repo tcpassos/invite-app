@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap">
+  <style>
+    body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
+    a { color: #E94D1C; text-decoration: none; }
+    a:hover { color: #21049A; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
+    .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
+    .rodape { position: absolute; left: 72px; right: 72px; bottom: 34px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 400; }
+    .barra { width: 64px; height: 5px; border-radius: 3px; background: #E94D1C; }
+    .item { display: flex; gap: 14px; align-items: flex-start; }
+    .cc { font-weight: 900; color: #E94D1C; flex: none; }
+  </style>
+</helmet>
+<div class="sl" style="background:#fff">
+  <div style="position:absolute; left:72px; top:66px; right:72px">
+    <div class="cartola" style="color:#E94D1C">Layer contra tier, Aula 03</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Layer é camada lógica.<br>Tier é separação física.</h2>
+  </div>
+  <div style="position:absolute; left:72px; top:212px; right:72px; display:flex; justify-content:center">
+<svg width="960" height="250" viewBox="0 0 960 250" xmlns="http://www.w3.org/2000/svg">
+  <g font-family="Roboto, sans-serif">
+    <text x="0" y="18" font-size="12" fill="#6B6B78" font-weight="900" letter-spacing="1.4">MESMAS TRÊS CAMADAS LÓGICAS, TRÊS GRANULARIDADES DE TIER</text>
+    <g>
+      <rect x="0" y="42" width="280" height="150" rx="5" fill="#21049A" fill-opacity="0.07" stroke="#21049A" stroke-dasharray="4 4"/>
+      <rect x="22" y="64" width="236" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="140" y="86" font-size="13" fill="#1A1A1E" font-weight="300" text-anchor="middle">Apresentação e API</text>
+      <rect x="22" y="102" width="236" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="140" y="124" font-size="13" fill="#1A1A1E" font-weight="300" text-anchor="middle">Domínio</text>
+      <rect x="22" y="140" width="236" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="140" y="162" font-size="13" fill="#1A1A1E" font-weight="300" text-anchor="middle">Dados</text>
+      <text x="140" y="216" font-size="14" fill="#21049A" font-weight="900" text-anchor="middle">1 tier</text>
+      <text x="140" y="236" font-size="12" fill="#6B6B78" font-weight="300" text-anchor="middle">tudo junto</text>
+    </g>
+    <g transform="translate(340,0)">
+      <rect x="0" y="42" width="130" height="150" rx="5" fill="#21049A" fill-opacity="0.07" stroke="#21049A" stroke-dasharray="4 4"/>
+      <rect x="16" y="64" width="98" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="65" y="86" font-size="12" fill="#1A1A1E" font-weight="300" text-anchor="middle">front</text>
+      <rect x="150" y="42" width="130" height="150" rx="5" fill="#21049A" fill-opacity="0.07" stroke="#21049A" stroke-dasharray="4 4"/>
+      <rect x="166" y="64" width="98" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="215" y="86" font-size="12" fill="#1A1A1E" font-weight="300" text-anchor="middle">API</text>
+      <rect x="166" y="102" width="98" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="215" y="124" font-size="12" fill="#1A1A1E" font-weight="300" text-anchor="middle">domínio</text>
+      <rect x="166" y="140" width="98" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="215" y="162" font-size="12" fill="#1A1A1E" font-weight="300" text-anchor="middle">dados</text>
+      <text x="140" y="216" font-size="14" fill="#21049A" font-weight="900" text-anchor="middle">2 tiers</text>
+      <text x="140" y="236" font-size="12" fill="#6B6B78" font-weight="300" text-anchor="middle">front separado</text>
+    </g>
+    <g transform="translate(680,0)">
+      <rect x="0" y="42" width="84" height="150" rx="5" fill="#E94D1C" fill-opacity="0.09" stroke="#E94D1C" stroke-dasharray="4 4"/>
+      <rect x="12" y="64" width="60" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="42" y="86" font-size="11" fill="#1A1A1E" font-weight="300" text-anchor="middle">front</text>
+      <rect x="98" y="42" width="84" height="150" rx="5" fill="#E94D1C" fill-opacity="0.09" stroke="#E94D1C" stroke-dasharray="4 4"/>
+      <rect x="110" y="64" width="60" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="140" y="86" font-size="11" fill="#1A1A1E" font-weight="300" text-anchor="middle">API</text>
+      <rect x="110" y="102" width="60" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="140" y="124" font-size="10" fill="#1A1A1E" font-weight="300" text-anchor="middle">domínio</text>
+      <rect x="196" y="42" width="84" height="150" rx="5" fill="#E94D1C" fill-opacity="0.09" stroke="#E94D1C" stroke-dasharray="4 4"/>
+      <rect x="208" y="64" width="60" height="34" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="238" y="86" font-size="11" fill="#1A1A1E" font-weight="300" text-anchor="middle">banco</text>
+      <text x="140" y="216" font-size="14" fill="#E94D1C" font-weight="900" text-anchor="middle">3 tiers</text>
+      <text x="140" y="236" font-size="12" fill="#6B6B78" font-weight="300" text-anchor="middle">banco isolado</text>
+    </g>
+  </g>
+</svg>
+  </div>
+  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">Nenhuma das três muda uma linha do projeto lógico. Todas mudam o empacotamento. Docker obriga a escolher a granularidade em vez de deixá-la implícita, e essa escolha é entrada do ADR #63.</div>
+  <div class="rodape" style="color: #6B6B78">
+    <span>Bloco C · Aplicação</span><span style="font-weight:900; color: #21049A">18</span>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

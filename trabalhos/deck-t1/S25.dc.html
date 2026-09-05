@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap">
+  <style>
+    body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
+    a { color: #E94D1C; text-decoration: none; }
+    a:hover { color: #21049A; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
+    .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
+    .rodape { position: absolute; left: 72px; right: 72px; bottom: 34px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 400; }
+    .barra { width: 64px; height: 5px; border-radius: 3px; background: #E94D1C; }
+    .item { display: flex; gap: 14px; align-items: flex-start; }
+    .cc { font-weight: 900; color: #E94D1C; flex: none; }
+  </style>
+</helmet>
+<div class="sl" style="background:#fff">
+  <div style="position:absolute; left:72px; top:66px; right:72px">
+    <div class="cartola" style="color:#E94D1C">Demonstração, 90 segundos</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Persistência é decisão declarada</h2>
+  </div>
+  <div style="position:absolute; left:72px; top:206px; right:72px; background:#12121A; border-radius:8px; padding:24px 28px; font-family:'Roboto Mono', ui-monospace, Menlo, Consolas, monospace">
+    <div style="display:flex; gap:7px; margin-bottom:18px">
+      <span style="width:11px;height:11px;border-radius:50%;background:#FF5F57"></span>
+      <span style="width:11px;height:11px;border-radius:50%;background:#FEBC2E"></span>
+      <span style="width:11px;height:11px;border-radius:50%;background:#28C840"></span>
+    </div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose up -d</div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose ps</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">NAME   IMAGE          STATUS</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">web    nginx:alpine   Up</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">db     postgres:16    Up (healthy)</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose run --rm client psql -h db -c "create table t(); "</div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down && docker compose up -d</div>
+    <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># a tabela continua lá, o volume sobreviveu</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down -v</div>
+    <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># agora o dado some junto com o volume</div>
+  </div>
+  <div style="position:absolute; left:72px; bottom:76px; right:72px; font-size:12px; color:#6B6B78; font-weight:400">A imagem de fundo do UC003 e o CSV do UC008 não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.</div>
+  <div class="rodape" style="color: #6B6B78">
+    <span>Bloco D · Demonstração</span><span style="font-weight:900; color: #21049A">25</span>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

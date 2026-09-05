@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap">
+  <style>
+    body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
+    a { color: #E94D1C; text-decoration: none; }
+    a:hover { color: #21049A; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
+    .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
+    .rodape { position: absolute; left: 72px; right: 72px; bottom: 34px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 400; }
+    .barra { width: 64px; height: 5px; border-radius: 3px; background: #E94D1C; }
+    .item { display: flex; gap: 14px; align-items: flex-start; }
+    .cc { font-weight: 900; color: #E94D1C; flex: none; }
+  </style>
+</helmet>
+<div class="sl" style="background:#fff">
+  <div style="position:absolute; left:72px; top:66px; right:72px">
+    <div class="cartola" style="color:#E94D1C">Rascunhos dos itens #59 e #60</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">O compose é a forma executável<br>do diagrama que temos que desenhar</h2>
+  </div>
+  <div style="position:absolute; left:72px; top:214px; right:72px; display:flex; justify-content:center">
+<svg width="960" height="270" viewBox="0 0 960 270" xmlns="http://www.w3.org/2000/svg">
+  <g font-family="Roboto, sans-serif">
+    <text x="0" y="16" font-size="11" fill="#21049A" font-weight="900" letter-spacing="1.4">RASCUNHO #59, DIAGRAMA DE COMPONENTES</text>
+    <rect x="0" y="34" width="400" height="196" rx="5" fill="none" stroke="#D9D9D9"/>
+    <rect x="28" y="60" width="150" height="48" rx="3" fill="#21049A"/><text x="103" y="90" font-size="13" fill="#fff" font-weight="400" text-anchor="middle">Convite público</text>
+    <rect x="222" y="60" width="150" height="48" rx="3" fill="#21049A"/><text x="297" y="90" font-size="13" fill="#fff" font-weight="400" text-anchor="middle">Painel</text>
+    <rect x="125" y="130" width="150" height="44" rx="3" fill="#21049A"/><text x="200" y="157" font-size="13" fill="#fff" font-weight="400" text-anchor="middle">API</text>
+    <rect x="125" y="188" width="150" height="30" rx="3" fill="#6B6B78"/><text x="200" y="208" font-size="12" fill="#fff" font-weight="400" text-anchor="middle">Dados</text>
+    <path d="M103 108 L180 130" stroke="#6B6B78" stroke-width="1.4"/><path d="M297 108 L220 130" stroke="#6B6B78" stroke-width="1.4"/>
+    <path d="M200 174 L200 188" stroke="#6B6B78" stroke-width="1.4"/>
+    <path d="M420 130 L520 130" stroke="#E94D1C" stroke-width="2" marker-end="url(#s2)"/>
+    <text x="428" y="120" font-size="12" fill="#E94D1C" font-weight="900">#72</text>
+    <defs><marker id="s2" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#E94D1C"/></marker></defs>
+    <text x="560" y="16" font-size="11" fill="#E94D1C" font-weight="900" letter-spacing="1.4">RASCUNHO #60, DIAGRAMA DE IMPLANTAÇÃO</text>
+    <rect x="560" y="34" width="400" height="196" rx="5" fill="none" stroke="#E94D1C" stroke-width="2"/>
+    <text x="580" y="58" font-size="11" fill="#E94D1C" font-weight="900">&#171;device&#187; host</text>
+    <rect x="580" y="70" width="112" height="52" rx="3" fill="none" stroke="#21049A" stroke-width="1.5"/><text x="636" y="94" font-size="11" fill="#21049A" font-weight="900" text-anchor="middle">container</text><text x="636" y="110" font-size="11" fill="#1A1A1E" font-weight="300" text-anchor="middle">front</text>
+    <rect x="704" y="70" width="112" height="52" rx="3" fill="none" stroke="#21049A" stroke-width="1.5"/><text x="760" y="94" font-size="11" fill="#21049A" font-weight="900" text-anchor="middle">container</text><text x="760" y="110" font-size="11" fill="#1A1A1E" font-weight="300" text-anchor="middle">API</text>
+    <rect x="828" y="70" width="112" height="52" rx="3" fill="none" stroke="#21049A" stroke-width="1.5"/><text x="884" y="94" font-size="11" fill="#21049A" font-weight="900" text-anchor="middle">container</text><text x="884" y="110" font-size="11" fill="#1A1A1E" font-weight="300" text-anchor="middle">banco</text>
+    <path d="M692 96 L704 96" stroke="#E94D1C" stroke-width="1.6"/><path d="M816 96 L828 96" stroke="#E94D1C" stroke-width="1.6"/>
+    <rect x="580" y="146" width="360" height="34" rx="3" fill="#E94D1C" fill-opacity="0.1" stroke="#E94D1C" stroke-dasharray="4 3"/>
+    <text x="760" y="168" font-size="12" fill="#E94D1C" font-weight="400" text-anchor="middle">rede nomeada, resolução por nome de serviço  ·  #75</text>
+    <text x="580" y="206" font-size="12" fill="#6B6B78" font-weight="300">#71 nós  ·  #73 imagem por tag e digest</text>
+  </g>
+</svg>
+  </div>
+  
+  <div class="rodape" style="color: #6B6B78">
+    <span>Bloco C · Aplicação</span><span style="font-weight:900; color: #21049A">20</span>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
