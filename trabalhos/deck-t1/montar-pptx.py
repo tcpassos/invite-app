@@ -108,6 +108,68 @@ def rotulo(sl, x, y, w, texto, *, tam=12, cor=CINZA, peso=400, alinhar=PP_ALIGN.
     escrever(tf, texto, tam=tam, cor=cor, peso=peso, entre=1.2, fonte=fonte, maiusc=maiusc, espacar=espacar)
     return tb
 
+# ---------- marca e simbologia ----------
+
+LOGOS = sys.argv[4] if len(sys.argv) > 4 else '.'
+
+def logo(sl, claro=False, x=1128, y=48, tam=36):
+    """Simbolo institucional, no mesmo canto em todos os slides."""
+    import os
+    arq = os.path.join(LOGOS, 'u-branco.png' if claro else 'u-azul.png')
+    sl.shapes.add_picture(arq, px(x), px(y), px(tam), px(tam))
+
+def logo_completo(sl, x, y, larg=214):
+    import os
+    alt = larg * 692 / 2012
+    sl.shapes.add_picture(os.path.join(LOGOS, 'lockup-branco.png'), px(x), px(y), px(larg), px(alt))
+
+def _forma(sl, tipo, x, y, w, h, *, preencher=None, borda=None, largura=2):
+    s = sl.shapes.add_shape(tipo, px(x), px(y), px(w), px(h))
+    if preencher is None:
+        s.fill.background()
+    else:
+        s.fill.solid(); s.fill.fore_color.rgb = preencher
+    if borda is None:
+        s.line.fill.background()
+    else:
+        s.line.color.rgb = borda; s.line.width = Pt(largura)
+    s.shadow.inherit = False
+    return s
+
+def simbolo_bloco(sl, qual, x, y, cor=LARANJA):
+    """Marca grande do bloco, desenhada com formas, em vez de ícone genérico."""
+    if qual == 'camadas':          # empilhamento
+        for i in range(3):
+            _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x + i * 9, y + 62 - i * 26, 104, 20,
+                   preencher=None if i < 2 else cor, borda=cor, largura=2.5)
+    elif qual == 'mapeamento':     # componente vira nó
+        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + 26, 46, 46, borda=cor, largura=2.5)
+        _forma(sl, MSO_SHAPE.RIGHT_ARROW, x + 56, y + 40, 34, 18, preencher=cor)
+        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x + 100, y + 26, 46, 46, preencher=cor)
+    elif qual == 'balanca':        # ganho contra custo
+        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + 14, 40, 72, preencher=cor)
+        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x + 54, y + 46, 40, 40, borda=cor, largura=2.5)
+        _forma(sl, MSO_SHAPE.RECTANGLE, x - 8, y + 92, 110, 3, preencher=cor)
+
+ICONES = {
+    'ATENÇÃO': 'alerta', 'CUIDADO': 'alerta', 'REGRA': 'alerta',
+    'FONTE': 'documento', 'EM ABERTO': 'aberto',
+    'ONDE ESTAMOS HOJE': 'aberto', 'PRÓXIMO PASSO': 'seta',
+    'PARA LEVAR PARA A P1': 'documento',
+}
+
+def icone_nota(sl, x, y, titulo, cor=LARANJA):
+    tipo = ICONES.get((titulo or '').upper(), 'alerta')
+    if tipo == 'alerta':
+        _forma(sl, MSO_SHAPE.ISOSCELES_TRIANGLE, x, y, 16, 14, borda=cor, largura=1.5)
+        _forma(sl, MSO_SHAPE.RECTANGLE, x + 7.2, y + 6, 1.6, 4, preencher=cor)
+    elif tipo == 'documento':
+        _forma(sl, MSO_SHAPE.FLOWCHART_DOCUMENT, x, y, 15, 14, borda=cor, largura=1.5)
+    elif tipo == 'aberto':
+        _forma(sl, MSO_SHAPE.DONUT, x, y, 15, 15, preencher=cor)
+    else:
+        _forma(sl, MSO_SHAPE.CHEVRON, x, y + 1, 15, 13, preencher=cor)
+
 # ---------- pecas comuns ----------
 
 def fundo(sl, cor):
@@ -117,7 +179,7 @@ def fundo(sl, cor):
 def cartola(sl, texto, cor=LARANJA, y=66):
     rotulo(sl, 72, y, 1136, texto, tam=13, cor=cor, peso=900, maiusc=True, espacar=1.6)
 
-def titulo_claro(sl, texto, tam=40, y=88, w=1000, cor=AZUL):
+def titulo_claro(sl, texto, tam=40, y=88, w=1010, cor=AZUL):
     tb, tf = caixa(sl, 72, y, w, 160)
     escrever(tf, texto, tam=tam, cor=cor, peso=900, entre=1.04)
 
@@ -146,9 +208,10 @@ def altura_estimada(html, tam, largura):
     return linhas * tam * 1.32
 
 def nota_lateral(sl, x, y, w, titulo, texto):
-    retangulo(sl, x, y, 3, 92, preencher=LARANJA)
-    rotulo(sl, x + 17, y, w - 17, titulo, tam=11, cor=LARANJA, peso=900, maiusc=True, espacar=1.2)
-    tb, tf = caixa(sl, x + 17, y + 22, w - 17, 240)
+    icone_nota(sl, x, y, titulo)
+    rotulo(sl, x + 24, y + 1, w - 24, titulo, tam=11, cor=LARANJA, peso=900, maiusc=True, espacar=1.2)
+    retangulo(sl, x, y + 26, 3, 66, preencher=LARANJA)
+    tb, tf = caixa(sl, x + 17, y + 30, w - 17, 240)
     escrever(tf, texto, tam=15, cor=CINZA, peso=300, entre=1.35, espaco=8)
 
 # ---------- diagramas nativos ----------
@@ -284,8 +347,7 @@ DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml,
 def m_capa(sl, s):
     fundo(sl, AZUL)
     retangulo(sl, 880, 40, 420, 420, preencher=RGBColor(0x33, 0x14, 0xA8), raio=210)
-    retangulo(sl, 72, 62, 132, 28, borda=RGBColor(0x8A, 0x7A, 0xC8), tracejado=True)
-    rotulo(sl, 72, 70, 132, 'LOGO UNISINOS', tam=10, cor=RGBColor(0xB5, 0xAA, 0xE0), alinhar=PP_ALIGN.CENTER, espacar=1.4)
+    logo_completo(sl, 72, 58, 214)
     rotulo(sl, 72, 200, 700, s['cartola'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 72, 224, 780, 200)
     escrever(tf, s['titulo'], tam=70, cor=BRANCO, peso=900, entre=1.02)
@@ -298,9 +360,13 @@ def m_capa(sl, s):
         tb3, tf3 = caixa(sl, cx, 586, 280, 70)
         escrever(tf3, val, tam=13, cor=RGBColor(0xE0, 0xDB, 0xF2), peso=400, entre=1.4)
 
+SIMBOLOS = {'01': 'camadas', '02': 'mapeamento', '03': 'balanca'}
+
 def m_secao(sl, s):
     fundo(sl, AZUL)
     retangulo(sl, 0, 0, 10, 720, preencher=LARANJA)
+    logo(sl, claro=True)
+    simbolo_bloco(sl, SIMBOLOS.get(s['num'], 'camadas'), 940, 290)
     rotulo(sl, 92, 128, 400, s['num'], tam=130, cor=RGBColor(0x4B, 0x36, 0xB4), peso=900)
     rotulo(sl, 96, 300, 700, s['cartola'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 96, 326, 860, 150)
@@ -311,6 +377,7 @@ def m_secao(sl, s):
 
 def m_citacao(sl, s):
     fundo(sl, AZUL)
+    logo(sl, claro=True)
     rotulo(sl, 130, 152, 100, '“', tam=70, cor=LARANJA, peso=900)
     tb, tf = caixa(sl, 130, 216, 1000, 260)
     escrever(tf, s['texto'], tam=s.get('tam', 40), cor=BRANCO, peso=300, entre=1.34)
@@ -320,6 +387,7 @@ def m_citacao(sl, s):
 
 def m_impacto(sl, s):
     fundo(sl, AZUL)
+    logo(sl, claro=True)
     rotulo(sl, 96, 168, 900, s['cartola'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 96, 196, 1020, 200)
     escrever(tf, s['titulo'], tam=s.get('tam', 52), cor=BRANCO, peso=900, entre=1.06)
@@ -330,6 +398,7 @@ def m_impacto(sl, s):
 
 def cabeca(sl, s):
     fundo(sl, BRANCO)
+    logo(sl, claro=False)
     cartola(sl, s['cartola'])
     titulo_claro(sl, s['titulo'], tam=s.get('tam', 40))
 
