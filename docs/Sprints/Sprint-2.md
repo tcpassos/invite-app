@@ -38,7 +38,13 @@ Work items no Azure Boards da org `GUITOEBE`, projeto `invite-people`, iteration
 - **#62** Modelar o diagrama de sequência (UML)
 - **#63** Escrever o documento de decisões arquiteturais (ADR)
 
+Além dos artefatos de arquitetura, a sprint carrega a entrega do primeiro trabalho da disciplina, que cai dentro deste período:
+
+- **#78** T1, seminário sobre Docker e conteinerização, com as tasks #79 a #86
+
 As tasks dos itens #59 e #60 seguem a decomposição em sete passos sugerida pelo professor, de identificar os elementos até a revisão por pares.
+
+O tema do T1 foi escolhido de propósito para alimentar o #60. Estudar conteinerização define como as camadas são empacotadas, e é isso que transforma os nós do diagrama de implantação em artefatos concretos em vez de caixas genéricas. O `docker-compose` montado para a demonstração fica como artefato do projeto e resolve a página Configuração de Ambiente.
 
 Uma ordem que evita retrabalho: o #58 define as camadas, o #59 detalha os componentes dentro delas, e o #60 aloca esses componentes nos nós. O #61 e o #62 podem correr em paralelo, porque saem dos casos de uso e não dependem dos componentes. O #63 vai sendo escrito conforme as decisões aparecem, não no fim.
 
