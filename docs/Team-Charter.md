@@ -30,7 +30,7 @@
 # Papéis e Responsabilidades
 - **Product Owner:** professor Kleinner Silva Farias de Oliveira. Define e prioriza o que entra em cada sprint e valida as entregas na Revisão. Não recebe itens do backlog nem tarefas atribuídas no Boards.
 - **Scrum Master:** _[preencher, pode rodar por sprint]_
-- **Time de Desenvolvimento:** Tiago Passos, Guilherme Toebe dos Santos, Andreas Grings e Gabriel.
+- **Time de Desenvolvimento:** Tiago Passos, Guilherme Toebe dos Santos, Andreas Grings e Gabriel Tomasi de Melo.
 - Tiago Passos tende à organização e à arquitetura do projeto, atuando também como desenvolvedor. Ver [Tiago Passos](Team-Charter/Tiago-Passos.md).
 - _[distribuir as demais responsabilidades: front-end, back-end, banco de dados, testes e documentação]_
 
@@ -58,19 +58,9 @@
 - [Andreas Grings](Team-Charter/Andreas-Grings.md)
 - [Tiago Passos](Team-Charter/Tiago-Passos.md)
 - [Guilherme Toebe dos Santos](Team-Charter/Guilherme-Toebe-dos-Santos.md)
-- [Gabriel](Team-Charter/Gabriel.md)
+- [Gabriel Tomasi de Melo](Team-Charter/Gabriel.md)
 
-Cada integrante tem a própria página com formação, experiência, tecnologias, pontos fortes, pontos de melhoria e papel no time. As páginas do Andreas e do Gabriel ainda estão em branco, e o Guilherme ainda não definiu o papel dele no time.
-
-# Forças
-> Levantar em grupo na Sprint Planning, considerando o que cada integrante trouxe na própria página.
-
-- _[preencher: o que o time já domina, por exemplo linguagens, front-end, back-end, banco, testes, Scrum]_
-
-# Pontos de Melhoria
-> Mesma dinâmica das Forças. Serve para o time saber onde vai precisar de apoio ou de estudo extra.
-
-- _[preencher: lacunas de conhecimento, tempo disponível, experiência com a stack escolhida]_
+Cada integrante tem a própria página com formação, experiência, tecnologias, pontos fortes, pontos de melhoria e papel no time. A página do Andreas ainda está em branco, e o Guilherme ainda não definiu o papel dele no time.
 
 # Forças
 Com base nos perfis já cadastrados, a completar conforme os demais integrantes forem adicionados:
@@ -80,9 +70,18 @@ Com base nos perfis já cadastrados, a completar conforme os demais integrantes 
 - Foco em boas práticas, reuso e manutenibilidade.
 - Conhecimento de segurança da informação.
 - Experiência profissional em sistema de gestão e ERP desde 2018.
-- _[completar com as forças dos demais integrantes]_
+- Visão de produto e facilidade de comunicação entre negócio e time técnico.
+- Experiência com metodologias ágeis e ferramentas de discovery e delivery.
+- Prototipagem rápida e uso prático de IA generativa.
+- Base forte em estatística, modelagem de dados e machine learning.
+- Cobertura de banco de dados relacional e não relacional (Postgres, Oracle, MariaDB, SQLite e MongoDB).
+- _[completar quando o Andreas preencher a página dele]_
 
 # Pontos de Melhoria
 - Tendência a over engineering, que pode comprometer a entrega de um MVP rápido.
 - Comunicação e o hábito de pedir ajuda a tempo.
-- _[completar com os demais integrantes, por exemplo experiência com front-end, deploy ou com a metodologia Scrum]_
+- Tendência a abraçar muitas frentes ao mesmo tempo antes de delegar.
+- Tempo dividido entre as demandas profissionais e as entregas acadêmicas.
+- Desenvolvimento interpessoal e ampliação do repertório de linguagens.
+- **Experiência com front-end concentrada em poucos integrantes**, o que é um risco para um MVP web e vale considerar na divisão das tarefas.
+- _[completar quando o Andreas preencher a página dele]_
