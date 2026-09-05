@@ -8,7 +8,7 @@ Esta é a página inicial da Wiki e serve de índice para as demais seções.
 Problema, solução, público-alvo, diferencial e escopo do MVP. Ver [Visão do Produto](Visão-do-Produto.md).
 
 ## Começando
-Instalação, configuração e padronização do projeto. Entra na Sprint 2, junto com a definição da stack e a preparação do ambiente. Os rascunhos ficam no repositório do GitHub em `docs/Começando` até terem conteúdo.
+Instalação, configuração e padronização do projeto. Entra quando a implementação começar, junto com a definição da stack e a preparação do ambiente. Os rascunhos ficam no repositório do GitHub em `docs/Começando` até terem conteúdo.
 
 ## Diretrizes do Projeto
 - [Guia da Arquitetura](Diretrizes-do-Projeto/Guia-da-Arquitetura.md)
@@ -17,6 +17,7 @@ Instalação, configuração e padronização do projeto. Entra na Sprint 2, jun
 
 ## Sprints
 - [Sprint 1, Engenharia de Requisitos e Compreensão do Domínio](Sprints/Sprint-1.md)
+- [Sprint 2, Projeto da Arquitetura e Modelagem Estrutural](Sprints/Sprint-2.md)
 
 ## Team Charter
 Missão, papéis, escopo e membros do time. Ver [Team Charter](Team-Charter.md).
