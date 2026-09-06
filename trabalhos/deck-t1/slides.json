@@ -2,8 +2,8 @@
  {
   "modelo": "capa",
   "cartola": "Seminário T1 · Tecnologias emergentes",
-  "titulo": "Do diagrama<br>à execução",
-  "sub": "Conteinerização como decisão de arquitetura sobre empacotamento e implantação",
+  "titulo": "Docker e<br>conteinerização",
+  "sub": "Como o empacotamento em containers se aplica ao projeto Invite People",
   "equipe": "Tiago Passos · Guilherme Toebe<br>Andreas Grings · Gabriel Tomasi",
   "disciplina": "Arquitetura de Software<br>Prof. Kleinner Farias",
   "data": "08 de setembro<br>de 2026",
@@ -13,17 +13,18 @@
  {
   "modelo": "citacao",
   "bloco": "Bloco A · Introdução",
+  "cartola": "Definição de componente, Aula 05",
   "tituloCanvas": "A frase da Aula 05",
   "texto": "Unidade de composição com interfaces especificadas e dependências de contexto explícitas, que pode ser implantada de forma independente.",
-  "fonte": "Que conceito da disciplina esta frase define?",
+  "fonte": "FARIAS, K. Aula 05, Arquiteturas Baseadas em Componentes.",
   "tam": 38,
   "n": 2
  },
  {
   "modelo": "conteudo",
   "bloco": "Bloco A · Introdução",
-  "cartola": "A frase define componente",
-  "titulo": "E descreve, sem citar,<br>um serviço de container",
+  "cartola": "Definição de componente",
+  "titulo": "Como a definição se aplica<br>a um serviço de container",
   "itens": [
    "<strong style=\"font-weight:900\">Interface especificada</strong> é a porta publicada mais o contrato HTTP.",
    "<strong style=\"font-weight:900\">Dependência de contexto explícita</strong> é o Dockerfile mais as variáveis de ambiente.",
@@ -37,8 +38,8 @@
  {
   "modelo": "duasColunas",
   "bloco": "Bloco A · Introdução",
-  "cartola": "O tema não veio da moda",
-  "titulo": "Está registrado no board<br>antes desta apresentação",
+  "cartola": "Origem do tema",
+  "titulo": "O tema saiu de um item<br>da Sprint 2",
   "tituloA": "WORK ITEM #78 · CRIADO EM 05/09",
   "itensA": [
    "T1, seminário sobre Docker e conteinerização.",
@@ -70,8 +71,8 @@
  {
   "modelo": "agenda",
   "bloco": "Bloco A · Introdução",
-  "cartola": "Contrato e agenda",
-  "titulo": "A implementação começa na Sprint 4.<br>A demonstração de hoje é do ambiente.",
+  "cartola": "Agenda",
+  "titulo": "Escopo e divisão<br>da apresentação",
   "itens": [
    {
     "t": "Introdução",
@@ -94,7 +95,7 @@
     "d": "Andreas"
    }
   ],
-  "nota": "Cada integrante responde pelo próprio bloco na arguição. Segurança e mecanismos de kernel são com o Tiago, em qualquer bloco.",
+  "nota": "A implementação do produto começa na Sprint 4, em 06/10, então a demonstração de hoje é do ambiente e não do produto. Cada integrante responde pelo próprio bloco na arguição.",
   "tam": 30,
   "n": 6
  },
@@ -110,8 +111,8 @@
  {
   "modelo": "linhaTempo",
   "bloco": "Bloco B · Definições",
-  "cartola": "Por que isso conta como emergente",
-  "titulo": "O mecanismo é antigo",
+  "cartola": "Linha do tempo",
+  "titulo": "Do chroot à padronização OCI",
   "marcos": [
    {
     "ano": "1979",
@@ -142,7 +143,7 @@
     "txt": "Kubernetes remove o Docker Engine"
    }
   ],
-  "remate": "O que é recente não é o isolamento. É a padronização e a estabilização da cadeia.",
+  "remate": "O isolamento de processos existe desde 1979. O que é recente é a padronização da cadeia de execução, a partir de 2015.",
   "n": 8
  },
  {
@@ -163,8 +164,8 @@
  {
   "modelo": "terminal",
   "bloco": "Bloco B · Arquitetura",
-  "cartola": "Não existe container no kernel",
-  "titulo": "O que existe é um processo comum<br>com a visão restringida",
+  "cartola": "O que o kernel enxerga",
+  "titulo": "Um container é um processo<br>com a visão restringida por namespaces",
   "linhas": [
    "$ docker run -d --name web nginx",
    "$ ps -eo pid,comm | grep nginx",
@@ -184,7 +185,7 @@
  {
   "modelo": "duasColunas",
   "bloco": "Bloco B · Arquitetura",
-  "cartola": "Dois mecanismos, dois papéis",
+  "cartola": "Namespaces e cgroups",
   "titulo": "Namespaces isolam a visão.<br>Cgroups limitam o consumo.",
   "tituloA": "NAMESPACES",
   "itensA": [
@@ -204,8 +205,8 @@
  {
   "modelo": "diagrama",
   "bloco": "Bloco B · Arquitetura",
-  "cartola": "A imagem por dentro",
-  "titulo": "Camadas empilhadas, uma só de escrita",
+  "cartola": "Estrutura da imagem",
+  "titulo": "Camadas somente leitura<br>e a camada de escrita",
   "svg": "<svg width=\"880\" height=\"290\" viewBox=\"0 0 880 290\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <rect x=\"40\" y=\"216\" width=\"360\" height=\"46\" rx=\"4\" fill=\"#F0F0F5\" stroke=\"#D9D9D9\"/>\n    <rect x=\"40\" y=\"164\" width=\"360\" height=\"46\" rx=\"4\" fill=\"#F0F0F5\" stroke=\"#D9D9D9\"/>\n    <rect x=\"40\" y=\"112\" width=\"360\" height=\"46\" rx=\"4\" fill=\"#F0F0F5\" stroke=\"#D9D9D9\"/>\n    <rect x=\"40\" y=\"54\" width=\"360\" height=\"52\" rx=\"4\" fill=\"#E94D1C\" fill-opacity=\"0.12\" stroke=\"#E94D1C\" stroke-dasharray=\"5 4\"/>\n    <text x=\"60\" y=\"245\" font-size=\"14\" fill=\"#1A1A1E\" font-weight=\"300\">camada base (debian, alpine)</text>\n    <text x=\"60\" y=\"193\" font-size=\"14\" fill=\"#1A1A1E\" font-weight=\"300\">dependências</text>\n    <text x=\"60\" y=\"141\" font-size=\"14\" fill=\"#1A1A1E\" font-weight=\"300\">código da aplicação</text>\n    <text x=\"60\" y=\"79\" font-size=\"14\" fill=\"#E94D1C\" font-weight=\"900\">camada de escrita</text>\n    <text x=\"60\" y=\"97\" font-size=\"12\" fill=\"#6B6B78\" font-weight=\"300\">criada pelo container, morre com ele</text>\n    <text x=\"40\" y=\"34\" font-size=\"11\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.6\">SOMENTE LEITURA, ENDEREÇADAS POR DIGEST</text>\n    <line x1=\"440\" y1=\"60\" x2=\"440\" y2=\"258\" stroke=\"#D9D9D9\" stroke-width=\"1\"/>\n    <text x=\"480\" y=\"96\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\">copy-up</text>\n    <text x=\"480\" y=\"122\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">alterar um byte de um arquivo grande</text>\n    <text x=\"480\" y=\"142\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">copia o arquivo inteiro para cima</text>\n    <text x=\"480\" y=\"184\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\">whiteout</text>\n    <text x=\"480\" y=\"210\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">apagar cria uma marcação,</text>\n    <text x=\"480\" y=\"230\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">o arquivo continua na camada de baixo</text>\n  </g>\n</svg>",
   "svgNome": "svgCamadas",
   "legenda": "Um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do UC001.",
@@ -216,7 +217,7 @@
   "modelo": "diagrama",
   "bloco": "Bloco B · Arquitetura",
   "cartola": "A pilha de execução",
-  "titulo": "Do comando ao processo",
+  "titulo": "CLI, dockerd, containerd,<br>shim e runc",
   "svg": "<svg width=\"940\" height=\"270\" viewBox=\"0 0 940 270\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <rect x=\"10\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"85\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">docker CLI</text>\n    <text x=\"85\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">cliente</text>\n    <rect x=\"205\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"280\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">dockerd</text>\n    <text x=\"280\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">daemon, roda como root</text>\n    <rect x=\"400\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"475\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">containerd</text>\n    <text x=\"475\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">ciclo de vida</text>\n    <rect x=\"595\" y=\"86\" width=\"140\" height=\"60\" rx=\"5\" fill=\"#E94D1C\"/>\n    <text x=\"665\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">shim</text>\n    <text x=\"665\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">um por container</text>\n    <rect x=\"780\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#E94D1C\"/>\n    <text x=\"855\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">runc</text>\n    <text x=\"855\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">cria e sai</text>\n    <path d=\"M160 116 L200 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M355 116 L395 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M550 116 L590 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M735 116 L775 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <text x=\"375\" y=\"78\" font-size=\"11\" fill=\"#6B6B78\" font-weight=\"400\">gRPC</text>\n    <defs><marker id=\"seta\" markerWidth=\"7\" markerHeight=\"7\" refX=\"6\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L6,3 L0,6 Z\" fill=\"#6B6B78\"/></marker></defs>\n    <text x=\"10\" y=\"196\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar</text>\n    <text x=\"10\" y=\"216\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">o daemon deixar de matar os containers em execução.</text>\n    <text x=\"10\" y=\"248\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">O runc cria os namespaces, configura cgroups, aplica capabilities e seccomp, faz pivot_root, dá execve e sai.</text>\n  </g>\n</svg>",
   "svgNome": "svgPilha",
   "topSvg": 200,
@@ -225,8 +226,8 @@
  {
   "modelo": "conteudo",
   "bloco": "Bloco B · Arquitetura",
-  "cartola": "Três paredes, em ordem",
-  "titulo": "O que separa o container do host",
+  "cartola": "Restrição de privilégio",
+  "titulo": "Capabilities, seccomp e LSM",
   "itens": [
    "<strong style=\"font-weight:900\">Capabilities.</strong> O root do POSIX fatiado em cerca de quarenta bits independentes, derrubados e devolvidos um a um.",
    "<strong style=\"font-weight:900\">Seccomp-bpf.</strong> O perfil padrão bloqueia cerca de 44 chamadas de sistema de mais de trezentas.",
@@ -241,8 +242,8 @@
   "modelo": "impacto",
   "bloco": "Bloco B · Arquitetura",
   "cartola": "OCI, fundada em 2015",
-  "titulo": "Docker é a implementação<br>de um padrão aberto,<br>não o padrão.",
-  "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É a substituibilidade por compatibilidade de interface da Aula 05, acontecendo dentro da própria pilha da ferramenta.",
+  "titulo": "Docker implementa as<br>especificações da OCI",
+  "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É um exemplo da substituibilidade por compatibilidade de interface da Aula 05.",
   "tam": 46,
   "n": 15
  },
@@ -252,14 +253,14 @@
   "num": "02",
   "cartola": "Bloco C",
   "titulo": "Aplicação no Invite People",
-  "sub": "Do diagrama para o arquivo, com o número de cada task do board na tela.",
+  "sub": "Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.",
   "n": 16
  },
  {
   "modelo": "duasColunas",
   "bloco": "Bloco C · Aplicação",
-  "cartola": "Vocabulário antes do mapeamento",
-  "titulo": "Cinco termos que não podem<br>ser trocados entre si",
+  "cartola": "Vocabulário",
+  "titulo": "Componente, artefato, nó,<br>imagem e container",
   "tituloA": "NA DISCIPLINA",
   "itensA": [
    "<strong style=\"font-weight:900\">Componente</strong> é a abstração de um serviço, coesa e de baixo acoplamento.",
@@ -278,7 +279,7 @@
  {
   "modelo": "diagrama",
   "bloco": "Bloco C · Aplicação",
-  "cartola": "Layer contra tier, Aula 03",
+  "cartola": "Camada lógica e tier, Aula 03",
   "titulo": "Layer é camada lógica.<br>Tier é separação física.",
   "svg": "<svg width=\"980\" height=\"256\" viewBox=\"0 0 980 256\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <text x=\"0\" y=\"16\" font-size=\"12\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.4\">AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE FRONT E BANCO RODAM.</text>\n    <g>\n      <rect x=\"0\" y=\"40\" width=\"286\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"16\" y=\"56\" width=\"254\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"143\" y=\"74\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"16\" y=\"88\" width=\"254\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"143\" y=\"106\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apresentação e API</text>\n      <text x=\"143\" y=\"126\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"143\" y=\"146\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"16\" y=\"164\" width=\"254\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"143\" y=\"182\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"143\" y=\"224\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">1 tier</text>\n      <text x=\"143\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">tudo num processo só</text>\n    </g>\n    <g transform=\"translate(347,0)\">\n      <rect x=\"0\" y=\"40\" width=\"120\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"14\" y=\"56\" width=\"92\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"60\" y=\"74\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"140\" y=\"40\" width=\"146\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"154\" y=\"88\" width=\"118\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"213\" y=\"106\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apresentação e API</text>\n      <text x=\"213\" y=\"126\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"213\" y=\"146\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"154\" y=\"164\" width=\"118\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"213\" y=\"182\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"143\" y=\"224\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">2 tiers</text>\n      <text x=\"143\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">front separado</text>\n    </g>\n    <g transform=\"translate(694,0)\">\n      <rect x=\"0\" y=\"40\" width=\"88\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"12\" y=\"56\" width=\"64\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"44\" y=\"74\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"100\" y=\"40\" width=\"98\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"110\" y=\"88\" width=\"78\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"149\" y=\"106\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apres. e API</text>\n      <text x=\"149\" y=\"126\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"149\" y=\"146\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"210\" y=\"40\" width=\"88\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"222\" y=\"56\" width=\"64\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"254\" y=\"74\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"149\" y=\"224\" font-size=\"15\" fill=\"#E94D1C\" font-weight=\"900\" text-anchor=\"middle\">3 tiers</text>\n      <text x=\"149\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">banco isolado</text>\n    </g>\n  </g>\n</svg>",
   "svgNome": "svgTiers",
@@ -289,7 +290,7 @@
  {
   "modelo": "diagrama",
   "bloco": "Bloco C · Aplicação",
-  "cartola": "A modelagem correta",
+  "cartola": "Modelagem UML",
   "titulo": "Container é ambiente de execução,<br>imagem é artefato",
   "svg": "<svg width=\"860\" height=\"280\" viewBox=\"0 0 860 280\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <rect x=\"20\" y=\"20\" width=\"400\" height=\"240\" rx=\"4\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"2\"/>\n    <text x=\"40\" y=\"48\" font-size=\"12\" fill=\"#21049A\" font-weight=\"900\" letter-spacing=\"1.4\">&#171;device&#187;</text>\n    <text x=\"40\" y=\"70\" font-size=\"19\" fill=\"#21049A\" font-weight=\"900\">Host de desenvolvimento</text>\n    <rect x=\"52\" y=\"94\" width=\"336\" height=\"146\" rx=\"4\" fill=\"none\" stroke=\"#E94D1C\" stroke-width=\"2\"/>\n    <text x=\"72\" y=\"122\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"900\" letter-spacing=\"1.4\">&#171;executionEnvironment&#187;</text>\n    <text x=\"72\" y=\"144\" font-size=\"17\" fill=\"#E94D1C\" font-weight=\"900\">Container</text>\n    <rect x=\"84\" y=\"164\" width=\"272\" height=\"58\" rx=\"3\" fill=\"#F0F0F5\" stroke=\"#6B6B78\"/>\n    <text x=\"104\" y=\"188\" font-size=\"11\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.2\">&#171;artifact&#187;</text>\n    <text x=\"104\" y=\"209\" font-size=\"15\" fill=\"#1A1A1E\" font-weight=\"400\">imagem (tag + digest)</text>\n    <text x=\"470\" y=\"60\" font-size=\"17\" fill=\"#21049A\" font-weight=\"900\">Ambiente de execução é</text>\n    <text x=\"470\" y=\"84\" font-size=\"17\" fill=\"#21049A\" font-weight=\"900\">uma especialização de nó.</text>\n    <text x=\"470\" y=\"124\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">Por isso nunca dizer que container não é nó.</text>\n    <text x=\"470\" y=\"148\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">O modelo fiel é o container aninhado no host,</text>\n    <text x=\"470\" y=\"172\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">com a imagem implantada dentro dele.</text>\n    <line x1=\"470\" y1=\"200\" x2=\"840\" y2=\"200\" stroke=\"#D9D9D9\"/>\n    <text x=\"470\" y=\"230\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">Máquina virtual, essa sim, é um nó novo,</text>\n    <text x=\"470\" y=\"254\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">com sistema operacional próprio.</text>\n  </g>\n</svg>",
   "svgNome": "svgUml",
@@ -300,7 +301,7 @@
   "modelo": "diagrama",
   "bloco": "Bloco C · Aplicação",
   "cartola": "Rascunhos dos itens #59 e #60",
-  "titulo": "O compose é a forma executável<br>do diagrama que temos que desenhar",
+  "titulo": "Mapeamento dos componentes<br>para os nós do diagrama",
   "svg": "<svg width=\"960\" height=\"270\" viewBox=\"0 0 960 270\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <text x=\"0\" y=\"16\" font-size=\"11\" fill=\"#21049A\" font-weight=\"900\" letter-spacing=\"1.4\">RASCUNHO #59, DIAGRAMA DE COMPONENTES</text>\n    <rect x=\"0\" y=\"34\" width=\"400\" height=\"196\" rx=\"5\" fill=\"none\" stroke=\"#D9D9D9\"/>\n    <rect x=\"28\" y=\"60\" width=\"150\" height=\"48\" rx=\"3\" fill=\"#21049A\"/><text x=\"103\" y=\"90\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Convite público</text>\n    <rect x=\"222\" y=\"60\" width=\"150\" height=\"48\" rx=\"3\" fill=\"#21049A\"/><text x=\"297\" y=\"90\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Painel</text>\n    <rect x=\"125\" y=\"130\" width=\"150\" height=\"44\" rx=\"3\" fill=\"#21049A\"/><text x=\"200\" y=\"157\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">API</text>\n    <rect x=\"125\" y=\"188\" width=\"150\" height=\"30\" rx=\"3\" fill=\"#6B6B78\"/><text x=\"200\" y=\"208\" font-size=\"12\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n    <path d=\"M103 108 L180 130\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/><path d=\"M297 108 L220 130\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/>\n    <path d=\"M200 174 L200 188\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/>\n    <path d=\"M420 130 L520 130\" stroke=\"#E94D1C\" stroke-width=\"2\" marker-end=\"url(#s2)\"/>\n    <text x=\"428\" y=\"120\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"900\">#72</text>\n    <defs><marker id=\"s2\" markerWidth=\"8\" markerHeight=\"8\" refX=\"7\" refY=\"3.5\" orient=\"auto\"><path d=\"M0,0 L7,3.5 L0,7 Z\" fill=\"#E94D1C\"/></marker></defs>\n    <text x=\"560\" y=\"16\" font-size=\"11\" fill=\"#E94D1C\" font-weight=\"900\" letter-spacing=\"1.4\">RASCUNHO #60, DIAGRAMA DE IMPLANTAÇÃO</text>\n    <rect x=\"560\" y=\"34\" width=\"400\" height=\"196\" rx=\"5\" fill=\"none\" stroke=\"#E94D1C\" stroke-width=\"2\"/>\n    <text x=\"580\" y=\"58\" font-size=\"11\" fill=\"#E94D1C\" font-weight=\"900\">&#171;device&#187; host</text>\n    <rect x=\"580\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"636\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"636\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n    <rect x=\"704\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"760\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"760\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">API</text>\n    <rect x=\"828\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"884\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"884\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n    <path d=\"M692 96 L704 96\" stroke=\"#E94D1C\" stroke-width=\"1.6\"/><path d=\"M816 96 L828 96\" stroke=\"#E94D1C\" stroke-width=\"1.6\"/>\n    <rect x=\"580\" y=\"146\" width=\"360\" height=\"34\" rx=\"3\" fill=\"#E94D1C\" fill-opacity=\"0.1\" stroke=\"#E94D1C\" stroke-dasharray=\"4 3\"/>\n    <text x=\"760\" y=\"168\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"400\" text-anchor=\"middle\">rede nomeada, resolução por nome de serviço  ·  #75</text>\n    <text x=\"580\" y=\"206\" font-size=\"12.5\" fill=\"#6B6B78\" font-weight=\"300\">#71 nós  ·  #73 imagem por tag e digest  ·  #74, #76 e #77 são passos de processo</text>\n  </g>\n</svg>",
   "svgNome": "svgDois",
   "topSvg": 214,
@@ -309,8 +310,8 @@
  {
   "modelo": "codigo",
   "bloco": "Bloco C · Aplicação",
-  "cartola": "Notação de componente sobre o arquivo",
-  "titulo": "Pirulito e soquete<br>estão no compose",
+  "cartola": "Interfaces no arquivo de compose",
+  "titulo": "Onde ficam a interface<br>provida e a requerida",
   "linhas": [
    "services:",
    "  api:",
@@ -348,7 +349,7 @@
    "Mais coesão: uma responsabilidade por imagem.",
    "O código do front não está na imagem da API, então a API não depende dele nem por acidente.",
    "Só o serviço de fronteira publica porta. O banco fica na rede interna sem mapeamento.",
-   "Regra na wiki depende de revisão. Regra virando topologia é sustentada pela estrutura, contra a degradação arquitetural da Aula 02."
+   "Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural da Aula 02."
   ],
   "tituloB": "NÃO GARANTE",
   "itensB": [
@@ -361,7 +362,7 @@
  {
   "modelo": "conteudo",
   "bloco": "Bloco C · Aplicação",
-  "cartola": "A pergunta que volta para o projeto",
+  "cartola": "Consequência para o projeto",
   "titulo": "Duas views sobre o mesmo Model,<br>dois perfis de carga",
   "itens": [
    "A jornada da Marina descreve o link caindo no grupo da família. Pico no convite público (UC005), uma pessoa no painel (UC007).",
@@ -386,7 +387,7 @@
   "modelo": "terminal",
   "bloco": "Bloco D · Demonstração",
   "cartola": "Demonstração, 90 segundos",
-  "titulo": "Persistência é decisão declarada",
+  "titulo": "Volume nomeado e persistência<br>entre execuções",
   "linhas": [
    "$ docker compose up -d",
    "$ docker compose ps",
@@ -409,8 +410,8 @@
   "modelo": "impacto",
   "bloco": "Bloco D · Estudo de caso",
   "cartola": "Kubernetes 1.24, 2022",
-  "titulo": "Removeram o dockershim<br>e nenhuma imagem parou<br>de funcionar.",
-  "sub": "O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É substituição por compatibilidade de interface acontecendo em escala real, no vocabulário que a Aula 05 usa para componentes.",
+  "titulo": "A remoção do dockershim<br>no Kubernetes 1.24",
+  "sub": "O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface, no vocabulário da Aula 05.",
   "tam": 48,
   "n": 26
  },
@@ -418,7 +419,7 @@
   "modelo": "duasColunas",
   "bloco": "Bloco D · Vantagens",
   "cartola": "Vantagens",
-  "titulo": "No vocabulário da disciplina",
+  "titulo": "Vantagens no vocabulário<br>da Aula 03",
   "tituloA": "O QUE ELE CREDITA A CAMADAS",
   "itensA": [
    "<strong style=\"font-weight:900\">Modularidade.</strong>",
@@ -439,7 +440,7 @@
   "modelo": "conteudo",
   "bloco": "Bloco D · Limitações",
   "cartola": "Limitações",
-  "titulo": "O que conteinerizar custa",
+  "titulo": "Limitações e custos",
   "itens": [
    "O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.",
    "O Docker escreve a regra de DNAT antes das regras do administrador, então um deny de firewall na porta publicada não bloqueia nada.",
@@ -456,8 +457,8 @@
  {
   "modelo": "duasColunas",
   "bloco": "Bloco D · Segurança",
-  "cartola": "Pela superfície de ataque",
-  "titulo": "Container é fronteira de isolamento.<br>Não é fronteira de segurança<br>da mesma classe que uma VM.",
+  "cartola": "Container e máquina virtual",
+  "titulo": "Comparação pela<br>superfície de ataque",
   "tituloA": "MÁQUINA VIRTUAL",
   "itensA": [
    "Kernel próprio.",
@@ -477,8 +478,8 @@
  {
   "modelo": "tabela",
   "bloco": "Bloco D · Alternativas",
-  "cartola": "O que mais estava na mesa",
-  "titulo": "Avaliação crítica exige alternativa",
+  "cartola": "Alternativas consideradas",
+  "titulo": "Comparação com as outras opções",
   "cols": "1.1fr 1.4fr 1.4fr",
   "cabecalhos": [
    "OPÇÃO",
@@ -513,7 +514,7 @@
   "modelo": "duasColunas",
   "bloco": "Bloco D · Honestidade",
   "cartola": "Quando não compensa",
-  "titulo": "Dois destes critérios<br>descrevem o nosso caso",
+  "titulo": "Critérios de contraindicação<br>e a nossa situação",
   "tituloA": "QUANDO NÃO COMPENSA",
   "itensA": [
    "Monolito num servidor que nunca escala.",
@@ -523,8 +524,8 @@
   ],
   "tituloB": "ONDE NÓS ESTAMOS",
   "itensB": [
-   "Não temos integração contínua definida. Não temos hospedagem decidida. Estamos na zona cinzenta.",
-   "O que sustenta a adoção é um motivo só, e ele basta: ambiente igual para quatro pessoas com stacks diferentes, com banco rodando sem instalação local, antes de escrever a primeira linha.",
+   "Não temos integração contínua definida nem hospedagem decidida, então dois dos critérios ao lado se aplicam a nós.",
+   "O motivo que resta é o ambiente igual para quatro integrantes com stacks diferentes, com o banco rodando sem instalação local, antes de escrever a primeira linha.",
    "Compose é de host único. O MVP cabe num host. Kubernetes entraria com múltiplos nós, e é tema de outro grupo."
   ],
   "corB": "#E94D1C",
@@ -555,11 +556,11 @@
   "modelo": "conteudo",
   "bloco": "Bloco D · Considerações finais",
   "cartola": "Recomendação para o ADR #63",
-  "titulo": "Três frases",
+  "titulo": "Recomendação do grupo",
   "itens": [
    "Adotamos conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, registrada como troca.",
    "O #60 deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.",
-   "Conteinerizar barateia errar: a stack ainda não está decidida, e com Dockerfile a escolha de runtime e de banco vira uma linha de arquivo em vez de instalação em quatro notebooks."
+   "A stack ainda não está decidida. Com Dockerfile, trocar runtime ou banco é editar uma linha de arquivo em vez de reinstalar em quatro notebooks."
   ],
   "nota": "Insumo direto da Sprint 3, que começa no dia 15 e tem como objetivo declarado definir as tecnologias e os mecanismos da implementação.",
   "notaTitulo": "PRÓXIMO PASSO",
@@ -569,8 +570,8 @@
  {
   "modelo": "duasColunas",
   "bloco": "Fecho",
-  "cartola": "Abrimos e fechamos no mesmo lugar",
-  "titulo": "Do sintoma ao arquivo",
+  "cartola": "Retomando a evidência inicial",
+  "titulo": "Do problema de ambiente<br>ao arquivo de compose",
   "tituloA": "NO COMEÇO DO PROJETO",
   "itensA": [
    "Uma linha de .gitattributes forçando LF nos scripts, porque o Git Bash quebra no Windows.",

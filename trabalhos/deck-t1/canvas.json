@@ -2,7 +2,7 @@
   "artboards": [
     {
       "file": "Main.dc.html",
-      "title": "01. Do diagrama à execução",
+      "title": "01. Docker e conteinerização",
       "x": 0,
       "y": 0,
       "w": 1280,
@@ -22,7 +22,7 @@
     },
     {
       "file": "S03.dc.html",
-      "title": "03. E descreve, sem citar, um serviço de",
+      "title": "03. Como a definição se aplica a um serviço de",
       "x": 2760,
       "y": 0,
       "w": 1280,
@@ -32,7 +32,7 @@
     },
     {
       "file": "S04.dc.html",
-      "title": "04. Está registrado no board antes desta",
+      "title": "04. O tema saiu de um item da Sprint 2",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -52,7 +52,7 @@
     },
     {
       "file": "S06.dc.html",
-      "title": "06. A implementação começa na Sprint 4. A",
+      "title": "06. Escopo e divisão da apresentação",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -72,7 +72,7 @@
     },
     {
       "file": "S08.dc.html",
-      "title": "08. O mecanismo é antigo",
+      "title": "08. Do chroot à padronização OCI",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -92,7 +92,7 @@
     },
     {
       "file": "S10.dc.html",
-      "title": "10. O que existe é um processo comum com a visão",
+      "title": "10. Um container é um processo com a visão",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -112,7 +112,7 @@
     },
     {
       "file": "S12.dc.html",
-      "title": "12. Camadas empilhadas, uma só de escrita",
+      "title": "12. Camadas somente leitura e a camada de escrita",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -122,7 +122,7 @@
     },
     {
       "file": "S13.dc.html",
-      "title": "13. Do comando ao processo",
+      "title": "13. CLI, dockerd, containerd, shim e runc",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -132,7 +132,7 @@
     },
     {
       "file": "S14.dc.html",
-      "title": "14. O que separa o container do host",
+      "title": "14. Capabilities, seccomp e LSM",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -142,7 +142,7 @@
     },
     {
       "file": "S15.dc.html",
-      "title": "15. Docker é a implementação de um padrão aberto,",
+      "title": "15. Docker implementa as especificações da OCI",
       "x": 0,
       "y": 1760,
       "w": 1280,
@@ -162,7 +162,7 @@
     },
     {
       "file": "S17.dc.html",
-      "title": "17. Cinco termos que não podem ser trocados entre",
+      "title": "17. Componente, artefato, nó, imagem e container",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -192,7 +192,7 @@
     },
     {
       "file": "S20.dc.html",
-      "title": "20. O compose é a forma executável do diagrama",
+      "title": "20. Mapeamento dos componentes para os nós do",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -202,7 +202,7 @@
     },
     {
       "file": "S21.dc.html",
-      "title": "21. Pirulito e soquete estão no compose",
+      "title": "21. Onde ficam a interface provida e a requerida",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -242,7 +242,7 @@
     },
     {
       "file": "S25.dc.html",
-      "title": "25. Persistência é decisão declarada",
+      "title": "25. Volume nomeado e persistência entre execuções",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -252,7 +252,7 @@
     },
     {
       "file": "S26.dc.html",
-      "title": "26. Removeram o dockershim e nenhuma imagem parou",
+      "title": "26. A remoção do dockershim no Kubernetes 1.24",
       "x": 2760,
       "y": 0,
       "w": 1280,
@@ -262,7 +262,7 @@
     },
     {
       "file": "S27.dc.html",
-      "title": "27. No vocabulário da disciplina",
+      "title": "27. Vantagens no vocabulário da Aula 03",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -272,7 +272,7 @@
     },
     {
       "file": "S28.dc.html",
-      "title": "28. O que conteinerizar custa",
+      "title": "28. Limitações e custos",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -282,7 +282,7 @@
     },
     {
       "file": "S29.dc.html",
-      "title": "29. Container é fronteira de isolamento. Não é",
+      "title": "29. Comparação pela superfície de ataque",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -292,7 +292,7 @@
     },
     {
       "file": "S30.dc.html",
-      "title": "30. Avaliação crítica exige alternativa",
+      "title": "30. Comparação com as outras opções",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -302,7 +302,7 @@
     },
     {
       "file": "S31.dc.html",
-      "title": "31. Dois destes critérios descrevem o nosso caso",
+      "title": "31. Critérios de contraindicação e a nossa",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -322,7 +322,7 @@
     },
     {
       "file": "S33.dc.html",
-      "title": "33. Três frases",
+      "title": "33. Recomendação do grupo",
       "x": 1380,
       "y": 1760,
       "w": 1280,
@@ -332,7 +332,7 @@
     },
     {
       "file": "S34.dc.html",
-      "title": "34. Do sintoma ao arquivo",
+      "title": "34. Do problema de ambiente ao arquivo de compose",
       "x": 0,
       "y": 0,
       "w": 1280,
