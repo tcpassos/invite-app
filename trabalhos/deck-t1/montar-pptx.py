@@ -97,7 +97,7 @@ def retangulo(sl, x, y, w, h, *, preencher=None, borda=None, largura=1, raio=Non
     s.text_frame.margin_top = s.text_frame.margin_bottom = 0
     return s
 
-def linha(sl, x1, y1, x2, y2, cor=CINZA_CLARO, largura=1):
+def linha(sl, x1, y1, x2, y2, cor=AZUL, largura=2):
     from pptx.enum.shapes import MSO_CONNECTOR
     c = sl.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, px(x1), px(y1), px(x2), px(y2))
     c.line.color.rgb = cor; c.line.width = Pt(largura)
@@ -139,17 +139,17 @@ def _forma(sl, tipo, x, y, w, h, *, preencher=None, borda=None, largura=2):
 def simbolo_bloco(sl, qual, x, y, cor=LARANJA):
     """Marca grande do bloco, desenhada com formas, em vez de ícone genérico."""
     if qual == 'camadas':          # empilhamento
+        tons = [RGBColor(0x8A, 0x3A, 0x24), RGBColor(0xC0, 0x44, 0x20), cor]
         for i in range(3):
-            _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x + i * 9, y + 62 - i * 26, 104, 20,
-                   preencher=None if i < 2 else cor, borda=cor, largura=2.5)
+            _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + 76 - i * 32, 176, 26, preencher=tons[i])
     elif qual == 'mapeamento':     # componente vira nó
-        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + 26, 46, 46, borda=cor, largura=2.5)
-        _forma(sl, MSO_SHAPE.RIGHT_ARROW, x + 56, y + 40, 34, 18, preencher=cor)
-        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x + 100, y + 26, 46, 46, preencher=cor)
+        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + 34, 62, 62, preencher=RGBColor(0x8A, 0x3A, 0x24))
+        _forma(sl, MSO_SHAPE.RIGHT_ARROW, x + 74, y + 52, 44, 26, preencher=cor)
+        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x + 130, y + 34, 62, 62, preencher=cor)
     elif qual == 'balanca':        # ganho contra custo
-        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + 14, 40, 72, preencher=cor)
-        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x + 54, y + 46, 40, 40, borda=cor, largura=2.5)
-        _forma(sl, MSO_SHAPE.RECTANGLE, x - 8, y + 92, 110, 3, preencher=cor)
+        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + 16, 74, 80, preencher=cor)
+        _forma(sl, MSO_SHAPE.ROUNDED_RECTANGLE, x + 92, y + 52, 74, 44, preencher=RGBColor(0x8A, 0x3A, 0x24))
+        _forma(sl, MSO_SHAPE.RECTANGLE, x, y + 104, 166, 4, preencher=cor)
 
 ICONES = {
     'ATENÇÃO': 'alerta', 'CUIDADO': 'alerta', 'REGRA': 'alerta',
@@ -201,6 +201,24 @@ def itens(sl, lista, x, y, w, *, tam=19, gap=13, cor=GRAFITE):
         cursor += alt + gap
     return cursor
 
+def altura_lista(lista, tam, largura, gap):
+    total = sum(altura_estimada(i, tam, largura - 30) + gap for i in lista)
+    return max(0, total - gap)
+
+def ajustar(lista, largura, alvo, tam=20, gap=26, minimo=15, maximo=None):
+    """Ajusta o corpo a altura disponivel, encolhendo ou crescendo dentro da faixa."""
+    while tam > minimo and altura_lista(lista, tam, largura, gap) > alvo:
+        tam -= 1
+        gap = max(14, gap - 2)
+    while maximo and tam < maximo and altura_lista(lista, tam + 1, largura, gap + 2) <= alvo:
+        tam += 1
+        gap += 2
+    return tam, gap, altura_lista(lista, tam, largura, gap)
+
+def centrar(alt, topo=196, base=600):
+    """Devolve o y que centraliza um bloco de altura alt na area util."""
+    return topo if alt >= base - topo else topo + (base - topo - alt) / 2
+
 def altura_estimada(html, tam, largura):
     texto = re.sub(r'<[^>]+>', '', html or '')
     por_linha = max(1, int(largura / (tam * 0.50)))
@@ -209,10 +227,11 @@ def altura_estimada(html, tam, largura):
 
 def nota_lateral(sl, x, y, w, titulo, texto):
     icone_nota(sl, x, y, titulo)
-    rotulo(sl, x + 24, y + 1, w - 24, titulo, tam=11, cor=LARANJA, peso=900, maiusc=True, espacar=1.2)
-    retangulo(sl, x, y + 26, 3, 66, preencher=LARANJA)
-    tb, tf = caixa(sl, x + 17, y + 30, w - 17, 240)
-    escrever(tf, texto, tam=15, cor=CINZA, peso=300, entre=1.35, espaco=8)
+    rotulo(sl, x + 26, y + 1, w - 26, titulo, tam=12, cor=LARANJA, peso=900, maiusc=True, espacar=1.2)
+    alt = max(40, altura_estimada(texto, 16, w - 22) + texto.count('<br>') * 12)
+    retangulo(sl, x, y + 30, 4, alt, preencher=LARANJA)
+    tb, tf = caixa(sl, x + 22, y + 30, w - 22, alt + 60)
+    escrever(tf, texto, tam=16, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.4, espaco=8)
 
 # ---------- diagramas nativos ----------
 
@@ -220,19 +239,23 @@ def dg_camadas(sl, x, y):
     dados = [(216, '#F0F0F5', 'camada base (debian, alpine)', GRAFITE, False),
              (164, '#F0F0F5', 'dependências', GRAFITE, False),
              (112, '#F0F0F5', 'código da aplicação', GRAFITE, False)]
-    rotulo(sl, x, y, 460, 'SOMENTE LEITURA, ENDEREÇADAS POR DIGEST', tam=11, cor=CINZA, peso=900, espacar=1.6)
+    rotulo(sl, x, y - 4, 460, 'CAMADAS DE UMA IMAGEM E DO CONTAINER', tam=11, cor=CINZA, peso=900, espacar=1.6)
     for topo, _, txt, cor, _ in dados:
         retangulo(sl, x, y + topo - 40, 360, 46, preencher=QUASE, borda=CINZA_CLARO, raio=4)
         rotulo(sl, x + 20, y + topo - 40 + 14, 320, txt, tam=14, cor=cor, peso=300)
+    retangulo(sl, x + 372, y + 72, 3, 150, preencher=CINZA_CLARO)
+    tb, tf = caixa(sl, x - 12, y + 236, 384, 40)
+    escrever(tf, 'as três de baixo são somente leitura, endereçadas por digest', tam=13, cor=CINZA, peso=300, entre=1.4)
+    tf.paragraphs[0].alignment = PP_ALIGN.CENTER
     retangulo(sl, x, y + 14, 360, 52, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=4, tracejado=True)
     rotulo(sl, x + 20, y + 24, 320, 'camada de escrita', tam=14, cor=LARANJA, peso=900)
     rotulo(sl, x + 20, y + 43, 320, 'criada pelo container, morre com ele', tam=12, cor=CINZA, peso=300)
-    linha(sl, x + 400, y + 20, x + 400, y + 218, CINZA_CLARO)
+    linha(sl, x + 420, y + 8, x + 420, y + 234, CINZA_CLARO, 1)
     for dy, tit, corpo in [(56, 'copy-up', 'alterar um byte de um arquivo grande copia o arquivo inteiro para cima'),
                            (144, 'whiteout', 'apagar cria uma marcação, o arquivo continua na camada de baixo')]:
-        rotulo(sl, x + 440, y + dy, 380, tit, tam=15, cor=AZUL, peso=900)
-        tb, tf = caixa(sl, x + 440, y + dy + 26, 390, 70)
-        escrever(tf, corpo, tam=13.5, cor=GRAFITE, peso=300, entre=1.4)
+        rotulo(sl, x + 462, y + dy, 380, tit, tam=16, cor=AZUL, peso=900)
+        tb, tf = caixa(sl, x + 462, y + dy + 28, 400, 70)
+        escrever(tf, corpo, tam=15, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.4)
 
 def dg_pilha(sl, x, y):
     caixas = [('docker CLI', 'cliente', AZUL), ('dockerd', 'daemon, roda como root', AZUL),
@@ -245,15 +268,14 @@ def dg_pilha(sl, x, y):
         rotulo(sl, cx, y + 58, larg, nome, tam=15, cor=BRANCO, peso=900, alinhar=PP_ALIGN.CENTER)
         rotulo(sl, cx + 6, y + 80, larg - 12, sub, tam=11.5, cor=BRANCO, peso=300, alinhar=PP_ALIGN.CENTER)
         if i:
-            linha(sl, cx - gap, y + 79, cx, y + 79, CINZA, 1.5)
-    rotulo(sl, x + 2 * (larg + gap) - 40, y + 22, 90, 'gRPC', tam=11.5, cor=CINZA)
-    tb, tf = caixa(sl, x, y + 136, 1040, 90)
-    escrever(tf, 'O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar o daemon deixar de matar os containers em execução.', tam=13.5, cor=GRAFITE, peso=300, entre=1.45)
-    tb2, tf2 = caixa(sl, x, y + 182, 1040, 60)
-    escrever(tf2, 'O runc cria os namespaces, configura cgroups, aplica capabilities e seccomp, faz pivot_root, dá execve e sai.', tam=13.5, cor=GRAFITE, peso=300, entre=1.45)
+            linha(sl, cx - gap, y + 79, cx, y + 79, AZUL, 2)
+    rotulo(sl, x + 2 * (larg + gap) - 40, y + 20, 90, 'gRPC', tam=13, cor=AZUL, peso=900)
+    itens(sl, ['O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar o daemon deixar de matar os containers em execução.',
+               'O runc cria os namespaces, configura cgroups, aplica capabilities e seccomp, faz pivot_root, dá execve e sai.'],
+          x, y + 152, 1040, tam=17, gap=20)
 
 def dg_uml(sl, x, y):
-    retangulo(sl, x, y, 400, 240, borda=AZUL, largura=2)
+    retangulo(sl, x, y, 400, 240, borda=AZUL, largura=2.5)
     rotulo(sl, x + 20, y + 16, 360, '«device»', tam=12, cor=AZUL, peso=900, espacar=1.4)
     rotulo(sl, x + 20, y + 36, 360, 'Host de desenvolvimento', tam=19, cor=AZUL, peso=900)
     retangulo(sl, x + 32, y + 74, 336, 146, borda=LARANJA, largura=2)
@@ -273,15 +295,15 @@ def dg_uml(sl, x, y):
 def dg_tiers(sl, x, y):
     rotulo(sl, x, y, 1050, 'AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE FRONT E BANCO RODAM.',
            tam=12, cor=CINZA, peso=900, espacar=1.4)
-    def camadas(cx, cy, larg, tam):
-        retangulo(sl, cx, cy, larg, 70, preencher=BRANCO, borda=AZUL, raio=3)
+    def camadas(cx, cy, larg):
+        retangulo(sl, cx, cy, larg, 82, preencher=BRANCO, borda=AZUL, raio=3)
         for k, nome in enumerate(['Apresentação e API', 'Domínio', 'Dados']):
-            rotulo(sl, cx + 4, cy + 12 + k * 20, larg - 8, nome, tam=tam, cor=AZUL, peso=400, alinhar=PP_ALIGN.CENTER)
+            rotulo(sl, cx + 3, cy + 12 + k * 24, larg - 6, nome, tam=12, cor=AZUL, peso=400, alinhar=PP_ALIGN.CENTER)
     # 1 tier
     retangulo(sl, x, y + 26, 286, 158, preencher=RGBColor(0xEE, 0xEB, 0xF7), borda=AZUL, raio=5, tracejado=True)
-    retangulo(sl, x + 16, y + 42, 254, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
-    rotulo(sl, x + 16, y + 48, 254, 'front', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
-    camadas(x + 16, y + 74, 254, 12)
+    retangulo(sl, x + 16, y + 34, 254, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
+    rotulo(sl, x + 16, y + 40, 254, 'front', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
+    camadas(x + 16, y + 64, 254)
     retangulo(sl, x + 16, y + 150, 254, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
     rotulo(sl, x + 16, y + 156, 254, 'banco', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
     rotulo(sl, x, y + 196, 286, '1 tier', tam=15, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
@@ -289,26 +311,26 @@ def dg_tiers(sl, x, y):
     # 2 tiers
     b = x + 347
     retangulo(sl, b, y + 26, 120, 158, preencher=RGBColor(0xEE, 0xEB, 0xF7), borda=AZUL, raio=5, tracejado=True)
-    retangulo(sl, b + 14, y + 42, 92, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
-    rotulo(sl, b + 14, y + 48, 92, 'front', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
+    retangulo(sl, b + 14, y + 96, 92, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
+    rotulo(sl, b + 14, y + 102, 92, 'front', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
     retangulo(sl, b + 140, y + 26, 146, 158, preencher=RGBColor(0xEE, 0xEB, 0xF7), borda=AZUL, raio=5, tracejado=True)
-    camadas(b + 154, y + 74, 118, 11.5)
-    retangulo(sl, b + 154, y + 150, 118, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
-    rotulo(sl, b + 154, y + 156, 118, 'banco', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
+    camadas(b + 147, y + 49, 132)
+    retangulo(sl, b + 154, y + 137, 118, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
+    rotulo(sl, b + 154, y + 143, 118, 'banco', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
     rotulo(sl, b, y + 196, 286, '2 tiers', tam=15, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
     rotulo(sl, b, y + 218, 286, 'front separado', tam=13, cor=CINZA, peso=300, alinhar=PP_ALIGN.CENTER)
     # 3 tiers
     c = x + 694
-    retangulo(sl, c, y + 26, 88, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
-    retangulo(sl, c + 12, y + 42, 64, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
-    rotulo(sl, c + 12, y + 48, 64, 'front', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
-    retangulo(sl, c + 100, y + 26, 98, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
-    camadas(c + 110, y + 74, 78, 11)
-    retangulo(sl, c + 210, y + 26, 88, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
-    retangulo(sl, c + 222, y + 42, 64, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
-    rotulo(sl, c + 222, y + 48, 64, 'banco', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, c, y + 196, 298, '3 tiers', tam=15, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, c, y + 218, 298, 'banco isolado', tam=13, cor=CINZA, peso=300, alinhar=PP_ALIGN.CENTER)
+    retangulo(sl, c - 24, y + 26, 88, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
+    retangulo(sl, c - 12, y + 96, 64, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
+    rotulo(sl, c - 12, y + 102, 64, 'front', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
+    retangulo(sl, c + 88, y + 26, 170, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
+    camadas(c + 100, y + 64, 146)
+    retangulo(sl, c + 282, y + 26, 88, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
+    retangulo(sl, c + 294, y + 96, 64, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
+    rotulo(sl, c + 294, y + 102, 64, 'banco', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, c - 24, y + 196, 394, '3 tiers', tam=15, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, c - 24, y + 218, 394, 'banco isolado', tam=13, cor=CINZA, peso=300, alinhar=PP_ALIGN.CENTER)
 
 def dg_dois(sl, x, y):
     rotulo(sl, x, y, 400, 'RASCUNHO #59, DIAGRAMA DE COMPONENTES', tam=11, cor=AZUL, peso=900, espacar=1.4)
@@ -320,11 +342,11 @@ def dg_dois(sl, x, y):
     rotulo(sl, x + 125, y + 128, 150, 'API', tam=13, cor=BRANCO, peso=400, alinhar=PP_ALIGN.CENTER)
     retangulo(sl, x + 125, y + 172, 150, 30, preencher=CINZA, raio=3)
     rotulo(sl, x + 125, y + 179, 150, 'Dados', tam=12, cor=BRANCO, peso=400, alinhar=PP_ALIGN.CENTER)
-    linha(sl, x + 103, y + 92, x + 180, y + 114, CINZA, 1.4)
-    linha(sl, x + 297, y + 92, x + 220, y + 114, CINZA, 1.4)
-    linha(sl, x + 200, y + 158, x + 200, y + 172, CINZA, 1.4)
-    linha(sl, x + 420, y + 114, x + 520, y + 114, LARANJA, 2)
-    rotulo(sl, x + 428, y + 92, 60, '#72', tam=12, cor=LARANJA, peso=900)
+    linha(sl, x + 103, y + 92, x + 180, y + 114, AZUL, 2)
+    linha(sl, x + 297, y + 92, x + 220, y + 114, AZUL, 2)
+    linha(sl, x + 200, y + 158, x + 200, y + 172, AZUL, 2)
+    linha(sl, x + 400, y + 116, x + 560, y + 116, LARANJA, 3)
+    rotulo(sl, x + 430, y + 90, 100, '#72', tam=13, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER)
     rotulo(sl, x + 560, y, 420, 'RASCUNHO #60, DIAGRAMA DE IMPLANTAÇÃO', tam=11, cor=LARANJA, peso=900, espacar=1.4)
     retangulo(sl, x + 560, y + 18, 400, 196, borda=LARANJA, largura=2)
     rotulo(sl, x + 580, y + 30, 200, '«device» host', tam=11, cor=LARANJA, peso=900)
@@ -346,16 +368,15 @@ DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml,
 
 def m_capa(sl, s):
     fundo(sl, AZUL)
-    retangulo(sl, 880, 40, 420, 420, preencher=RGBColor(0x33, 0x14, 0xA8), raio=210)
     logo_completo(sl, 72, 58, 214)
     rotulo(sl, 72, 200, 700, s['cartola'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 72, 224, 780, 200)
     escrever(tf, s['titulo'], tam=70, cor=BRANCO, peso=900, entre=1.02)
     retangulo(sl, 72, 404, 64, 5, preencher=LARANJA, raio=2)
-    tb2, tf2 = caixa(sl, 72, 432, 660, 90)
+    tb2, tf2 = caixa(sl, 72, 432, 800, 90)
     escrever(tf2, s['sub'], tam=21, cor=RGBColor(0xD6, 0xCF, 0xF0), peso=300, entre=1.45)
     for i, (rot, val) in enumerate([('EQUIPE', s['equipe']), ('DISCIPLINA', s['disciplina']), ('DATA', s['data'])]):
-        cx = 72 + i * 300
+        cx = 72 + i * 380
         rotulo(sl, cx, 566, 280, rot, tam=10, cor=RGBColor(0x9C, 0x90, 0xD4), espacar=1.4)
         tb3, tf3 = caixa(sl, cx, 586, 280, 70)
         escrever(tf3, val, tam=13, cor=RGBColor(0xE0, 0xDB, 0xF2), peso=400, entre=1.4)
@@ -366,13 +387,14 @@ def m_secao(sl, s):
     fundo(sl, AZUL)
     retangulo(sl, 0, 0, 10, 720, preencher=LARANJA)
     logo(sl, claro=True)
-    simbolo_bloco(sl, SIMBOLOS.get(s['num'], 'camadas'), 940, 290)
-    rotulo(sl, 92, 128, 400, s['num'], tam=130, cor=RGBColor(0x4B, 0x36, 0xB4), peso=900)
-    rotulo(sl, 96, 300, 700, s['cartola'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
+    simbolo_bloco(sl, SIMBOLOS.get(s['num'], 'camadas'), 940, 286)
+    rotulo(sl, 92, 128, 400, s['num'], tam=130, cor=RGBColor(0x6E, 0x59, 0xD2), peso=900)
+    retangulo(sl, 96, 304, 4, 18, preencher=LARANJA)
+    rotulo(sl, 112, 300, 700, s['cartola'], tam=15, cor=BRANCO, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 96, 326, 860, 150)
     escrever(tf, s['titulo'], tam=54, cor=BRANCO, peso=900, entre=1.05)
     tb2, tf2 = caixa(sl, 96, 470, 720, 110)
-    escrever(tf2, s['sub'], tam=19, cor=RGBColor(0xC4, 0xBB, 0xEA), peso=300, entre=1.45)
+    escrever(tf2, s['sub'], tam=19, cor=RGBColor(0xE2, 0xDE, 0xF5), peso=300, entre=1.45)
     rodape(sl, s['n'], s['bloco'], True)
 
 def m_citacao(sl, s):
@@ -388,12 +410,13 @@ def m_citacao(sl, s):
 def m_impacto(sl, s):
     fundo(sl, AZUL)
     logo(sl, claro=True)
-    rotulo(sl, 96, 168, 900, s['cartola'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
+    retangulo(sl, 96, 172, 4, 18, preencher=LARANJA)
+    rotulo(sl, 112, 168, 900, s['cartola'], tam=15, cor=BRANCO, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 96, 196, 1020, 200)
     escrever(tf, s['titulo'], tam=s.get('tam', 52), cor=BRANCO, peso=900, entre=1.06)
     if s.get('sub'):
         tb2, tf2 = caixa(sl, 96, 430, 900, 160)
-        escrever(tf2, s['sub'], tam=19, cor=RGBColor(0xC9, 0xC1, 0xEC), peso=300, entre=1.5)
+        escrever(tf2, s['sub'], tam=19, cor=RGBColor(0xE2, 0xDE, 0xF5), peso=300, entre=1.5)
     rodape(sl, s['n'], s['bloco'], True)
 
 def cabeca(sl, s):
@@ -404,68 +427,93 @@ def cabeca(sl, s):
 
 def m_conteudo(sl, s):
     cabeca(sl, s)
-    largura = 1208 - (s.get('right', 320)) - 72
-    itens(sl, s['itens'], 72, s.get('top', 210), largura + 30)
+    largura = 1208 - (s.get('right', 320)) - 72 + 30
+    tam, gap, alt = ajustar(s['itens'], largura, 424, maximo=22)
+    y0 = centrar(alt, 206, 636)
+    itens(sl, s['itens'], 72, y0, largura, tam=tam, gap=gap)
     if s.get('nota'):
-        nota_lateral(sl, 1208 - s.get('notaW', 250), 210, s.get('notaW', 250), s.get('notaTitulo', 'ATENÇÃO'), s['nota'])
+        nota_lateral(sl, 958, y0, 250, s.get('notaTitulo', 'ATENÇÃO'), s['nota'])
     rodape(sl, s['n'], s['bloco'])
 
 def m_duas(sl, s):
     cabeca(sl, s)
     corA = LARANJA if s.get('corA') == '#E94D1C' else AZUL
     corB = AZUL if s.get('corB') == '#21049A' else LARANJA
+    tamA, gapA, altA = ajustar(s['itensA'], 540, 372, tam=18, gap=22, minimo=14, maximo=21)
+    tamB, gapB, altB = ajustar(s['itensB'], 540, 372, tam=18, gap=22, minimo=14, maximo=21)
+    tam, gap = min(tamA, tamB), min(gapA, gapB)
+    alt = max(altura_lista(s['itensA'], tam, 540, gap), altura_lista(s['itensB'], tam, 540, gap))
+    y0 = centrar(alt + 52, 210, 636)
     for i, (tit, lst, cor) in enumerate([(s['tituloA'], s['itensA'], corA), (s['tituloB'], s['itensB'], corB)]):
         cx = 72 + i * 596
-        rotulo(sl, cx, 214, 540, tit, tam=12, cor=cor, peso=900, maiusc=True, espacar=1.2)
-        retangulo(sl, cx, 236, 44, 3, preencher=cor)
-        itens(sl, lst, cx, 256, 540, tam=17, gap=11)
+        rotulo(sl, cx, y0, 540, tit, tam=12, cor=cor, peso=900, maiusc=True, espacar=1.2)
+        retangulo(sl, cx, y0 + 22, 44, 3, preencher=cor)
+        itens(sl, lst, cx, y0 + 52, 540, tam=tam, gap=gap)
     rodape(sl, s['n'], s['bloco'])
 
 def m_terminal(sl, s):
     cabeca(sl, s)
     alt = 46 + len(s['linhas']) * 25 + 24
-    retangulo(sl, 72, 206, 1136, alt, preencher=ESCURO, raio=8)
-    retangulo(sl, 100, 228, 34, 3, preencher=LARANJA, raio=2)
-    rotulo(sl, 144, 222, 200, 'TERMINAL', tam=11, cor=RGBColor(0x8A, 0x8A, 0x9A), espacar=1.4)
+    legenda = altura_estimada(s['captura'], 15, 1116)
+    y0 = min(centrar(alt + 24 + legenda, 206, 640), 640 - alt - 24 - legenda)
+    retangulo(sl, 72, y0, 1136, alt, preencher=ESCURO, raio=8)
+    retangulo(sl, 100, y0 + 22, 34, 3, preencher=LARANJA, raio=2)
+    rotulo(sl, 144, y0 + 16, 200, 'TERMINAL', tam=11, cor=RGBColor(0x8A, 0x8A, 0x9A), espacar=1.4)
     for i, l in enumerate(s['linhas']):
         cor = RGBColor(0x7F, 0xE3, 0xA1) if l.startswith('$') else (RGBColor(0x8A, 0x8A, 0x9A) if l.startswith('#') else RGBColor(0xE4, 0xE4, 0xEC))
-        rotulo(sl, 100, 258 + i * 25, 1080, l if l.strip() else ' ', tam=15, cor=cor, fonte=MONO)
-    tb, tf = caixa(sl, 72, 206 + alt + 22, 1136, 70)
-    escrever(tf, s['captura'], tam=12.5, cor=CINZA, peso=300, entre=1.5)
+        rotulo(sl, 100, y0 + 52 + i * 25, 1080, l if l.strip() else ' ', tam=15, cor=cor, fonte=MONO)
+    retangulo(sl, 72, y0 + alt + 24, 3, legenda, preencher=LARANJA)
+    tb, tf = caixa(sl, 92, y0 + alt + 22, 1116, 70)
+    escrever(tf, s['captura'], tam=15, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.5)
     rodape(sl, s['n'], s['bloco'])
 
 def m_codigo(sl, s):
     cabeca(sl, s)
     larg = s.get('larguraCod', 640)
     alt = 44 + len(s['linhas']) * 26
-    retangulo(sl, 72, 206, larg, alt, preencher=QUASE, borda=CINZA_CLARO, raio=8)
+    col = 1208 - (72 + larg + 48)
+    y0 = centrar(max(alt, altura_lista(s['itens'], 17, col, 16)), 210, 620)
+    retangulo(sl, 72, y0, larg, alt, preencher=QUASE, borda=CINZA_CLARO, raio=8)
     for i, l in enumerate(s['linhas']):
         cor = CINZA if l.strip().startswith('#') else GRAFITE
-        rotulo(sl, 98, 228 + i * 26, larg - 40, l if l.strip() else ' ', tam=14, cor=cor, fonte=MONO)
-    itens(sl, s['itens'], 72 + larg + 48, 206, 1208 - (72 + larg + 48), tam=17, gap=12)
+        rotulo(sl, 98, y0 + 22 + i * 26, larg - 40, l if l.strip() else ' ', tam=14, cor=cor, fonte=MONO)
+    itens(sl, s['itens'], 72 + larg + 48, y0, col, tam=17, gap=16)
     rodape(sl, s['n'], s['bloco'])
 
 def m_diagrama(sl, s):
     cabeca(sl, s)
-    DIAGRAMAS[s['svgNome']](sl, 90, s.get('topSvg', 200))
+    antes = {f.shape_id for f in sl.shapes}
+    DIAGRAMAS[s['svgNome']](sl, 90, 0)
+    novas = [f for f in sl.shapes if f.shape_id not in antes]
+    fundo_util = 566 if s.get('legenda') else 640
+    desloca = int(round(centrar(max(f.top + f.height for f in novas) / 9525, 210, fundo_util)))
+    for f in novas:
+        f.top = f.top + Emu(desloca * 9525)
     if s.get('legenda'):
-        tb, tf = caixa(sl, 72, 596, 1136, 60)
-        escrever(tf, s['legenda'], tam=16, cor=CINZA, peso=300, entre=1.5)
+        alt = altura_estimada(s['legenda'], 17, 1116)
+        retangulo(sl, 72, 592, 3, alt, preencher=LARANJA)
+        tb, tf = caixa(sl, 92, 590, 1116, 60)
+        escrever(tf, s['legenda'], tam=17, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.5)
     rodape(sl, s['n'], s['bloco'])
 
 def m_tabela(sl, s):
     cabeca(sl, s)
     xs = [72, 320, 700]
     ws = [230, 360, 500]
+    corpo = sum(max(altura_estimada(c, 16, ws[i] - 18) for i, c in enumerate(lin)) + 26 for lin in s['linhas'])
+    topo = centrar(corpo + 40, 210, 620)
     for i, c in enumerate(s['cabecalhos']):
-        rotulo(sl, xs[i], 210, ws[i], c, tam=11, cor=AZUL, peso=900, maiusc=True, espacar=1.2)
-    retangulo(sl, 72, 234, 1136, 2, preencher=AZUL)
-    y = 250
-    for lin in s['linhas']:
+        rotulo(sl, xs[i], topo, ws[i], c, tam=11, cor=AZUL, peso=900, maiusc=True, espacar=1.2)
+    retangulo(sl, 72, topo + 24, 1136, 2, preencher=AZUL)
+    y = topo + 40
+    for j, lin in enumerate(s['linhas']):
+        escolhida = j == s.get('destacar', -1)
+        if escolhida:
+            retangulo(sl, 60, y - 6, 3, 34, preencher=LARANJA)
         alto = 0
         for i, c in enumerate(lin):
             tb, tf = caixa(sl, xs[i], y, ws[i] - 18, 80)
-            escrever(tf, c, tam=17 if i == 0 else 16, cor=AZUL if i == 0 else GRAFITE, peso=400 if i == 0 else 300, entre=1.35)
+            escrever(tf, c, tam=18 if i == 0 else 17, cor=(LARANJA if escolhida else AZUL) if i == 0 else GRAFITE, peso=900 if i == 0 else 300, entre=1.35)
             alto = max(alto, altura_estimada(c, 16, ws[i] - 18))
         y += alto + 26
         retangulo(sl, 72, y - 13, 1136, 1, preencher=RGBColor(0xED, 0xED, 0xF2))
@@ -473,34 +521,36 @@ def m_tabela(sl, s):
 
 def m_agenda(sl, s):
     cabeca(sl, s)
-    y = 216
+    y = 212
     for k, it in enumerate(s['itens']):
-        rotulo(sl, 72, y + 4, 60, f'{k+1:02d}', tam=15, cor=LARANJA, peso=900)
-        rotulo(sl, 132, y, 760, it['t'], tam=21, cor=GRAFITE, peso=400)
+        rotulo(sl, 72, y + 5, 60, f'{k+1:02d}', tam=15, cor=LARANJA, peso=900)
+        rotulo(sl, 128, y, 700, it['t'], tam=21, cor=GRAFITE, peso=400)
         if it['d']:
-            rotulo(sl, 950, y + 3, 258, it['d'], tam=14, cor=CINZA, peso=300, alinhar=PP_ALIGN.RIGHT)
-        y += 38
+            rotulo(sl, 856, y + 4, 200, it['d'], tam=16, cor=AZUL, peso=400)
+        y += 36
         retangulo(sl, 72, y, 1136, 1, preencher=RGBColor(0xED, 0xED, 0xF2))
-        y += 18
-    tb, tf = caixa(sl, 72, 596, 1136, 60)
-    escrever(tf, s['nota'], tam=15, cor=CINZA, peso=300, entre=1.5)
+        y += 16
+    retangulo(sl, 72, 528, 3, 30, preencher=LARANJA)
+    tb, tf = caixa(sl, 92, 528, 1010, 90)
+    escrever(tf, s['nota'], tam=17, cor=GRAFITE, peso=300, entre=1.45)
     rodape(sl, s['n'], s['bloco'])
 
 def m_linha_tempo(sl, s):
     cabeca(sl, s)
     marcos = s['marcos']
     largura = 1136 / len(marcos)
-    retangulo(sl, 72, 284, 1136, 3, preencher=CINZA_CLARO)
+    retangulo(sl, 72, 318, 1136, 3, preencher=CINZA_CLARO)
     for i, m in enumerate(marcos):
         cx = 72 + i * largura
         cor = LARANJA if i >= len(marcos) - 3 else AZUL
-        retangulo(sl, cx + largura / 2 - 7, 278, 14, 14, preencher=cor, raio=7)
-        rotulo(sl, cx, 306, largura, m['ano'], tam=19, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
-        tb, tf = caixa(sl, cx + 6, 332, largura - 12, 90, alinhar=PP_ALIGN.CENTER)
-        escrever(tf, m['txt'], tam=13, cor=CINZA, peso=300, entre=1.35)
+        retangulo(sl, cx + largura / 2 - 8, 311, 16, 16, preencher=cor, raio=8)
+        rotulo(sl, cx, 340, largura, m['ano'], tam=20, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
+        tb, tf = caixa(sl, cx + 6, 368, largura - 12, 90, alinhar=PP_ALIGN.CENTER)
+        escrever(tf, m['txt'], tam=14.5, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.35)
         tf.paragraphs[0].alignment = PP_ALIGN.CENTER
-    retangulo(sl, 72, 486, 3, 70, preencher=LARANJA)
-    tb2, tf2 = caixa(sl, 92, 486, 1100, 80)
+    alt = altura_estimada(s['remate'], 19, 1100)
+    retangulo(sl, 72, 486, 3, alt, preencher=LARANJA)
+    tb2, tf2 = caixa(sl, 92, 484, 1100, 80)
     escrever(tf2, s['remate'], tam=19, cor=GRAFITE, peso=300, entre=1.45)
     rodape(sl, s['n'], s['bloco'])
 

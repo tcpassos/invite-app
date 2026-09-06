@@ -30,7 +30,7 @@
   "modelo": "agenda",
   "bloco": "Bloco A · Introdução",
   "cartola": "Agenda",
-  "titulo": "Escopo e divisão<br>da apresentação",
+  "titulo": "Quem apresenta cada parte",
   "itens": [
    {
     "t": "Introdução",
@@ -53,7 +53,7 @@
     "d": "Andreas"
    }
   ],
-  "nota": "A implementação do produto começa na Sprint 4, em 06/10, então a demonstração de hoje é do ambiente e não do produto. Cada integrante responde pelo próprio bloco na arguição.",
+  "nota": "A implementação do produto começa na Sprint 4, em 06/10. A demonstração do final é do ambiente, não do produto.",
   "tam": 30,
   "n": 3
  },
@@ -61,7 +61,7 @@
   "modelo": "secao",
   "bloco": "Bloco B",
   "num": "01",
-  "cartola": "Bloco B",
+  "cartola": "Tiago · 6 minutos",
   "titulo": "Definições e arquitetura",
   "sub": "O que o kernel faz quando alguém digita docker run, e por que a imagem é em camadas.",
   "n": 4
@@ -98,7 +98,7 @@
    },
    {
     "ano": "2022",
-    "txt": "Kubernetes remove o Docker Engine"
+    "txt": "Kubernetes remove o dockershim"
    }
   ],
   "remate": "O isolamento de processos existe desde 1979. O que é recente é a padronização da cadeia de execução, a partir de 2015.",
@@ -137,7 +137,7 @@
    "4026532194 pid         3  4821 root",
    "4026532196 net         3  4821 root"
   ],
-  "captura": "Capturado em [máquina] em [data]. Na distro docker-desktop do WSL. No Docker Desktop em Windows o daemon e os containers rodam numa distro própria, com namespace de PID separado, então ps na distro de trabalho não mostraria container nenhum.",
+  "captura": "Saída da distro docker-desktop do WSL. No Docker Desktop em Windows o daemon e os containers rodam numa distro própria, com namespace de PID separado, então ps na distro de trabalho não mostraria container nenhum.",
   "n": 7
  },
  {
@@ -209,7 +209,7 @@
   "modelo": "secao",
   "bloco": "Bloco C",
   "num": "02",
-  "cartola": "Bloco C",
+  "cartola": "Gabriel · 6 minutos",
   "titulo": "Aplicação no Invite People",
   "sub": "Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.",
   "n": 13
@@ -258,15 +258,9 @@
    "      - \"3000:3000\"        # interface provida",
    "    environment:",
    "      DATABASE_URL: ...    # interface requerida",
-   "    depends_on:",
-   "      db:",
-   "        condition: service_healthy",
+   "    depends_on: [db]",
    "  db:",
-   "    image: postgres:16",
-   "    healthcheck:",
-   "      test: [\"CMD-SHELL\", \"pg_isready -U app\"]",
-   "    volumes:",
-   "      - dados:/var/lib/postgresql/data"
+   "    image: postgres:16"
   ],
   "larguraCod": 620,
   "itens": [
@@ -316,7 +310,7 @@
   "modelo": "secao",
   "bloco": "Bloco D",
   "num": "03",
-  "cartola": "Bloco D",
+  "cartola": "Andreas, com Tiago na segurança · 7 minutos",
   "titulo": "Vantagens, desvantagens e demonstração",
   "sub": "A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.",
   "n": 20
@@ -340,7 +334,7 @@
    "$ docker compose down -v",
    "# agora o dado some junto com o volume"
   ],
-  "captura": "Capturado em [máquina] em [data]. A imagem de fundo do UC003 e o CSV do UC008 não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.",
+  "captura": "A imagem de fundo do UC003 e o CSV do UC008 não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.",
   "rodapeAlto": 76,
   "n": 21
  },
@@ -419,6 +413,7 @@
   "cartola": "Alternativas consideradas",
   "titulo": "Comparação com as outras opções",
   "cols": "1.1fr 1.4fr 1.4fr",
+  "destacar": 3,
   "cabecalhos": [
    "OPÇÃO",
    "A FAVOR",
@@ -473,7 +468,7 @@
  {
   "modelo": "duasColunas",
   "bloco": "Bloco D · Considerações finais",
-  "cartola": "Considerações finais",
+  "cartola": "O balanço do time",
   "titulo": "Ganho e custo, nos quatro atributos<br>das Questões Norteadoras",
   "tituloA": "GANHA",
   "itensA": [
@@ -507,7 +502,7 @@
  },
  {
   "modelo": "duasColunas",
-  "bloco": "Fecho",
+  "bloco": "Bloco D · Fecho",
   "cartola": "Retomando a evidência inicial",
   "titulo": "Do problema de ambiente<br>ao arquivo de compose",
   "tituloA": "NO COMEÇO DO PROJETO",
@@ -524,7 +519,7 @@
  },
  {
   "modelo": "conteudo",
-  "bloco": "Fecho",
+  "bloco": "Bloco D · Fecho",
   "cartola": "O que não estamos afirmando",
   "titulo": "Pendências, com número de item",
   "itens": [
@@ -541,7 +536,7 @@
  },
  {
   "modelo": "conteudo",
-  "bloco": "Fecho",
+  "bloco": "Bloco D · Fecho",
   "cartola": "Para consultar depois",
   "titulo": "Referências",
   "itens": [
@@ -550,7 +545,8 @@
    "FELTER, W. et al. An updated performance comparison of virtual machines and Linux containers. IBM Research Report, 2015.",
    "MERKEL, D. Docker: lightweight Linux containers for consistent development and deployment. Linux Journal, 2014.",
    "NIST SP 800-190. Application Container Security Guide.",
-   "SOMMERVILLE, I. Engenharia de Software. 6. ed. Addison Wesley, 2004. · FOWLER, M. Patterns of Enterprise Application Architecture.",
+   "SOMMERVILLE, I. Engenharia de Software. 6. ed. Addison Wesley, 2004.",
+   "FOWLER, M. Patterns of Enterprise Application Architecture. Addison Wesley, 2002.",
    "FARIAS, K. Aula 03, Arquiteturas em Camadas. Aula 05, Arquiteturas Baseadas em Componentes."
   ],
   "right": 120,

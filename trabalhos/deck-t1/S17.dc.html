@@ -36,15 +36,9 @@
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      - "3000:3000"        # interface provida</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    environment:</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      DATABASE_URL: ...    # interface requerida</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    depends_on:</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      db:</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">        condition: service_healthy</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    depends_on: [db]</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  db:</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: postgres:16</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    healthcheck:</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      test: ["CMD-SHELL", "pg_isready -U app"]</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    volumes:</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      - dados:/var/lib/postgresql/data</div>
   </div>
   <div style="position:absolute; right:72px; top:206px; width:468px; display:flex; flex-direction:column; gap:17px">
       <div class="item">
