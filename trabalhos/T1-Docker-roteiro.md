@@ -28,7 +28,7 @@ implantado nele. Ambiente de execução é uma especialização de nó, então n
 
 | Bloco | Tema | Min | Slides | Dono |
 |---|---|---|---|---|
-| A | Contexto, o que a disciplina define e por que Docker entrou na Sprint 2 | 4 | 5 | Guilherme |
+| A | Contexto, o que a disciplina define e por que Docker entrou na Sprint 2 | 4 | 4 | Guilherme |
 | B | Definições, arquitetura do Docker e o que o kernel faz | 6 | 7 | Tiago |
 | C | Aplicação no Invite People, do diagrama para o arquivo | 6 | 7 | Gabriel |
 | D | Vantagens, desvantagens, demonstração e considerações finais | 7 | 8 | Andreas, com Tiago na segurança |
@@ -46,31 +46,27 @@ Objetivo: enunciar a ideia central no vocabulário do professor antes de qualque
 documento datado que o tema nasceu de uma necessidade do projeto, e fechar o contrato de escopo no
 minuto dois, para que a ausência de código não pareça desculpa no final.
 
-1. Projetar só a frase da Aula 05, sem logo e sem a palavra Docker em lugar nenhum: unidade de
-   composição com interfaces especificadas e dependências de contexto explícitas, que pode ser
-   implantada de forma independente. Perguntar à turma que conceito da disciplina aquilo define e
-   esperar uns quinze segundos. A resposta é componente, e quem ensinou foi o professor.
-2. Repetir a frase com três setas apontando para um serviço de um arquivo de compose. Interface
-   especificada é a porta publicada mais o contrato HTTP. Dependência de contexto explícita é o
-   Dockerfile mais as variáveis de ambiente. Implantável de forma independente é subir aquele
-   serviço sozinho.
-   A fala aqui: esta apresentação é sobre a coisa mais próxima do ideal de componente que a
-   indústria entregou, e sobre o que ela muda no diagrama de implantação que temos que entregar até
-   o dia 14.
+1. A definição de componente da Aula 05 à esquerda, literal, com a fonte, e o mapeamento para um
+   serviço de container à direita. Ler a definição em voz alta e ir apontando cada parte grifada:
+   interface especificada é a porta publicada mais o contrato HTTP, dependência de contexto
+   explícita é o Dockerfile mais as variáveis de ambiente, implantável de forma independente é
+   subir aquele serviço sozinho.
+   A fala que fecha o slide: a definição que a disciplina usa para componente descreve, sem citar,
+   o que um serviço de container é, e é daí que sai o resto da apresentação.
    Guardar um contra-argumento para a arguição, sem oferecer antes: o container expõe uma porta e um
    protocolo, ele não verifica contrato de interface como uma linguagem verifica. A analogia é forte
    no empacotamento e fraca na verificação.
-3. Recorte do #78 com a data de criação visível e a frase de que o tema foi escolhido para alimentar
+2. Recorte do #78 com a data de criação visível e a frase de que o tema foi escolhido para alimentar
    o #60, ao lado do recorte do próprio #60. A fala: não escolhemos uma tecnologia da moda para
    depois procurar onde encaixar, isso está registrado no board antes desta apresentação. Mostrar só
    os dois recortes, nunca o quadro inteiro.
-4. O projeto em quarenta segundos. Invite People, convites virtuais com RSVP e consolidação de
+3. O projeto em quarenta segundos. Invite People, convites virtuais com RSVP e consolidação de
    restrições alimentares. Duas superfícies sobre o mesmo Model, o convite público sem login e o
    painel do anfitrião. Arquitetura já registrada no Guia da Arquitetura. Ler em voz alta a Questão
    Norteadora da Sprint 2, sobre como os componentes serão distribuídos e implantados no ambiente de
    execução. Fechar o slide com a situação de hoje: três camadas lógicas decididas e nenhuma
    separação física decidida.
-5. Contrato e agenda, ditos no minuto dois. A implementação começa na Sprint 4, em 06/10, então não
+4. Contrato e agenda, ditos no minuto dois. A implementação começa na Sprint 4, em 06/10, então não
    existe aplicação para conteinerizar e a demonstração do final é do ambiente. Em seguida a agenda
    com o dono de cada bloco, avisando que cada um responde pelo próprio bloco na arguição.
 
@@ -86,11 +82,11 @@ Objetivo: entregar o critério de 30% definindo container por mecanismo em vez d
 terminar posicionando Docker como implementação de um padrão aberto, que é a ponte para a
 substituibilidade da Aula 05.
 
-1. Linha do tempo. chroot em 1979, cgroups e namespaces entrando no kernel a partir de 2007, LXC em
-   2008, Docker em 2013, OCI em 2015, containerd na CNCF em 2017, Kubernetes removendo o Docker
-   Engine em 2022. A fala que fecha o slide responde de antemão por que isso conta como tecnologia
-   emergente em 2026: o mecanismo é antigo, o que é recente é a padronização e a estabilização da
-   cadeia.
+1. Linha do tempo. chroot em 1979, o primeiro namespace no kernel em 2002, cgroups no mainline em
+   2008, Docker em 2013, OCI em 2015, containerd na CNCF em 2017, e a remoção do dockershim no
+   Kubernetes em 2022. A fala que fecha o slide responde de antemão por que isso conta como
+   tecnologia emergente em 2026: o isolamento de processos existe desde 1979, o que é recente é a
+   padronização da cadeia de execução, a partir de 2015.
 2. Duas definições com fonte, em quinze segundos. Container é um ou mais processos executados com
    visão isolada por namespaces, consumo limitado por cgroups e privilégio reduzido por capabilities
    e seccomp, sobre um sistema de arquivos raiz próprio. Ao lado, a definição de imagem da Image
