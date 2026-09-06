@@ -25,56 +25,29 @@
 </helmet>
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C">Linha do tempo</div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Do chroot à padronização OCI</h2>
+    <div class="cartola" style="color:#E94D1C">O que o kernel enxerga</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Um container é um processo<br>com a visão restringida por namespaces</h2>
   </div>
-  <div style="position:absolute; left:72px; right:72px; top:280px">
-    <div style="height:3px; background:#D9D9D9; position:relative">
-      <div style="position:absolute; left:0; top:0; height:3px; width:100%; background:linear-gradient(90deg, #D9D9D9 0%, #E94D1C 100%)"></div>
+  <div style="position:absolute; left:72px; top:206px; right:72px; background:#12121A; border-radius:8px; padding:24px 28px; font-family:'Roboto Mono', ui-monospace, Menlo, Consolas, monospace">
+    <div style="display:flex; gap:9px; margin-bottom:18px; align-items:center">
+      <span style="width:34px;height:3px;border-radius:2px;background:#E94D1C"></span>
+      <span style="font-size:11px; letter-spacing:.14em; color:#6B6B78; font-weight:400">TERMINAL</span>
     </div>
-    <div style="display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:8px; margin-top:-8px">
-      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
-        <span style="width:13px; height:13px; border-radius:50%; background:#21049A"></span>
-        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">1979</span>
-        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">chroot</span>
-      </div>
-      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
-        <span style="width:13px; height:13px; border-radius:50%; background:#21049A"></span>
-        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2002</span>
-        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">primeiro namespace no kernel</span>
-      </div>
-      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
-        <span style="width:13px; height:13px; border-radius:50%; background:#21049A"></span>
-        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2008</span>
-        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">cgroups no mainline</span>
-      </div>
-      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
-        <span style="width:13px; height:13px; border-radius:50%; background:#21049A"></span>
-        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2013</span>
-        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">Docker</span>
-      </div>
-      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
-        <span style="width:13px; height:13px; border-radius:50%; background:#E94D1C"></span>
-        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2015</span>
-        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">OCI</span>
-      </div>
-      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
-        <span style="width:13px; height:13px; border-radius:50%; background:#E94D1C"></span>
-        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2017</span>
-        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">containerd na CNCF</span>
-      </div>
-      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
-        <span style="width:13px; height:13px; border-radius:50%; background:#E94D1C"></span>
-        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2022</span>
-        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">Kubernetes remove o Docker Engine</span>
-      </div>
-    </div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker run -d --name web nginx</div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ ps -eo pid,comm | grep nginx</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">   4821 nginx</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ lsns -p 4821</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">        NS TYPE   NPROCS   PID USER</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">4026532191 mnt         3  4821 root</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">4026532192 uts         3  4821 root</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">4026532193 ipc         3  4821 root</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">4026532194 pid         3  4821 root</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">4026532196 net         3  4821 root</div>
   </div>
-  <div style="position:absolute; left:72px; right:72px; bottom:96px; border-left:3px solid #E94D1C; padding-left:20px">
-    <p class="corpo" style="font-size:19px; color:#1A1A1E">O isolamento de processos existe desde 1979. O que é recente é a padronização da cadeia de execução, a partir de 2015.</p>
-  </div>
+  <div style="position:absolute; left:72px; bottom:82px; right:72px; font-size:12px; color:#6B6B78; font-weight:400">Capturado em [máquina] em [data]. Na distro docker-desktop do WSL. No Docker Desktop em Windows o daemon e os containers rodam numa distro própria, com namespace de PID separado, então ps na distro de trabalho não mostraria container nenhum.</div>
   <div class="rodape" style="color: #6B6B78">
-    <span>Bloco B · Definições</span><span style="font-weight:900; color: #21049A">07</span>
+    <span>Bloco B · Arquitetura</span><span style="font-weight:900; color: #21049A">07</span>
   </div>
 </div>
 </x-dc>

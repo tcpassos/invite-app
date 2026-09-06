@@ -25,38 +25,29 @@
 </helmet>
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C">Alternativas consideradas</div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Comparação com as outras opções</h2>
+    <div class="cartola" style="color:#E94D1C">Recomendação para o ADR #63</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Recomendação do grupo</h2>
   </div>
-  <div style="position:absolute; left:72px; right:72px; top:206px">
-    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; border-bottom:2px solid #21049A; padding-bottom:12px">
-      <div class="cartola" style="color:#21049A; font-size:11px">OPÇÃO</div>
-      <div class="cartola" style="color:#21049A; font-size:11px">A FAVOR</div>
-      <div class="cartola" style="color:#21049A; font-size:11px">CONTRA</div>
-    </div>
-    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; padding:15px 0; border-bottom:1px solid #EDEDF2">
-      <div class="corpo" style="font-size:17px; color:#21049A; font-weight:400; padding-right:18px">README nativo</div>
-      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Custo zero para começar</div>
-      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Quebra na primeira divergência de versão</div>
-    </div>
-    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; padding:15px 0; border-bottom:1px solid #EDEDF2">
-      <div class="corpo" style="font-size:17px; color:#21049A; font-weight:400; padding-right:18px">VM compartilhada</div>
-      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Isola de verdade</div>
-      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Pesada e difícil de versionar</div>
-    </div>
-    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; padding:15px 0; border-bottom:1px solid #EDEDF2">
-      <div class="corpo" style="font-size:17px; color:#21049A; font-weight:400; padding-right:18px">Podman</div>
-      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Mesmo modelo, sem daemon root</div>
-      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Menos material e menos gente do time conhece</div>
-    </div>
-    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; padding:15px 0; border-bottom:1px solid #EDEDF2">
-      <div class="corpo" style="font-size:17px; color:#21049A; font-weight:400; padding-right:18px">Compose</div>
-      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Escolhido, com o custo declarado</div>
-      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Move complexidade em vez de apagá-la</div>
-    </div>
+  <div style="position:absolute; left:72px; top:210px; right:330px; display:flex; flex-direction:column; gap:19px">
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Adotamos conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, registrada como troca.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O #60 deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A stack ainda não está decidida. Com Dockerfile, trocar runtime ou banco é editar uma linha de arquivo em vez de reinstalar em quatro notebooks.</p>
+      </div>
+  </div>
+  <div style="position:absolute; right:72px; top:210px; width:250px; border-left:3px solid #E94D1C; padding-left:20px">
+    <div class="cartola" style="color:#E94D1C; font-size:11px">PRÓXIMO PASSO</div>
+    <p class="corpo" style="font-size:15px; color:#6B6B78; margin-top:11px">Insumo direto da Sprint 3, que começa no dia 15 e tem como objetivo declarado definir as tecnologias e os mecanismos da implementação.</p>
   </div>
   <div class="rodape" style="color: #6B6B78">
-    <span>Bloco D · Alternativas</span><span style="font-weight:900; color: #21049A">29</span>
+    <span>Bloco D · Considerações finais</span><span style="font-weight:900; color: #21049A">29</span>
   </div>
 </div>
 </x-dc>

@@ -25,30 +25,37 @@
 </helmet>
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C">Demonstração, 90 segundos</div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Volume nomeado e persistência<br>entre execuções</h2>
+    <div class="cartola" style="color:#E94D1C">Limitações</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Limitações e custos</h2>
   </div>
-  <div style="position:absolute; left:72px; top:206px; right:72px; background:#12121A; border-radius:8px; padding:24px 28px; font-family:'Roboto Mono', ui-monospace, Menlo, Consolas, monospace">
-    <div style="display:flex; gap:9px; margin-bottom:18px; align-items:center">
-      <span style="width:34px;height:3px;border-radius:2px;background:#E94D1C"></span>
-      <span style="font-size:11px; letter-spacing:.14em; color:#6B6B78; font-weight:400">TERMINAL</span>
-    </div>
-    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose up -d</div>
-    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose ps</div>
-    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">NAME   IMAGE          STATUS</div>
-    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">web    nginx:alpine   Up</div>
-    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">db     postgres:16    Up (healthy)</div>
-    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
-    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose run --rm client psql -h db -c "create table t(); "</div>
-    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down && docker compose up -d</div>
-    <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># a tabela continua lá, o volume sobreviveu</div>
-    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
-    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down -v</div>
-    <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># agora o dado some junto com o volume</div>
+  <div style="position:absolute; left:72px; top:202px; right:320px; display:flex; flex-direction:column; gap:19px">
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O Docker escreve a regra de DNAT antes das regras do administrador, então um deny de firewall na porta publicada não bloqueia nada.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">I/O de bind mount atravessando a fronteira da máquina virtual no WSL2.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Estado, que traz junto backup e upgrade de versão maior do banco.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Licenciamento do Docker Desktop.</p>
+      </div>
   </div>
-  <div style="position:absolute; left:72px; bottom:76px; right:72px; font-size:12px; color:#6B6B78; font-weight:400">Capturado em [máquina] em [data]. A imagem de fundo do UC003 e o CSV do UC008 não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.</div>
+  <div style="position:absolute; right:72px; top:210px; width:250px; border-left:3px solid #E94D1C; padding-left:20px">
+    <div class="cartola" style="color:#E94D1C; font-size:11px">REGRA</div>
+    <p class="corpo" style="font-size:15px; color:#6B6B78; margin-top:11px">Nenhum número entra neste slide sem medição feita pelo time, com o modelo da máquina e a data.</p>
+  </div>
   <div class="rodape" style="color: #6B6B78">
-    <span>Bloco D · Demonstração</span><span style="font-weight:900; color: #21049A">24</span>
+    <span>Bloco D · Limitações</span><span style="font-weight:900; color: #21049A">24</span>
   </div>
 </div>
 </x-dc>

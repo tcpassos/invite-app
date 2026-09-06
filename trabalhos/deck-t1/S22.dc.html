@@ -13,7 +13,7 @@
     body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
     a { color: #E94D1C; text-decoration: none; }
     a:hover { color: #21049A; }
-    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #21049A; }
     .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
     .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
     .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
@@ -23,31 +23,14 @@
     .cc { font-weight: 900; color: #E94D1C; flex: none; }
   </style>
 </helmet>
-<div class="sl" style="background:#fff">
-  <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C">Consequência para o projeto</div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Duas views sobre o mesmo Model,<br>dois perfis de carga</h2>
+<div class="sl" style="background:#21049A; display:flex; align-items:center; padding:0 96px">
+  <div>
+    <div class="cartola" style="color:#E94D1C">Kubernetes 1.24, 2022</div>
+    <h2 class="titulo" style="color:#fff; font-size:48px; margin-top:20px; max-width:1000px">A remoção do dockershim<br>no Kubernetes 1.24</h2>
+    <p class="corpo" style="color:rgba(255,255,255,.75); font-size:20px; margin-top:26px; max-width:840px">O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface, no vocabulário da Aula 05.</p>
   </div>
-  <div style="position:absolute; left:72px; top:210px; right:340px; display:flex; flex-direction:column; gap:19px">
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A jornada da Marina descreve o link caindo no grupo da família. Pico no convite público (UC005), uma pessoa no painel (UC007).</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Replicar só o serviço público faz sentido. Replicar o painel não.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.</p>
-      </div>
-  </div>
-  <div style="position:absolute; right:72px; top:210px; width:250px; border-left:3px solid #E94D1C; padding-left:20px">
-    <div class="cartola" style="color:#E94D1C; font-size:11px">EM ABERTO</div>
-    <p class="corpo" style="font-size:15px; color:#6B6B78; margin-top:11px">Mesma imagem de front ou imagens separadas?<br><br>Entrada direta para o #59 e o #60. Ainda não decidida.</p>
-  </div>
-  <div class="rodape" style="color: #6B6B78">
-    <span>Bloco C · Aplicação</span><span style="font-weight:900; color: #21049A">22</span>
+  <div class="rodape" style="color: rgba(255,255,255,.55)">
+    <span>Bloco D · Estudo de caso</span><span style="font-weight:900; color: #fff">22</span>
   </div>
 </div>
 </x-dc>

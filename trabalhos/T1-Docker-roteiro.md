@@ -28,45 +28,30 @@ implantado nele. Ambiente de execução é uma especialização de nó, então n
 
 | Bloco | Tema | Min | Slides | Dono |
 |---|---|---|---|---|
-| A | Contexto, o que a disciplina define e por que Docker entrou na Sprint 2 | 4 | 4 | Guilherme |
+| A | Contexto do projeto e escopo da apresentação | 3 | 3 | Guilherme |
 | B | Definições, arquitetura do Docker e o que o kernel faz | 6 | 7 | Tiago |
-| C | Aplicação no Invite People, do diagrama para o arquivo | 6 | 7 | Gabriel |
+| C | Aplicação no Invite People, do diagrama para o arquivo | 6 | 6 | Gabriel |
 | D | Vantagens, desvantagens, demonstração e considerações finais | 7 | 8 | Andreas, com Tiago na segurança |
 
-Mais um minuto para as três trocas de apresentador. Total 24, dentro da faixa de 20 a 25.
+Mais um minuto para as três trocas de apresentador. Total 23, dentro da faixa de 20 a 25.
 
 Os nomes da agenda seguem o formato das aulas dele: Introdução, Definições, Arquitetura, Aplicação
 no projeto, Vantagens e Desvantagens, Considerações Finais, Referências.
 
 ---
 
-## Bloco A, contexto (4 min, Guilherme)
+## Bloco A, contexto (3 min, Guilherme)
 
-Objetivo: enunciar a ideia central no vocabulário do professor antes de qualquer jargão, provar com
-documento datado que o tema nasceu de uma necessidade do projeto, e fechar o contrato de escopo no
-minuto dois, para que a ausência de código não pareça desculpa no final.
+Objetivo: situar o projeto em quarenta segundos e fechar o contrato de escopo logo no começo, para
+que a ausência de código não pareça desculpa no final.
 
-1. A definição de componente da Aula 05 à esquerda, literal, com a fonte, e o mapeamento para um
-   serviço de container à direita. Ler a definição em voz alta e ir apontando cada parte grifada:
-   interface especificada é a porta publicada mais o contrato HTTP, dependência de contexto
-   explícita é o Dockerfile mais as variáveis de ambiente, implantável de forma independente é
-   subir aquele serviço sozinho.
-   A fala que fecha o slide: a definição que a disciplina usa para componente descreve, sem citar,
-   o que um serviço de container é, e é daí que sai o resto da apresentação.
-   Guardar um contra-argumento para a arguição, sem oferecer antes: o container expõe uma porta e um
-   protocolo, ele não verifica contrato de interface como uma linguagem verifica. A analogia é forte
-   no empacotamento e fraca na verificação.
-2. Recorte do #78 com a data de criação visível e a frase de que o tema foi escolhido para alimentar
-   o #60, ao lado do recorte do próprio #60. A fala: não escolhemos uma tecnologia da moda para
-   depois procurar onde encaixar, isso está registrado no board antes desta apresentação. Mostrar só
-   os dois recortes, nunca o quadro inteiro.
-3. O projeto em quarenta segundos. Invite People, convites virtuais com RSVP e consolidação de
+1. O projeto em quarenta segundos. Invite People, convites virtuais com RSVP e consolidação de
    restrições alimentares. Duas superfícies sobre o mesmo Model, o convite público sem login e o
    painel do anfitrião. Arquitetura já registrada no Guia da Arquitetura. Ler em voz alta a Questão
    Norteadora da Sprint 2, sobre como os componentes serão distribuídos e implantados no ambiente de
    execução. Fechar o slide com a situação de hoje: três camadas lógicas decididas e nenhuma
    separação física decidida.
-4. Contrato e agenda, ditos no minuto dois. A implementação começa na Sprint 4, em 06/10, então não
+2. Contrato e agenda, ditos no minuto dois. A implementação começa na Sprint 4, em 06/10, então não
    existe aplicação para conteinerizar e a demonstração do final é do ambiente. Em seguida a agenda
    com o dono de cada bloco, avisando que cada um responde pelo próprio bloco na arguição.
 
@@ -148,25 +133,18 @@ terminal está rodando agora.
 Objetivo: mostrar que o container realiza os diagramas de componentes e de implantação da Sprint 2,
 usando só o vocabulário das aulas e apontando o número de cada task do board.
 
-1. Vocabulário, antes de qualquer mapeamento. Componente é a abstração de um serviço, coesa e de
-   baixo acoplamento, como na Aula 05. Artefato é o do passo 4 do roteiro do #59, arquivos de
-   código, bibliotecas e executáveis, e a imagem é isso mais o runtime e as bibliotecas de sistema.
-   Container é esse artefato em execução. Nó é o host.
-   Duas armadilhas para avisar no mesmo slide. Docker usa *layer* para empilhamento de sistema de
-   arquivos, sem nenhuma relação com a camada lógica da Aula 03. E *artefato* aparece na disciplina
-   em dois sentidos, executável no diagrama de componentes e entregável no Scrum.
-   Uma frase evita uma pergunta inteira: Docker é mecanismo de empacotamento e execução, não padrão
-   arquitetural nem estilo.
-2. Layer contra tier, a distinção da Aula 03. Layer é camada lógica, tier é separação física.
+1. Layer contra tier, a distinção da Aula 03. Layer é camada lógica, tier é separação física. Avisar
+   no mesmo slide que Docker usa a palavra layer para o empilhamento do sistema de arquivos, sem
+   relação nenhuma com a camada lógica.
    Mostrar as nossas três camadas em três granularidades: tudo em um tier, front separado da API, e
    os três separados com o banco isolado. Nenhuma delas muda uma linha do projeto lógico e todas
    mudam o empacotamento. Docker obriga a escolher a granularidade em vez de deixá-la implícita, e
    essa escolha é entrada do ADR.
-3. A modelagem UML dita com precisão, porque é aqui que a banca cobra. Ambiente de execução é uma
+2. A modelagem UML dita com precisão, porque é aqui que a banca cobra. Ambiente de execução é uma
    especialização de nó, então o modelo fiel é o nó do host contendo um ambiente de execução, que é
    o container, contendo o artefato, que é a imagem. Máquina virtual, essa sim, é um nó novo, com
    sistema operacional próprio.
-4. Os dois diagramas lado a lado. Rascunho do diagrama de componentes (#59) à esquerda, rascunho do
+3. Os dois diagramas lado a lado. Rascunho do diagrama de componentes (#59) à esquerda, rascunho do
    de implantação (#60) à direita, e uma seta de cada componente para o ambiente de execução
    correspondente. Sobre eles, os sete passos do #60 mapeados um a um, com o número da task na tela.
    #71 identificar os nós vira o host com o engine instalado. #72 mapear componentes vira a
@@ -174,11 +152,11 @@ usando só o vocabulário das aulas e apontando o número de cada task do board.
    links de comunicação vira a rede nomeada, com resolução por nome de serviço. A fala: o compose é
    a forma executável do diagrama que temos que desenhar nesta sprint. Carimbar a palavra rascunho e
    o número do item no canto.
-5. Notação de componente sobreposta ao arquivo. Pirulito e soquete desenhados por cima do trecho de
+4. Notação de componente sobreposta ao arquivo. Pirulito e soquete desenhados por cima do trecho de
    compose. Interface provida é a porta publicada mais o contrato HTTP. Interface requerida é a
    variável de conexão que o serviço espera receber mais a dependência declarada. A porta da UML é
    literalmente a porta do container, com o mesmo desenho e o mesmo nome.
-6. Coesão e acoplamento, que são as palavras que ele mais repete nas três aulas. A fronteira do
+5. Coesão e acoplamento, que são as palavras que ele mais repete nas três aulas. A fronteira do
    container aumenta a coesão do serviço porque força uma responsabilidade por imagem. O acoplamento
    muda de forma em vez de desaparecer, e passa a ter latência, falha parcial e ordem de subida, que
    é a razão de existir HEALTHCHECK com `condition: service_healthy`.
@@ -189,7 +167,7 @@ usando só o vocabulário das aulas e apontando o número de cada task do board.
    interna sem mapeamento. Amarrar com degradação arquitetural, tema da Aula 02: uma regra escrita na
    wiki depende de disciplina de revisão, a mesma regra virando topologia é sustentada pela
    estrutura.
-7. A pergunta que o seminário devolve para o projeto. Nosso MVC tem duas views sobre o mesmo Model,
+6. A pergunta que o seminário devolve para o projeto. Nosso MVC tem duas views sobre o mesmo Model,
    o convite público do UC005 e o painel do UC007, com perfis de exposição e de carga bem
    diferentes. A jornada da Marina descreve o link caindo no grupo da família, ou seja, pico no
    convite público enquanto o painel tem uma pessoa olhando. Replicar só o serviço público faz

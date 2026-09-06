@@ -13,7 +13,7 @@
     body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
     a { color: #E94D1C; text-decoration: none; }
     a:hover { color: #21049A; }
-    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #21049A; }
     .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
     .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
     .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
@@ -23,35 +23,17 @@
     .cc { font-weight: 900; color: #E94D1C; flex: none; }
   </style>
 </helmet>
-<div class="sl" style="background:#fff">
-  <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C">O projeto</div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Invite People</h2>
+<div class="sl" style="background:#21049A">
+  <div style="position:absolute; left:0; top:0; bottom:0; width:10px; background:#E94D1C"></div>
+  <div style="position:absolute; right:-120px; bottom:-180px; width:520px; height:520px; border-radius:50%; background:rgba(255,255,255,.05)"></div>
+  <div style="position:absolute; left:96px; top:50%; transform:translateY(-50%); right:120px">
+    <div style="font-weight:900; font-size:130px; color:rgba(255,255,255,.16); line-height:1">01</div>
+    <div class="cartola" style="color:#E94D1C; margin-top:10px">Bloco B</div>
+    <h2 class="titulo" style="color:#fff; font-size:56px; margin-top:16px; max-width:820px">Definições e arquitetura</h2>
+    <p class="corpo" style="color:rgba(255,255,255,.72); font-size:19px; margin-top:22px; max-width:700px">O que o kernel faz quando alguém digita docker run, e por que a imagem é em camadas.</p>
   </div>
-  <div style="position:absolute; left:72px; top:210px; right:330px; display:flex; flex-direction:column; gap:19px">
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">App web de convites virtuais, com confirmação de presença e consolidação de restrições alimentares.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Duas superfícies sobre o mesmo Model: o convite público sem login e o painel do anfitrião.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Arquitetura registrada no Guia da Arquitetura: MVC no front e três camadas no back.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Questão Norteadora da Sprint 2: como os componentes serão distribuídos e implantados no ambiente de execução?</p>
-      </div>
-  </div>
-  <div style="position:absolute; right:72px; top:210px; width:250px; border-left:3px solid #E94D1C; padding-left:20px">
-    <div class="cartola" style="color:#E94D1C; font-size:11px">ONDE ESTAMOS HOJE</div>
-    <p class="corpo" style="font-size:15px; color:#6B6B78; margin-top:11px">Três camadas lógicas decididas.<br><br>Nenhuma separação física decidida.</p>
-  </div>
-  <div class="rodape" style="color: #6B6B78">
-    <span>Bloco A · Introdução</span><span style="font-weight:900; color: #21049A">04</span>
+  <div class="rodape" style="color: rgba(255,255,255,.55)">
+    <span>Bloco B</span><span style="font-weight:900; color: #fff">04</span>
   </div>
 </div>
 </x-dc>
