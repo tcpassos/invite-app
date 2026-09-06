@@ -15,9 +15,9 @@
   "bloco": "Bloco A · Introdução",
   "cartola": "Definição de componente, Aula 05",
   "tituloCanvas": "A frase da Aula 05",
-  "texto": "Unidade de composição com interfaces especificadas e dependências de contexto explícitas, que pode ser implantada de forma independente.",
-  "fonte": "FARIAS, K. Aula 05, Arquiteturas Baseadas em Componentes.",
-  "tam": 38,
+  "texto": "Um componente é uma unidade de composição com interfaces (contratos) especificadas e com dependências de contexto explícitas; um componente de software pode ser implantado de forma independente ou se combinar com outros.",
+  "fonte": "SOMMERVILLE, I. Engenharia de Software, 6ª ed., Addison Wesley, 2004. Citado na Aula 05, Arquiteturas Baseadas em Componentes.",
+  "tam": 31,
   "n": 2
  },
  {
@@ -263,7 +263,7 @@
   "titulo": "Componente, artefato, nó,<br>imagem e container",
   "tituloA": "NA DISCIPLINA",
   "itensA": [
-   "<strong style=\"font-weight:900\">Componente</strong> é a abstração de um serviço, coesa e de baixo acoplamento.",
+   "<strong style=\"font-weight:900\">Componente</strong> é uma unidade coesa e de baixo acoplamento que denota a abstração de um serviço (Sommerville, 2004).",
    "<strong style=\"font-weight:900\">Artefato</strong> é o conjunto de arquivos de código, bibliotecas e executáveis.",
    "<strong style=\"font-weight:900\">Nó</strong> é o host."
   ],
@@ -612,7 +612,7 @@
    "FELTER, W. et al. An updated performance comparison of virtual machines and Linux containers. IBM Research Report, 2015.",
    "MERKEL, D. Docker: lightweight Linux containers for consistent development and deployment. Linux Journal, 2014.",
    "NIST SP 800-190. Application Container Security Guide.",
-   "SOMMERVILLE, I. Engenharia de Software. · FOWLER, M. Patterns of Enterprise Application Architecture.",
+   "SOMMERVILLE, I. Engenharia de Software. 6. ed. Addison Wesley, 2004. · FOWLER, M. Patterns of Enterprise Application Architecture.",
    "FARIAS, K. Aula 03, Arquiteturas em Camadas. Aula 05, Arquiteturas Baseadas em Componentes."
   ],
   "right": 120,
