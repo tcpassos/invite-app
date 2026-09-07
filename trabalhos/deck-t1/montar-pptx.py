@@ -293,7 +293,7 @@ def dg_uml(sl, x, y):
     escrever(tf3, 'Máquina virtual, essa sim, é um nó novo, com sistema operacional próprio.', tam=14.5, cor=GRAFITE, peso=300, entre=1.5)
 
 def dg_tiers(sl, x, y):
-    rotulo(sl, x, y, 1050, 'AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE FRONT E BANCO RODAM.',
+    rotulo(sl, x, y, 1050, 'AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE O FRONT-END E O BANCO RODAM.',
            tam=12, cor=CINZA, peso=900, espacar=1.4)
     def camadas(cx, cy, larg):
         retangulo(sl, cx, cy, larg, 82, preencher=BRANCO, borda=AZUL, raio=3)
@@ -302,7 +302,7 @@ def dg_tiers(sl, x, y):
     # 1 tier
     retangulo(sl, x, y + 26, 286, 158, preencher=RGBColor(0xEE, 0xEB, 0xF7), borda=AZUL, raio=5, tracejado=True)
     retangulo(sl, x + 16, y + 34, 254, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
-    rotulo(sl, x + 16, y + 40, 254, 'front', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, x + 16, y + 40, 254, 'front-end', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
     camadas(x + 16, y + 64, 254)
     retangulo(sl, x + 16, y + 150, 254, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
     rotulo(sl, x + 16, y + 156, 254, 'banco', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
@@ -312,18 +312,18 @@ def dg_tiers(sl, x, y):
     b = x + 347
     retangulo(sl, b, y + 26, 120, 158, preencher=RGBColor(0xEE, 0xEB, 0xF7), borda=AZUL, raio=5, tracejado=True)
     retangulo(sl, b + 14, y + 96, 92, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
-    rotulo(sl, b + 14, y + 102, 92, 'front', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, b + 14, y + 102, 92, 'front-end', tam=13, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
     retangulo(sl, b + 140, y + 26, 146, 158, preencher=RGBColor(0xEE, 0xEB, 0xF7), borda=AZUL, raio=5, tracejado=True)
     camadas(b + 147, y + 49, 132)
     retangulo(sl, b + 154, y + 137, 118, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
     rotulo(sl, b + 154, y + 143, 118, 'banco', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
     rotulo(sl, b, y + 196, 286, '2 tiers', tam=15, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, b, y + 218, 286, 'front separado', tam=13, cor=CINZA, peso=300, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, b, y + 218, 286, 'front-end separado', tam=13, cor=CINZA, peso=300, alinhar=PP_ALIGN.CENTER)
     # 3 tiers
     c = x + 694
     retangulo(sl, c - 24, y + 26, 88, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
     retangulo(sl, c - 12, y + 96, 64, 26, preencher=BRANCO, borda=CINZA_CLARO, raio=3)
-    rotulo(sl, c - 12, y + 102, 64, 'front', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, c - 12, y + 102, 64, 'front-end', tam=12, cor=GRAFITE, peso=300, alinhar=PP_ALIGN.CENTER)
     retangulo(sl, c + 88, y + 26, 170, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
     camadas(c + 100, y + 64, 146)
     retangulo(sl, c + 282, y + 26, 88, 158, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=5, tracejado=True)
@@ -350,7 +350,7 @@ def dg_dois(sl, x, y):
     rotulo(sl, x + 560, y, 420, 'RASCUNHO #60, DIAGRAMA DE IMPLANTAÇÃO', tam=11, cor=LARANJA, peso=900, espacar=1.4)
     retangulo(sl, x + 560, y + 18, 400, 196, borda=LARANJA, largura=2)
     rotulo(sl, x + 580, y + 30, 200, '«device» host', tam=11, cor=LARANJA, peso=900)
-    for i, nome in enumerate(['front', 'API', 'banco']):
+    for i, nome in enumerate(['front-end', 'API', 'banco']):
         cx = x + 580 + i * 124
         retangulo(sl, cx, y + 54, 112, 52, borda=AZUL, largura=1.5)
         rotulo(sl, cx + 2, y + 62, 108, '«executionEnv»', tam=11.5, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)

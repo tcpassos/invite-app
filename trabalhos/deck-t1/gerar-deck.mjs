@@ -391,10 +391,10 @@ add('conteudo', {
   itens: [
     'É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.',
     'São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.',
-    'A arquitetura já está registrada no Guia da Arquitetura, com MVC no front e três camadas no back.',
+    'A arquitetura já está registrada no Guia da Arquitetura, com MVC no front-end e três camadas no back-end.',
     'A Questão Norteadora da Sprint 2, que é a pergunta que a sprint precisa responder, é como os componentes serão distribuídos e implantados no ambiente de execução.',
   ],
-  nota: 'As três camadas do back já estão decididas.<br><br>Falta decidir em quantos processos separados elas vão rodar.',
+  nota: 'As três camadas do back-end já estão decididas.<br><br>Falta decidir em quantos processos separados elas vão rodar.',
   notaTitulo: 'ONDE ESTAMOS HOJE',
   right: 330,
 })
@@ -461,7 +461,7 @@ add('duasColunas', {
     'O namespace mnt dá ao processo uma árvore de montagem própria.',
     'O namespace pid faz o processo enxergar a si mesmo como PID 1.',
     'O namespace net dá uma pilha de rede própria, e é por isso que dois containers conseguem escutar na mesma porta.',
-    'Esse é o mecanismo que permite o front, a API e o banco do projeto rodarem no mesmo host sem conflito de porta.',
+    'Esse é o mecanismo que permite o front-end, a API e o banco do projeto rodarem no mesmo host sem conflito de porta.',
   ],
   tituloB: 'CGROUPS V2',
   itensB: [
@@ -574,7 +574,7 @@ add('duasColunas', {
   tituloA: 'COESÃO',
   itensA: [
     'A imagem passa a ter uma responsabilidade só, que é mais coesão.',
-    'O código do front não está na imagem da API, então a API não depende dele nem por acidente.',
+    'O código do front-end não está na imagem da API, então a API não depende dele nem por acidente.',
     'Só o serviço de fronteira publica porta, e o banco fica na rede interna sem mapeamento nenhum.',
     'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural da Aula 02.',
   ],
@@ -595,7 +595,7 @@ add('conteudo', {
     'Replicar só o serviço público faz sentido, e replicar o painel não faz.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
-  nota: 'Mesma imagem de front ou imagens separadas?<br><br>Entrada direta para o #59 e o #60. Ainda não decidida.',
+  nota: 'Mesma imagem de front-end ou imagens separadas?<br><br>Entrada direta para o #59 e o #60. Ainda não decidida.',
   notaTitulo: 'EM ABERTO',
   right: 340,
 })

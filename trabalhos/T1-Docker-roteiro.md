@@ -14,8 +14,8 @@ declarado, e sai registrada no ADR #63.
 
 ## Camada lógica e tier não são a mesma coisa
 
-As três camadas do back-end, Apresentação e API, Domínio e Dados, são camadas lógicas e ficam na
-mesma imagem. O que o container separa são tiers: front, API e banco.
+As três camadas do back-end-end, Apresentação e API, Domínio e Dados, são camadas lógicas e ficam na
+mesma imagem. O que o container separa são tiers: front-end, API e banco.
 
 A decisão arquitetural em jogo é a granularidade, ou seja, em quantos tiers as camadas lógicas serão
 empacotadas e onde cada um roda.
@@ -52,7 +52,7 @@ que a ausência de código não pareça desculpa no final.
 1. O projeto em quarenta segundos. Invite People, convites virtuais com RSVP e consolidação de
    restrições alimentares. Duas superfícies sobre o mesmo Model, o convite público sem login e o
    painel do anfitrião. Arquitetura já registrada no Guia da Arquitetura. A nota lateral do slide dá
-   a situação de hoje: as três camadas do back já decididas e ainda sem decisão de em quantos
+   a situação de hoje: as três camadas do back-end já decididas e ainda sem decisão de em quantos
    processos separados elas vão rodar. Não usar aqui os termos camada lógica e separação física, que
    só ganham sentido no slide de tiers, no Bloco 02.
 2. Contrato e agenda, ditos no minuto dois. A implementação começa na Sprint 4, em 06/10, então não
@@ -146,7 +146,7 @@ usando só o vocabulário das aulas e apontando o número de cada task do board.
 1. Layer contra tier, a distinção da Aula 03. Layer é camada lógica, tier é separação física. Avisar
    no mesmo slide que Docker usa a palavra layer para o empilhamento do sistema de arquivos, sem
    relação nenhuma com a camada lógica.
-   Mostrar as nossas três camadas em três granularidades: tudo em um tier, front separado da API, e
+   Mostrar as nossas três camadas em três granularidades: tudo em um tier, front-end separado da API, e
    os três separados com o banco isolado. Nenhuma delas muda uma linha do projeto lógico e todas
    mudam o empacotamento. Docker obriga a escolher a granularidade em vez de deixá-la implícita, e
    essa escolha é entrada do ADR.
@@ -171,8 +171,8 @@ usando só o vocabulário das aulas e apontando o número de cada task do board.
    muda de forma em vez de desaparecer, e passa a ter latência, falha parcial e ordem de subida, que
    é a razão de existir HEALTHCHECK com `condition: service_healthy`.
    Aqui é fácil exagerar, então cuidado com a afirmação. O container não torna estrutural a regra
-   entre as nossas três camadas, porque elas ficam na mesma imagem do back-end. Ele torna estrutural
-   outras duas coisas. O código do front não está dentro da imagem da API, então a API não consegue
+   entre as nossas três camadas, porque elas ficam na mesma imagem do back-end-end. Ele torna estrutural
+   outras duas coisas. O código do front-end não está dentro da imagem da API, então a API não consegue
    depender dele nem por acidente. E só o serviço de fronteira publica porta, com o banco na rede
    interna sem mapeamento. Amarrar com degradação arquitetural, tema da Aula 02: uma regra escrita na
    wiki depende de disciplina de revisão, a mesma regra virando topologia é sustentada pela
@@ -183,7 +183,7 @@ usando só o vocabulário das aulas e apontando o número de cada task do board.
    convite público enquanto o painel tem uma pessoa olhando. Replicar só o serviço público faz
    sentido, replicar o painel não. E a restrição volta para o projeto: para isso valer, o convite
    público não pode guardar sessão em memória nem gravar upload em disco local.
-   Deixar a pergunta em aberto na tela, mesma imagem de front ou imagens separadas, que é entrada
+   Deixar a pergunta em aberto na tela, mesma imagem de front-end ou imagens separadas, que é entrada
    direta para o #59 e o #60 e ainda não foi decidida.
    Fechar com honestidade, e custa cinco segundos: os seis itens de arquitetura da Sprint 2 estão em
    To Do, então isto é insumo desses itens, não relato de item concluído.
