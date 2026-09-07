@@ -385,7 +385,7 @@ add('capa', {
 })
 
 add('conteudo', {
-  bloco: 'Bloco A · Introdução',
+  bloco: 'Introdução',
   cartola: 'O projeto',
   titulo: 'Invite People',
   itens: [
@@ -394,16 +394,17 @@ add('conteudo', {
     'Arquitetura registrada no Guia da Arquitetura: MVC no front e três camadas no back.',
     'Questão Norteadora da Sprint 2: como os componentes serão distribuídos e implantados no ambiente de execução?',
     'A implementação do produto começa na Sprint 4, em 06/10. A demonstração do final é do ambiente, não do produto.',
+    'A seção 01 é sobre Docker. O projeto volta na seção 02, onde essa pergunta é respondida.',
   ],
   nota: 'Três camadas lógicas decididas.<br><br>Nenhuma separação física decidida.',
   notaTitulo: 'ONDE ESTAMOS HOJE',
   right: 330,
 })
 
-add('secao', { bloco: 'Bloco B', num: '01', cartola: 'Tiago · 6 minutos', titulo: 'Definições e arquitetura', sub: 'O que o kernel faz quando alguém digita docker run, e por que a imagem é em camadas.' })
+add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: 'Tiago · 6 minutos', titulo: 'Definições e arquitetura', sub: 'O que o kernel faz quando alguém digita docker run, e por que a imagem é em camadas.' })
 
 add('linhaTempo', {
-  bloco: 'Bloco B · Definições',
+  bloco: '01 · Definições',
   cartola: 'Linha do tempo',
   titulo: 'Do chroot à padronização OCI',
   marcos: [
@@ -419,7 +420,7 @@ add('linhaTempo', {
 })
 
 add('duasColunas', {
-  bloco: 'Bloco B · Definições',
+  bloco: '01 · Definições',
   cartola: 'Duas definições',
   titulo: 'Container e imagem',
   tituloA: 'CONTAINER · SÍNTESE DOS MECANISMOS',
@@ -433,7 +434,7 @@ add('duasColunas', {
 })
 
 add('terminal', {
-  bloco: 'Bloco B · Arquitetura',
+  bloco: '01 · Arquitetura',
   cartola: 'O que o kernel enxerga',
   titulo: 'Um container é um processo<br>com a visão restringida por namespaces',
   linhas: [
@@ -453,7 +454,7 @@ add('terminal', {
 })
 
 add('duasColunas', {
-  bloco: 'Bloco B · Arquitetura',
+  bloco: '01 · Arquitetura',
   cartola: 'Namespaces e cgroups',
   titulo: 'Namespaces isolam a visão.<br>Cgroups limitam o consumo.',
   tituloA: 'NAMESPACES',
@@ -472,7 +473,7 @@ add('duasColunas', {
 })
 
 add('diagrama', {
-  bloco: 'Bloco B · Arquitetura',
+  bloco: '01 · Arquitetura',
   cartola: 'Estrutura da imagem',
   titulo: 'Camadas somente leitura<br>e a camada de escrita',
   svg: svgCamadas,
@@ -482,7 +483,7 @@ add('diagrama', {
 })
 
 add('diagrama', {
-  bloco: 'Bloco B · Arquitetura',
+  bloco: '01 · Arquitetura',
   cartola: 'A pilha de execução',
   titulo: 'CLI, dockerd, containerd,<br>shim e runc',
   svg: svgPilha,
@@ -491,7 +492,7 @@ add('diagrama', {
 })
 
 add('conteudo', {
-  bloco: 'Bloco B · Arquitetura',
+  bloco: '01 · Arquitetura',
   cartola: 'Restrição de privilégio',
   titulo: 'Capabilities, seccomp e LSM',
   itens: [
@@ -505,17 +506,17 @@ add('conteudo', {
 })
 
 add('impacto', {
-  bloco: 'Bloco B · Arquitetura',
+  bloco: '01 · Arquitetura',
   cartola: 'OCI, fundada em 2015',
   titulo: 'Docker implementa as<br>especificações da OCI',
-  sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É um exemplo da substituibilidade por compatibilidade de interface da Aula 05.',
+  sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É a substituibilidade por compatibilidade de interface da Aula 05, e o Bloco D traz um caso real.',
   tam: 46,
 })
 
-add('secao', { bloco: 'Bloco C', num: '02', cartola: 'Gabriel · 6 minutos', titulo: 'Aplicação no Invite People', sub: 'Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.' })
+add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: 'Gabriel · 6 minutos', titulo: 'Aplicação no Invite People', sub: 'Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.' })
 
 add('diagrama', {
-  bloco: 'Bloco C · Aplicação',
+  bloco: '02 · Aplicação no projeto',
   cartola: 'Camada lógica e tier, Aula 03',
   titulo: 'Layer é camada lógica.<br>Tier é separação física.',
   svg: svgTiers,
@@ -525,7 +526,7 @@ add('diagrama', {
 })
 
 add('diagrama', {
-  bloco: 'Bloco C · Aplicação',
+  bloco: '02 · Aplicação no projeto',
   cartola: 'Modelagem UML',
   titulo: 'Container é ambiente de execução,<br>imagem é artefato',
   svg: svgUml,
@@ -534,7 +535,7 @@ add('diagrama', {
 })
 
 add('diagrama', {
-  bloco: 'Bloco C · Aplicação',
+  bloco: '02 · Aplicação no projeto',
   cartola: 'Rascunhos dos itens #59 e #60',
   titulo: 'Mapeamento dos componentes<br>para os nós do diagrama',
   svg: svgDois,
@@ -543,7 +544,7 @@ add('diagrama', {
 })
 
 add('codigo', {
-  bloco: 'Bloco C · Aplicação',
+  bloco: '02 · Aplicação no projeto',
   cartola: 'Interfaces no arquivo de compose',
   titulo: 'Onde ficam a interface<br>provida e a requerida',
   linhas: [
@@ -568,7 +569,7 @@ add('codigo', {
 })
 
 add('duasColunas', {
-  bloco: 'Bloco C · Aplicação',
+  bloco: '02 · Aplicação no projeto',
   cartola: 'Coesão e acoplamento',
   titulo: 'O que a fronteira garante<br>e o que ela não garante',
   tituloA: 'GARANTE',
@@ -587,7 +588,7 @@ add('duasColunas', {
 })
 
 add('conteudo', {
-  bloco: 'Bloco C · Aplicação',
+  bloco: '02 · Aplicação no projeto',
   cartola: 'Consequência para o projeto',
   titulo: 'Duas views sobre o mesmo Model,<br>dois perfis de carga',
   itens: [
@@ -600,10 +601,10 @@ add('conteudo', {
   right: 340,
 })
 
-add('secao', { bloco: 'Bloco D', num: '03', cartola: 'Andreas, com Tiago na segurança · 7 minutos', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.' })
+add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: 'Andreas, com Tiago na segurança · 7 minutos', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.' })
 
 add('terminal', {
-  bloco: 'Bloco D · Demonstração',
+  bloco: '03 · Demonstração',
   cartola: 'Demonstração, 90 segundos',
   titulo: 'Volume nomeado e persistência<br>entre execuções',
   linhas: [
@@ -625,7 +626,7 @@ add('terminal', {
 })
 
 add('impacto', {
-  bloco: 'Bloco D · Estudo de caso',
+  bloco: '03 · Estudo de caso',
   cartola: 'Kubernetes 1.24, 2022',
   titulo: 'A remoção do dockershim<br>no Kubernetes 1.24',
   sub: 'O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface, no vocabulário da Aula 05.',
@@ -633,7 +634,7 @@ add('impacto', {
 })
 
 add('duasColunas', {
-  bloco: 'Bloco D · Vantagens',
+  bloco: '03 · Vantagens e desvantagens',
   cartola: 'Vantagens',
   titulo: 'Vantagens no vocabulário<br>da Aula 03',
   tituloA: 'O QUE ELE CREDITA A CAMADAS',
@@ -653,7 +654,7 @@ add('duasColunas', {
 })
 
 add('conteudo', {
-  bloco: 'Bloco D · Limitações',
+  bloco: '03 · Vantagens e desvantagens',
   cartola: 'Limitações',
   titulo: 'Limitações e custos',
   itens: [
@@ -670,7 +671,7 @@ add('conteudo', {
 })
 
 add('duasColunas', {
-  bloco: 'Bloco D · Segurança',
+  bloco: '03 · Vantagens e desvantagens',
   cartola: 'Container e máquina virtual',
   titulo: 'Comparação pela<br>superfície de ataque',
   tituloA: 'MÁQUINA VIRTUAL',
@@ -686,7 +687,7 @@ add('duasColunas', {
 })
 
 add('tabela', {
-  bloco: 'Bloco D · Alternativas',
+  bloco: '03 · Vantagens e desvantagens',
   cartola: 'Alternativas consideradas',
   titulo: 'Comparação com as outras opções',
   cols: '1.1fr 1.4fr 1.4fr',
@@ -701,7 +702,7 @@ add('tabela', {
 })
 
 add('duasColunas', {
-  bloco: 'Bloco D · Honestidade',
+  bloco: '03 · Vantagens e desvantagens',
   cartola: 'Quando não compensa',
   titulo: 'Critérios de contraindicação<br>e a nossa situação',
   tituloA: 'QUANDO NÃO COMPENSA',
@@ -722,7 +723,7 @@ add('duasColunas', {
 })
 
 add('duasColunas', {
-  bloco: 'Bloco D · Considerações finais',
+  bloco: '03 · Vantagens e desvantagens',
   cartola: 'O balanço do time',
   titulo: 'Ganho e custo, nos quatro atributos<br>das Questões Norteadoras',
   tituloA: 'GANHA',
@@ -741,7 +742,7 @@ add('duasColunas', {
 })
 
 add('conteudo', {
-  bloco: 'Bloco D · Considerações finais',
+  bloco: 'Considerações finais',
   cartola: 'Recomendação para o ADR #63',
   titulo: 'Recomendação do grupo',
   itens: [
@@ -755,8 +756,8 @@ add('conteudo', {
 })
 
 add('duasColunas', {
-  bloco: 'Bloco D · Fecho',
-  cartola: 'Retomando a evidência inicial',
+  bloco: 'Considerações finais',
+  cartola: 'Antes e depois, no nosso repositório',
   titulo: 'Do problema de ambiente<br>ao arquivo de compose',
   tituloA: 'NO COMEÇO DO PROJETO',
   itensA: [
@@ -771,7 +772,7 @@ add('duasColunas', {
 })
 
 add('conteudo', {
-  bloco: 'Bloco D · Fecho',
+  bloco: 'Considerações finais',
   cartola: 'O que não estamos afirmando',
   titulo: 'Pendências, com número de item',
   itens: [
@@ -787,7 +788,7 @@ add('conteudo', {
 })
 
 add('conteudo', {
-  bloco: 'Bloco D · Fecho',
+  bloco: 'Referências',
   cartola: 'Para consultar depois',
   titulo: 'Referências',
   itens: [

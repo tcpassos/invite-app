@@ -35,6 +35,10 @@ implantado nele. Ambiente de execução é uma especialização de nó, então n
 
 Mais um minuto para as três trocas de apresentador. Total 23, dentro da faixa de 20 a 25.
 
+No rodapé dos slides os blocos aparecem como as seções numeradas dos divisores, para bater com o
+vocabulário do professor: o A é Introdução, o B é 01 Definições e arquitetura, o C é 02 Aplicação no
+projeto e o D é 03 Vantagens e desvantagens, com Considerações finais e Referências no fim.
+
 Os nomes falados na agenda seguem o formato das aulas dele: Introdução, Definições, Arquitetura,
 Aplicação no projeto, Vantagens e Desvantagens, Considerações Finais, Referências.
 
@@ -276,10 +280,13 @@ pago, esse arquivo já está no repositório, se a stack mudar quanto desse trab
 
 ## Fechamento
 
-Voltar ao slide de evidência do Bloco A, com a linha do `.gitattributes` de um lado e o arquivo de
-compose do outro. A fala: abrimos com uma evidência de que os ambientes deste time já divergem antes
-de existir código, e fechamos com um arquivo que descreve o ambiente inteiro e que qualquer um dos
+O slide de antes e depois, com a linha do `.gitattributes` de um lado e o arquivo de compose do
+outro. A fala: os ambientes deste time já divergiam antes de existir a primeira linha de código do
+produto, e o que temos agora é um arquivo que descreve o ambiente inteiro e que qualquer um dos
 quatro sobe com um comando.
+
+Não dizer "como mostramos na abertura". Essa evidência aparece pela primeira vez aqui, e prometer
+uma retomada que a plateia não viu é o tipo de coisa que ele repara.
 
 Em seguida, dito em voz alta, o que o grupo não está afirmando, com número de item ao lado de cada
 pendência: #58 a #63 em To Do, #56 e #57 ainda em Doing na Sprint 1, o #63 é onde a stack será
