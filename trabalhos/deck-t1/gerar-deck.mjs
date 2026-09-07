@@ -421,15 +421,13 @@ add('duasColunas', {
   bloco: '01 · Definições',
   cartola: 'Duas definições',
   titulo: 'Container e imagem',
-  tituloA: 'O QUE É UM CONTAINER',
+  tituloA: 'CONTAINER · DEFINIÇÃO DO GRUPO',
   itensA: [
     'Um ou mais processos executados com visão isolada por namespaces, consumo limitado por cgroups e privilégio reduzido por capabilities e seccomp, sobre um sistema de arquivos raiz próprio.',
-    'Essa definição não é citação de livro. É a que o grupo montou a partir dos quatro mecanismos do Linux que os próximos slides mostram.',
   ],
-  tituloB: 'O QUE É UMA IMAGEM',
+  tituloB: 'IMAGEM · OPEN CONTAINER INITIATIVE, IMAGE SPEC',
   itensB: [
     'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, que é o hash do próprio conteúdo.',
-    'Essa é citação da Image Spec, um dos documentos da Open Container Initiative, a organização que padroniza o formato de imagem desde 2015.',
   ],
 })
 
@@ -517,7 +515,7 @@ add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: 'Gabri
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
   cartola: 'Camada lógica e tier, Aula 03',
-  titulo: 'Layer é camada lógica.<br>Tier é separação física.',
+  titulo: 'As mesmas três camadas lógicas,<br>empacotadas de três jeitos',
   svg: svgTiers,
   svgNome: 'svgTiers',
   legenda: 'Nenhuma das três muda uma linha do projeto lógico. Todas mudam o empacotamento, e essa escolha é entrada do ADR #63, o documento de decisões arquiteturais da Sprint 2. Cuidado com o vocabulário: Docker usa <em>layer</em> para o empilhamento do sistema de arquivos da imagem, que não tem relação com a camada lógica da Aula 03.',
@@ -527,7 +525,7 @@ add('diagrama', {
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
   cartola: 'Modelagem UML',
-  titulo: 'Container é ambiente de execução,<br>imagem é artefato',
+  titulo: 'No diagrama de implantação, o container<br>é um nó e a imagem é um artefato',
   svg: svgUml,
   svgNome: 'svgUml',
   topSvg: 210,

@@ -122,7 +122,7 @@
     },
     {
       "file": "S13.dc.html",
-      "title": "13. Layer é camada lógica. Tier é separação",
+      "title": "13. As mesmas três camadas lógicas, empacotadas",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -132,7 +132,7 @@
     },
     {
       "file": "S14.dc.html",
-      "title": "14. Container é ambiente de execução, imagem é",
+      "title": "14. No diagrama de implantação, o container é um",
       "x": 2760,
       "y": 0,
       "w": 1280,
