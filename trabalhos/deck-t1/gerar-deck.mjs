@@ -399,7 +399,7 @@ add('conteudo', {
   right: 330,
 })
 
-add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: 'Tiago · 6 minutos', titulo: 'Definições e arquitetura', sub: 'Antes de decidir onde cada parte roda, o que o kernel faz quando alguém digita docker run e por que a imagem é em camadas.' })
+add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: '', titulo: 'Definições e arquitetura', sub: 'Antes de decidir onde cada parte roda, o que o kernel faz quando alguém digita docker run e por que a imagem é em camadas.' })
 
 add('linhaTempo', {
   bloco: '01 · Definições',
@@ -512,7 +512,7 @@ add('impacto', {
   tam: 46,
 })
 
-add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: 'Gabriel · 6 minutos', titulo: 'Aplicação no Invite People', sub: 'Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.' })
+add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: '', titulo: 'Aplicação no Invite People', sub: 'Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.' })
 
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
@@ -600,11 +600,11 @@ add('conteudo', {
   right: 340,
 })
 
-add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: 'Andreas, com Tiago na segurança · 7 minutos', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.' })
+add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.' })
 
 add('terminal', {
   bloco: '03 · Demonstração',
-  cartola: 'Demonstração, 90 segundos',
+  cartola: 'Demonstração',
   titulo: 'O dado sobrevive ao container<br>se ficar num volume',
   linhas: [
     '$ docker compose up -d',
@@ -642,8 +642,8 @@ add('conteudo', {
     'Container com estado traz junto o problema de backup e o de upgrade de versão maior do banco, que não somem por estar em imagem.',
     'O Docker Desktop é pago para empresa acima de certo porte, o que afeta quem for usar isto fora da faculdade.',
   ],
-  nota: 'Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.<br><br>Nenhum número de desempenho entra aqui sem medição feita pelo time.',
-  notaTitulo: 'REGRA',
+  nota: 'Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.',
+  notaTitulo: 'NO NOSSO CASO',
   right: 320,
   top: 202,
 })

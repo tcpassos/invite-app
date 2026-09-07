@@ -389,8 +389,9 @@ def m_secao(sl, s):
     logo(sl, claro=True)
     simbolo_bloco(sl, SIMBOLOS.get(s['num'], 'camadas'), 940, 286)
     rotulo(sl, 92, 128, 400, s['num'], tam=130, cor=RGBColor(0x6E, 0x59, 0xD2), peso=900)
-    retangulo(sl, 96, 304, 4, 18, preencher=LARANJA)
-    rotulo(sl, 112, 300, 700, s['cartola'], tam=15, cor=BRANCO, peso=900, maiusc=True, espacar=1.6)
+    if s.get('cartola'):
+        retangulo(sl, 96, 304, 4, 18, preencher=LARANJA)
+        rotulo(sl, 112, 300, 700, s['cartola'], tam=15, cor=BRANCO, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 96, 326, 860, 150)
     escrever(tf, s['titulo'], tam=54, cor=BRANCO, peso=900, entre=1.05)
     tb2, tf2 = caixa(sl, 96, 470, 720, 110)

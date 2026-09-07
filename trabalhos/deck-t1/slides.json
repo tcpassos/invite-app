@@ -30,7 +30,7 @@
   "modelo": "secao",
   "bloco": "01 · Definições e arquitetura",
   "num": "01",
-  "cartola": "Tiago · 6 minutos",
+  "cartola": "",
   "titulo": "Definições e arquitetura",
   "sub": "Antes de decidir onde cada parte roda, o que o kernel faz quando alguém digita docker run e por que a imagem é em camadas.",
   "n": 3
@@ -179,7 +179,7 @@
   "modelo": "secao",
   "bloco": "02 · Aplicação no projeto",
   "num": "02",
-  "cartola": "Gabriel · 6 minutos",
+  "cartola": "",
   "titulo": "Aplicação no Invite People",
   "sub": "Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.",
   "n": 12
@@ -280,7 +280,7 @@
   "modelo": "secao",
   "bloco": "03 · Vantagens e desvantagens",
   "num": "03",
-  "cartola": "Andreas, com Tiago na segurança · 7 minutos",
+  "cartola": "",
   "titulo": "Vantagens, desvantagens e demonstração",
   "sub": "A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.",
   "n": 19
@@ -288,7 +288,7 @@
  {
   "modelo": "terminal",
   "bloco": "03 · Demonstração",
-  "cartola": "Demonstração, 90 segundos",
+  "cartola": "Demonstração",
   "titulo": "O dado sobrevive ao container<br>se ficar num volume",
   "linhas": [
    "$ docker compose up -d",
@@ -328,8 +328,8 @@
    "Container com estado traz junto o problema de backup e o de upgrade de versão maior do banco, que não somem por estar em imagem.",
    "O Docker Desktop é pago para empresa acima de certo porte, o que afeta quem for usar isto fora da faculdade."
   ],
-  "nota": "Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.<br><br>Nenhum número de desempenho entra aqui sem medição feita pelo time.",
-  "notaTitulo": "REGRA",
+  "nota": "Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.",
+  "notaTitulo": "NO NOSSO CASO",
   "right": 320,
   "top": 202,
   "n": 22
