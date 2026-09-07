@@ -421,11 +421,11 @@ add('duasColunas', {
   bloco: '01 · Definições',
   cartola: 'Duas definições',
   titulo: 'Container e imagem',
-  tituloA: 'CONTAINER · SÍNTESE DOS MECANISMOS',
+  tituloA: 'CONTAINER, PELO MECANISMO DO KERNEL',
   itensA: [
     'Um ou mais processos executados com visão isolada por namespaces, consumo limitado por cgroups e privilégio reduzido por capabilities e seccomp, sobre um sistema de arquivos raiz próprio.',
   ],
-  tituloB: 'IMAGEM · OCI IMAGE SPEC',
+  tituloB: 'IMAGEM, PELA OCI IMAGE SPEC',
   itensB: [
     'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por digest.',
   ],
