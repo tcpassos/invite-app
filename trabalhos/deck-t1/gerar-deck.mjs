@@ -393,15 +393,13 @@ add('conteudo', {
     'Duas superfícies sobre o mesmo Model: o convite público sem login e o painel do anfitrião.',
     'Arquitetura registrada no Guia da Arquitetura: MVC no front e três camadas no back.',
     'Questão Norteadora da Sprint 2: como os componentes serão distribuídos e implantados no ambiente de execução?',
-    'A implementação do produto começa na Sprint 4, em 06/10. A demonstração do final é do ambiente, não do produto.',
-    'A seção 01 é sobre Docker. O projeto volta na seção 02, onde essa pergunta é respondida.',
   ],
   nota: 'Três camadas lógicas decididas.<br><br>Nenhuma separação física decidida.',
   notaTitulo: 'ONDE ESTAMOS HOJE',
   right: 330,
 })
 
-add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: 'Tiago · 6 minutos', titulo: 'Definições e arquitetura', sub: 'O que o kernel faz quando alguém digita docker run, e por que a imagem é em camadas.' })
+add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: 'Tiago · 6 minutos', titulo: 'Definições e arquitetura', sub: 'Antes de decidir onde cada parte roda, o que o kernel faz quando alguém digita docker run e por que a imagem é em camadas.' })
 
 add('linhaTempo', {
   bloco: '01 · Definições',

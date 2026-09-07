@@ -51,15 +51,16 @@ que a ausência de código não pareça desculpa no final.
 
 1. O projeto em quarenta segundos. Invite People, convites virtuais com RSVP e consolidação de
    restrições alimentares. Duas superfícies sobre o mesmo Model, o convite público sem login e o
-   painel do anfitrião. Arquitetura já registrada no Guia da Arquitetura. Ler em voz alta a Questão
-   Norteadora da Sprint 2, sobre como os componentes serão distribuídos e implantados no ambiente de
-   execução. Fechar o slide com a situação de hoje: três camadas lógicas decididas e nenhuma
-   separação física decidida.
+   painel do anfitrião. Arquitetura já registrada no Guia da Arquitetura. A nota lateral do slide dá
+   a situação de hoje: três camadas lógicas decididas e nenhuma separação física decidida.
 2. Contrato e agenda, ditos no minuto dois. A implementação começa na Sprint 4, em 06/10, então não
-   existe aplicação para conteinerizar e a demonstração do final é do ambiente. Esse contrato está
-   no último item do slide do projeto. Em seguida a agenda com o dono de cada bloco, avisando que
-   cada um responde pelo próprio bloco na arguição. A agenda não tem slide, é falada, então o
-   Guilherme precisa dizer os quatro nomes e os quatro blocos em voz alta.
+   existe aplicação para conteinerizar e a demonstração do final é do ambiente. Nem o contrato nem a
+   agenda têm slide, os dois são falados. O contrato aparece escrito só no divisor da seção 03, onde
+   ele importa, logo antes da demonstração. Na agenda o Guilherme diz os quatro nomes e os quatro
+   blocos em voz alta, avisando que cada um responde pelo próprio bloco na arguição.
+3. Terminar no gancho. O último item do slide é a Questão Norteadora da Sprint 2, sobre como os
+   componentes serão distribuídos e implantados. Ler ela em voz alta e passar para o Tiago sem
+   explicar o que vem pela frente. O divisor da seção 01 já faz essa ligação sozinho.
 
 Perguntas prováveis: por que Docker e não outra da lista, vocês já entregaram o diagrama de
 implantação, qual a diferença entre camada lógica e separação física, o que exatamente vão
