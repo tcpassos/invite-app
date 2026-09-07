@@ -212,7 +212,7 @@
     },
     {
       "file": "S22.dc.html",
-      "title": "22. Vantagens no vocabulário da Aula 03",
+      "title": "22. Limitações e custos",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -222,7 +222,7 @@
     },
     {
       "file": "S23.dc.html",
-      "title": "23. Limitações e custos",
+      "title": "23. Comparação pela superfície de ataque",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -232,7 +232,7 @@
     },
     {
       "file": "S24.dc.html",
-      "title": "24. Comparação pela superfície de ataque",
+      "title": "24. Comparação com as outras opções",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -242,7 +242,7 @@
     },
     {
       "file": "S25.dc.html",
-      "title": "25. Comparação com as outras opções",
+      "title": "25. Quatro critérios para não conteinerizar, e a",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -252,7 +252,7 @@
     },
     {
       "file": "S26.dc.html",
-      "title": "26. Quatro critérios para não conteinerizar, e a",
+      "title": "26. Efeito nos atributos da Aula 03 e das",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -262,7 +262,7 @@
     },
     {
       "file": "S27.dc.html",
-      "title": "27. Efeito nos quatro atributos das Questões",
+      "title": "27. Recomendação do grupo",
       "x": 0,
       "y": 1760,
       "w": 1280,
@@ -272,7 +272,7 @@
     },
     {
       "file": "S28.dc.html",
-      "title": "28. Recomendação do grupo",
+      "title": "28. O que mudou no ambiente do time",
       "x": 1380,
       "y": 1760,
       "w": 1280,
@@ -282,7 +282,7 @@
     },
     {
       "file": "S29.dc.html",
-      "title": "29. O que mudou no ambiente do time",
+      "title": "29. Pendências, com número de item",
       "x": 0,
       "y": 0,
       "w": 1280,
@@ -292,18 +292,8 @@
     },
     {
       "file": "S30.dc.html",
-      "title": "30. Pendências, com número de item",
+      "title": "30. Referências",
       "x": 1380,
-      "y": 0,
-      "w": 1280,
-      "h": 720,
-      "page": "p-f",
-      "print": "fixed"
-    },
-    {
-      "file": "S31.dc.html",
-      "title": "31. Referências",
-      "x": 2760,
       "y": 0,
       "w": 1280,
       "h": 720,

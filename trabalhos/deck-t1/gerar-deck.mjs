@@ -275,7 +275,7 @@ const svgPilha = `<svg width="940" height="270" viewBox="0 0 940 270" xmlns="htt
     <defs><marker id="seta" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6B6B78"/></marker></defs>
     <text x="10" y="196" font-size="13.5" fill="#1A1A1E" font-weight="300">O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar</text>
     <text x="10" y="216" font-size="13.5" fill="#1A1A1E" font-weight="300">o daemon deixar de matar os containers em execução.</text>
-    <text x="10" y="248" font-size="13.5" fill="#1A1A1E" font-weight="300">O runc cria os namespaces, configura cgroups, aplica capabilities e seccomp, faz pivot_root, dá execve e sai.</text>
+    <text x="10" y="248" font-size="13.5" fill="#1A1A1E" font-weight="300">Cada peça tem uma responsabilidade e pode ser trocada, que é o argumento do próximo slide.</text>
   </g>
 </svg>`
 
@@ -448,7 +448,7 @@ add('terminal', {
     '4026532194 pid         3  4821 root',
     '4026532196 net         3  4821 root',
   ],
-  captura: 'Saída da distro docker-desktop do WSL. No Docker Desktop em Windows o daemon e os containers rodam numa distro própria, com namespace de PID separado, então ps na distro de trabalho não mostraria container nenhum.',
+  captura: 'Saída da distro docker-desktop do WSL. O mesmo processo tem PID 1 dentro do container e outro PID no host, que é o que o namespace de PID faz.',
 })
 
 add('duasColunas', {
@@ -460,12 +460,11 @@ add('duasColunas', {
     'mnt dá árvore de montagem própria.',
     'pid faz o processo virar PID 1 lá dentro.',
     'net dá pilha de rede própria, por isso dois containers escutam na mesma porta.',
-    'clone e unshare criam um namespace. setns entra num que já existe.',
   ],
   tituloB: 'CGROUPS V2',
   itensB: [
     'Não isolam. Contabilizam e limitam.',
-    'Estourar memory.max não deixa lento: o kernel mata e o Docker reporta 137.',
+    'Estourar o limite de memória não deixa lento, o kernel mata o processo.',
     'Limite de CPU é throttling. Degrada latência de cauda, não a média, e por isso é mais difícil de diagnosticar.',
   ],
 })
@@ -494,8 +493,8 @@ add('conteudo', {
   cartola: 'Restrição de privilégio',
   titulo: 'Capabilities, seccomp e LSM',
   itens: [
-    '<strong style="font-weight:900">Capabilities.</strong> O root do POSIX fatiado em cerca de quarenta bits independentes, derrubados e devolvidos um a um.',
-    '<strong style="font-weight:900">Seccomp-bpf.</strong> O perfil padrão bloqueia cerca de 44 chamadas de sistema de mais de trezentas.',
+    '<strong style="font-weight:900">Capabilities.</strong> O root do POSIX fatiado em privilégios independentes, derrubados e devolvidos um a um.',
+    '<strong style="font-weight:900">Seccomp-bpf.</strong> O perfil padrão bloqueia parte das chamadas de sistema disponíveis.',
     '<strong style="font-weight:900">LSM.</strong> AppArmor ou SELinux por cima de tudo.',
   ],
   nota: 'A opção --privileged devolve tudo de uma vez e ainda desliga o seccomp.',
@@ -631,34 +630,13 @@ add('impacto', {
   tam: 48,
 })
 
-add('duasColunas', {
-  bloco: '03 · Vantagens e desvantagens',
-  cartola: 'Vantagens',
-  titulo: 'Vantagens no vocabulário<br>da Aula 03',
-  tituloA: 'NA AULA 03',
-  itensA: [
-    '<strong style="font-weight:900">Modularidade.</strong>',
-    '<strong style="font-weight:900">Reusabilidade.</strong>',
-    '<strong style="font-weight:900">Compreensibilidade.</strong>',
-    '<strong style="font-weight:900">Extensibilidade.</strong>',
-  ],
-  tituloB: 'COM CONTAINER',
-  itensB: [
-    'Uma responsabilidade por imagem, com fronteira declarada.',
-    'A mesma imagem atravessa notebook, pipeline e a demonstração funcional do T3.',
-    'O ambiente vira arquivo legível, versionado junto com o código.',
-    'Trocar runtime ou banco é editar uma linha, não reinstalar quatro notebooks.',
-  ],
-})
-
 add('conteudo', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: 'Limitações',
   titulo: 'Limitações e custos',
   itens: [
     'O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.',
-    'O Docker escreve a regra de DNAT antes das regras do administrador, então um deny de firewall na porta publicada não bloqueia nada.',
-    'I/O de bind mount atravessando a fronteira da máquina virtual no WSL2.',
+    'A regra de rede que o Docker escreve passa na frente da do administrador, então um deny de firewall na porta publicada não bloqueia nada.',
     'Estado, que traz junto backup e upgrade de versão maior do banco.',
     'Licenciamento do Docker Desktop.',
   ],
@@ -714,7 +692,6 @@ add('duasColunas', {
   itensB: [
     'Não temos integração contínua definida nem hospedagem decidida, então dois dos critérios ao lado se aplicam a nós.',
     'O motivo que resta é o ambiente igual para quatro integrantes com stacks diferentes, com o banco rodando sem instalação local, antes de escrever a primeira linha.',
-    'Compose é de host único. O MVP cabe num host. Kubernetes entraria com múltiplos nós, e é tema de outro grupo.',
   ],
   corB: LARANJA,
   tam: 34,
@@ -722,17 +699,19 @@ add('duasColunas', {
 
 add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
-  cartola: 'Ganho e custo',
-  titulo: 'Efeito nos quatro atributos<br>das Questões Norteadoras',
+  cartola: 'Vantagens e custos',
+  titulo: 'Efeito nos atributos da Aula 03<br>e das Questões Norteadoras',
   tituloA: 'GANHA',
   itensA: [
-    '<strong style="font-weight:900">Manutenibilidade.</strong> O ambiente passa a ser versionado junto com o código.',
+    '<strong style="font-weight:900">Modularidade e reusabilidade.</strong> Uma responsabilidade por imagem, com fronteira declarada.',
+    '<strong style="font-weight:900">Compreensibilidade.</strong> O ambiente vira arquivo legível, versionado junto com o código.',
+    '<strong style="font-weight:900">Extensibilidade.</strong> Trocar runtime ou banco é editar uma linha de arquivo.',
+    '<strong style="font-weight:900">Manutenibilidade.</strong> A mesma imagem atravessa notebook, pipeline e a demonstração funcional do T3.',
     '<strong style="font-weight:900">Escalabilidade,</strong> de forma seletiva, e isso impõe que a aplicação seja mesmo sem estado.',
-    '<strong style="font-weight:900">Segurança.</strong> Ganha isolamento.',
   ],
   tituloB: 'CUSTA',
   itensB: [
-    '<strong style="font-weight:900">Segurança.</strong> Herda uma superfície nova: imagem base e privilégio de execução.',
+    '<strong style="font-weight:900">Segurança.</strong> Ganha isolamento, e herda uma superfície nova: imagem base e privilégio de execução.',
     '<strong style="font-weight:900">Desempenho.</strong> Principalmente I/O nas máquinas Windows. A Aula 03 já avisa que camada extra prejudica desempenho.',
   ],
   corB: LARANJA,
@@ -746,7 +725,7 @@ add('conteudo', {
   itens: [
     'Adotamos conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, registrada como troca.',
     'O #60 deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.',
-    'A stack ainda não está decidida. Com Dockerfile, trocar runtime ou banco é editar uma linha de arquivo em vez de reinstalar em quatro notebooks.',
+    'A stack ainda não está decidida, e o ADR #63 é onde ela será registrada.',
   ],
   nota: 'Insumo direto da Sprint 3, que começa no dia 15 e tem como objetivo declarado definir as tecnologias e os mecanismos da implementação.',
   notaTitulo: 'PRÓXIMO PASSO',
@@ -776,8 +755,6 @@ add('conteudo', {
   itens: [
     'Os itens #58 a #63 da Sprint 2 estão em To Do. Isto é insumo desses itens, não relato de item concluído.',
     'O #63, onde a stack será decidida, ainda não foi escrito.',
-    'Os itens #56 e #57 da Sprint 1 seguem em Doing.',
-    'A Sprint 2 fecha no dia 14.',
   ],
   nota: 'Container é processo isolado por mecanismo de kernel.<br><br>Imagem é artefato, container é ambiente de execução.<br><br>A decisão arquitetural é a granularidade de tier.',
   notaTitulo: 'PARA LEVAR PARA A P1',

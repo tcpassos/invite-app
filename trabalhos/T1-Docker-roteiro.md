@@ -91,9 +91,9 @@ substituibilidade da Aula 05.
    container nenhum.
 4. Namespaces nomeados pela consequência. mnt dá árvore de montagem própria. pid faz o processo
    virar PID 1 lá dentro. net dá pilha de rede própria, e é por isso que dois containers escutam na
-   mesma porta ao mesmo tempo. Citar clone, unshare e setns pelo nome.
+   mesma porta ao mesmo tempo.
    Em seguida cgroups, que não isolam, contabilizam e limitam. Estourar `memory.max` não deixa o
-   processo lento, o kernel mata e o Docker reporta código 137. Limite de CPU é throttling na virada
+   processo lento, o kernel mata o processo. Limite de CPU é throttling na virada
    de cada período, o que degrada latência de cauda e não a média, e por isso é mais difícil de
    diagnosticar.
 5. A imagem por dentro, com diagrama obrigatório. Camadas somente leitura endereçadas por digest
@@ -109,11 +109,11 @@ substituibilidade da Aula 05.
    Essa distinção é justamente o que falta escrever na nossa página Configuração de Ambiente.
 6. A pilha de execução, com diagrama obrigatório. CLI, dockerd, containerd por gRPC, um shim por
    container e o runc. O runc cria os namespaces, configura cgroups, aplica capabilities e seccomp,
-   faz pivot_root, dá execve no entrypoint e sai, sem ficar residente. O shim é pai do container e
+   sai sem ficar residente. O shim é pai do container e
    não filho do daemon, e foi esse desenho que fez reiniciar o daemon deixar de matar os containers
    em execução.
    Depois as três paredes de segurança em ordem: capabilities, com o root do POSIX fatiado em cerca
-   de quarenta bits independentes, seccomp-bpf, com o perfil padrão bloqueando cerca de 44 chamadas
+   independentes, seccomp-bpf, que bloqueia parte das chamadas
    de sistema, e o LSM por cima. A opção `--privileged` devolve tudo de uma vez e ainda desliga
    seccomp.
 7. OCI como fecho do bloco. Três especificações sob a Linux Foundation desde 2015. Enquadrar no
@@ -219,18 +219,15 @@ para o ADR.
    2022, e nenhuma imagem parou de funcionar, porque imagem é OCI. É substituição por compatibilidade
    de interface acontecendo em escala real. Se houver tempo, citar Felter et al. 2015, o relatório
    técnico da IBM que compara desempenho de máquinas virtuais e containers.
-4. Vantagens em slide próprio, escritas no vocabulário dele e não em vocabulário de DevOps. Usar o
-   quarteto que ele credita às camadas, modularidade, reusabilidade, compreensibilidade e
-   extensibilidade, e o que ele credita a componentes, reuso e desenvolvimento e teste em paralelo.
-   Mais dois pontos curtos: ambiente de teste reprodutível com banco real em container, que viabiliza
-   teste de integração antes da Sprint 4, e a imagem como unidade que atravessa notebook, pipeline e
-   a demonstração funcional que o T3 vai exigir.
+4. As vantagens não têm slide próprio, elas estão no slide de ganho e custo, no fim do bloco, com o
+   quarteto que ele credita às camadas de um lado. Aqui basta anunciar que o balanço vem no fim e
+   seguir para as limitações, senão a mesma lista é dita duas vezes.
 5. Limitações em slide próprio, como nas aulas. O daemon roda como root, e estar no grupo docker
    equivale a root no host, sem sudo e sem trilha de auditoria, com rootless e Podman como respostas
-   possíveis. O Docker escreve a regra de DNAT antes das regras do administrador, então um deny de
-   firewall na porta publicada não bloqueia nada. I/O de bind mount atravessando a fronteira da
-   máquina virtual no WSL2. Estado, que traz junto backup e upgrade de versão maior do banco. E o
-   licenciamento do Docker Desktop.
+   possíveis. A regra de rede que o Docker escreve passa na frente da do administrador, então um
+   deny de firewall na porta publicada não bloqueia nada. Estado, que traz junto backup e upgrade de
+   versão maior do banco. E o licenciamento do Docker Desktop. O custo de I/O no Windows fica para o
+   slide de ganho e custo, para não repetir.
    Nenhum número sai daqui sem medição própria. Ou medimos, e o slide traz o modelo da máquina e a
    data, ou dizemos que a documentação do Docker Desktop recomenda manter os arquivos dentro do WSL2
    por causa do custo de I/O na fronteira, sem quantificar.
@@ -257,8 +254,8 @@ para o ADR.
    A fronteira com orquestração em uma linha: compose é de host único, o MVP cabe em um host,
    Kubernetes entraria com múltiplos nós, e isso é tema de outro grupo.
    Frase que fecha o slide: conteinerização move complexidade em vez de apagá-la.
-8. Considerações Finais, em duas colunas de ganho e custo, com os quatro atributos das Questões
-   Norteadoras nomeados dos dois lados. Manutenibilidade ganha, porque o ambiente passa a ser
+8. Ganho e custo, em duas colunas, com o quarteto da Aula 03 e os quatro atributos das Questões
+   Norteadoras nomeados. É aqui que as vantagens são ditas, uma vez só. Manutenibilidade ganha, porque o ambiente passa a ser
    versionado junto com o código. Escalabilidade ganha de forma seletiva, e isso impõe que a
    aplicação seja mesmo sem estado. Segurança ganha isolamento e herda uma superfície nova, imagem
    base e privilégio de execução. Desempenho custa, principalmente I/O nas máquinas Windows, e a
@@ -290,8 +287,7 @@ Não dizer "como mostramos na abertura". Essa evidência aparece pela primeira v
 uma retomada que a plateia não viu é o tipo de coisa que ele repara.
 
 Em seguida, dito em voz alta, o que o grupo não está afirmando, com número de item ao lado de cada
-pendência: #58 a #63 em To Do, #56 e #57 ainda em Doing na Sprint 1, o #63 é onde a stack será
-decidida, e a Sprint 2 fecha no dia 14. Enumerar as próprias lacunas com número de work item
+pendência: #58 a #63 em To Do e o #63, onde a stack será decidida, ainda por escrever. Enumerar as próprias lacunas com número de work item
 transforma pendência em processo registrado, e é a melhor defesa que existe na arguição.
 
 Depois, três pontos para a turma levar para a P1, que cobre os temas dos seminários. Container é

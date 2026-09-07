@@ -25,54 +25,30 @@
 </helmet>
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C">Vantagens</div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Vantagens no vocabulário<br>da Aula 03</h2>
+    <div class="cartola" style="color:#E94D1C">Limitações</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Limitações e custos</h2>
   </div>
-  <div style="position:absolute; left:72px; top:214px; right:72px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:56px">
-    <div>
-      <div class="cartola" style="color:#21049A; font-size:12px">NA AULA 03</div>
-      <div style="height:3px; background:#21049A; margin:11px 0 20px; width:44px"></div>
-      <div style="display:flex; flex-direction:column; gap:15px">
+  <div style="position:absolute; left:72px; top:202px; right:320px; display:flex; flex-direction:column; gap:19px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E"><strong style="font-weight:900">Modularidade.</strong></p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E"><strong style="font-weight:900">Reusabilidade.</strong></p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A regra de rede que o Docker escreve passa na frente da do administrador, então um deny de firewall na porta publicada não bloqueia nada.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E"><strong style="font-weight:900">Compreensibilidade.</strong></p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Estado, que traz junto backup e upgrade de versão maior do banco.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E"><strong style="font-weight:900">Extensibilidade.</strong></p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Licenciamento do Docker Desktop.</p>
       </div>
-      </div>
-    </div>
-    <div>
-      <div class="cartola" style="color:#E94D1C; font-size:12px">COM CONTAINER</div>
-      <div style="height:3px; background:#E94D1C; margin:11px 0 20px; width:44px"></div>
-      <div style="display:flex; flex-direction:column; gap:15px">
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Uma responsabilidade por imagem, com fronteira declarada.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A mesma imagem atravessa notebook, pipeline e a demonstração funcional do T3.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">O ambiente vira arquivo legível, versionado junto com o código.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Trocar runtime ou banco é editar uma linha, não reinstalar quatro notebooks.</p>
-      </div>
-      </div>
-    </div>
+  </div>
+  <div style="position:absolute; right:72px; top:210px; width:250px; border-left:3px solid #E94D1C; padding-left:20px">
+    <div class="cartola" style="color:#E94D1C; font-size:11px">REGRA</div>
+    <p class="corpo" style="font-size:15px; color:#6B6B78; margin-top:11px">Nenhum número entra neste slide sem medição feita pelo time, com o modelo da máquina e a data.</p>
   </div>
   <div class="rodape" style="color: #6B6B78">
     <span>03 · Vantagens e desvantagens</span><span style="font-weight:900; color: #21049A">22</span>
