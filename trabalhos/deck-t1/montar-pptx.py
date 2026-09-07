@@ -293,7 +293,7 @@ def dg_uml(sl, x, y):
     escrever(tf3, 'Máquina virtual, essa sim, é um nó novo, com sistema operacional próprio.', tam=14.5, cor=GRAFITE, peso=300, entre=1.5)
 
 def dg_tiers(sl, x, y):
-    rotulo(sl, x, y, 1050, 'AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE O FRONT-END E O BANCO RODAM.',
+    rotulo(sl, x, y, 1050, 'AS TRÊS CAMADAS DO BACK-END FICAM NA MESMA IMAGEM NOS TRÊS DESENHOS.',
            tam=12, cor=CINZA, peso=900, espacar=1.4)
     def camadas(cx, cy, larg):
         retangulo(sl, cx, cy, larg, 82, preencher=BRANCO, borda=AZUL, raio=3)

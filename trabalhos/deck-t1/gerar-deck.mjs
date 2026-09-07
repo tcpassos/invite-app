@@ -517,10 +517,10 @@ add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: '', ti
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
   cartola: 'Camada lógica e tier',
-  titulo: 'As mesmas três camadas lógicas,<br>empacotadas de três jeitos',
+  titulo: 'O sistema inteiro em um,<br>dois ou três containers',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'Nenhuma das três muda uma linha do projeto lógico. Todas mudam o empacotamento, e essa escolha é entrada do ADR, o documento de decisões arquiteturais da Sprint 2. Cuidado com o vocabulário: Docker usa <em>layer</em> para o empilhamento do sistema de arquivos da imagem, que não tem relação com a camada lógica da Aula 03.',
+  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no ADR, o documento de decisões arquiteturais da Sprint 2. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da Aula 03.',
   topSvg: 212,
 })
 
