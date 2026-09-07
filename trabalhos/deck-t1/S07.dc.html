@@ -35,15 +35,15 @@
       <div style="display:flex; flex-direction:column; gap:15px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">mnt dá árvore de montagem própria.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O namespace mnt dá ao processo uma árvore de montagem própria.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">pid faz o processo virar PID 1 lá dentro.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O namespace pid faz o processo enxergar a si mesmo como PID 1.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">net dá pilha de rede própria, por isso dois containers escutam na mesma porta.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O namespace net dá uma pilha de rede própria, e é por isso que dois containers conseguem escutar na mesma porta.</p>
       </div>
       </div>
     </div>
@@ -53,15 +53,15 @@
       <div style="display:flex; flex-direction:column; gap:15px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Não isolam nada, apenas contabilizam e limitam o consumo.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Os cgroups não isolam nada, eles contabilizam e limitam o consumo de recursos.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Estourar o limite de memória não deixa lento, o kernel mata o processo.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Quando o processo estoura o limite de memória ele não fica lento, o kernel mata ele.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Limite de CPU não mata, freia. Isso piora as requisições mais lentas e quase não mexe na média, por isso é mais difícil de perceber.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O limite de CPU não mata, ele freia o processo, o que piora as requisições mais lentas e quase não mexe na média, por isso é mais difícil de perceber.</p>
       </div>
       </div>
     </div>

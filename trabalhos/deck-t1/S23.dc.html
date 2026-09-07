@@ -35,15 +35,15 @@
       <div style="display:flex; flex-direction:column; gap:15px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Kernel próprio.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A máquina virtual tem kernel próprio.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Fronteira imposta em hardware.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A fronteira entre ela e o host é imposta em hardware.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Superfície relativamente estreita.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Por isso a superfície de ataque fica relativamente estreita.</p>
       </div>
       </div>
     </div>
@@ -53,15 +53,15 @@
       <div style="display:flex; flex-direction:column; gap:15px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Compartilha o kernel do host.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O container compartilha o kernel do host.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A fronteira é a interface de chamadas de sistema, mais de trezentas, mais /proc, /sys e ioctl.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A fronteira dele é a interface de chamadas de sistema, que são mais de trezentas, somadas a /proc, /sys e ioctl.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">CVE-2019-5736 no runc: o processo de dentro sobrescrevia o binário do runtime pelo /proc/self/exe.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A CVE-2019-5736 mostrou o risco na prática, porque o processo de dentro conseguia sobrescrever o binário do runtime pelo /proc/self/exe.</p>
       </div>
       </div>
     </div>

@@ -389,10 +389,10 @@ add('conteudo', {
   cartola: 'O projeto',
   titulo: 'Invite People',
   itens: [
-    'App web de convites virtuais, com confirmação de presença e consolidação de restrições alimentares.',
-    'Duas superfícies sobre o mesmo Model: o convite público sem login e o painel do anfitrião.',
-    'Arquitetura registrada no Guia da Arquitetura: MVC no front e três camadas no back.',
-    'Questão Norteadora da Sprint 2: como os componentes serão distribuídos e implantados no ambiente de execução?',
+    'É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.',
+    'São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.',
+    'A arquitetura já está registrada no Guia da Arquitetura, com MVC no front e três camadas no back.',
+    'A Questão Norteadora da Sprint 2 pergunta como os componentes serão distribuídos e implantados no ambiente de execução.',
   ],
   nota: 'Três camadas lógicas decididas.<br><br>Nenhuma separação física decidida.',
   notaTitulo: 'ONDE ESTAMOS HOJE',
@@ -457,15 +457,15 @@ add('duasColunas', {
   titulo: 'Namespaces isolam a visão.<br>Cgroups limitam o consumo.',
   tituloA: 'NAMESPACES',
   itensA: [
-    'mnt dá árvore de montagem própria.',
-    'pid faz o processo virar PID 1 lá dentro.',
-    'net dá pilha de rede própria, por isso dois containers escutam na mesma porta.',
+    'O namespace mnt dá ao processo uma árvore de montagem própria.',
+    'O namespace pid faz o processo enxergar a si mesmo como PID 1.',
+    'O namespace net dá uma pilha de rede própria, e é por isso que dois containers conseguem escutar na mesma porta.',
   ],
   tituloB: 'CGROUPS V2',
   itensB: [
-    'Não isolam nada, apenas contabilizam e limitam o consumo.',
-    'Estourar o limite de memória não deixa lento, o kernel mata o processo.',
-    'Limite de CPU não mata, freia. Isso piora as requisições mais lentas e quase não mexe na média, por isso é mais difícil de perceber.',
+    'Os cgroups não isolam nada, eles contabilizam e limitam o consumo de recursos.',
+    'Quando o processo estoura o limite de memória ele não fica lento, o kernel mata ele.',
+    'O limite de CPU não mata, ele freia o processo, o que piora as requisições mais lentas e quase não mexe na média, por isso é mais difícil de perceber.',
   ],
 })
 
@@ -573,7 +573,7 @@ add('duasColunas', {
   itensA: [
     'A imagem passa a ter uma responsabilidade só, que é mais coesão.',
     'O código do front não está na imagem da API, então a API não depende dele nem por acidente.',
-    'Só o serviço de fronteira publica porta. O banco fica na rede interna sem mapeamento.',
+    'Só o serviço de fronteira publica porta, e o banco fica na rede interna sem mapeamento nenhum.',
     'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural da Aula 02.',
   ],
   tituloB: 'ACOPLAMENTO',
@@ -590,7 +590,7 @@ add('conteudo', {
   titulo: 'O convite público e o painel<br>têm cargas diferentes',
   itens: [
     'Marina é a persona da anfitriã, e a jornada dela descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.',
-    'Replicar só o serviço público faz sentido. Replicar o painel não.',
+    'Replicar só o serviço público faz sentido, e replicar o painel não faz.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
   nota: 'Mesma imagem de front ou imagens separadas?<br><br>Entrada direta para o #59 e o #60. Ainda não decidida.',
@@ -637,8 +637,8 @@ add('conteudo', {
   itens: [
     'O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.',
     'A regra de rede que o Docker escreve passa na frente da do administrador, então um deny de firewall na porta publicada não bloqueia nada.',
-    'Estado, que traz junto backup e upgrade de versão maior do banco.',
-    'Licenciamento do Docker Desktop.',
+    'Container com estado traz junto o problema de backup e o de upgrade de versão maior do banco, que não somem por estar em imagem.',
+    'O Docker Desktop é pago para empresa acima de certo porte, o que afeta quem for usar isto fora da faculdade.',
   ],
   nota: 'Nenhum número entra neste slide sem medição feita pelo time, com o modelo da máquina e a data.',
   notaTitulo: 'REGRA',
@@ -651,12 +651,12 @@ add('duasColunas', {
   cartola: 'Container e máquina virtual',
   titulo: 'Comparação pela<br>superfície de ataque',
   tituloA: 'MÁQUINA VIRTUAL',
-  itensA: ['Kernel próprio.', 'Fronteira imposta em hardware.', 'Superfície relativamente estreita.'],
+  itensA: ['A máquina virtual tem kernel próprio.', 'A fronteira entre ela e o host é imposta em hardware.', 'Por isso a superfície de ataque fica relativamente estreita.'],
   tituloB: 'CONTAINER',
   itensB: [
-    'Compartilha o kernel do host.',
-    'A fronteira é a interface de chamadas de sistema, mais de trezentas, mais /proc, /sys e ioctl.',
-    'CVE-2019-5736 no runc: o processo de dentro sobrescrevia o binário do runtime pelo /proc/self/exe.',
+    'O container compartilha o kernel do host.',
+    'A fronteira dele é a interface de chamadas de sistema, que são mais de trezentas, somadas a /proc, /sys e ioctl.',
+    'A CVE-2019-5736 mostrou o risco na prática, porque o processo de dentro conseguia sobrescrever o binário do runtime pelo /proc/self/exe.',
   ],
   corB: LARANJA,
   tam: 32,
@@ -683,10 +683,10 @@ add('duasColunas', {
   titulo: 'Quatro critérios para não conteinerizar,<br>e a nossa situação',
   tituloA: 'OS QUATRO CRITÉRIOS',
   itensA: [
-    'Monolito num servidor que nunca escala.',
-    'Time sem integração contínua, que só ganha um passo de build a mais.',
-    'Aplicação sensível a latência de cauda.',
-    'Sistema dominado por estado.',
+    'O primeiro é o monolito que roda num servidor só e nunca vai escalar.',
+    'O segundo é o time sem integração contínua, que só ganha um passo de build a mais.',
+    'O terceiro é a aplicação sensível a latência de cauda.',
+    'O quarto é o sistema dominado por estado.',
   ],
   tituloB: 'ONDE NÓS ESTAMOS',
   itensB: [
@@ -723,7 +723,7 @@ add('conteudo', {
   cartola: 'Recomendação para o ADR #63',
   titulo: 'Recomendação do grupo',
   itens: [
-    'Adotamos conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, registrada como troca.',
+    'O grupo recomenda adotar conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto.',
     'O #60 deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.',
     'A stack ainda não está decidida, e o ADR #63 é onde ela será registrada.',
   ],
@@ -738,13 +738,13 @@ add('duasColunas', {
   titulo: 'O que mudou no ambiente<br>do time',
   tituloA: 'NO COMEÇO DO PROJETO',
   itensA: [
-    'Uma linha de .gitattributes forçando LF nos scripts, porque o Git Bash quebra no Windows.',
+    'O repositório tem uma linha de .gitattributes forçando LF nos scripts, porque sem ela o Git Bash quebra no Windows.',
     'Os ambientes do time já divergem antes de existir a primeira linha de código do produto.',
   ],
   tituloB: 'AGORA',
   itensB: [
-    'Um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando.',
-    'E que vira o diagrama de implantação do item #60.',
+    'Existe um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando.',
+    'Esse mesmo arquivo é o que vira o diagrama de implantação do item #60.',
   ],
 })
 
