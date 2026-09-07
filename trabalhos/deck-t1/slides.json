@@ -19,9 +19,9 @@
    "É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.",
    "São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.",
    "A arquitetura já está registrada no Guia da Arquitetura, com MVC no front e três camadas no back.",
-   "A Questão Norteadora da Sprint 2 pergunta como os componentes serão distribuídos e implantados no ambiente de execução."
+   "A Questão Norteadora da Sprint 2, que é a pergunta que a sprint precisa responder, é como os componentes serão distribuídos e implantados no ambiente de execução."
   ],
-  "nota": "Três camadas lógicas decididas.<br><br>Nenhuma separação física decidida.",
+  "nota": "As três camadas do back já estão decididas.<br><br>Falta decidir em quantos processos separados elas vão rodar.",
   "notaTitulo": "ONDE ESTAMOS HOJE",
   "right": 330,
   "n": 2

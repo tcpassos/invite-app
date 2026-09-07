@@ -52,7 +52,9 @@ que a ausência de código não pareça desculpa no final.
 1. O projeto em quarenta segundos. Invite People, convites virtuais com RSVP e consolidação de
    restrições alimentares. Duas superfícies sobre o mesmo Model, o convite público sem login e o
    painel do anfitrião. Arquitetura já registrada no Guia da Arquitetura. A nota lateral do slide dá
-   a situação de hoje: três camadas lógicas decididas e nenhuma separação física decidida.
+   a situação de hoje: as três camadas do back já decididas e ainda sem decisão de em quantos
+   processos separados elas vão rodar. Não usar aqui os termos camada lógica e separação física, que
+   só ganham sentido no slide de tiers, no Bloco 02.
 2. Contrato e agenda, ditos no minuto dois. A implementação começa na Sprint 4, em 06/10, então não
    existe aplicação para conteinerizar e a demonstração do final é do ambiente. Nem o contrato nem a
    agenda têm slide, os dois são falados. O contrato aparece escrito só no divisor da seção 03, onde
