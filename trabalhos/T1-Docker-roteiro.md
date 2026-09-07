@@ -263,7 +263,7 @@ para o ADR.
    base e privilégio de execução. Desempenho custa, principalmente I/O nas máquinas Windows, e a
    própria Aula 03 já avisa que camada extra prejudica desempenho.
    A recomendação em três frases, que é o que vai para o ADR #63. Adotamos conteinerização como
-   estratégia de empacotamento e de ambiente de desenvolvimento, registrada como troca. O #60 deixa
+   estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto. O #60 deixa
    de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira
    artefato do repositório. E a terceira, que é a mais forte: conteinerizar barateia errar, porque a
    stack ainda não está decidida e com Dockerfile a escolha de runtime e de banco vira uma linha de
