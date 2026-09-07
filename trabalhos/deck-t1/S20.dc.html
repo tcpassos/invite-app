@@ -13,7 +13,7 @@
     body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
     a { color: #E94D1C; text-decoration: none; }
     a:hover { color: #21049A; }
-    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #21049A; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
     .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
     .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
     .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
@@ -23,17 +23,32 @@
     .cc { font-weight: 900; color: #E94D1C; flex: none; }
   </style>
 </helmet>
-<div class="sl" style="background:#21049A">
-  <div style="position:absolute; left:0; top:0; bottom:0; width:10px; background:#E94D1C"></div>
-  <div style="position:absolute; right:-120px; bottom:-180px; width:520px; height:520px; border-radius:50%; background:rgba(255,255,255,.05)"></div>
-  <div style="position:absolute; left:96px; top:50%; transform:translateY(-50%); right:120px">
-    <div style="font-weight:900; font-size:130px; color:rgba(255,255,255,.16); line-height:1">03</div>
-    <div class="cartola" style="color:#E94D1C; margin-top:10px">Andreas, com Tiago na segurança · 7 minutos</div>
-    <h2 class="titulo" style="color:#fff; font-size:56px; margin-top:16px; max-width:820px">Vantagens, desvantagens e demonstração</h2>
-    <p class="corpo" style="color:rgba(255,255,255,.72); font-size:19px; margin-top:22px; max-width:700px">A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.</p>
+<div class="sl" style="background:#fff">
+  <div style="position:absolute; left:72px; top:66px; right:72px">
+    <div class="cartola" style="color:#E94D1C">Demonstração, 90 segundos</div>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Volume nomeado e persistência<br>entre execuções</h2>
   </div>
-  <div class="rodape" style="color: rgba(255,255,255,.55)">
-    <span>Bloco D</span><span style="font-weight:900; color: #fff">20</span>
+  <div style="position:absolute; left:72px; top:206px; right:72px; background:#12121A; border-radius:8px; padding:24px 28px; font-family:'Roboto Mono', ui-monospace, Menlo, Consolas, monospace">
+    <div style="display:flex; gap:9px; margin-bottom:18px; align-items:center">
+      <span style="width:34px;height:3px;border-radius:2px;background:#E94D1C"></span>
+      <span style="font-size:11px; letter-spacing:.14em; color:#6B6B78; font-weight:400">TERMINAL</span>
+    </div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose up -d</div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose ps</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">NAME   IMAGE          STATUS</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">web    nginx:alpine   Up</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">db     postgres:16    Up (healthy)</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose run --rm client psql -h db -c "create table t(); "</div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down && docker compose up -d</div>
+    <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># a tabela continua lá, o volume sobreviveu</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down -v</div>
+    <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># agora o dado some junto com o volume</div>
+  </div>
+  <div style="position:absolute; left:72px; bottom:76px; right:72px; font-size:12px; color:#6B6B78; font-weight:400">A imagem de fundo do UC003 e o CSV do UC008 não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.</div>
+  <div class="rodape" style="color: #6B6B78">
+    <span>Bloco D · Demonstração</span><span style="font-weight:900; color: #21049A">20</span>
   </div>
 </div>
 </x-dc>

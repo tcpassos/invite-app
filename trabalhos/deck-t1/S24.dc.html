@@ -25,37 +25,49 @@
 </helmet>
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C">Limitações</div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Limitações e custos</h2>
+    <div class="cartola" style="color:#E94D1C">Container e máquina virtual</div>
+    <h2 class="titulo" style="color:#21049A; font-size:32px; margin-top:14px; max-width:1000px">Comparação pela<br>superfície de ataque</h2>
   </div>
-  <div style="position:absolute; left:72px; top:202px; right:320px; display:flex; flex-direction:column; gap:19px">
+  <div style="position:absolute; left:72px; top:214px; right:72px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:56px">
+    <div>
+      <div class="cartola" style="color:#21049A; font-size:12px">MÁQUINA VIRTUAL</div>
+      <div style="height:3px; background:#21049A; margin:11px 0 20px; width:44px"></div>
+      <div style="display:flex; flex-direction:column; gap:15px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Kernel próprio.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">O Docker escreve a regra de DNAT antes das regras do administrador, então um deny de firewall na porta publicada não bloqueia nada.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Fronteira imposta em hardware.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">I/O de bind mount atravessando a fronteira da máquina virtual no WSL2.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Superfície relativamente estreita.</p>
+      </div>
+      </div>
+    </div>
+    <div>
+      <div class="cartola" style="color:#E94D1C; font-size:12px">CONTAINER</div>
+      <div style="height:3px; background:#E94D1C; margin:11px 0 20px; width:44px"></div>
+      <div style="display:flex; flex-direction:column; gap:15px">
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Compartilha o kernel do host.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Estado, que traz junto backup e upgrade de versão maior do banco.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A fronteira é a interface de chamadas de sistema, mais de trezentas, mais /proc, /sys e ioctl.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Licenciamento do Docker Desktop.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">CVE-2019-5736 no runc: o processo de dentro sobrescrevia o binário do runtime pelo /proc/self/exe.</p>
       </div>
-  </div>
-  <div style="position:absolute; right:72px; top:210px; width:250px; border-left:3px solid #E94D1C; padding-left:20px">
-    <div class="cartola" style="color:#E94D1C; font-size:11px">REGRA</div>
-    <p class="corpo" style="font-size:15px; color:#6B6B78; margin-top:11px">Nenhum número entra neste slide sem medição feita pelo time, com o modelo da máquina e a data.</p>
+      </div>
+    </div>
   </div>
   <div class="rodape" style="color: #6B6B78">
-    <span>Bloco D · Limitações</span><span style="font-weight:900; color: #21049A">24</span>
+    <span>Bloco D · Segurança</span><span style="font-weight:900; color: #21049A">24</span>
   </div>
 </div>
 </x-dc>

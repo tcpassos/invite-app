@@ -393,25 +393,11 @@ add('conteudo', {
     'Duas superfícies sobre o mesmo Model: o convite público sem login e o painel do anfitrião.',
     'Arquitetura registrada no Guia da Arquitetura: MVC no front e três camadas no back.',
     'Questão Norteadora da Sprint 2: como os componentes serão distribuídos e implantados no ambiente de execução?',
+    'A implementação do produto começa na Sprint 4, em 06/10. A demonstração do final é do ambiente, não do produto.',
   ],
   nota: 'Três camadas lógicas decididas.<br><br>Nenhuma separação física decidida.',
   notaTitulo: 'ONDE ESTAMOS HOJE',
   right: 330,
-})
-
-add('agenda', {
-  bloco: 'Bloco A · Introdução',
-  cartola: 'Agenda',
-  titulo: 'Quem apresenta cada parte',
-  itens: [
-    { t: 'Introdução', d: 'Guilherme' },
-    { t: 'Definições e arquitetura da tecnologia', d: 'Tiago' },
-    { t: 'Aplicação no projeto', d: 'Gabriel' },
-    { t: 'Vantagens e desvantagens', d: 'Andreas' },
-    { t: 'Considerações finais e referências', d: 'Andreas' },
-  ],
-  nota: 'A implementação do produto começa na Sprint 4, em 06/10. A demonstração do final é do ambiente, não do produto.',
-  tam: 30,
 })
 
 add('secao', { bloco: 'Bloco B', num: '01', cartola: 'Tiago · 6 minutos', titulo: 'Definições e arquitetura', sub: 'O que o kernel faz quando alguém digita docker run, e por que a imagem é em camadas.' })
@@ -821,10 +807,10 @@ add('conteudo', {
 // ---------- escrita ----------
 
 const paginas = [
-  { id: 'p-a', nome: 'Capa e Bloco A', ate: 3 },
-  { id: 'p-b', nome: 'Bloco B', ate: 12 },
-  { id: 'p-c', nome: 'Bloco C', ate: 19 },
-  { id: 'p-d', nome: 'Bloco D', ate: 29 },
+  { id: 'p-a', nome: 'Capa e Bloco A', ate: 2 },
+  { id: 'p-b', nome: 'Bloco B', ate: 11 },
+  { id: 'p-c', nome: 'Bloco C', ate: 18 },
+  { id: 'p-d', nome: 'Bloco D', ate: 28 },
   { id: 'p-f', nome: 'Fecho', ate: 99 },
 ]
 const paginaDe = (n) => paginas.find((p) => n <= p.ate).id

@@ -19,43 +19,13 @@
    "App web de convites virtuais, com confirmação de presença e consolidação de restrições alimentares.",
    "Duas superfícies sobre o mesmo Model: o convite público sem login e o painel do anfitrião.",
    "Arquitetura registrada no Guia da Arquitetura: MVC no front e três camadas no back.",
-   "Questão Norteadora da Sprint 2: como os componentes serão distribuídos e implantados no ambiente de execução?"
+   "Questão Norteadora da Sprint 2: como os componentes serão distribuídos e implantados no ambiente de execução?",
+   "A implementação do produto começa na Sprint 4, em 06/10. A demonstração do final é do ambiente, não do produto."
   ],
   "nota": "Três camadas lógicas decididas.<br><br>Nenhuma separação física decidida.",
   "notaTitulo": "ONDE ESTAMOS HOJE",
   "right": 330,
   "n": 2
- },
- {
-  "modelo": "agenda",
-  "bloco": "Bloco A · Introdução",
-  "cartola": "Agenda",
-  "titulo": "Quem apresenta cada parte",
-  "itens": [
-   {
-    "t": "Introdução",
-    "d": "Guilherme"
-   },
-   {
-    "t": "Definições e arquitetura da tecnologia",
-    "d": "Tiago"
-   },
-   {
-    "t": "Aplicação no projeto",
-    "d": "Gabriel"
-   },
-   {
-    "t": "Vantagens e desvantagens",
-    "d": "Andreas"
-   },
-   {
-    "t": "Considerações finais e referências",
-    "d": "Andreas"
-   }
-  ],
-  "nota": "A implementação do produto começa na Sprint 4, em 06/10. A demonstração do final é do ambiente, não do produto.",
-  "tam": 30,
-  "n": 3
  },
  {
   "modelo": "secao",
@@ -64,7 +34,7 @@
   "cartola": "Tiago · 6 minutos",
   "titulo": "Definições e arquitetura",
   "sub": "O que o kernel faz quando alguém digita docker run, e por que a imagem é em camadas.",
-  "n": 4
+  "n": 3
  },
  {
   "modelo": "linhaTempo",
@@ -102,7 +72,7 @@
    }
   ],
   "remate": "O isolamento de processos existe desde 1979. O que é recente é a padronização da cadeia de execução, a partir de 2015.",
-  "n": 5
+  "n": 4
  },
  {
   "modelo": "duasColunas",
@@ -117,7 +87,7 @@
   "itensB": [
    "Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por digest."
   ],
-  "n": 6
+  "n": 5
  },
  {
   "modelo": "terminal",
@@ -138,7 +108,7 @@
    "4026532196 net         3  4821 root"
   ],
   "captura": "Saída da distro docker-desktop do WSL. No Docker Desktop em Windows o daemon e os containers rodam numa distro própria, com namespace de PID separado, então ps na distro de trabalho não mostraria container nenhum.",
-  "n": 7
+  "n": 6
  },
  {
   "modelo": "duasColunas",
@@ -158,7 +128,7 @@
    "Estourar memory.max não deixa lento: o kernel mata e o Docker reporta 137.",
    "Limite de CPU é throttling. Degrada latência de cauda, não a média, e por isso é mais difícil de diagnosticar."
   ],
-  "n": 8
+  "n": 7
  },
  {
   "modelo": "diagrama",
@@ -169,7 +139,7 @@
   "svgNome": "svgCamadas",
   "legenda": "Um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do UC001.",
   "topSvg": 196,
-  "n": 9
+  "n": 8
  },
  {
   "modelo": "diagrama",
@@ -179,7 +149,7 @@
   "svg": "<svg width=\"940\" height=\"270\" viewBox=\"0 0 940 270\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <rect x=\"10\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"85\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">docker CLI</text>\n    <text x=\"85\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">cliente</text>\n    <rect x=\"205\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"280\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">dockerd</text>\n    <text x=\"280\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">daemon, roda como root</text>\n    <rect x=\"400\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"475\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">containerd</text>\n    <text x=\"475\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">ciclo de vida</text>\n    <rect x=\"595\" y=\"86\" width=\"140\" height=\"60\" rx=\"5\" fill=\"#E94D1C\"/>\n    <text x=\"665\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">shim</text>\n    <text x=\"665\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">um por container</text>\n    <rect x=\"780\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#E94D1C\"/>\n    <text x=\"855\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">runc</text>\n    <text x=\"855\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">cria e sai</text>\n    <path d=\"M160 116 L200 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M355 116 L395 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M550 116 L590 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M735 116 L775 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <text x=\"375\" y=\"78\" font-size=\"11\" fill=\"#6B6B78\" font-weight=\"400\">gRPC</text>\n    <defs><marker id=\"seta\" markerWidth=\"7\" markerHeight=\"7\" refX=\"6\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L6,3 L0,6 Z\" fill=\"#6B6B78\"/></marker></defs>\n    <text x=\"10\" y=\"196\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar</text>\n    <text x=\"10\" y=\"216\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">o daemon deixar de matar os containers em execução.</text>\n    <text x=\"10\" y=\"248\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">O runc cria os namespaces, configura cgroups, aplica capabilities e seccomp, faz pivot_root, dá execve e sai.</text>\n  </g>\n</svg>",
   "svgNome": "svgPilha",
   "topSvg": 200,
-  "n": 10
+  "n": 9
  },
  {
   "modelo": "conteudo",
@@ -194,7 +164,7 @@
   "nota": "A opção --privileged devolve tudo de uma vez e ainda desliga o seccomp.",
   "notaTitulo": "CUIDADO",
   "right": 330,
-  "n": 11
+  "n": 10
  },
  {
   "modelo": "impacto",
@@ -203,7 +173,7 @@
   "titulo": "Docker implementa as<br>especificações da OCI",
   "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É um exemplo da substituibilidade por compatibilidade de interface da Aula 05.",
   "tam": 46,
-  "n": 12
+  "n": 11
  },
  {
   "modelo": "secao",
@@ -212,7 +182,7 @@
   "cartola": "Gabriel · 6 minutos",
   "titulo": "Aplicação no Invite People",
   "sub": "Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.",
-  "n": 13
+  "n": 12
  },
  {
   "modelo": "diagrama",
@@ -223,7 +193,7 @@
   "svgNome": "svgTiers",
   "legenda": "Nenhuma das três muda uma linha do projeto lógico. Todas mudam o empacotamento, e essa escolha é entrada do ADR #63. Cuidado com o vocabulário: Docker usa <em>layer</em> para o empilhamento do sistema de arquivos da imagem, que não tem relação com a camada lógica da Aula 03.",
   "topSvg": 212,
-  "n": 14
+  "n": 13
  },
  {
   "modelo": "diagrama",
@@ -233,7 +203,7 @@
   "svg": "<svg width=\"860\" height=\"280\" viewBox=\"0 0 860 280\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <rect x=\"20\" y=\"20\" width=\"400\" height=\"240\" rx=\"4\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"2\"/>\n    <text x=\"40\" y=\"48\" font-size=\"12\" fill=\"#21049A\" font-weight=\"900\" letter-spacing=\"1.4\">&#171;device&#187;</text>\n    <text x=\"40\" y=\"70\" font-size=\"19\" fill=\"#21049A\" font-weight=\"900\">Host de desenvolvimento</text>\n    <rect x=\"52\" y=\"94\" width=\"336\" height=\"146\" rx=\"4\" fill=\"none\" stroke=\"#E94D1C\" stroke-width=\"2\"/>\n    <text x=\"72\" y=\"122\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"900\" letter-spacing=\"1.4\">&#171;executionEnvironment&#187;</text>\n    <text x=\"72\" y=\"144\" font-size=\"17\" fill=\"#E94D1C\" font-weight=\"900\">Container</text>\n    <rect x=\"84\" y=\"164\" width=\"272\" height=\"58\" rx=\"3\" fill=\"#F0F0F5\" stroke=\"#6B6B78\"/>\n    <text x=\"104\" y=\"188\" font-size=\"11\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.2\">&#171;artifact&#187;</text>\n    <text x=\"104\" y=\"209\" font-size=\"15\" fill=\"#1A1A1E\" font-weight=\"400\">imagem (tag + digest)</text>\n    <text x=\"470\" y=\"60\" font-size=\"17\" fill=\"#21049A\" font-weight=\"900\">Ambiente de execução é</text>\n    <text x=\"470\" y=\"84\" font-size=\"17\" fill=\"#21049A\" font-weight=\"900\">uma especialização de nó.</text>\n    <text x=\"470\" y=\"124\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">Por isso nunca dizer que container não é nó.</text>\n    <text x=\"470\" y=\"148\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">O modelo fiel é o container aninhado no host,</text>\n    <text x=\"470\" y=\"172\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">com a imagem implantada dentro dele.</text>\n    <line x1=\"470\" y1=\"200\" x2=\"840\" y2=\"200\" stroke=\"#D9D9D9\"/>\n    <text x=\"470\" y=\"230\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">Máquina virtual, essa sim, é um nó novo,</text>\n    <text x=\"470\" y=\"254\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">com sistema operacional próprio.</text>\n  </g>\n</svg>",
   "svgNome": "svgUml",
   "topSvg": 210,
-  "n": 15
+  "n": 14
  },
  {
   "modelo": "diagrama",
@@ -243,7 +213,7 @@
   "svg": "<svg width=\"960\" height=\"270\" viewBox=\"0 0 960 270\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <text x=\"0\" y=\"16\" font-size=\"11\" fill=\"#21049A\" font-weight=\"900\" letter-spacing=\"1.4\">RASCUNHO #59, DIAGRAMA DE COMPONENTES</text>\n    <rect x=\"0\" y=\"34\" width=\"400\" height=\"196\" rx=\"5\" fill=\"none\" stroke=\"#D9D9D9\"/>\n    <rect x=\"28\" y=\"60\" width=\"150\" height=\"48\" rx=\"3\" fill=\"#21049A\"/><text x=\"103\" y=\"90\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Convite público</text>\n    <rect x=\"222\" y=\"60\" width=\"150\" height=\"48\" rx=\"3\" fill=\"#21049A\"/><text x=\"297\" y=\"90\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Painel</text>\n    <rect x=\"125\" y=\"130\" width=\"150\" height=\"44\" rx=\"3\" fill=\"#21049A\"/><text x=\"200\" y=\"157\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">API</text>\n    <rect x=\"125\" y=\"188\" width=\"150\" height=\"30\" rx=\"3\" fill=\"#6B6B78\"/><text x=\"200\" y=\"208\" font-size=\"12\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n    <path d=\"M103 108 L180 130\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/><path d=\"M297 108 L220 130\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/>\n    <path d=\"M200 174 L200 188\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/>\n    <path d=\"M420 130 L520 130\" stroke=\"#E94D1C\" stroke-width=\"2\" marker-end=\"url(#s2)\"/>\n    <text x=\"428\" y=\"120\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"900\">#72</text>\n    <defs><marker id=\"s2\" markerWidth=\"8\" markerHeight=\"8\" refX=\"7\" refY=\"3.5\" orient=\"auto\"><path d=\"M0,0 L7,3.5 L0,7 Z\" fill=\"#E94D1C\"/></marker></defs>\n    <text x=\"560\" y=\"16\" font-size=\"11\" fill=\"#E94D1C\" font-weight=\"900\" letter-spacing=\"1.4\">RASCUNHO #60, DIAGRAMA DE IMPLANTAÇÃO</text>\n    <rect x=\"560\" y=\"34\" width=\"400\" height=\"196\" rx=\"5\" fill=\"none\" stroke=\"#E94D1C\" stroke-width=\"2\"/>\n    <text x=\"580\" y=\"58\" font-size=\"11\" fill=\"#E94D1C\" font-weight=\"900\">&#171;device&#187; host</text>\n    <rect x=\"580\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"636\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"636\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n    <rect x=\"704\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"760\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"760\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">API</text>\n    <rect x=\"828\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"884\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"884\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n    <path d=\"M692 96 L704 96\" stroke=\"#E94D1C\" stroke-width=\"1.6\"/><path d=\"M816 96 L828 96\" stroke=\"#E94D1C\" stroke-width=\"1.6\"/>\n    <rect x=\"580\" y=\"146\" width=\"360\" height=\"34\" rx=\"3\" fill=\"#E94D1C\" fill-opacity=\"0.1\" stroke=\"#E94D1C\" stroke-dasharray=\"4 3\"/>\n    <text x=\"760\" y=\"168\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"400\" text-anchor=\"middle\">rede nomeada, resolução por nome de serviço  ·  #75</text>\n    <text x=\"580\" y=\"206\" font-size=\"12.5\" fill=\"#6B6B78\" font-weight=\"300\">#71 nós  ·  #73 imagem por tag e digest  ·  #74, #76 e #77 são passos de processo</text>\n  </g>\n</svg>",
   "svgNome": "svgDois",
   "topSvg": 214,
-  "n": 16
+  "n": 15
  },
  {
   "modelo": "codigo",
@@ -269,7 +239,7 @@
    "A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.",
    "<strong style=\"font-weight:900\">As imagens são exemplo.</strong> A stack ainda não foi decidida, é assunto do ADR #63."
   ],
-  "n": 17
+  "n": 16
  },
  {
   "modelo": "duasColunas",
@@ -289,7 +259,7 @@
    "Redução de acoplamento. Ele muda de forma e passa a ter latência, falha parcial e ordem de subida."
   ],
   "corB": "#E94D1C",
-  "n": 18
+  "n": 17
  },
  {
   "modelo": "conteudo",
@@ -304,7 +274,7 @@
   "nota": "Mesma imagem de front ou imagens separadas?<br><br>Entrada direta para o #59 e o #60. Ainda não decidida.",
   "notaTitulo": "EM ABERTO",
   "right": 340,
-  "n": 19
+  "n": 18
  },
  {
   "modelo": "secao",
@@ -313,7 +283,7 @@
   "cartola": "Andreas, com Tiago na segurança · 7 minutos",
   "titulo": "Vantagens, desvantagens e demonstração",
   "sub": "A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.",
-  "n": 20
+  "n": 19
  },
  {
   "modelo": "terminal",
@@ -336,7 +306,7 @@
   ],
   "captura": "A imagem de fundo do UC003 e o CSV do UC008 não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.",
   "rodapeAlto": 76,
-  "n": 21
+  "n": 20
  },
  {
   "modelo": "impacto",
@@ -345,7 +315,7 @@
   "titulo": "A remoção do dockershim<br>no Kubernetes 1.24",
   "sub": "O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface, no vocabulário da Aula 05.",
   "tam": 48,
-  "n": 22
+  "n": 21
  },
  {
   "modelo": "duasColunas",
@@ -366,7 +336,7 @@
    "O ambiente vira arquivo legível, versionado junto com o código.",
    "Trocar runtime ou banco é editar uma linha, não reinstalar quatro notebooks."
   ],
-  "n": 23
+  "n": 22
  },
  {
   "modelo": "conteudo",
@@ -384,7 +354,7 @@
   "notaTitulo": "REGRA",
   "right": 320,
   "top": 202,
-  "n": 24
+  "n": 23
  },
  {
   "modelo": "duasColunas",
@@ -405,7 +375,7 @@
   ],
   "corB": "#E94D1C",
   "tam": 32,
-  "n": 25
+  "n": 24
  },
  {
   "modelo": "tabela",
@@ -441,7 +411,7 @@
     "Move complexidade em vez de apagá-la"
    ]
   ],
-  "n": 26
+  "n": 25
  },
  {
   "modelo": "duasColunas",
@@ -463,7 +433,7 @@
   ],
   "corB": "#E94D1C",
   "tam": 34,
-  "n": 27
+  "n": 26
  },
  {
   "modelo": "duasColunas",
@@ -483,7 +453,7 @@
   ],
   "corB": "#E94D1C",
   "tam": 34,
-  "n": 28
+  "n": 27
  },
  {
   "modelo": "conteudo",
@@ -498,7 +468,7 @@
   "nota": "Insumo direto da Sprint 3, que começa no dia 15 e tem como objetivo declarado definir as tecnologias e os mecanismos da implementação.",
   "notaTitulo": "PRÓXIMO PASSO",
   "right": 330,
-  "n": 29
+  "n": 28
  },
  {
   "modelo": "duasColunas",
@@ -515,7 +485,7 @@
    "Um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando.",
    "E que vira o diagrama de implantação do item #60."
   ],
-  "n": 30
+  "n": 29
  },
  {
   "modelo": "conteudo",
@@ -532,7 +502,7 @@
   "notaTitulo": "PARA LEVAR PARA A P1",
   "notaW": 280,
   "right": 350,
-  "n": 31
+  "n": 30
  },
  {
   "modelo": "conteudo",
@@ -551,6 +521,6 @@
   ],
   "right": 120,
   "top": 200,
-  "n": 32
+  "n": 31
  }
 ]

@@ -35,8 +35,8 @@ implantado nele. Ambiente de execução é uma especialização de nó, então n
 
 Mais um minuto para as três trocas de apresentador. Total 23, dentro da faixa de 20 a 25.
 
-Os nomes da agenda seguem o formato das aulas dele: Introdução, Definições, Arquitetura, Aplicação
-no projeto, Vantagens e Desvantagens, Considerações Finais, Referências.
+Os nomes falados na agenda seguem o formato das aulas dele: Introdução, Definições, Arquitetura,
+Aplicação no projeto, Vantagens e Desvantagens, Considerações Finais, Referências.
 
 ---
 
@@ -52,8 +52,10 @@ que a ausência de código não pareça desculpa no final.
    execução. Fechar o slide com a situação de hoje: três camadas lógicas decididas e nenhuma
    separação física decidida.
 2. Contrato e agenda, ditos no minuto dois. A implementação começa na Sprint 4, em 06/10, então não
-   existe aplicação para conteinerizar e a demonstração do final é do ambiente. Em seguida a agenda
-   com o dono de cada bloco, avisando que cada um responde pelo próprio bloco na arguição.
+   existe aplicação para conteinerizar e a demonstração do final é do ambiente. Esse contrato está
+   no último item do slide do projeto. Em seguida a agenda com o dono de cada bloco, avisando que
+   cada um responde pelo próprio bloco na arguição. A agenda não tem slide, é falada, então o
+   Guilherme precisa dizer os quatro nomes e os quatro blocos em voz alta.
 
 Perguntas prováveis: por que Docker e não outra da lista, vocês já entregaram o diagrama de
 implantação, qual a diferença entre camada lógica e separação física, o que exatamente vão
@@ -302,7 +304,7 @@ A avaliação é individual e vale 15%, então vale combinar quatro regras por e
 2. Ninguém responde duas perguntas seguidas enquanto houver integrante que ainda não respondeu
    nenhuma.
 3. Segurança e mecanismos de kernel são com o Tiago, em qualquer bloco, e isso é anunciado na
-   agenda.
+   agenda falada da abertura.
 4. O Guilherme fica com um segundo território técnico simples e defensável, para não passar a
    arguição inteira calado.
 

@@ -13,7 +13,7 @@
     body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
     a { color: #E94D1C; text-decoration: none; }
     a:hover { color: #21049A; }
-    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #21049A; }
     .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
     .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
     .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
@@ -23,41 +23,17 @@
     .cc { font-weight: 900; color: #E94D1C; flex: none; }
   </style>
 </helmet>
-<div class="sl" style="background:#fff">
-  <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C">Agenda</div>
-    <h2 class="titulo" style="color:#21049A; font-size:30px; margin-top:14px; max-width:1000px">Quem apresenta cada parte</h2>
+<div class="sl" style="background:#21049A">
+  <div style="position:absolute; left:0; top:0; bottom:0; width:10px; background:#E94D1C"></div>
+  <div style="position:absolute; right:-120px; bottom:-180px; width:520px; height:520px; border-radius:50%; background:rgba(255,255,255,.05)"></div>
+  <div style="position:absolute; left:96px; top:50%; transform:translateY(-50%); right:120px">
+    <div style="font-weight:900; font-size:130px; color:rgba(255,255,255,.16); line-height:1">01</div>
+    <div class="cartola" style="color:#E94D1C; margin-top:10px">Tiago · 6 minutos</div>
+    <h2 class="titulo" style="color:#fff; font-size:56px; margin-top:16px; max-width:820px">Definições e arquitetura</h2>
+    <p class="corpo" style="color:rgba(255,255,255,.72); font-size:19px; margin-top:22px; max-width:700px">O que o kernel faz quando alguém digita docker run, e por que a imagem é em camadas.</p>
   </div>
-  <div style="position:absolute; left:72px; top:210px; right:72px; display:flex; flex-direction:column; gap:0">
-    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
-      <span style="font-weight:900; font-size:15px; color:#E94D1C">01</span>
-      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Introdução</span>
-      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right">Guilherme</span>
-    </div>
-    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
-      <span style="font-weight:900; font-size:15px; color:#E94D1C">02</span>
-      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Definições e arquitetura da tecnologia</span>
-      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right">Tiago</span>
-    </div>
-    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
-      <span style="font-weight:900; font-size:15px; color:#E94D1C">03</span>
-      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Aplicação no projeto</span>
-      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right">Gabriel</span>
-    </div>
-    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
-      <span style="font-weight:900; font-size:15px; color:#E94D1C">04</span>
-      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Vantagens e desvantagens</span>
-      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right">Andreas</span>
-    </div>
-    <div style="display:grid; grid-template-columns: 52px 1fr 210px; align-items:center; gap:22px; padding:17px 0; border-bottom:1px solid #EDEDF2">
-      <span style="font-weight:900; font-size:15px; color:#E94D1C">05</span>
-      <span class="corpo" style="font-size:21px; color:#1A1A1E; font-weight:400">Considerações finais e referências</span>
-      <span class="corpo" style="font-size:14px; color:#6B6B78; text-align:right">Andreas</span>
-    </div>
-  </div>
-  <div style="position:absolute; left:72px; bottom:80px; font-size:15px; color:#6B6B78; font-weight:300">A implementação do produto começa na Sprint 4, em 06/10. A demonstração do final é do ambiente, não do produto.</div>
-  <div class="rodape" style="color: #6B6B78">
-    <span>Bloco A · Introdução</span><span style="font-weight:900; color: #21049A">03</span>
+  <div class="rodape" style="color: rgba(255,255,255,.55)">
+    <span>Bloco B</span><span style="font-weight:900; color: #fff">03</span>
   </div>
 </div>
 </x-dc>
