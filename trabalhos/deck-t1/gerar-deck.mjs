@@ -449,7 +449,7 @@ add('terminal', {
     '4026532194 pid         3  4821 root',
     '4026532196 net         3  4821 root',
   ],
-  captura: 'Saída da distro docker-desktop do WSL. O mesmo processo tem PID 1 dentro do container e outro PID no host, que é o que o namespace de PID faz. É por isso que no nosso diagrama de implantação o container aparece dentro do host, e não como máquina separada.',
+  captura: 'Namespaces e cgroups são recursos do kernel Linux, então no Windows o Docker Desktop roda o engine sobre o WSL2, que fornece um kernel Linux real numa máquina virtual leve. Esta saída é dessa distro. O mesmo processo tem PID 1 dentro do container e outro PID no host, que é o que o namespace de PID faz. É por isso que no nosso diagrama de implantação o container aparece dentro do host, e não como máquina separada.',
 })
 
 add('duasColunas', {
@@ -477,7 +477,7 @@ add('diagrama', {
   titulo: 'Camadas somente leitura<br>e a camada de escrita',
   svg: svgCamadas,
   svgNome: 'svgCamadas',
-  legenda: 'Um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do login do anfitrião, o UC001.',
+  legenda: 'A imagem é construída a partir de um Dockerfile, o arquivo de texto que declara a base e os passos, e circula entre máquinas por um registry. Cada instrução vira uma camada, e por isso um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do login do anfitrião, o UC001.',
   topSvg: 196,
 })
 
@@ -575,7 +575,7 @@ add('duasColunas', {
   itensA: [
     'A imagem passa a ter uma responsabilidade só, que é mais coesão.',
     'O código do front-end não está na imagem da API, então a API não depende dele nem por acidente.',
-    'Só o serviço de fronteira publica porta, e o banco fica na rede interna sem mapeamento nenhum.',
+    'Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só o de fronteira publica porta para fora, e o banco fica sem mapeamento nenhum.',
     'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural.',
   ],
   tituloB: 'ACOPLAMENTO',
