@@ -32,7 +32,7 @@
     },
     {
       "file": "S04.dc.html",
-      "title": "04. Do chroot à padronização OCI",
+      "title": "04. Marcos do isolamento de processos",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -162,7 +162,7 @@
     },
     {
       "file": "S17.dc.html",
-      "title": "17. O que a fronteira garante e o que ela não",
+      "title": "17. A fronteira aumenta a coesão e muda a forma",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -172,7 +172,7 @@
     },
     {
       "file": "S18.dc.html",
-      "title": "18. Duas views sobre o mesmo Model, dois perfis",
+      "title": "18. O convite público e o painel têm cargas",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -252,7 +252,7 @@
     },
     {
       "file": "S26.dc.html",
-      "title": "26. Critérios de contraindicação e a nossa",
+      "title": "26. Quatro critérios para não conteinerizar, e a",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -262,7 +262,7 @@
     },
     {
       "file": "S27.dc.html",
-      "title": "27. Ganho e custo, nos quatro atributos das",
+      "title": "27. Efeito nos quatro atributos das Questões",
       "x": 0,
       "y": 1760,
       "w": 1280,
@@ -282,7 +282,7 @@
     },
     {
       "file": "S29.dc.html",
-      "title": "29. Do problema de ambiente ao arquivo de compose",
+      "title": "29. O que mudou no ambiente do time",
       "x": 0,
       "y": 0,
       "w": 1280,

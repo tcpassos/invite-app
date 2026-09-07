@@ -404,7 +404,7 @@ add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: 'T
 add('linhaTempo', {
   bloco: '01 · Definições',
   cartola: 'Linha do tempo',
-  titulo: 'Do chroot à padronização OCI',
+  titulo: 'Marcos do isolamento de processos',
   marcos: [
     { ano: '1979', txt: 'chroot' },
     { ano: '2002', txt: 'primeiro namespace no kernel' },
@@ -569,15 +569,15 @@ add('codigo', {
 add('duasColunas', {
   bloco: '02 · Aplicação no projeto',
   cartola: 'Coesão e acoplamento',
-  titulo: 'O que a fronteira garante<br>e o que ela não garante',
-  tituloA: 'GARANTE',
+  titulo: 'A fronteira aumenta a coesão<br>e muda a forma do acoplamento',
+  tituloA: 'COESÃO',
   itensA: [
     'Mais coesão: uma responsabilidade por imagem.',
     'O código do front não está na imagem da API, então a API não depende dele nem por acidente.',
     'Só o serviço de fronteira publica porta. O banco fica na rede interna sem mapeamento.',
     'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural da Aula 02.',
   ],
-  tituloB: 'NÃO GARANTE',
+  tituloB: 'ACOPLAMENTO',
   itensB: [
     'A regra entre as nossas três camadas. Elas ficam na mesma imagem do back-end.',
     'Redução de acoplamento. Ele muda de forma e passa a ter latência, falha parcial e ordem de subida.',
@@ -588,7 +588,7 @@ add('duasColunas', {
 add('conteudo', {
   bloco: '02 · Aplicação no projeto',
   cartola: 'Consequência para o projeto',
-  titulo: 'Duas views sobre o mesmo Model,<br>dois perfis de carga',
+  titulo: 'O convite público e o painel<br>têm cargas diferentes',
   itens: [
     'A jornada da Marina descreve o link caindo no grupo da família. Pico no convite público (UC005), uma pessoa no painel (UC007).',
     'Replicar só o serviço público faz sentido. Replicar o painel não.',
@@ -635,14 +635,14 @@ add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: 'Vantagens',
   titulo: 'Vantagens no vocabulário<br>da Aula 03',
-  tituloA: 'O QUE ELE CREDITA A CAMADAS',
+  tituloA: 'NA AULA 03',
   itensA: [
     '<strong style="font-weight:900">Modularidade.</strong>',
     '<strong style="font-weight:900">Reusabilidade.</strong>',
     '<strong style="font-weight:900">Compreensibilidade.</strong>',
     '<strong style="font-weight:900">Extensibilidade.</strong>',
   ],
-  tituloB: 'O QUE CADA UMA VIRA AQUI',
+  tituloB: 'COM CONTAINER',
   itensB: [
     'Uma responsabilidade por imagem, com fronteira declarada.',
     'A mesma imagem atravessa notebook, pipeline e a demonstração funcional do T3.',
@@ -702,8 +702,8 @@ add('tabela', {
 add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: 'Quando não compensa',
-  titulo: 'Critérios de contraindicação<br>e a nossa situação',
-  tituloA: 'QUANDO NÃO COMPENSA',
+  titulo: 'Quatro critérios para não conteinerizar,<br>e a nossa situação',
+  tituloA: 'OS QUATRO CRITÉRIOS',
   itensA: [
     'Monolito num servidor que nunca escala.',
     'Time sem integração contínua, que só ganha um passo de build a mais.',
@@ -722,8 +722,8 @@ add('duasColunas', {
 
 add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
-  cartola: 'O balanço do time',
-  titulo: 'Ganho e custo, nos quatro atributos<br>das Questões Norteadoras',
+  cartola: 'Ganho e custo',
+  titulo: 'Efeito nos quatro atributos<br>das Questões Norteadoras',
   tituloA: 'GANHA',
   itensA: [
     '<strong style="font-weight:900">Manutenibilidade.</strong> O ambiente passa a ser versionado junto com o código.',
@@ -755,8 +755,8 @@ add('conteudo', {
 
 add('duasColunas', {
   bloco: 'Considerações finais',
-  cartola: 'Antes e depois, no nosso repositório',
-  titulo: 'Do problema de ambiente<br>ao arquivo de compose',
+  cartola: 'Antes e depois',
+  titulo: 'O que mudou no ambiente<br>do time',
   tituloA: 'NO COMEÇO DO PROJETO',
   itensA: [
     'Uma linha de .gitattributes forçando LF nos scripts, porque o Git Bash quebra no Windows.',
@@ -787,7 +787,7 @@ add('conteudo', {
 
 add('conteudo', {
   bloco: 'Referências',
-  cartola: 'Para consultar depois',
+  cartola: 'Fontes citadas',
   titulo: 'Referências',
   itens: [
     'Open Container Initiative. Runtime Spec, Image Spec e Distribution Spec. Linux Foundation, fundada em 2015.',
