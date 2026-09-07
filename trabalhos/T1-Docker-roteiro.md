@@ -253,7 +253,8 @@ para o ADR.
    código.
    A fronteira com orquestração em uma linha: compose é de host único, o MVP cabe em um host,
    Kubernetes entraria com múltiplos nós, e isso é tema de outro grupo.
-   Frase que fecha o slide: conteinerização move complexidade em vez de apagá-la.
+   Fecho do slide, sem frase de efeito: o que o Compose acrescenta é uma camada de build e de
+   orquestração, e o grupo aceita esse custo pelo ambiente igual para os quatro.
 8. Ganho e custo, em duas colunas, com o quarteto da Aula 03 e os quatro atributos das Questões
    Norteadoras nomeados. É aqui que as vantagens são ditas, uma vez só. Manutenibilidade ganha, porque o ambiente passa a ser
    versionado junto com o código. Escalabilidade ganha de forma seletiva, e isso impõe que a

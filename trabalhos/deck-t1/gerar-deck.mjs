@@ -463,7 +463,7 @@ add('duasColunas', {
   ],
   tituloB: 'CGROUPS V2',
   itensB: [
-    'Não isolam. Contabilizam e limitam.',
+    'Não isolam nada, apenas contabilizam e limitam o consumo.',
     'Estourar o limite de memória não deixa lento, o kernel mata o processo.',
     'Limite de CPU é throttling. Degrada latência de cauda, não a média, e por isso é mais difícil de diagnosticar.',
   ],
@@ -493,9 +493,9 @@ add('conteudo', {
   cartola: 'Restrição de privilégio',
   titulo: 'Capabilities, seccomp e LSM',
   itens: [
-    '<strong style="font-weight:900">Capabilities.</strong> O root do POSIX fatiado em privilégios independentes, derrubados e devolvidos um a um.',
-    '<strong style="font-weight:900">Seccomp-bpf.</strong> O perfil padrão bloqueia parte das chamadas de sistema disponíveis.',
-    '<strong style="font-weight:900">LSM.</strong> AppArmor ou SELinux por cima de tudo.',
+    'Capabilities fatiam o root do POSIX em privilégios independentes, que podem ser derrubados e devolvidos um a um.',
+    'O perfil padrão de seccomp-bpf bloqueia parte das chamadas de sistema disponíveis.',
+    'AppArmor ou SELinux entram por cima de tudo, como LSM.',
   ],
   nota: 'A opção --privileged devolve tudo de uma vez e ainda desliga o seccomp.',
   notaTitulo: 'CUIDADO',
@@ -561,7 +561,7 @@ add('codigo', {
     'A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong>, o pirulito da UML.',
     'A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>, o soquete.',
     'A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.',
-    '<strong style="font-weight:900">As imagens são exemplo.</strong> A stack ainda não foi decidida, é assunto do ADR #63.',
+    'As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do ADR #63.',
   ],
 })
 
@@ -571,15 +571,15 @@ add('duasColunas', {
   titulo: 'A fronteira aumenta a coesão<br>e muda a forma do acoplamento',
   tituloA: 'COESÃO',
   itensA: [
-    'Mais coesão: uma responsabilidade por imagem.',
+    'A imagem passa a ter uma responsabilidade só, que é mais coesão.',
     'O código do front não está na imagem da API, então a API não depende dele nem por acidente.',
     'Só o serviço de fronteira publica porta. O banco fica na rede interna sem mapeamento.',
     'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural da Aula 02.',
   ],
   tituloB: 'ACOPLAMENTO',
   itensB: [
-    'A regra entre as nossas três camadas. Elas ficam na mesma imagem do back-end.',
-    'Redução de acoplamento. Ele muda de forma e passa a ter latência, falha parcial e ordem de subida.',
+    'Entre as nossas três camadas o acoplamento continua igual, porque elas ficam na mesma imagem do back-end.',
+    'Onde há separação, o acoplamento não some, muda de forma e passa a ter latência, falha parcial e ordem de subida.',
   ],
   corB: LARANJA,
 })
@@ -671,9 +671,9 @@ add('tabela', {
   cabecalhos: ['OPÇÃO', 'A FAVOR', 'CONTRA'],
   linhas: [
     ['README nativo', 'Custo zero para começar', 'Quebra na primeira divergência de versão'],
-    ['VM compartilhada', 'Isola de verdade', 'Pesada e difícil de versionar'],
+    ['VM compartilhada', 'Isolamento imposto em hardware', 'Pesada e difícil de versionar'],
     ['Podman', 'Mesmo modelo, sem daemon root', 'Menos material e menos gente do time conhece'],
-    ['Compose', 'Escolhido, com o custo declarado', 'Move complexidade em vez de apagá-la'],
+    ['Compose', 'Ambiente igual para os quatro integrantes', 'Acrescenta uma camada de build e de orquestração'],
   ],
 })
 
@@ -703,16 +703,16 @@ add('duasColunas', {
   titulo: 'Efeito nos atributos da Aula 03<br>e das Questões Norteadoras',
   tituloA: 'GANHA',
   itensA: [
-    '<strong style="font-weight:900">Modularidade e reusabilidade.</strong> Uma responsabilidade por imagem, com fronteira declarada.',
-    '<strong style="font-weight:900">Compreensibilidade.</strong> O ambiente vira arquivo legível, versionado junto com o código.',
-    '<strong style="font-weight:900">Extensibilidade.</strong> Trocar runtime ou banco é editar uma linha de arquivo.',
-    '<strong style="font-weight:900">Manutenibilidade.</strong> A mesma imagem atravessa notebook, pipeline e a demonstração funcional do T3.',
-    '<strong style="font-weight:900">Escalabilidade,</strong> de forma seletiva, e isso impõe que a aplicação seja mesmo sem estado.',
+    'Cada imagem tem uma responsabilidade e uma fronteira declarada, que é a modularidade e a reusabilidade da Aula 03.',
+    'O ambiente vira arquivo legível, versionado junto com o código, e com isso ganha compreensibilidade.',
+    'Extensibilidade sai barata, porque trocar runtime ou banco é editar uma linha de arquivo.',
+    'A mesma imagem atravessa notebook, pipeline e a demonstração funcional do T3, o que ajuda a manutenibilidade.',
+    'A escalabilidade fica seletiva, e só vale se a aplicação for mesmo sem estado.',
   ],
   tituloB: 'CUSTA',
   itensB: [
-    '<strong style="font-weight:900">Segurança.</strong> Ganha isolamento, e herda uma superfície nova: imagem base e privilégio de execução.',
-    '<strong style="font-weight:900">Desempenho.</strong> Principalmente I/O nas máquinas Windows. A Aula 03 já avisa que camada extra prejudica desempenho.',
+    'Segurança ganha isolamento e herda uma superfície nova, que é a imagem base e o privilégio de execução.',
+    'Desempenho custa, principalmente I/O nas máquinas Windows, e a Aula 03 já avisa que camada extra prejudica desempenho.',
   ],
   corB: LARANJA,
   tam: 34,
