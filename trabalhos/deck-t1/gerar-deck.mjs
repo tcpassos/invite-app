@@ -508,7 +508,7 @@ add('impacto', {
   bloco: '01 · Arquitetura',
   cartola: 'Padronização, desde 2015',
   titulo: 'Docker implementa as<br>especificações da OCI',
-  sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É a substituibilidade por compatibilidade de interface da Aula 05, e o Bloco D traz um caso real.',
+  sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.',
   tam: 46,
 })
 
@@ -516,7 +516,7 @@ add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: '', ti
 
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
-  cartola: 'Camada lógica e tier, Aula 03',
+  cartola: 'Camada lógica e tier',
   titulo: 'As mesmas três camadas lógicas,<br>empacotadas de três jeitos',
   svg: svgTiers,
   svgNome: 'svgTiers',
@@ -576,7 +576,7 @@ add('duasColunas', {
     'A imagem passa a ter uma responsabilidade só, que é mais coesão.',
     'O código do front-end não está na imagem da API, então a API não depende dele nem por acidente.',
     'Só o serviço de fronteira publica porta, e o banco fica na rede interna sem mapeamento nenhum.',
-    'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural da Aula 02.',
+    'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural.',
   ],
   tituloB: 'ACOPLAMENTO',
   itensB: [
@@ -628,7 +628,7 @@ add('impacto', {
   bloco: '03 · Estudo de caso',
   cartola: 'Kubernetes 1.24, 2022',
   titulo: 'A remoção do dockershim<br>no Kubernetes 1.24',
-  sub: 'O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface, no vocabulário da Aula 05.',
+  sub: 'O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface.',
   tam: 48,
 })
 
@@ -703,10 +703,10 @@ add('duasColunas', {
 add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: 'Vantagens e custos',
-  titulo: 'Efeito nos atributos da Aula 03<br>e das Questões Norteadoras',
+  titulo: 'Efeito nos atributos<br>de qualidade do projeto',
   tituloA: 'GANHA',
   itensA: [
-    'Cada imagem tem uma responsabilidade e uma fronteira declarada, que é a modularidade e a reusabilidade da Aula 03.',
+    'Cada imagem tem uma responsabilidade e uma fronteira declarada, que é modularidade e reusabilidade.',
     'O ambiente vira arquivo legível, versionado junto com o código, e com isso ganha compreensibilidade.',
     'Extensibilidade sai barata, porque trocar runtime ou banco é editar uma linha de arquivo.',
     'A mesma imagem atravessa notebook, pipeline e a demonstração funcional do T3, o que ajuda a manutenibilidade.',

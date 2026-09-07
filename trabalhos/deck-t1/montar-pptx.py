@@ -271,7 +271,7 @@ def dg_pilha(sl, x, y):
             linha(sl, cx - gap, y + 79, cx, y + 79, AZUL, 2)
     rotulo(sl, x + 2 * (larg + gap) - 40, y + 20, 90, 'gRPC', tam=13, cor=AZUL, peso=900)
     itens(sl, ['O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar o daemon deixar de matar os containers em execução.',
-               'Cada peça tem uma responsabilidade e pode ser trocada. É a substituibilidade da Aula 05, aplicada ao próprio Docker.'],
+               'Cada peça tem uma responsabilidade e pode ser trocada por outra que respeite a mesma interface.'],
           x, y + 152, 1040, tam=17, gap=20)
 
 def dg_uml(sl, x, y):
@@ -486,15 +486,22 @@ def m_diagrama(sl, s):
     antes = {f.shape_id for f in sl.shapes}
     DIAGRAMAS[s['svgNome']](sl, 90, 0)
     novas = [f for f in sl.shapes if f.shape_id not in antes]
-    fundo_util = 566 if s.get('legenda') else 640
+    # a legenda e ancorada acima do rodape e o diagrama ocupa o que sobra,
+    # senao legenda de tres linhas invade o rodape
+    tam_leg, alt_leg, topo_leg = 17, 0, 0
+    if s.get('legenda'):
+        while tam_leg > 14 and altura_estimada(s['legenda'], tam_leg, 1116) * 1.16 > 96:
+            tam_leg -= 1
+        alt_leg = altura_estimada(s['legenda'], tam_leg, 1116) * 1.16
+        topo_leg = 646 - alt_leg
+    fundo_util = (topo_leg - 24) if s.get('legenda') else 640
     desloca = int(round(centrar(max(f.top + f.height for f in novas) / 9525, 210, fundo_util)))
     for f in novas:
         f.top = f.top + Emu(desloca * 9525)
     if s.get('legenda'):
-        alt = altura_estimada(s['legenda'], 17, 1116)
-        retangulo(sl, 72, 592, 3, alt, preencher=LARANJA)
-        tb, tf = caixa(sl, 92, 590, 1116, 60)
-        escrever(tf, s['legenda'], tam=17, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.5)
+        retangulo(sl, 72, topo_leg + 2, 3, alt_leg - 4, preencher=LARANJA)
+        tb, tf = caixa(sl, 92, topo_leg, 1116, alt_leg + 10)
+        escrever(tf, s['legenda'], tam=tam_leg, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.5)
     rodape(sl, s['n'], s['bloco'])
 
 def m_tabela(sl, s):

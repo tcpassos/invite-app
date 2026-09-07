@@ -24,6 +24,17 @@ Em UML, o container é um ambiente de execução aninhado no nó do host, e a im
 implantado nele. Ambiente de execução é uma especialização de nó, então nunca dizer "container não
 é nó".
 
+## Citar as aulas na fala, não no slide
+
+Os slides ficaram com duas citações de aula apenas, na legenda do slide de tiers e no custo de
+desempenho. Nos outros pontos o vocabulário dele aparece sem a etiqueta, porque nove menções a
+Aula 03 e Aula 05 espalhadas pelo deck viram enfeite e poluem a projeção.
+
+A ligação continua sendo esperada, só que dita. Onde o slide fala em modularidade, reusabilidade,
+compreensibilidade, extensibilidade, coesão, acoplamento, degradação arquitetural ou
+substituibilidade por compatibilidade de interface, quem apresenta diz de qual aula veio. É de graça
+na fala e conta nos 25% de relacionar a tecnologia às decisões arquiteturais.
+
 ## Tempo e donos
 
 | Bloco | Tema | Min | Slides | Dono |
