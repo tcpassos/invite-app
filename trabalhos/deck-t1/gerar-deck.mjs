@@ -421,11 +421,11 @@ add('duasColunas', {
   bloco: '01 · Definições',
   cartola: 'Duas definições',
   titulo: 'Container e imagem',
-  tituloA: 'CONTAINER · DEFINIÇÃO DO GRUPO',
+  tituloA: 'CONTAINER',
   itensA: [
     'Um ou mais processos executados com visão isolada por namespaces, consumo limitado por cgroups e privilégio reduzido por capabilities e seccomp, sobre um sistema de arquivos raiz próprio.',
   ],
-  tituloB: 'IMAGEM · OPEN CONTAINER INITIATIVE, IMAGE SPEC',
+  tituloB: 'IMAGEM',
   itensB: [
     'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, que é o hash do próprio conteúdo.',
   ],

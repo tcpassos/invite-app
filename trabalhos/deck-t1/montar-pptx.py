@@ -194,7 +194,7 @@ def itens(sl, lista, x, y, w, *, tam=19, gap=13, cor=GRAFITE):
     """Lista com o prefixo // do template, cada item numa caixa propria."""
     cursor = y
     for it in lista:
-        rotulo(sl, x, cursor + 1, 26, '//', tam=tam * 0.92, cor=LARANJA, peso=900)
+        retangulo(sl, x + 2, cursor + tam * 0.52, 6, 6, preencher=LARANJA)
         tb, tf = caixa(sl, x + 30, cursor, w - 30, 10)
         escrever(tf, it, tam=tam, cor=cor, peso=300, entre=1.3)
         alt = altura_estimada(it, tam, w - 30)
