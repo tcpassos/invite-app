@@ -192,7 +192,7 @@
     },
     {
       "file": "S20.dc.html",
-      "title": "20. Volume nomeado e persistência entre execuções",
+      "title": "20. O dado sobrevive ao container se ficar num",
       "x": 1380,
       "y": 0,
       "w": 1280,

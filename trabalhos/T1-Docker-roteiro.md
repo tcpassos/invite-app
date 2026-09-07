@@ -81,9 +81,9 @@ substituibilidade da Aula 05.
    padronização da cadeia de execução, a partir de 2015.
 2. Duas definições, em quinze segundos. Container é um ou mais processos executados com visão
    isolada por namespaces, consumo limitado por cgroups e privilégio reduzido por capabilities e
-   seccomp, sobre um sistema de arquivos raiz próprio. Essa é definição por mecanismo, montada pelo
-   grupo a partir do que o kernel faz, e não citação. Dizer isso em voz alta, porque ao lado está a
-   definição de imagem, essa sim literal da Image Spec da OCI.
+   seccomp, sobre um sistema de arquivos raiz próprio. O slide já diz que essa foi montada pelo
+   grupo e que a de imagem é citação da Image Spec, e é aqui que a sigla OCI é aberta pela primeira
+   vez, Open Container Initiative. Não usar a sigla antes deste ponto.
 3. Abrir com a afirmação de que não existe estrutura chamada container no kernel do Linux. O que
    existe é um processo comum com a visão restringida. Terminal pré-capturado, nunca ao vivo, com o
    processo aparecendo no `ps` do host e o `lsns` listando os namespaces. Dizer em voz alta onde foi

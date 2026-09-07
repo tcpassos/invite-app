@@ -410,7 +410,7 @@ add('linhaTempo', {
     { ano: '2002', txt: 'primeiro namespace no kernel' },
     { ano: '2008', txt: 'cgroups no mainline' },
     { ano: '2013', txt: 'Docker' },
-    { ano: '2015', txt: 'OCI' },
+    { ano: '2015', txt: 'primeiras especificações comuns de container' },
     { ano: '2017', txt: 'containerd na CNCF' },
     { ano: '2022', txt: 'Kubernetes remove o dockershim' },
   ],
@@ -421,13 +421,15 @@ add('duasColunas', {
   bloco: '01 · Definições',
   cartola: 'Duas definições',
   titulo: 'Container e imagem',
-  tituloA: 'CONTAINER, PELO MECANISMO DO KERNEL',
+  tituloA: 'O QUE É UM CONTAINER',
   itensA: [
     'Um ou mais processos executados com visão isolada por namespaces, consumo limitado por cgroups e privilégio reduzido por capabilities e seccomp, sobre um sistema de arquivos raiz próprio.',
+    'Essa definição não é citação de livro. É a que o grupo montou a partir dos quatro mecanismos do Linux que os próximos slides mostram.',
   ],
-  tituloB: 'IMAGEM, PELA OCI IMAGE SPEC',
+  tituloB: 'O QUE É UMA IMAGEM',
   itensB: [
-    'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por digest.',
+    'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, que é o hash do próprio conteúdo.',
+    'Essa é citação da Image Spec, um dos documentos da Open Container Initiative, a organização que padroniza o formato de imagem desde 2015.',
   ],
 })
 
@@ -465,7 +467,7 @@ add('duasColunas', {
   itensB: [
     'Não isolam nada, apenas contabilizam e limitam o consumo.',
     'Estourar o limite de memória não deixa lento, o kernel mata o processo.',
-    'Limite de CPU é throttling. Degrada latência de cauda, não a média, e por isso é mais difícil de diagnosticar.',
+    'Limite de CPU não mata, freia. Isso piora as requisições mais lentas e quase não mexe na média, por isso é mais difícil de perceber.',
   ],
 })
 
@@ -475,7 +477,7 @@ add('diagrama', {
   titulo: 'Camadas somente leitura<br>e a camada de escrita',
   svg: svgCamadas,
   svgNome: 'svgCamadas',
-  legenda: 'Um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do UC001.',
+  legenda: 'Um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do login do anfitrião, o UC001.',
   topSvg: 196,
 })
 
@@ -495,7 +497,7 @@ add('conteudo', {
   itens: [
     'Capabilities fatiam o root do POSIX em privilégios independentes, que podem ser derrubados e devolvidos um a um.',
     'O perfil padrão de seccomp-bpf bloqueia parte das chamadas de sistema disponíveis.',
-    'AppArmor ou SELinux entram por cima de tudo, como LSM.',
+    'AppArmor ou SELinux entram por cima de tudo, pelo módulo de segurança do próprio kernel.',
   ],
   nota: 'A opção --privileged devolve tudo de uma vez e ainda desliga o seccomp.',
   notaTitulo: 'CUIDADO',
@@ -518,7 +520,7 @@ add('diagrama', {
   titulo: 'Layer é camada lógica.<br>Tier é separação física.',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'Nenhuma das três muda uma linha do projeto lógico. Todas mudam o empacotamento, e essa escolha é entrada do ADR #63. Cuidado com o vocabulário: Docker usa <em>layer</em> para o empilhamento do sistema de arquivos da imagem, que não tem relação com a camada lógica da Aula 03.',
+  legenda: 'Nenhuma das três muda uma linha do projeto lógico. Todas mudam o empacotamento, e essa escolha é entrada do ADR #63, o documento de decisões arquiteturais da Sprint 2. Cuidado com o vocabulário: Docker usa <em>layer</em> para o empilhamento do sistema de arquivos da imagem, que não tem relação com a camada lógica da Aula 03.',
   topSvg: 212,
 })
 
@@ -589,7 +591,7 @@ add('conteudo', {
   cartola: 'Consequência para o projeto',
   titulo: 'O convite público e o painel<br>têm cargas diferentes',
   itens: [
-    'A jornada da Marina descreve o link caindo no grupo da família. Pico no convite público (UC005), uma pessoa no painel (UC007).',
+    'Marina é a persona da anfitriã, e a jornada dela descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.',
     'Replicar só o serviço público faz sentido. Replicar o painel não.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
@@ -603,7 +605,7 @@ add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: 'And
 add('terminal', {
   bloco: '03 · Demonstração',
   cartola: 'Demonstração, 90 segundos',
-  titulo: 'Volume nomeado e persistência<br>entre execuções',
+  titulo: 'O dado sobrevive ao container<br>se ficar num volume',
   linhas: [
     '$ docker compose up -d',
     '$ docker compose ps',
@@ -618,7 +620,7 @@ add('terminal', {
     '$ docker compose down -v',
     '# agora o dado some junto com o volume',
   ],
-  captura: 'A imagem de fundo do UC003 e o CSV do UC008 não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.',
+  captura: 'A imagem de fundo que a anfitriã envia ao personalizar o convite e o CSV de restrições alimentares que ela exporta não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.',
   rodapeAlto: 76,
 })
 
