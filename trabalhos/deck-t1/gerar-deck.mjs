@@ -275,7 +275,7 @@ const svgPilha = `<svg width="940" height="270" viewBox="0 0 940 270" xmlns="htt
     <defs><marker id="seta" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6B6B78"/></marker></defs>
     <text x="10" y="196" font-size="13.5" fill="#1A1A1E" font-weight="300">O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar</text>
     <text x="10" y="216" font-size="13.5" fill="#1A1A1E" font-weight="300">o daemon deixar de matar os containers em execução.</text>
-    <text x="10" y="248" font-size="13.5" fill="#1A1A1E" font-weight="300">Cada peça tem uma responsabilidade e pode ser trocada, que é o argumento do próximo slide.</text>
+    <text x="10" y="248" font-size="13.5" fill="#1A1A1E" font-weight="300">Cada peça tem uma responsabilidade e pode ser trocada. É a substituibilidade da Aula 05, aplicada ao próprio Docker.</text>
   </g>
 </svg>`
 
@@ -428,6 +428,7 @@ add('duasColunas', {
   tituloB: 'IMAGEM',
   itensB: [
     'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, que é o hash do próprio conteúdo.',
+    'São essas duas definições que decidem o desenho do item #60, com a imagem entrando como artefato e o container como nó.',
   ],
 })
 
@@ -448,7 +449,7 @@ add('terminal', {
     '4026532194 pid         3  4821 root',
     '4026532196 net         3  4821 root',
   ],
-  captura: 'Saída da distro docker-desktop do WSL. O mesmo processo tem PID 1 dentro do container e outro PID no host, que é o que o namespace de PID faz.',
+  captura: 'Saída da distro docker-desktop do WSL. O mesmo processo tem PID 1 dentro do container e outro PID no host, que é o que o namespace de PID faz. É por isso que no nosso diagrama de implantação o container aparece dentro do host, e não como máquina separada.',
 })
 
 add('duasColunas', {
@@ -460,6 +461,7 @@ add('duasColunas', {
     'O namespace mnt dá ao processo uma árvore de montagem própria.',
     'O namespace pid faz o processo enxergar a si mesmo como PID 1.',
     'O namespace net dá uma pilha de rede própria, e é por isso que dois containers conseguem escutar na mesma porta.',
+    'Esse é o mecanismo que permite o front, a API e o banco do projeto rodarem no mesmo host sem conflito de porta.',
   ],
   tituloB: 'CGROUPS V2',
   itensB: [
@@ -640,7 +642,7 @@ add('conteudo', {
     'Container com estado traz junto o problema de backup e o de upgrade de versão maior do banco, que não somem por estar em imagem.',
     'O Docker Desktop é pago para empresa acima de certo porte, o que afeta quem for usar isto fora da faculdade.',
   ],
-  nota: 'Nenhum número entra neste slide sem medição feita pelo time, com o modelo da máquina e a data.',
+  nota: 'Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.<br><br>Nenhum número de desempenho entra aqui sem medição feita pelo time.',
   notaTitulo: 'REGRA',
   right: 320,
   top: 202,
@@ -657,6 +659,7 @@ add('duasColunas', {
     'O container compartilha o kernel do host.',
     'A fronteira dele é a interface de chamadas de sistema, que são mais de trezentas, somadas a /proc, /sys e ioctl.',
     'A CVE-2019-5736 mostrou o risco na prática, porque o processo de dentro conseguia sobrescrever o binário do runtime pelo /proc/self/exe.',
+    'Por isso o ADR #63 precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
   ],
   corB: LARANJA,
   tam: 32,

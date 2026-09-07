@@ -271,7 +271,7 @@ def dg_pilha(sl, x, y):
             linha(sl, cx - gap, y + 79, cx, y + 79, AZUL, 2)
     rotulo(sl, x + 2 * (larg + gap) - 40, y + 20, 90, 'gRPC', tam=13, cor=AZUL, peso=900)
     itens(sl, ['O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar o daemon deixar de matar os containers em execução.',
-               'O runc cria os namespaces, configura cgroups, aplica capabilities e seccomp, faz pivot_root, dá execve e sai.'],
+               'Cada peça tem uma responsabilidade e pode ser trocada. É a substituibilidade da Aula 05, aplicada ao próprio Docker.'],
           x, y + 152, 1040, tam=17, gap=20)
 
 def dg_uml(sl, x, y):
