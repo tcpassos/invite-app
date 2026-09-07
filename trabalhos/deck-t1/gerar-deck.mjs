@@ -428,7 +428,7 @@ add('duasColunas', {
   tituloB: 'IMAGEM',
   itensB: [
     'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, que é o hash do próprio conteúdo.',
-    'São essas duas definições que decidem o desenho do item #60, com a imagem entrando como artefato e o container como nó.',
+    'São essas duas definições que decidem o desenho do diagrama de implantação, com a imagem entrando como artefato e o container como nó.',
   ],
 })
 
@@ -520,7 +520,7 @@ add('diagrama', {
   titulo: 'As mesmas três camadas lógicas,<br>empacotadas de três jeitos',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'Nenhuma das três muda uma linha do projeto lógico. Todas mudam o empacotamento, e essa escolha é entrada do ADR #63, o documento de decisões arquiteturais da Sprint 2. Cuidado com o vocabulário: Docker usa <em>layer</em> para o empilhamento do sistema de arquivos da imagem, que não tem relação com a camada lógica da Aula 03.',
+  legenda: 'Nenhuma das três muda uma linha do projeto lógico. Todas mudam o empacotamento, e essa escolha é entrada do ADR, o documento de decisões arquiteturais da Sprint 2. Cuidado com o vocabulário: Docker usa <em>layer</em> para o empilhamento do sistema de arquivos da imagem, que não tem relação com a camada lógica da Aula 03.',
   topSvg: 212,
 })
 
@@ -535,7 +535,7 @@ add('diagrama', {
 
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
-  cartola: 'Rascunhos dos itens #59 e #60',
+  cartola: 'Rascunhos dos dois diagramas',
   titulo: 'Mapeamento dos componentes<br>para os nós do diagrama',
   svg: svgDois,
   svgNome: 'svgDois',
@@ -563,7 +563,7 @@ add('codigo', {
     'A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong>, o pirulito da UML.',
     'A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>, o soquete.',
     'A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.',
-    'As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do ADR #63.',
+    'As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do ADR.',
   ],
 })
 
@@ -595,7 +595,7 @@ add('conteudo', {
     'Replicar só o serviço público faz sentido, e replicar o painel não faz.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
-  nota: 'Mesma imagem de front-end ou imagens separadas?<br><br>Entrada direta para o #59 e o #60. Ainda não decidida.',
+  nota: 'Mesma imagem de front-end ou imagens separadas?<br><br>Entrada direta para os dois diagramas da Sprint 2. Ainda não decidida.',
   notaTitulo: 'EM ABERTO',
   right: 340,
 })
@@ -659,7 +659,7 @@ add('duasColunas', {
     'O container compartilha o kernel do host.',
     'A fronteira dele é a interface de chamadas de sistema, que são mais de trezentas, somadas a /proc, /sys e ioctl.',
     'A CVE-2019-5736 mostrou o risco na prática, porque o processo de dentro conseguia sobrescrever o binário do runtime pelo /proc/self/exe.',
-    'Por isso o ADR #63 precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
+    'Por isso o ADR precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
   ],
   corB: LARANJA,
   tam: 32,
@@ -723,11 +723,11 @@ add('duasColunas', {
 
 add('conteudo', {
   bloco: 'Considerações finais',
-  cartola: 'Entrada para o ADR #63',
+  cartola: 'Entrada para o ADR',
   titulo: 'Recomendação do grupo',
   itens: [
     'O grupo recomenda adotar conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto.',
-    'O #60 deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.',
+    'O diagrama de implantação deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.',
     'A stack ainda não está decidida, e o ADR #63 é onde ela será registrada.',
   ],
   nota: 'Insumo direto da Sprint 3, que começa no dia 15 e tem como objetivo declarado definir as tecnologias e os mecanismos da implementação.',
@@ -747,7 +747,7 @@ add('duasColunas', {
   tituloB: 'AGORA',
   itensB: [
     'Existe um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando.',
-    'Esse mesmo arquivo é o que vira o diagrama de implantação do item #60.',
+    'Esse mesmo arquivo é o que vira o diagrama de implantação da Sprint 2.',
   ],
 })
 
@@ -756,8 +756,8 @@ add('conteudo', {
   cartola: 'O que não estamos afirmando',
   titulo: 'Pendências, com número de item',
   itens: [
-    'Os itens #58 a #63 da Sprint 2 estão em To Do. Isto é insumo desses itens, não relato de item concluído.',
-    'O #63, onde a stack será decidida, ainda não foi escrito.',
+    'Os seis itens de modelagem da Sprint 2, do #58 ao #63, estão em To Do. Isto é insumo desses itens, não relato de item concluído.',
+    'O ADR #63, onde a stack será decidida, ainda não foi escrito.',
   ],
   nota: 'Container é processo isolado por mecanismo de kernel.<br><br>Imagem é artefato, container é ambiente de execução.<br><br>A decisão arquitetural é a granularidade de tier.',
   notaTitulo: 'PARA LEVAR PARA A P1',

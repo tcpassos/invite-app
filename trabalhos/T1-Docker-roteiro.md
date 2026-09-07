@@ -24,6 +24,16 @@ Em UML, o container é um ambiente de execução aninhado no nó do host, e a im
 implantado nele. Ambiente de execução é uma especialização de nó, então nunca dizer "container não
 é nó".
 
+## Número de item também fica na fala
+
+Pelo mesmo motivo das aulas, os números de work item saíram quase todos dos slides. A plateia não
+tem o board aberto e um "#60" sozinho não diz nada. Onde o slide antes trazia o número, agora traz o
+nome do artefato: diagrama de componentes, diagrama de implantação, ADR.
+
+Sobraram três números, todos no fecho, que é onde a rastreabilidade é o assunto: o intervalo #58 a
+#63 e o ADR #63, citado duas vezes. Quem apresenta pode citar número à vontade na fala, e deve, na
+arguição. Só não precisa estar impresso em dez slides.
+
 ## Citar as aulas na fala, não no slide
 
 Os slides ficaram com duas citações de aula apenas, na legenda do slide de tiers e no custo de

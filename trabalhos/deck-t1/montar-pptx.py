@@ -333,7 +333,7 @@ def dg_tiers(sl, x, y):
     rotulo(sl, c - 24, y + 218, 394, 'banco isolado', tam=13, cor=CINZA, peso=300, alinhar=PP_ALIGN.CENTER)
 
 def dg_dois(sl, x, y):
-    rotulo(sl, x, y, 400, 'RASCUNHO #59, DIAGRAMA DE COMPONENTES', tam=11, cor=AZUL, peso=900, espacar=1.4)
+    rotulo(sl, x, y, 400, 'RASCUNHO DO DIAGRAMA DE COMPONENTES', tam=11, cor=AZUL, peso=900, espacar=1.4)
     retangulo(sl, x, y + 18, 400, 196, borda=CINZA_CLARO)
     for cx, nome in [(x + 28, 'Convite público'), (x + 222, 'Painel')]:
         retangulo(sl, cx, y + 44, 150, 48, preencher=AZUL, raio=3)
@@ -346,8 +346,8 @@ def dg_dois(sl, x, y):
     linha(sl, x + 297, y + 92, x + 220, y + 114, AZUL, 2)
     linha(sl, x + 200, y + 158, x + 200, y + 172, AZUL, 2)
     linha(sl, x + 400, y + 116, x + 560, y + 116, LARANJA, 3)
-    rotulo(sl, x + 430, y + 90, 100, '#72', tam=13, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, x + 560, y, 420, 'RASCUNHO #60, DIAGRAMA DE IMPLANTAÇÃO', tam=11, cor=LARANJA, peso=900, espacar=1.4)
+    rotulo(sl, x + 400, y + 88, 160, 'mapeamento', tam=13, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, x + 560, y, 420, 'RASCUNHO DO DIAGRAMA DE IMPLANTAÇÃO', tam=11, cor=LARANJA, peso=900, espacar=1.4)
     retangulo(sl, x + 560, y + 18, 400, 196, borda=LARANJA, largura=2)
     rotulo(sl, x + 580, y + 30, 200, '«device» host', tam=11, cor=LARANJA, peso=900)
     for i, nome in enumerate(['front-end', 'API', 'banco']):
@@ -358,8 +358,8 @@ def dg_dois(sl, x, y):
         if i:
             linha(sl, cx - 12, y + 80, cx, y + 80, LARANJA, 1.6)
     retangulo(sl, x + 580, y + 130, 360, 34, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=3, tracejado=True)
-    rotulo(sl, x + 580, y + 140, 360, 'rede nomeada, resolução por nome de serviço  ·  #75', tam=12, cor=LARANJA, peso=400, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, x + 580, y + 182, 380, '#71 nós  ·  #73 imagem por tag e digest  ·  #74, #76 e #77 são passos de processo', tam=11.5, cor=CINZA, peso=300)
+    rotulo(sl, x + 580, y + 140, 360, 'rede nomeada, com resolução por nome de serviço', tam=12, cor=LARANJA, peso=400, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, x + 580, y + 182, 400, 'Cada nó vira um serviço no arquivo de compose, com a imagem por tag e digest.', tam=12, cor=CINZA, peso=300)
 
 DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml,
              'svgTiers': dg_tiers, 'svgDois': dg_dois}
