@@ -12,7 +12,7 @@
     },
     {
       "file": "S02.dc.html",
-      "title": "02. Invite People",
+      "title": "02. O projeto Invite People",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -32,7 +32,7 @@
     },
     {
       "file": "S04.dc.html",
-      "title": "04. Marcos do isolamento de processos",
+      "title": "04. Linha do tempo do isolamento de processos",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -52,7 +52,7 @@
     },
     {
       "file": "S06.dc.html",
-      "title": "06. Um container é um processo com a visão",
+      "title": "06. Container é um processo comum, com a visão",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -72,7 +72,7 @@
     },
     {
       "file": "S08.dc.html",
-      "title": "08. Camadas somente leitura e a camada de escrita",
+      "title": "08. As camadas de uma imagem",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -82,7 +82,7 @@
     },
     {
       "file": "S09.dc.html",
-      "title": "09. CLI, dockerd, containerd, shim e runc",
+      "title": "09. A pilha de execução do Docker",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -92,7 +92,7 @@
     },
     {
       "file": "S10.dc.html",
-      "title": "10. Capabilities, seccomp e LSM",
+      "title": "10. Como o privilégio do container é reduzido",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -122,7 +122,7 @@
     },
     {
       "file": "S13.dc.html",
-      "title": "13. O sistema inteiro em um, dois ou três",
+      "title": "13. Camada lógica e tier",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -132,7 +132,7 @@
     },
     {
       "file": "S14.dc.html",
-      "title": "14. No diagrama de implantação, o container é um",
+      "title": "14. Container e imagem no diagrama de implantação",
       "x": 2760,
       "y": 0,
       "w": 1280,
@@ -142,7 +142,7 @@
     },
     {
       "file": "S15.dc.html",
-      "title": "15. Mapeamento dos componentes para os nós do",
+      "title": "15. Dos componentes para os nós",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -152,7 +152,7 @@
     },
     {
       "file": "S16.dc.html",
-      "title": "16. Onde ficam a interface provida e a requerida",
+      "title": "16. As interfaces no arquivo de compose",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -162,7 +162,7 @@
     },
     {
       "file": "S17.dc.html",
-      "title": "17. A fronteira aumenta a coesão e muda a forma",
+      "title": "17. Coesão e acoplamento",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -192,7 +192,7 @@
     },
     {
       "file": "S20.dc.html",
-      "title": "20. O que acontece com o dado quando o container",
+      "title": "20. O que acontece com o dado",
       "x": 1380,
       "y": 0,
       "w": 1280,
@@ -222,7 +222,7 @@
     },
     {
       "file": "S23.dc.html",
-      "title": "23. Comparação pela superfície de ataque",
+      "title": "23. Container e máquina virtual",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -232,7 +232,7 @@
     },
     {
       "file": "S24.dc.html",
-      "title": "24. Comparação com as outras opções",
+      "title": "24. Alternativas consideradas",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -242,7 +242,7 @@
     },
     {
       "file": "S25.dc.html",
-      "title": "25. Quatro critérios para não conteinerizar, e a",
+      "title": "25. Quando não compensa",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -252,7 +252,7 @@
     },
     {
       "file": "S26.dc.html",
-      "title": "26. Efeito nos atributos de qualidade do projeto",
+      "title": "26. Vantagens e custos",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -282,7 +282,7 @@
     },
     {
       "file": "S29.dc.html",
-      "title": "29. Pendências, com número de item",
+      "title": "29. O que não estamos afirmando",
       "x": 0,
       "y": 0,
       "w": 1280,

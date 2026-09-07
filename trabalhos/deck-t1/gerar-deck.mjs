@@ -386,8 +386,8 @@ add('capa', {
 
 add('conteudo', {
   bloco: 'Introdução',
-  cartola: 'O projeto',
-  titulo: 'Invite People',
+  cartola: '',
+  titulo: 'O projeto Invite People',
   itens: [
     'É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.',
     'São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.',
@@ -403,8 +403,8 @@ add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: ''
 
 add('linhaTempo', {
   bloco: '01 · Definições',
-  cartola: 'Linha do tempo',
-  titulo: 'Marcos do isolamento de processos',
+  cartola: '',
+  titulo: 'Linha do tempo do isolamento de processos',
   marcos: [
     { ano: '1979', txt: 'chroot' },
     { ano: '2002', txt: 'primeiro namespace no kernel' },
@@ -419,7 +419,7 @@ add('linhaTempo', {
 
 add('duasColunas', {
   bloco: '01 · Definições',
-  cartola: 'Duas definições',
+  cartola: '',
   titulo: 'Container e imagem',
   tituloA: 'CONTAINER',
   itensA: [
@@ -434,8 +434,8 @@ add('duasColunas', {
 
 add('terminal', {
   bloco: '01 · Arquitetura',
-  cartola: 'O processo visto do host',
-  titulo: 'Um container é um processo<br>com a visão restringida por namespaces',
+  cartola: '',
+  titulo: 'Container é um processo comum,<br>com a visão restringida',
   linhas: [
     '$ docker run -d --name web nginx',
     '$ ps -eo pid,comm | grep nginx',
@@ -454,7 +454,7 @@ add('terminal', {
 
 add('duasColunas', {
   bloco: '01 · Arquitetura',
-  cartola: 'Os dois mecanismos do kernel',
+  cartola: '',
   titulo: 'Namespaces e cgroups<br>fazem coisas diferentes',
   tituloA: 'NAMESPACES',
   itensA: [
@@ -473,8 +473,8 @@ add('duasColunas', {
 
 add('diagrama', {
   bloco: '01 · Arquitetura',
-  cartola: 'Estrutura da imagem',
-  titulo: 'Camadas somente leitura<br>e a camada de escrita',
+  cartola: '',
+  titulo: 'As camadas de uma imagem',
   svg: svgCamadas,
   svgNome: 'svgCamadas',
   legenda: 'A imagem é construída a partir de um Dockerfile, o arquivo de texto que declara a base e os passos, e circula entre máquinas por um registry. Cada instrução vira uma camada, e por isso um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do login do anfitrião, o UC001.',
@@ -483,8 +483,8 @@ add('diagrama', {
 
 add('diagrama', {
   bloco: '01 · Arquitetura',
-  cartola: 'A pilha de execução',
-  titulo: 'CLI, dockerd, containerd,<br>shim e runc',
+  cartola: '',
+  titulo: 'A pilha de execução do Docker',
   svg: svgPilha,
   svgNome: 'svgPilha',
   topSvg: 200,
@@ -492,8 +492,8 @@ add('diagrama', {
 
 add('conteudo', {
   bloco: '01 · Arquitetura',
-  cartola: 'Restrição de privilégio',
-  titulo: 'Capabilities, seccomp e LSM',
+  cartola: '',
+  titulo: 'Como o privilégio do container é reduzido',
   itens: [
     'Capabilities fatiam o root do POSIX em privilégios independentes, que podem ser derrubados e devolvidos um a um.',
     'O perfil padrão de seccomp-bpf bloqueia parte das chamadas de sistema disponíveis.',
@@ -506,7 +506,7 @@ add('conteudo', {
 
 add('impacto', {
   bloco: '01 · Arquitetura',
-  cartola: 'Padronização, desde 2015',
+  cartola: '',
   titulo: 'Docker implementa as<br>especificações da OCI',
   sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.',
   tam: 46,
@@ -516,8 +516,8 @@ add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: '', ti
 
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
-  cartola: 'Camada lógica e tier',
-  titulo: 'O sistema inteiro em um,<br>dois ou três containers',
+  cartola: '',
+  titulo: 'Camada lógica e tier',
   svg: svgTiers,
   svgNome: 'svgTiers',
   legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no ADR, o documento de decisões arquiteturais da Sprint 2. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da Aula 03.',
@@ -526,8 +526,8 @@ add('diagrama', {
 
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
-  cartola: 'Modelagem UML',
-  titulo: 'No diagrama de implantação, o container<br>é um nó e a imagem é um artefato',
+  cartola: '',
+  titulo: 'Container e imagem<br>no diagrama de implantação',
   svg: svgUml,
   svgNome: 'svgUml',
   topSvg: 210,
@@ -535,8 +535,8 @@ add('diagrama', {
 
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
-  cartola: 'Rascunhos dos dois diagramas',
-  titulo: 'Mapeamento dos componentes<br>para os nós do diagrama',
+  cartola: '',
+  titulo: 'Dos componentes para os nós',
   svg: svgDois,
   svgNome: 'svgDois',
   topSvg: 214,
@@ -544,8 +544,8 @@ add('diagrama', {
 
 add('codigo', {
   bloco: '02 · Aplicação no projeto',
-  cartola: 'Interfaces no arquivo de compose',
-  titulo: 'Onde ficam a interface<br>provida e a requerida',
+  cartola: '',
+  titulo: 'As interfaces no arquivo de compose',
   linhas: [
     'services:',
     '  api:',
@@ -569,8 +569,8 @@ add('codigo', {
 
 add('duasColunas', {
   bloco: '02 · Aplicação no projeto',
-  cartola: 'Coesão e acoplamento',
-  titulo: 'A fronteira aumenta a coesão<br>e muda a forma do acoplamento',
+  cartola: '',
+  titulo: 'Coesão e acoplamento',
   tituloA: 'COESÃO',
   itensA: [
     'A imagem passa a ter uma responsabilidade só.',
@@ -588,7 +588,7 @@ add('duasColunas', {
 
 add('conteudo', {
   bloco: '02 · Aplicação no projeto',
-  cartola: 'Consequência para o projeto',
+  cartola: '',
   titulo: 'O convite público e o painel<br>têm cargas diferentes',
   itens: [
     'Marina é a persona da anfitriã, e a jornada dela descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.',
@@ -604,8 +604,8 @@ add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', 
 
 add('terminal', {
   bloco: '03 · Demonstração',
-  cartola: 'Demonstração',
-  titulo: 'O que acontece com o dado<br>quando o container é derrubado',
+  cartola: '',
+  titulo: 'O que acontece com o dado',
   linhas: [
     '$ docker compose up -d',
     '$ docker compose ps',
@@ -626,7 +626,7 @@ add('terminal', {
 
 add('impacto', {
   bloco: '03 · Estudo de caso',
-  cartola: 'Kubernetes 1.24, 2022',
+  cartola: '',
   titulo: 'A remoção do dockershim<br>no Kubernetes 1.24',
   sub: 'O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface.',
   tam: 48,
@@ -634,7 +634,7 @@ add('impacto', {
 
 add('conteudo', {
   bloco: '03 · Vantagens e desvantagens',
-  cartola: 'Desvantagens',
+  cartola: '',
   titulo: 'Limitações e custos',
   itens: [
     'O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.',
@@ -650,8 +650,8 @@ add('conteudo', {
 
 add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
-  cartola: 'Container e máquina virtual',
-  titulo: 'Comparação pela<br>superfície de ataque',
+  cartola: '',
+  titulo: 'Container e máquina virtual',
   tituloA: 'MÁQUINA VIRTUAL',
   itensA: ['A máquina virtual tem kernel próprio.', 'A fronteira entre ela e o host é imposta em hardware.', 'Por isso a superfície de ataque fica relativamente estreita.'],
   tituloB: 'CONTAINER',
@@ -667,8 +667,8 @@ add('duasColunas', {
 
 add('tabela', {
   bloco: '03 · Vantagens e desvantagens',
-  cartola: 'Alternativas consideradas',
-  titulo: 'Comparação com as outras opções',
+  cartola: '',
+  titulo: 'Alternativas consideradas',
   cols: '1.1fr 1.4fr 1.4fr',
   destacar: 3,
   cabecalhos: ['OPÇÃO', 'A FAVOR', 'CONTRA'],
@@ -682,8 +682,8 @@ add('tabela', {
 
 add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
-  cartola: 'Quando não compensa',
-  titulo: 'Quatro critérios para não conteinerizar,<br>e a nossa situação',
+  cartola: '',
+  titulo: 'Quando não compensa',
   tituloA: 'OS QUATRO CRITÉRIOS',
   itensA: [
     'O primeiro é o monolito que roda num servidor só e nunca vai escalar.',
@@ -702,8 +702,8 @@ add('duasColunas', {
 
 add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
-  cartola: 'Vantagens e custos',
-  titulo: 'Efeito nos atributos<br>de qualidade do projeto',
+  cartola: '',
+  titulo: 'Vantagens e custos',
   tituloA: 'GANHA',
   itensA: [
     'Uma responsabilidade por imagem, com a fronteira declarada.',
@@ -723,7 +723,7 @@ add('duasColunas', {
 
 add('conteudo', {
   bloco: 'Considerações finais',
-  cartola: 'Entrada para o ADR',
+  cartola: '',
   titulo: 'Recomendação do grupo',
   itens: [
     'O grupo recomenda adotar conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto.',
@@ -737,8 +737,8 @@ add('conteudo', {
 
 add('duasColunas', {
   bloco: 'Considerações finais',
-  cartola: 'Antes e depois',
-  titulo: 'O que mudou no ambiente<br>do time',
+  cartola: '',
+  titulo: 'O que mudou no ambiente do time',
   tituloA: 'NO COMEÇO DO PROJETO',
   itensA: [
     'O repositório tem uma linha de .gitattributes forçando LF nos scripts, porque sem ela o Git Bash quebra no Windows.',
@@ -753,8 +753,8 @@ add('duasColunas', {
 
 add('conteudo', {
   bloco: 'Considerações finais',
-  cartola: 'O que não estamos afirmando',
-  titulo: 'Pendências, com número de item',
+  cartola: '',
+  titulo: 'O que não estamos afirmando',
   itens: [
     'Os seis itens de modelagem da Sprint 2, do #58 ao #63, estão em To Do. Isto é insumo desses itens, não relato de item concluído.',
     'O ADR #63, onde a stack será decidida, ainda não foi escrito.',
@@ -767,7 +767,7 @@ add('conteudo', {
 
 add('conteudo', {
   bloco: 'Referências',
-  cartola: 'Fontes citadas',
+  cartola: '',
   titulo: 'Referências',
   itens: [
     'Open Container Initiative. Runtime Spec, Image Spec e Distribution Spec. Linux Foundation, fundada em 2015.',

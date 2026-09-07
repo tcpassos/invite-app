@@ -293,7 +293,7 @@ def dg_uml(sl, x, y):
     escrever(tf3, 'Máquina virtual, essa sim, é um nó novo, com sistema operacional próprio.', tam=14.5, cor=GRAFITE, peso=300, entre=1.5)
 
 def dg_tiers(sl, x, y):
-    rotulo(sl, x, y, 1050, 'AS TRÊS CAMADAS DO BACK-END FICAM NA MESMA IMAGEM NOS TRÊS DESENHOS.',
+    rotulo(sl, x, y, 1050, 'TIER É CADA PROCESSO SEPARADO EM QUE O SISTEMA RODA. AS TRÊS CAMADAS DO BACK-END FICAM SEMPRE JUNTAS NUM SÓ.',
            tam=12, cor=CINZA, peso=900, espacar=1.4)
     def camadas(cx, cy, larg):
         retangulo(sl, cx, cy, larg, 82, preencher=BRANCO, borda=AZUL, raio=3)
@@ -423,8 +423,11 @@ def m_impacto(sl, s):
 def cabeca(sl, s):
     fundo(sl, BRANCO)
     logo(sl, claro=False)
-    cartola(sl, s['cartola'])
-    titulo_claro(sl, s['titulo'], tam=s.get('tam', 40))
+    if s.get('cartola'):
+        cartola(sl, s['cartola'])
+        titulo_claro(sl, s['titulo'], tam=s.get('tam', 40))
+    else:
+        titulo_claro(sl, s['titulo'], tam=s.get('tam', 40), y=72)
 
 def m_conteudo(sl, s):
     cabeca(sl, s)

@@ -24,6 +24,16 @@ Em UML, o container é um ambiente de execução aninhado no nó do host, e a im
 implantado nele. Ambiente de execução é uma especialização de nó, então nunca dizer "container não
 é nó".
 
+## Um título por slide
+
+Os slides tinham dois títulos, a cartola laranja em caixa alta e o título azul grande, e na maioria
+dos casos os dois diziam a mesma coisa em duas formas. Cabeçalho seguido de subcabeçalho é formato
+de documento, não de slide, e era uma das coisas que davam ao deck cara de texto gerado.
+
+Agora é um título só, curto, sempre o mais direto dos dois. Quem apresenta pode dizer a versão longa
+em voz alta. Onde o título antigo trazia a tese do slide, essa tese passou a ser a primeira frase da
+fala, não uma linha na tela.
+
 ## O slide traz o fato, quem apresenta traz o nome
 
 Os slides pararam de nomear a categoria de cada frase. Onde antes estava escrito "a mesma imagem
