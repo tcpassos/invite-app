@@ -434,7 +434,7 @@ add('duasColunas', {
 
 add('terminal', {
   bloco: '01 · Arquitetura',
-  cartola: 'O que o kernel enxerga',
+  cartola: 'O processo visto do host',
   titulo: 'Um container é um processo<br>com a visão restringida por namespaces',
   linhas: [
     '$ docker run -d --name web nginx',
@@ -454,8 +454,8 @@ add('terminal', {
 
 add('duasColunas', {
   bloco: '01 · Arquitetura',
-  cartola: 'Namespaces e cgroups',
-  titulo: 'Namespaces isolam a visão.<br>Cgroups limitam o consumo.',
+  cartola: 'Os dois mecanismos do kernel',
+  titulo: 'Namespaces e cgroups<br>fazem coisas diferentes',
   tituloA: 'NAMESPACES',
   itensA: [
     'O namespace mnt dá ao processo uma árvore de montagem própria.',
@@ -506,7 +506,7 @@ add('conteudo', {
 
 add('impacto', {
   bloco: '01 · Arquitetura',
-  cartola: 'OCI, fundada em 2015',
+  cartola: 'Padronização, desde 2015',
   titulo: 'Docker implementa as<br>especificações da OCI',
   sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É a substituibilidade por compatibilidade de interface da Aula 05, e o Bloco D traz um caso real.',
   tam: 46,
@@ -605,7 +605,7 @@ add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', 
 add('terminal', {
   bloco: '03 · Demonstração',
   cartola: 'Demonstração',
-  titulo: 'O dado sobrevive ao container<br>se ficar num volume',
+  titulo: 'O que acontece com o dado<br>quando o container é derrubado',
   linhas: [
     '$ docker compose up -d',
     '$ docker compose ps',
@@ -634,7 +634,7 @@ add('impacto', {
 
 add('conteudo', {
   bloco: '03 · Vantagens e desvantagens',
-  cartola: 'Limitações',
+  cartola: 'Desvantagens',
   titulo: 'Limitações e custos',
   itens: [
     'O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.',
@@ -723,7 +723,7 @@ add('duasColunas', {
 
 add('conteudo', {
   bloco: 'Considerações finais',
-  cartola: 'Recomendação para o ADR #63',
+  cartola: 'Entrada para o ADR #63',
   titulo: 'Recomendação do grupo',
   itens: [
     'O grupo recomenda adotar conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto.',

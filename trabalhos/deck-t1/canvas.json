@@ -62,7 +62,7 @@
     },
     {
       "file": "S07.dc.html",
-      "title": "07. Namespaces isolam a visão. Cgroups limitam o",
+      "title": "07. Namespaces e cgroups fazem coisas diferentes",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -192,7 +192,7 @@
     },
     {
       "file": "S20.dc.html",
-      "title": "20. O dado sobrevive ao container se ficar num",
+      "title": "20. O que acontece com o dado quando o container",
       "x": 1380,
       "y": 0,
       "w": 1280,
