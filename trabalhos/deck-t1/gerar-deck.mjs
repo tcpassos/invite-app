@@ -392,7 +392,7 @@ add('conteudo', {
     'É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.',
     'São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.',
     'A arquitetura já está registrada no Guia da Arquitetura, com MVC no front-end e três camadas no back-end.',
-    'A Questão Norteadora da Sprint 2, que é a pergunta que a sprint precisa responder, é como os componentes serão distribuídos e implantados no ambiente de execução.',
+    'A Sprint 2 tem uma Questão Norteadora a responder: como os componentes serão distribuídos e implantados no ambiente de execução.',
   ],
   nota: 'As três camadas do back-end já estão decididas.<br><br>Falta decidir em quantos processos separados elas vão rodar.',
   notaTitulo: 'ONDE ESTAMOS HOJE',
@@ -427,7 +427,7 @@ add('duasColunas', {
   ],
   tituloB: 'IMAGEM',
   itensB: [
-    'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, que é o hash do próprio conteúdo.',
+    'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, o hash do próprio conteúdo.',
     'São essas duas definições que decidem o desenho do diagrama de implantação, com a imagem entrando como artefato e o container como nó.',
   ],
 })
@@ -460,14 +460,14 @@ add('duasColunas', {
   itensA: [
     'O namespace mnt dá ao processo uma árvore de montagem própria.',
     'O namespace pid faz o processo enxergar a si mesmo como PID 1.',
-    'O namespace net dá uma pilha de rede própria, e é por isso que dois containers conseguem escutar na mesma porta.',
+    'O namespace net dá uma pilha de rede própria. Dois containers conseguem escutar na mesma porta.',
     'Esse é o mecanismo que permite o front-end, a API e o banco do projeto rodarem no mesmo host sem conflito de porta.',
   ],
   tituloB: 'CGROUPS V2',
   itensB: [
     'Os cgroups não isolam nada, eles contabilizam e limitam o consumo de recursos.',
     'Quando o processo estoura o limite de memória ele não fica lento, o kernel mata ele.',
-    'O limite de CPU não mata, ele freia o processo, o que piora as requisições mais lentas e quase não mexe na média, por isso é mais difícil de perceber.',
+    'O limite de CPU não mata, freia. Piora as requisições mais lentas e quase não mexe na média, por isso passa despercebido.',
   ],
 })
 
@@ -573,10 +573,10 @@ add('duasColunas', {
   titulo: 'A fronteira aumenta a coesão<br>e muda a forma do acoplamento',
   tituloA: 'COESÃO',
   itensA: [
-    'A imagem passa a ter uma responsabilidade só, que é mais coesão.',
+    'A imagem passa a ter uma responsabilidade só.',
     'O código do front-end não está na imagem da API, então a API não depende dele nem por acidente.',
     'Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só o de fronteira publica porta para fora, e o banco fica sem mapeamento nenhum.',
-    'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura, o que reduz a degradação arquitetural.',
+    'Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura.',
   ],
   tituloB: 'ACOPLAMENTO',
   itensB: [
@@ -640,7 +640,7 @@ add('conteudo', {
     'O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.',
     'A regra de rede que o Docker escreve passa na frente da do administrador, então um deny de firewall na porta publicada não bloqueia nada.',
     'Container com estado traz junto o problema de backup e o de upgrade de versão maior do banco, que não somem por estar em imagem.',
-    'O Docker Desktop é pago para empresa acima de certo porte, o que afeta quem for usar isto fora da faculdade.',
+    'O Docker Desktop é pago para empresa acima de certo porte.',
   ],
   nota: 'Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.',
   notaTitulo: 'NO NOSSO CASO',
@@ -706,16 +706,16 @@ add('duasColunas', {
   titulo: 'Efeito nos atributos<br>de qualidade do projeto',
   tituloA: 'GANHA',
   itensA: [
-    'Cada imagem tem uma responsabilidade e uma fronteira declarada, que é modularidade e reusabilidade.',
-    'O ambiente vira arquivo legível, versionado junto com o código, e com isso ganha compreensibilidade.',
-    'Extensibilidade sai barata, porque trocar runtime ou banco é editar uma linha de arquivo.',
-    'A mesma imagem atravessa notebook, pipeline e a demonstração funcional do T3, o que ajuda a manutenibilidade.',
-    'A escalabilidade fica seletiva, e só vale se a aplicação for mesmo sem estado.',
+    'Uma responsabilidade por imagem, com a fronteira declarada.',
+    'O ambiente vira arquivo legível, versionado junto com o código.',
+    'Trocar runtime ou banco passa a ser editar uma linha de arquivo.',
+    'A mesma imagem atravessa notebook, pipeline e a demonstração do T3.',
+    'Dá para escalar só o serviço público, se a aplicação for mesmo sem estado.',
   ],
   tituloB: 'CUSTA',
   itensB: [
-    'Segurança ganha isolamento e herda uma superfície nova, que é a imagem base e o privilégio de execução.',
-    'Desempenho custa, principalmente I/O nas máquinas Windows, e a Aula 03 já avisa que camada extra prejudica desempenho.',
+    'Uma superfície de ataque nova, na imagem base e no privilégio de execução.',
+    'I/O mais lento, principalmente nas máquinas Windows. A Aula 03 já avisa que camada extra prejudica desempenho.',
   ],
   corB: LARANJA,
   tam: 34,

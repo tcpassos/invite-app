@@ -24,6 +24,19 @@ Em UML, o container é um ambiente de execução aninhado no nó do host, e a im
 implantado nele. Ambiente de execução é uma especialização de nó, então nunca dizer "container não
 é nó".
 
+## O slide traz o fato, quem apresenta traz o nome
+
+Os slides pararam de nomear a categoria de cada frase. Onde antes estava escrito "a mesma imagem
+atravessa notebook, pipeline e a demonstração do T3, o que ajuda a manutenibilidade", agora está só
+a primeira metade. Frase que enuncia um fato e depois classifica ele soa a texto gerado, e ocupa
+espaço com uma palavra que quem apresenta diz de graça.
+
+Isso vale principalmente no slide de ganho e custo, onde os sete itens perderam o nome do atributo.
+O Andreas precisa dizer cada um em voz alta: modularidade e reusabilidade na primeira linha,
+compreensibilidade na segunda, extensibilidade na terceira, manutenibilidade na quarta,
+escalabilidade na quinta, e do outro lado segurança e desempenho. Sem isso o slide vira lista de
+benefícios genéricos e perde a ligação com o vocabulário da disciplina.
+
 ## Número de item também fica na fala
 
 Pelo mesmo motivo das aulas, os números de work item saíram quase todos dos slides. A plateia não
