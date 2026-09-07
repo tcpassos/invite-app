@@ -14,7 +14,7 @@ declarado, e sai registrada no ADR #63.
 
 ## Camada lógica e tier não são a mesma coisa
 
-As três camadas do back-end-end, Apresentação e API, Domínio e Dados, são camadas lógicas e ficam na
+As três camadas do back-end, Apresentação e API, Domínio e Dados, são camadas lógicas e ficam na
 mesma imagem. O que o container separa são tiers: front-end, API e banco.
 
 A decisão arquitetural em jogo é a granularidade, ou seja, em quantos tiers as camadas lógicas serão
@@ -171,7 +171,7 @@ usando só o vocabulário das aulas e apontando o número de cada task do board.
    muda de forma em vez de desaparecer, e passa a ter latência, falha parcial e ordem de subida, que
    é a razão de existir HEALTHCHECK com `condition: service_healthy`.
    Aqui é fácil exagerar, então cuidado com a afirmação. O container não torna estrutural a regra
-   entre as nossas três camadas, porque elas ficam na mesma imagem do back-end-end. Ele torna estrutural
+   entre as nossas três camadas, porque elas ficam na mesma imagem do back-end. Ele torna estrutural
    outras duas coisas. O código do front-end não está dentro da imagem da API, então a API não consegue
    depender dele nem por acidente. E só o serviço de fronteira publica porta, com o banco na rede
    interna sem mapeamento. Amarrar com degradação arquitetural, tema da Aula 02: uma regra escrita na
