@@ -365,10 +365,10 @@ antes de existir a primeira linha de código do produto, e o que temos agora é 
 Agora a retomada é legítima, porque o slide 3 fez a promessa no minuto dois. Pode dizer "como
 dissemos na abertura".
 
-O último slide de conteúdo é "Três coisas para lembrar", e é a única vez que a plateia vê as três
-frases juntas. Ler devagar. Container é um processo comum, isolado por mecanismos do kernel. Imagem
-é o artefato, container é o ambiente de execução. A decisão de arquitetura é em quantos processos
-separados o sistema vai rodar.
+Ainda sobre o slide de antes e agora, que é o último de conteúdo, fechar com três frases ditas
+devagar, sem slide próprio, porque as três já foram títulos ao longo da apresentação. Container é um
+processo comum, isolado por mecanismos do kernel. Imagem é o artefato, container é o ambiente de
+execução. A decisão de arquitetura é em quantos processos separados o sistema vai rodar.
 
 As pendências saíram da tela, mas ficam na fala: os seis itens de modelagem seguem em aberto e o
 documento de decisões arquiteturais, item #63, ainda não foi escrito. Dizer isso antes de abrir para

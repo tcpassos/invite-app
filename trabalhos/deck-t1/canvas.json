@@ -282,18 +282,8 @@
     },
     {
       "file": "S29.dc.html",
-      "title": "29. Três coisas para lembrar",
+      "title": "29. Referências",
       "x": 0,
-      "y": 0,
-      "w": 1280,
-      "h": 720,
-      "page": "p-f",
-      "print": "fixed"
-    },
-    {
-      "file": "S30.dc.html",
-      "title": "30. Referências",
-      "x": 1380,
       "y": 0,
       "w": 1280,
       "h": 720,

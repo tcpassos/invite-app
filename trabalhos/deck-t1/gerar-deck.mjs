@@ -735,19 +735,6 @@ add('diagrama', {
 })
 
 add('conteudo', {
-  bloco: 'Considerações finais',
-  cartola: '',
-  titulo: 'Três coisas para lembrar',
-  grande: true,
-  itens: [
-    'Container é um processo comum, isolado por mecanismos do kernel.',
-    'Imagem é o artefato. Container é o ambiente de execução que roda a imagem.',
-    'A decisão de arquitetura é em quantos processos separados o sistema vai rodar.',
-  ],
-  right: 120,
-})
-
-add('conteudo', {
   bloco: 'Referências',
   cartola: '',
   titulo: 'Referências',
