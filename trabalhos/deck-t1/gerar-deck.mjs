@@ -398,6 +398,20 @@ add('conteudo', {
   right: 330,
 })
 
+add('conteudo', {
+  bloco: 'Introdução',
+  cartola: '',
+  titulo: 'Para que o grupo quer usar Docker',
+  itens: [
+    'Ambiente de desenvolvimento igual para os quatro, com o banco rodando sem ninguém instalar nada na própria máquina.',
+    'Um arquivo no repositório que descreve esse ambiente inteiro, versionado junto com o código, e que qualquer um sobe com um comando.',
+    'Mais adiante, o mesmo ambiente que rodou no desenvolvimento também na entrega e na apresentação do produto.',
+  ],
+  nota: 'Nada disso está feito. É o que o grupo quer testar, e o resto da apresentação é o exame dessa ideia.',
+  notaTitulo: 'AINDA É PROPOSTA',
+  right: 340,
+})
+
 add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: '', titulo: 'Definições e arquitetura', sub: 'Antes de decidir onde cada parte roda, o que o kernel faz quando alguém digita docker run e por que a imagem é em camadas.' })
 
 add('linhaTempo', {
@@ -718,22 +732,6 @@ add('duasColunas', {
   tam: 34,
 })
 
-add('conteudo', {
-  bloco: 'Considerações finais',
-  cartola: '',
-  titulo: 'Para que o grupo vai usar',
-  itens: [
-    'Ambiente de desenvolvimento igual para os quatro, com o banco rodando sem ninguém instalar nada na própria máquina.',
-    'Um arquivo no repositório que descreve esse ambiente inteiro, versionado junto com o código, e que qualquer um sobe com um comando.',
-    'Na entrega e na apresentação do produto, a mesma imagem que rodou no desenvolvimento, sem reconfigurar máquina.',
-    'O diagrama de implantação deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda.',
-    'A stack ainda não está decidida, e é o documento de decisões arquiteturais que vai registrar isso.',
-  ],
-  nota: 'Insumo direto da próxima sprint, que vai definir as tecnologias e os mecanismos da implementação.',
-  notaTitulo: 'PRÓXIMO PASSO',
-  right: 330,
-})
-
 add('duasColunas', {
   bloco: 'Considerações finais',
   cartola: '',
@@ -785,9 +783,9 @@ add('conteudo', {
 // ---------- escrita ----------
 
 const paginas = [
-  { id: 'p-a', nome: 'Capa e Bloco A', ate: 2 },
-  { id: 'p-b', nome: 'Bloco B', ate: 11 },
-  { id: 'p-c', nome: 'Bloco C', ate: 18 },
+  { id: 'p-a', nome: 'Capa e Bloco A', ate: 3 },
+  { id: 'p-b', nome: 'Bloco B', ate: 12 },
+  { id: 'p-c', nome: 'Bloco C', ate: 19 },
   { id: 'p-d', nome: 'Bloco D', ate: 28 },
   { id: 'p-f', nome: 'Fecho', ate: 99 },
 ]

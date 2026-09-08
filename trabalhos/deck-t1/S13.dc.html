@@ -13,7 +13,7 @@
     body { margin: 0; font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
     a { color: #E94D1C; text-decoration: none; }
     a:hover { color: #21049A; }
-    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #fff; }
+    .sl { width: 1280px; height: 720px; box-sizing: border-box; position: relative; overflow: hidden; background: #21049A; }
     .cartola { font-weight: 900; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
     .titulo { font-weight: 900; line-height: 1.02; letter-spacing: -0.015em; margin: 0; }
     .corpo { font-weight: 300; line-height: 1.5; margin: 0; }
@@ -23,57 +23,17 @@
     .cc { font-weight: 900; color: #E94D1C; flex: none; }
   </style>
 </helmet>
-<div class="sl" style="background:#fff">
-  <div style="position:absolute; left:72px; top:66px; right:72px">
-    <div class="cartola" style="color:#E94D1C"></div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Camada lógica e tier</h2>
+<div class="sl" style="background:#21049A">
+  <div style="position:absolute; left:0; top:0; bottom:0; width:10px; background:#E94D1C"></div>
+  <div style="position:absolute; right:-120px; bottom:-180px; width:520px; height:520px; border-radius:50%; background:rgba(255,255,255,.05)"></div>
+  <div style="position:absolute; left:96px; top:50%; transform:translateY(-50%); right:120px">
+    <div style="font-weight:900; font-size:130px; color:rgba(255,255,255,.16); line-height:1">02</div>
+    <div class="cartola" style="color:#E94D1C; margin-top:10px"></div>
+    <h2 class="titulo" style="color:#fff; font-size:56px; margin-top:16px; max-width:820px">Aplicação no Invite People</h2>
+    <p class="corpo" style="color:rgba(255,255,255,.72); font-size:19px; margin-top:22px; max-width:700px">Mapeamento entre os diagramas de arquitetura e o arquivo de compose.</p>
   </div>
-  <div style="position:absolute; left:72px; top:212px; right:72px; display:flex; justify-content:center">
-<svg width="980" height="256" viewBox="0 0 980 256" xmlns="http://www.w3.org/2000/svg">
-  <g font-family="Roboto, sans-serif">
-    <text x="0" y="16" font-size="12" fill="#6B6B78" font-weight="900" letter-spacing="1.4">AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE FRONT E BANCO RODAM.</text>
-    <g>
-      <rect x="0" y="40" width="286" height="158" rx="5" fill="#21049A" fill-opacity="0.07" stroke="#21049A" stroke-dasharray="4 4"/>
-      <rect x="16" y="56" width="254" height="26" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="143" y="74" font-size="13" fill="#1A1A1E" font-weight="300" text-anchor="middle">front</text>
-      <rect x="16" y="88" width="254" height="70" rx="3" fill="#fff" stroke="#21049A"/>
-      <text x="143" y="106" font-size="12" fill="#21049A" font-weight="400" text-anchor="middle">Apresentação e API</text>
-      <text x="143" y="126" font-size="12" fill="#21049A" font-weight="400" text-anchor="middle">Domínio</text>
-      <text x="143" y="146" font-size="12" fill="#21049A" font-weight="400" text-anchor="middle">Dados</text>
-      <rect x="16" y="164" width="254" height="26" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="143" y="182" font-size="13" fill="#1A1A1E" font-weight="300" text-anchor="middle">banco</text>
-      <text x="143" y="224" font-size="15" fill="#21049A" font-weight="900" text-anchor="middle">1 tier</text>
-      <text x="143" y="245" font-size="13" fill="#6B6B78" font-weight="300" text-anchor="middle">tudo num processo só</text>
-    </g>
-    <g transform="translate(347,0)">
-      <rect x="0" y="40" width="120" height="158" rx="5" fill="#21049A" fill-opacity="0.07" stroke="#21049A" stroke-dasharray="4 4"/>
-      <rect x="14" y="56" width="92" height="26" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="60" y="74" font-size="13" fill="#1A1A1E" font-weight="300" text-anchor="middle">front</text>
-      <rect x="140" y="40" width="146" height="158" rx="5" fill="#21049A" fill-opacity="0.07" stroke="#21049A" stroke-dasharray="4 4"/>
-      <rect x="154" y="88" width="118" height="70" rx="3" fill="#fff" stroke="#21049A"/>
-      <text x="213" y="106" font-size="11" fill="#21049A" font-weight="400" text-anchor="middle">Apresentação e API</text>
-      <text x="213" y="126" font-size="11" fill="#21049A" font-weight="400" text-anchor="middle">Domínio</text>
-      <text x="213" y="146" font-size="11" fill="#21049A" font-weight="400" text-anchor="middle">Dados</text>
-      <rect x="154" y="164" width="118" height="26" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="213" y="182" font-size="12" fill="#1A1A1E" font-weight="300" text-anchor="middle">banco</text>
-      <text x="143" y="224" font-size="15" fill="#21049A" font-weight="900" text-anchor="middle">2 tiers</text>
-      <text x="143" y="245" font-size="13" fill="#6B6B78" font-weight="300" text-anchor="middle">front separado</text>
-    </g>
-    <g transform="translate(694,0)">
-      <rect x="0" y="40" width="88" height="158" rx="5" fill="#E94D1C" fill-opacity="0.09" stroke="#E94D1C" stroke-dasharray="4 4"/>
-      <rect x="12" y="56" width="64" height="26" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="44" y="74" font-size="12" fill="#1A1A1E" font-weight="300" text-anchor="middle">front</text>
-      <rect x="100" y="40" width="98" height="158" rx="5" fill="#E94D1C" fill-opacity="0.09" stroke="#E94D1C" stroke-dasharray="4 4"/>
-      <rect x="110" y="88" width="78" height="70" rx="3" fill="#fff" stroke="#21049A"/>
-      <text x="149" y="106" font-size="10.5" fill="#21049A" font-weight="400" text-anchor="middle">Apres. e API</text>
-      <text x="149" y="126" font-size="10.5" fill="#21049A" font-weight="400" text-anchor="middle">Domínio</text>
-      <text x="149" y="146" font-size="10.5" fill="#21049A" font-weight="400" text-anchor="middle">Dados</text>
-      <rect x="210" y="40" width="88" height="158" rx="5" fill="#E94D1C" fill-opacity="0.09" stroke="#E94D1C" stroke-dasharray="4 4"/>
-      <rect x="222" y="56" width="64" height="26" rx="3" fill="#fff" stroke="#D9D9D9"/><text x="254" y="74" font-size="12" fill="#1A1A1E" font-weight="300" text-anchor="middle">banco</text>
-      <text x="149" y="224" font-size="15" fill="#E94D1C" font-weight="900" text-anchor="middle">3 tiers</text>
-      <text x="149" y="245" font-size="13" fill="#6B6B78" font-weight="300" text-anchor="middle">banco isolado</text>
-    </g>
-  </g>
-</svg>
-  </div>
-  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da arquitetura em camadas.</div>
-  <div class="rodape" style="color: #6B6B78">
-    <span>02 · Aplicação no projeto</span><span style="font-weight:900; color: #21049A">13</span>
+  <div class="rodape" style="color: rgba(255,255,255,.55)">
+    <span>02 · Aplicação no projeto</span><span style="font-weight:900; color: #fff">13</span>
   </div>
 </div>
 </x-dc>

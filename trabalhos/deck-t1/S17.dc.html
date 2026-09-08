@@ -26,45 +26,37 @@
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
     <div class="cartola" style="color:#E94D1C"></div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Coesão e acoplamento</h2>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">As interfaces no arquivo de compose</h2>
   </div>
-  <div style="position:absolute; left:72px; top:214px; right:72px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:56px">
-    <div>
-      <div class="cartola" style="color:#21049A; font-size:12px">COESÃO</div>
-      <div style="height:3px; background:#21049A; margin:11px 0 20px; width:44px"></div>
-      <div style="display:flex; flex-direction:column; gap:15px">
+  <div style="position:absolute; left:72px; top:206px; width:620px; background:#F4F4F8; border-radius:8px; border:1px solid #D9D9D9; padding:22px 26px; font-family:'Roboto Mono', ui-monospace, Menlo, Consolas, monospace">
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">services:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  api:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: node:22-alpine</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    ports:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      - "3000:3000"        # interface provida</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    environment:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      DATABASE_URL: ...    # interface requerida</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    depends_on: [db]</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  db:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: postgres:16</div>
+  </div>
+  <div style="position:absolute; right:72px; top:206px; width:468px; display:flex; flex-direction:column; gap:17px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A imagem passa a ter uma responsabilidade só.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">O código do front-end não está na imagem da API, então a API não depende dele nem por acidente.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só o de fronteira publica porta para fora, e o banco fica sem mapeamento nenhum.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Uma regra que só existe escrita depende de alguém lembrar de aplicar. Na topologia ela é garantida pela estrutura.</p>
-      </div>
-      </div>
-    </div>
-    <div>
-      <div class="cartola" style="color:#E94D1C; font-size:12px">ACOPLAMENTO</div>
-      <div style="height:3px; background:#E94D1C; margin:11px 0 20px; width:44px"></div>
-      <div style="display:flex; flex-direction:column; gap:15px">
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Entre as nossas três camadas o acoplamento continua igual, porque elas ficam na mesma imagem do back-end.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong> da UML.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Onde há separação, o acoplamento não some, muda de forma e passa a ter latência, falha parcial e ordem de subida.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>.</p>
       </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.</p>
       </div>
-    </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do documento de decisões arquiteturais.</p>
+      </div>
   </div>
   <div class="rodape" style="color: #6B6B78">
     <span>02 · Aplicação no projeto</span><span style="font-weight:900; color: #21049A">17</span>

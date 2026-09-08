@@ -26,33 +26,52 @@
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
     <div class="cartola" style="color:#E94D1C"></div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Container e imagem</h2>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Linha do tempo do isolamento de processos</h2>
   </div>
-  <div style="position:absolute; left:72px; top:214px; right:72px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:56px">
-    <div>
-      <div class="cartola" style="color:#21049A; font-size:12px">CONTAINER</div>
-      <div style="height:3px; background:#21049A; margin:11px 0 20px; width:44px"></div>
-      <div style="display:flex; flex-direction:column; gap:15px">
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Um ou mais processos executados com visão isolada por namespaces, consumo limitado por cgroups e privilégio reduzido por capabilities e seccomp, sobre um sistema de arquivos raiz próprio.</p>
+  <div style="position:absolute; left:72px; right:72px; top:280px">
+    <div style="height:3px; background:#D9D9D9; position:relative">
+      <div style="position:absolute; left:0; top:0; height:3px; width:100%; background:linear-gradient(90deg, #D9D9D9 0%, #E94D1C 100%)"></div>
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:8px; margin-top:-8px">
+      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
+        <span style="width:13px; height:13px; border-radius:50%; background:#21049A"></span>
+        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">1979</span>
+        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">chroot</span>
       </div>
+      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
+        <span style="width:13px; height:13px; border-radius:50%; background:#21049A"></span>
+        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2002</span>
+        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">primeiro namespace no kernel</span>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
+        <span style="width:13px; height:13px; border-radius:50%; background:#21049A"></span>
+        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2008</span>
+        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">cgroups no mainline</span>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
+        <span style="width:13px; height:13px; border-radius:50%; background:#21049A"></span>
+        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2013</span>
+        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">Docker</span>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
+        <span style="width:13px; height:13px; border-radius:50%; background:#E94D1C"></span>
+        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2015</span>
+        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">primeiras especificações comuns de container</span>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
+        <span style="width:13px; height:13px; border-radius:50%; background:#E94D1C"></span>
+        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2017</span>
+        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">containerd na CNCF</span>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; text-align:center">
+        <span style="width:13px; height:13px; border-radius:50%; background:#E94D1C"></span>
+        <span style="font-weight:900; font-size:19px; color:#21049A; margin-top:14px">2022</span>
+        <span style="font-weight:300; font-size:13px; color:#6B6B78; margin-top:5px; line-height:1.35">Kubernetes remove o dockershim</span>
       </div>
     </div>
-    <div>
-      <div class="cartola" style="color:#E94D1C; font-size:12px">IMAGEM</div>
-      <div style="height:3px; background:#E94D1C; margin:11px 0 20px; width:44px"></div>
-      <div style="display:flex; flex-direction:column; gap:15px">
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, o hash do próprio conteúdo.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">São essas duas definições que decidem o desenho do diagrama de implantação, com a imagem entrando como artefato e o container como nó.</p>
-      </div>
-      </div>
-    </div>
+  </div>
+  <div style="position:absolute; left:72px; right:72px; bottom:96px; border-left:3px solid #E94D1C; padding-left:20px">
+    <p class="corpo" style="font-size:19px; color:#1A1A1E">O isolamento de processos existe desde 1979. O que é recente é a padronização da cadeia de execução, a partir de 2015.</p>
   </div>
   <div class="rodape" style="color: #6B6B78">
     <span>01 · Definições</span><span style="font-weight:900; color: #21049A">05</span>

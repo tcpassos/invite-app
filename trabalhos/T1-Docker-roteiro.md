@@ -26,16 +26,16 @@ implantado nele. Ambiente de execução é uma especialização de nó, então n
 
 ## Onde o deck responde "para que vamos usar"
 
-Está num slide só, o de recomendação, com o título "Para que o grupo vai usar". Antes essa resposta
-estava espalhada em quatro pedaços no último terço e em nenhum momento dita como lista de usos
-pretendidos.
+No slide 3, logo depois do slide do projeto, com o título "Para que o grupo quer usar Docker". Os
+três usos: ambiente igual para os quatro com o banco sem instalação local, um arquivo versionado no
+repositório que qualquer um sobe com um comando, e mais adiante o mesmo ambiente na entrega e na
+apresentação do produto.
 
-Os três usos concretos, na ordem do slide: ambiente igual para os quatro com o banco sem instalação
-local, um arquivo versionado no repositório que qualquer um sobe com um comando, e a mesma imagem
-mais adiante na entrega e na apresentação do produto.
+Esse slide é do Guilherme e resolve o bloco de abertura, que antes tinha um slide de conteúdo só.
+Ele deve deixar claro que nada disso está feito, que é proposta, e que o resto da apresentação é o
+exame dessa ideia. A nota lateral do slide já diz isso.
 
-Vale o Andreas repetir esses três na abertura do bloco dele, porque o slide chega no fim e é a
-resposta que o professor mais provavelmente vai cobrar na arguição.
+O fecho retoma os três, agora como resultado. Nenhum deles precisa ser repetido no meio.
 
 ## Nada de identificador interno na tela
 
