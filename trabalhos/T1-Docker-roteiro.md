@@ -296,7 +296,10 @@ para o ADR.
 4. As vantagens não têm slide próprio, elas estão no slide de ganho e custo, no fim do bloco, com o
    quarteto que ele credita às camadas de um lado. Aqui basta anunciar que o balanço vem no fim e
    seguir para as limitações, senão a mesma lista é dita duas vezes.
-5. Limitações em slide próprio, como nas aulas. O daemon roda como root, e estar no grupo docker
+5. Limitações em slide próprio, como nas aulas. Logo depois vem a figura das duas pilhas, máquina
+   virtual e container lado a lado, no lugar das duas listas. Apontar o "SO convidado" repetido três
+   vezes de um lado e ausente do outro, é isso que a figura existe para mostrar.
+   O daemon roda como root, e estar no grupo docker
    equivale a root no host, sem sudo e sem trilha de auditoria, com rootless e Podman como respostas
    possíveis. A regra de rede que o Docker escreve passa na frente da do administrador, então um
    deny de firewall na porta publicada não bloqueia nada. Estado, que traz junto backup e upgrade de
@@ -353,21 +356,23 @@ pago, esse arquivo já está no repositório, se a stack mudar quanto desse trab
 
 ## Fechamento
 
-O slide de antes e depois, com a linha do `.gitattributes` de um lado e o arquivo de compose do
-outro. A fala: os ambientes deste time já divergiam antes de existir a primeira linha de código do
-produto, e o que temos agora é um arquivo que descreve o ambiente inteiro e que qualquer um dos
-quatro sobe com um comando.
+O slide de antes e agora mostra os dois artefatos de verdade, a linha do `.gitattributes` de um
+lado e o compose do outro. Não descrever, apontar. A fala: os ambientes deste time já divergiam
+antes de existir a primeira linha de código do produto, e o que temos agora é o arquivo que o slide
+3 prometeu, o que descreve o ambiente inteiro e qualquer um dos quatro sobe com um comando.
 
-Não dizer "como mostramos na abertura". Essa evidência aparece pela primeira vez aqui, e prometer
-uma retomada que a plateia não viu é o tipo de coisa que ele repara.
+Agora a retomada é legítima, porque o slide 3 fez a promessa no minuto dois. Pode dizer "como
+dissemos na abertura".
 
-Em seguida, dito em voz alta, o que o grupo não está afirmando, com número de item ao lado de cada
-pendência: #58 a #63 em To Do e o #63, onde a stack será decidida, ainda por escrever. Enumerar as próprias lacunas com número de work item
-transforma pendência em processo registrado, e é a melhor defesa que existe na arguição.
+O último slide de conteúdo é "Três coisas para lembrar", e é a única vez que a plateia vê as três
+frases juntas. Ler devagar. Container é um processo comum, isolado por mecanismos do kernel. Imagem
+é o artefato, container é o ambiente de execução. A decisão de arquitetura é em quantos processos
+separados o sistema vai rodar.
 
-Depois, três pontos para a turma levar para a P1, que cobre os temas dos seminários. Container é
-processo isolado por mecanismo de kernel. Imagem é artefato e container é ambiente de execução na
-modelagem UML. E a decisão arquitetural é a granularidade de tier.
+As pendências saíram da tela, mas ficam na fala: os seis itens de modelagem seguem em aberto e o
+documento de decisões arquiteturais, item #63, ainda não foi escrito. Dizer isso antes de abrir para
+perguntas. Enumerar as próprias lacunas com número de work item transforma pendência em processo
+registrado, e é a melhor defesa que existe na arguição.
 
 Referências no formato de tag que ele usa: as três specs da OCI, Sommerville, Fowler, Felter et al.
 2015, Merkel 2014 no Linux Journal, NIST SP 800-190, Twelve-Factor App, e as Aulas 03 e 05.
