@@ -26,23 +26,42 @@
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
     <div class="cartola" style="color:#E94D1C"></div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">O convite público e o painel<br>têm cargas diferentes</h2>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Área pública e área com login</h2>
   </div>
-  <div style="position:absolute; left:72px; top:210px; right:120px; display:flex; flex-direction:column; gap:19px">
+  <div style="position:absolute; left:72px; top:214px; right:72px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:56px">
+    <div>
+      <div class="cartola" style="color:#21049A; font-size:12px">CONVITE PÚBLICO, SEM LOGIN</div>
+      <div style="height:3px; background:#21049A; margin:11px 0 20px; width:44px"></div>
+      <div style="display:flex; flex-direction:column; gap:15px">
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A jornada da anfitriã descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Qualquer pessoa com o link acessa.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Réplicas só do container da API, por causa do convite público. O painel sozinho não justificaria.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">O link é compartilhado no grupo da família e as confirmações de presença chegam em pico.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">É por esta área que o container da API ganha réplicas, e para isso ela não pode guardar sessão em memória nem gravar upload em disco local.</p>
       </div>
+      </div>
+    </div>
+    <div>
+      <div class="cartola" style="color:#E94D1C; font-size:12px">PAINEL DO ANFITRIÃO, COM LOGIN</div>
+      <div style="height:3px; background:#E94D1C; margin:11px 0 20px; width:44px"></div>
+      <div style="display:flex; flex-direction:column; gap:15px">
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Só a anfitriã acessa.</p>
+      </div>
+      <div class="item">
+        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Uma pessoa por evento, carga baixa, sem necessidade de réplica.</p>
+      </div>
+      </div>
+    </div>
   </div>
-  
   <div class="rodape" style="color: #6B6B78">
     <span>02 · Aplicação no projeto</span><span style="font-weight:900; color: #21049A">19</span>
   </div>

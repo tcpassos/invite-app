@@ -602,16 +602,21 @@ add('duasColunas', {
   corB: LARANJA,
 })
 
-add('conteudo', {
+add('duasColunas', {
   bloco: '02 · Aplicação no projeto',
   cartola: '',
-  titulo: 'O convite público e o painel<br>têm cargas diferentes',
-  itens: [
-    'A jornada da anfitriã descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.',
-    'Réplicas só do container da API, por causa do convite público. O painel sozinho não justificaria.',
-    'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
+  titulo: 'Área pública e área com login',
+  tituloA: 'CONVITE PÚBLICO, SEM LOGIN',
+  itensA: [
+    'Qualquer pessoa com o link acessa.',
+    'O link é compartilhado no grupo da família e as confirmações de presença chegam em pico.',
+    'É por esta área que o container da API ganha réplicas, e para isso ela não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
-  right: 120,
+  tituloB: 'PAINEL DO ANFITRIÃO, COM LOGIN',
+  itensB: [
+    'Só a anfitriã acessa.',
+    'Uma pessoa por evento, carga baixa, sem necessidade de réplica.',
+  ],
 })
 
 add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração mostra o ambiente e a topologia. A implementação do produto começa em outubro.' })

@@ -255,10 +255,10 @@ usando só o vocabulário das aulas e apontando o número de cada task do board.
    convite público enquanto o painel tem uma pessoa olhando. Replicar só o serviço público faz
    sentido, replicar o painel não. E a restrição volta para o projeto: para isso valer, o convite
    público não pode guardar sessão em memória nem gravar upload em disco local.
-   Deixar a pergunta em aberto na tela, mesma imagem de front-end ou imagens separadas, que é entrada
-   direta para o #59 e o #60 e ainda não foi decidida.
-   Fechar com honestidade, e custa cinco segundos: os seis itens de arquitetura da Sprint 2 estão em
-   To Do, então isto é insumo desses itens, não relato de item concluído.
+   O slide das duas áreas é direto: convite público sem login, com pico e sem estado, e painel com
+   login, uma pessoa por evento. A conclusão é que a API ganha réplicas por causa da área pública.
+   A dúvida entre uma imagem de front-end ou duas fica para a fala, se perguntarem, e para o
+   documento de decisões arquiteturais.
 
 Perguntas prováveis: o container é nó ou artefato, diferença entre componente e imagem, vão separar
 as três camadas em três containers, onde fica a interface requerida, como garantir que a regra de
