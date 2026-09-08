@@ -19,7 +19,7 @@
    "É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.",
    "São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.",
    "A arquitetura já está registrada na documentação do projeto, com MVC no front-end e três camadas no back-end.",
-   "A Sprint 2 tem uma Questão Norteadora a responder: como os componentes serão distribuídos e implantados no ambiente de execução."
+   "O projeto ainda não decidiu como os componentes serão distribuídos e implantados no ambiente de execução."
   ],
   "nota": "As três camadas do back-end já estão decididas.<br><br>Falta decidir em quantos processos separados elas vão rodar.",
   "notaTitulo": "ONDE ESTAMOS HOJE",
@@ -189,7 +189,7 @@
   "titulo": "Camada lógica e tier",
   "svg": "<svg width=\"980\" height=\"256\" viewBox=\"0 0 980 256\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <text x=\"0\" y=\"16\" font-size=\"12\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.4\">AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE FRONT E BANCO RODAM.</text>\n    <g>\n      <rect x=\"0\" y=\"40\" width=\"286\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"16\" y=\"56\" width=\"254\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"143\" y=\"74\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"16\" y=\"88\" width=\"254\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"143\" y=\"106\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apresentação e API</text>\n      <text x=\"143\" y=\"126\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"143\" y=\"146\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"16\" y=\"164\" width=\"254\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"143\" y=\"182\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"143\" y=\"224\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">1 tier</text>\n      <text x=\"143\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">tudo num processo só</text>\n    </g>\n    <g transform=\"translate(347,0)\">\n      <rect x=\"0\" y=\"40\" width=\"120\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"14\" y=\"56\" width=\"92\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"60\" y=\"74\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"140\" y=\"40\" width=\"146\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"154\" y=\"88\" width=\"118\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"213\" y=\"106\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apresentação e API</text>\n      <text x=\"213\" y=\"126\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"213\" y=\"146\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"154\" y=\"164\" width=\"118\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"213\" y=\"182\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"143\" y=\"224\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">2 tiers</text>\n      <text x=\"143\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">front separado</text>\n    </g>\n    <g transform=\"translate(694,0)\">\n      <rect x=\"0\" y=\"40\" width=\"88\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"12\" y=\"56\" width=\"64\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"44\" y=\"74\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"100\" y=\"40\" width=\"98\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"110\" y=\"88\" width=\"78\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"149\" y=\"106\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apres. e API</text>\n      <text x=\"149\" y=\"126\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"149\" y=\"146\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"210\" y=\"40\" width=\"88\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"222\" y=\"56\" width=\"64\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"254\" y=\"74\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"149\" y=\"224\" font-size=\"15\" fill=\"#E94D1C\" font-weight=\"900\" text-anchor=\"middle\">3 tiers</text>\n      <text x=\"149\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">banco isolado</text>\n    </g>\n  </g>\n</svg>",
   "svgNome": "svgTiers",
-  "legenda": "O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no ADR, o documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da arquitetura em camadas.",
+  "legenda": "O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da arquitetura em camadas.",
   "topSvg": 212,
   "n": 13
  },
@@ -235,7 +235,7 @@
    "A porta publicada mais o contrato HTTP é a <strong style=\"font-weight:900\">interface provida</strong> da UML.",
    "A variável de conexão mais a dependência declarada é a <strong style=\"font-weight:900\">interface requerida</strong>.",
    "A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.",
-   "As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do ADR."
+   "As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do documento de decisões arquiteturais."
   ],
   "n": 16
  },
@@ -280,7 +280,7 @@
   "num": "03",
   "cartola": "",
   "titulo": "Vantagens, desvantagens e demonstração",
-  "sub": "A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.",
+  "sub": "A demonstração é do ambiente e da topologia, não do produto. A implementação do produto começa em outubro.",
   "n": 19
  },
  {
@@ -348,7 +348,7 @@
    "O container compartilha o kernel do host.",
    "A fronteira dele é a interface de chamadas de sistema, que são mais de trezentas, somadas a /proc, /sys e ioctl.",
    "A CVE-2019-5736 mostrou o risco na prática, porque o processo de dentro conseguia sobrescrever o binário do runtime pelo /proc/self/exe.",
-   "Por isso o ADR precisa registrar que container não dá o mesmo isolamento de uma máquina virtual."
+   "Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual."
   ],
   "corB": "#E94D1C",
   "tam": 32,
@@ -441,7 +441,7 @@
   "itens": [
    "O grupo recomenda adotar conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto.",
    "O diagrama de implantação deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.",
-   "A stack ainda não está decidida, e o ADR é onde ela será registrada."
+   "A stack ainda não está decidida, e é o documento de decisões arquiteturais que vai registrar isso."
   ],
   "nota": "Insumo direto da próxima sprint, que vai definir as tecnologias e os mecanismos da implementação.",
   "notaTitulo": "PRÓXIMO PASSO",
@@ -472,7 +472,7 @@
   "titulo": "O que não estamos afirmando",
   "itens": [
    "Os seis itens de modelagem da arquitetura seguem em aberto. Isto é insumo desses itens, não relato de item concluído.",
-   "O ADR, onde a stack será decidida, ainda não foi escrito."
+   "O documento de decisões arquiteturais, onde a stack será decidida, ainda não foi escrito."
   ],
   "nota": "Container é processo isolado por mecanismo de kernel.<br><br>Imagem é artefato, container é ambiente de execução.<br><br>A decisão arquitetural é a granularidade de tier.",
   "notaTitulo": "PARA LEVAR PARA A P1",

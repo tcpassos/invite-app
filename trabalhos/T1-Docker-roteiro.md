@@ -24,6 +24,20 @@ Em UML, o container é um ambiente de execução aninhado no nó do host, e a im
 implantado nele. Ambiente de execução é uma especialização de nó, então nunca dizer "container não
 é nó".
 
+## Nada de identificador interno na tela
+
+Regra sem exceção: se a plateia não consegue resolver o termo sozinha, ele não vai no slide. Isso
+cobre UC, número de work item, nome de coluna do quadro, nome de persona, nome de documento do
+grupo, Sprint numerada, Questão Norteadora, ADR e número de trabalho da disciplina.
+
+Na fala é o contrário, tudo isso pode e deve aparecer, principalmente na arguição, que é onde
+rastreabilidade vira ponto. Quem apresenta precisa saber de cor o que é o #59, o #60 e o #63 antes
+de subir.
+
+Antes de subir o arquivo no Moodle, rodar:
+
+    python trabalhos/deck-t1/checar-identificadores.py trabalhos/T1-Docker-Invite-People.pptx
+
 ## Um título por slide
 
 Os slides tinham dois títulos, a cartola laranja em caixa alta e o título azul grande, e na maioria

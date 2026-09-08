@@ -392,7 +392,7 @@ add('conteudo', {
     'É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.',
     'São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.',
     'A arquitetura já está registrada na documentação do projeto, com MVC no front-end e três camadas no back-end.',
-    'A Sprint 2 tem uma Questão Norteadora a responder: como os componentes serão distribuídos e implantados no ambiente de execução.',
+    'O projeto ainda não decidiu como os componentes serão distribuídos e implantados no ambiente de execução.',
   ],
   nota: 'As três camadas do back-end já estão decididas.<br><br>Falta decidir em quantos processos separados elas vão rodar.',
   notaTitulo: 'ONDE ESTAMOS HOJE',
@@ -518,7 +518,7 @@ add('diagrama', {
   titulo: 'Camada lógica e tier',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no ADR, o documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da arquitetura em camadas.',
+  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da arquitetura em camadas.',
   topSvg: 212,
 })
 
@@ -561,7 +561,7 @@ add('codigo', {
     'A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong> da UML.',
     'A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>.',
     'A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.',
-    'As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do ADR.',
+    'As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do documento de decisões arquiteturais.',
   ],
 })
 
@@ -598,7 +598,7 @@ add('conteudo', {
   right: 340,
 })
 
-add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração é do ambiente e da topologia, não do produto. A implementação começa na Sprint 4.' })
+add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração é do ambiente e da topologia, não do produto. A implementação do produto começa em outubro.' })
 
 add('terminal', {
   bloco: '03 · Demonstração',
@@ -657,7 +657,7 @@ add('duasColunas', {
     'O container compartilha o kernel do host.',
     'A fronteira dele é a interface de chamadas de sistema, que são mais de trezentas, somadas a /proc, /sys e ioctl.',
     'A CVE-2019-5736 mostrou o risco na prática, porque o processo de dentro conseguia sobrescrever o binário do runtime pelo /proc/self/exe.',
-    'Por isso o ADR precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
+    'Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
   ],
   corB: LARANJA,
   tam: 32,
@@ -726,7 +726,7 @@ add('conteudo', {
   itens: [
     'O grupo recomenda adotar conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto.',
     'O diagrama de implantação deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.',
-    'A stack ainda não está decidida, e o ADR é onde ela será registrada.',
+    'A stack ainda não está decidida, e é o documento de decisões arquiteturais que vai registrar isso.',
   ],
   nota: 'Insumo direto da próxima sprint, que vai definir as tecnologias e os mecanismos da implementação.',
   notaTitulo: 'PRÓXIMO PASSO',
@@ -755,7 +755,7 @@ add('conteudo', {
   titulo: 'O que não estamos afirmando',
   itens: [
     'Os seis itens de modelagem da arquitetura seguem em aberto. Isto é insumo desses itens, não relato de item concluído.',
-    'O ADR, onde a stack será decidida, ainda não foi escrito.',
+    'O documento de decisões arquiteturais, onde a stack será decidida, ainda não foi escrito.',
   ],
   nota: 'Container é processo isolado por mecanismo de kernel.<br><br>Imagem é artefato, container é ambiente de execução.<br><br>A decisão arquitetural é a granularidade de tier.',
   notaTitulo: 'PARA LEVAR PARA A P1',
