@@ -395,9 +395,9 @@ add('conteudo', {
     'É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.',
     'São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.',
     'A arquitetura já está registrada na documentação do projeto, com MVC no front-end e três camadas no back-end.',
-    'A pergunta desta apresentação é como esses componentes serão distribuídos e implantados no ambiente de execução.',
+    'Como esses componentes serão distribuídos e implantados no ambiente de execução.',
   ],
-  nota: 'Três camadas lógicas no back-end.<br><br>A decisão em jogo é em quantos processos separados elas rodam.',
+  nota: 'Três camadas lógicas no back-end.<br><br>A decisão é em quantos processos separados elas rodam.',
   notaTitulo: 'PONTO DE PARTIDA',
   right: 330,
 })
@@ -409,7 +409,7 @@ add('conteudo', {
   itens: [
     'Ambiente de desenvolvimento igual para os quatro, com o banco rodando sem ninguém instalar nada na própria máquina.',
     'Um arquivo no repositório que descreve esse ambiente inteiro, versionado junto com o código, e que qualquer um sobe com um comando.',
-    'Mais adiante, o mesmo ambiente que rodou no desenvolvimento também na entrega e na apresentação do produto.',
+    'Na entrega e na apresentação do produto, o mesmo ambiente do desenvolvimento.',
   ],
   right: 120,
 })
@@ -429,7 +429,7 @@ add('linhaTempo', {
     { ano: '2017', txt: 'containerd na CNCF' },
     { ano: '2022', txt: 'Kubernetes remove o dockershim' },
   ],
-  remate: 'O isolamento de processos existe desde 1979. O que é recente é a padronização da cadeia de execução, a partir de 2015.',
+  remate: 'O isolamento de processos existe desde 1979. A padronização da cadeia de execução é de 2015.',
 })
 
 add('duasColunas', {
@@ -443,7 +443,7 @@ add('duasColunas', {
   tituloB: 'IMAGEM',
   itensB: [
     'Conjunto ordenado de camadas de sistema de arquivos mais a configuração de execução, identificado por um digest, o hash do próprio conteúdo.',
-    'São essas duas definições que decidem o desenho do diagrama de implantação, com a imagem entrando como artefato e o container como nó.',
+    'No diagrama de implantação, a imagem é artefato e o container é nó.',
   ],
 })
 
@@ -464,7 +464,7 @@ add('terminal', {
     '4026532194 pid         3  4821 root',
     '4026532196 net         3  4821 root',
   ],
-  captura: 'Namespaces e cgroups são recursos do kernel Linux, então no Windows o Docker Desktop roda o engine sobre o WSL2, que fornece um kernel Linux real numa máquina virtual leve. Esta saída é dessa distro. O mesmo processo tem PID 1 dentro do container e outro PID no host, que é o que o namespace de PID faz. É por isso que no nosso diagrama de implantação o container aparece dentro do host, e não como máquina separada.',
+  captura: 'Namespaces e cgroups são recursos do kernel Linux. No Windows, o Docker Desktop roda o engine sobre o WSL2, uma máquina virtual leve com kernel Linux. O mesmo processo tem PID 1 dentro do container e outro PID no host. Por isso, no diagrama de implantação, o container fica dentro do nó do host.',
 })
 
 add('duasColunas', {
@@ -481,8 +481,8 @@ add('duasColunas', {
   tituloB: 'CGROUPS V2',
   itensB: [
     'Os cgroups não isolam nada, eles contabilizam e limitam o consumo de recursos.',
-    'Quando o processo estoura o limite de memória ele não fica lento, o kernel mata ele.',
-    'O limite de CPU não mata, freia. Piora as requisições mais lentas e quase não mexe na média, por isso passa despercebido.',
+    'Estourar o limite de memória encerra o processo. Ele não fica lento.',
+    'O limite de CPU só reduz a velocidade. As requisições mais lentas pioram e a média quase não muda.',
   ],
 })
 
@@ -492,7 +492,7 @@ add('diagrama', {
   titulo: 'As camadas de uma imagem',
   svg: svgCamadas,
   svgNome: 'svgCamadas',
-  legenda: 'A imagem é construída a partir de um Dockerfile, o arquivo de texto que declara a base e os passos, e circula entre máquinas por um registry. Cada instrução vira uma camada, e por isso um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do login do anfitrião.',
+  legenda: 'A imagem é construída a partir de um Dockerfile e distribuída por um registry. Cada instrução gera uma camada. Um Dockerfile que copia um .env e o apaga na instrução seguinte deixa o segredo legível na camada anterior. No nosso caso, a senha do banco e o segredo de sessão do anfitrião.',
   topSvg: 196,
 })
 
@@ -510,9 +510,9 @@ add('conteudo', {
   cartola: '',
   titulo: 'Como o privilégio do container é reduzido',
   itens: [
-    'Capabilities fatiam o root do POSIX em privilégios independentes, que podem ser derrubados e devolvidos um a um.',
+    'Capabilities dividem os privilégios de root em unidades independentes, removidas uma a uma.',
     'O perfil padrão de seccomp-bpf bloqueia parte das chamadas de sistema disponíveis.',
-    'AppArmor ou SELinux entram por cima de tudo, pelo módulo de segurança do próprio kernel.',
+    'AppArmor ou SELinux aplicam uma restrição adicional pelo módulo de segurança do kernel.',
   ],
   right: 330,
 })
@@ -534,7 +534,7 @@ add('diagrama', {
   titulo: 'Camada lógica e tier',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da arquitetura em camadas.',
+  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem, não às camadas lógicas da arquitetura.',
   topSvg: 212,
 })
 
@@ -576,7 +576,7 @@ add('codigo', {
   itens: [
     'A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong> da UML.',
     'A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>.',
-    'A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.',
+    'A porta da UML corresponde à porta publicada do container.',
     'As imagens do arquivo são exemplo. A stack é decisão do documento de decisões arquiteturais.',
   ],
 })
@@ -587,15 +587,15 @@ add('duasColunas', {
   titulo: 'Coesão e acoplamento',
   tituloA: 'COESÃO',
   itensA: [
-    'A imagem passa a ter uma responsabilidade só.',
-    'O código do front-end não está na imagem da API, então a API não depende dele nem por acidente.',
+    'Cada imagem tem uma responsabilidade.',
+    'O código do front-end não está na imagem da API, então a API não depende dele.',
     'Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só o de fronteira publica porta para fora, e o banco fica sem mapeamento nenhum.',
-    'Uma regra que só existe escrita depende de alguém lembrar de aplicar. Na topologia ela é garantida pela estrutura.',
+    'Uma regra só documentada depende de revisão manual. Na topologia ela é imposta pela estrutura.',
   ],
   tituloB: 'ACOPLAMENTO',
   itensB: [
     'Entre as nossas três camadas o acoplamento continua igual, porque elas ficam na mesma imagem do back-end.',
-    'Onde há separação, o acoplamento não some, muda de forma e passa a ter latência, falha parcial e ordem de subida.',
+    'Onde há separação, o acoplamento continua, agora com latência, falha parcial e ordem de subida.',
   ],
   corB: LARANJA,
 })
@@ -606,7 +606,7 @@ add('conteudo', {
   titulo: 'O convite público e o painel<br>têm cargas diferentes',
   itens: [
     'A jornada da anfitriã descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.',
-    'Replicar só o serviço público faz sentido, e replicar o painel não faz.',
+    'Só o serviço público precisa de réplicas. O painel não.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
   right: 120,
@@ -632,7 +632,7 @@ add('terminal', {
     '$ docker compose down -v',
     '# agora o dado some junto com o volume',
   ],
-  captura: 'A imagem de fundo que a anfitriã envia ao personalizar o convite e o CSV de restrições alimentares que ela exporta não podem morrer junto com o container. A decisão de implantação volta como restrição de projeto para as camadas de cima.',
+  captura: 'A imagem de fundo que a anfitriã envia ao personalizar o convite e o CSV de restrições alimentares que ela exporta não podem ser perdidos quando o container é removido. A decisão de implantação impõe uma restrição às camadas superiores.',
   rodapeAlto: 76,
 })
 
@@ -652,7 +652,7 @@ add('conteudo', {
   itens: [
     'O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.',
     'A regra de rede que o Docker escreve passa na frente da do administrador, então um deny de firewall na porta publicada não bloqueia nada.',
-    'Container com estado traz junto o problema de backup e o de upgrade de versão maior do banco, que não somem por estar em imagem.',
+    'Container com estado exige backup e upgrade de versão maior do banco. Estar em imagem não resolve isso.',
     'O Docker Desktop é pago para empresa acima de certo porte.',
   ],
   nota: 'Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.',
@@ -667,7 +667,7 @@ add('diagrama', {
   titulo: 'Container e máquina virtual',
   svg: svgVm,
   svgNome: 'svgVm',
-  legenda: 'A CVE-2019-5736 mostrou o risco na prática: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
+  legenda: 'A CVE-2019-5736 confirmou o risco: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
 })
 
 add('tabela', {
@@ -692,14 +692,14 @@ add('duasColunas', {
   tituloA: 'OS QUATRO CRITÉRIOS',
   itensA: [
     'O primeiro é o monolito que roda num servidor só e nunca vai escalar.',
-    'O segundo é o time sem integração contínua, que só ganha um passo de build a mais.',
+    'O segundo é o time sem integração contínua, que só acrescenta um passo de build.',
     'O terceiro é a aplicação sensível a latência de cauda.',
     'O quarto é o sistema dominado por estado.',
   ],
   tituloB: 'ONDE NÓS ESTAMOS',
   itensB: [
     'Dois dos quatro se aplicam a nós, porque não temos integração contínua definida nem hospedagem decidida.',
-    'O que resta é o motivo que abriu a apresentação: o ambiente igual para os quatro antes da primeira linha de código.',
+    'O motivo que se aplica é o ambiente igual para os quatro antes da primeira linha de código.',
   ],
   corB: LARANJA,
   tam: 34,
@@ -709,15 +709,15 @@ add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: '',
   titulo: 'Vantagens e custos',
-  tituloA: 'GANHA',
+  tituloA: 'VANTAGENS',
   itensA: [
     'Uma responsabilidade por imagem, com a fronteira declarada.',
-    'O ambiente vira arquivo legível, versionado junto com o código.',
-    'Trocar runtime ou banco passa a ser editar uma linha de arquivo.',
-    'A mesma imagem atravessa notebook, pipeline e a apresentação do projeto mais adiante.',
+    'O ambiente fica descrito num arquivo legível, versionado junto com o código.',
+    'Trocar runtime ou banco é editar uma linha do arquivo.',
+    'A mesma imagem roda no notebook, no pipeline e na apresentação do produto.',
     'Dá para escalar só o serviço público, se a aplicação for mesmo sem estado.',
   ],
-  tituloB: 'CUSTA',
+  tituloB: 'CUSTOS',
   itensB: [
     'Uma superfície de ataque nova, na imagem base e no privilégio de execução.',
     'I/O mais lento, principalmente nas máquinas Windows.',

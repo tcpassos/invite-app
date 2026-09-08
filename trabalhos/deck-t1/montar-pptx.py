@@ -295,7 +295,7 @@ def dg_camadas(sl, x, y):
     tf.paragraphs[0].alignment = PP_ALIGN.CENTER
     retangulo(sl, x, y + 14, 360, 52, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=4, tracejado=True)
     rotulo(sl, x + 20, y + 24, 320, 'camada de escrita', tam=14, cor=LARANJA, peso=900)
-    rotulo(sl, x + 20, y + 43, 320, 'criada pelo container, morre com ele', tam=12, cor=CINZA, peso=300)
+    rotulo(sl, x + 20, y + 43, 320, 'criada pelo container, removida com ele', tam=12, cor=CINZA, peso=300)
     linha(sl, x + 420, y + 8, x + 420, y + 234, CINZA_CLARO, 1)
     for dy, tit, corpo in [(56, 'copy-up', 'alterar um byte de um arquivo grande copia o arquivo inteiro para cima'),
                            (144, 'whiteout', 'apagar cria uma marcação, o arquivo continua na camada de baixo')]:
@@ -316,7 +316,7 @@ def dg_pilha(sl, x, y):
         if i:
             linha(sl, cx - gap, y + 79, cx, y + 79, AZUL, 2)
     rotulo(sl, x + 2 * (larg + gap) - 40, y + 20, 90, 'gRPC', tam=13, cor=AZUL, peso=900)
-    itens(sl, ['O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar o daemon deixar de matar os containers em execução.',
+    itens(sl, ['O shim é o processo pai do container, não o daemon. Reiniciar o daemon não encerra os containers.',
                'Cada peça tem uma responsabilidade e pode ser trocada por outra que respeite a mesma interface.'],
           x, y + 152, 1040, tam=17, gap=20)
 
@@ -333,10 +333,10 @@ def dg_uml(sl, x, y):
     tb, tf = caixa(sl, x + 450, y + 20, 420, 90)
     escrever(tf, 'Ambiente de execução é<br>uma especialização de nó.', tam=17, cor=AZUL, peso=900, entre=1.28)
     tb2, tf2 = caixa(sl, x + 450, y + 90, 430, 110)
-    escrever(tf2, 'Por isso nunca dizer que container não é nó. O modelo fiel é o container aninhado no host, com a imagem implantada dentro dele.', tam=14.5, cor=GRAFITE, peso=300, entre=1.5)
+    escrever(tf2, 'Container é um nó aninhado no host, com a imagem implantada dentro dele.', tam=14.5, cor=GRAFITE, peso=300, entre=1.5)
     linha(sl, x + 450, y + 172, x + 880, y + 172, CINZA_CLARO)
     tb3, tf3 = caixa(sl, x + 450, y + 188, 430, 80)
-    escrever(tf3, 'Máquina virtual, essa sim, é um nó novo, com sistema operacional próprio.', tam=14.5, cor=GRAFITE, peso=300, entre=1.5)
+    escrever(tf3, 'Máquina virtual é um nó separado, com sistema operacional próprio.', tam=14.5, cor=GRAFITE, peso=300, entre=1.5)
 
 def dg_tiers(sl, x, y):
     rotulo(sl, x, y, 1050, 'TIER É CADA PROCESSO SEPARADO EM QUE O SISTEMA RODA. AS TRÊS CAMADAS DO BACK-END FICAM SEMPRE JUNTAS NUM SÓ.',
@@ -406,7 +406,7 @@ def dg_dois(sl, x, y):
     retangulo(sl, x + 580, y + 130, 360, 34, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=3, tracejado=True)
     rotulo(sl, x + 580, y + 140, 360, 'rede nomeada, com resolução por nome de serviço', tam=12, cor=LARANJA, peso=400, alinhar=PP_ALIGN.CENTER)
     tbn, tfn = caixa(sl, x + 580, y + 176, 356, 46)
-    escrever(tfn, 'Cada nó vira um serviço no arquivo de compose, com a imagem por tag e digest.', tam=12, cor=CINZA, peso=300, entre=1.4)
+    escrever(tfn, 'Cada nó corresponde a um serviço no arquivo de compose, com a imagem por tag e digest.', tam=12, cor=CINZA, peso=300, entre=1.4)
 
 def dg_vm(sl, x, y):
     """Duas pilhas lado a lado: maquina virtual com um SO convidado por servico, container com kernel compartilhado."""
@@ -453,10 +453,10 @@ def dg_antes(sl, x, y):
         escrever(tf, legenda_txt, tam=15, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.45)
     bloco(x, 'NO COMEÇO DO PROJETO', AZUL,
           ['# .gitattributes', '*.sh text eol=lf', '', '', '', ''],
-          'Uma linha no repositório, porque sem ela o Git Bash quebra no Windows. Os ambientes do time já divergiam antes da primeira linha de código do produto.')
+          'Uma linha no repositório, necessária porque o Git Bash falha no Windows sem ela. Os ambientes do time já divergiam antes do primeiro código do produto.')
     bloco(x + 600, 'AGORA', LARANJA,
           ['# docker-compose.yml', 'services:', '  api:', '    image: node:22-alpine', '  db:', '    image: postgres:16'],
-          'Um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando. É ele que vira o diagrama de implantação.')
+          'Um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando. Esse arquivo é a base do diagrama de implantação.')
 
 DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml, 'svgVm': dg_vm, 'svgAntes': dg_antes,
              'svgTiers': dg_tiers, 'svgDois': dg_dois}

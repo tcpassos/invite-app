@@ -51,7 +51,7 @@
   </g>
 </svg>
   </div>
-  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">A imagem é construída a partir de um Dockerfile, o arquivo de texto que declara a base e os passos, e circula entre máquinas por um registry. Cada instrução vira uma camada, e por isso um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do login do anfitrião.</div>
+  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">A imagem é construída a partir de um Dockerfile e distribuída por um registry. Cada instrução gera uma camada. Um Dockerfile que copia um .env e o apaga na instrução seguinte deixa o segredo legível na camada anterior. No nosso caso, a senha do banco e o segredo de sessão do anfitrião.</div>
   <div class="rodape" style="color: #6B6B78">
     <span>01 · Arquitetura</span><span style="font-weight:900; color: #21049A">09</span>
   </div>
