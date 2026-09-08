@@ -291,7 +291,7 @@ para o ADR.
    instrução `build` no compose, para não depender da rede da sala nem de código que não existe.
    PostgreSQL oficial mais um nginx oficial servindo um HTML de uma linha, com rede nomeada e volume
    nomeado. A sequência: subir, mostrar `compose ps`, provar a resolução por nome de serviço com um
-   container efêmero (`docker compose run --rm client psql -h db`), criar uma tabela e inserir uma
+   de dentro do container do banco (`docker compose exec db psql -U app`), criar uma tabela e inserir uma
    linha, derrubar e subir de novo com o dado ainda lá, e por fim derrubar removendo o volume para o
    dado sumir. Narrar a conclusão: persistência é decisão declarada.
    Amarrar em regra que já está escrita, para não ficar genérico. A imagem de fundo que a anfitriã
