@@ -212,7 +212,7 @@
     },
     {
       "file": "S22.dc.html",
-      "title": "22. Limitações e custos",
+      "title": "22. Container vs máquina virtual",
       "x": 2760,
       "y": 0,
       "w": 1280,
@@ -222,7 +222,7 @@
     },
     {
       "file": "S23.dc.html",
-      "title": "23. Container e máquina virtual",
+      "title": "23. Alternativas consideradas",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -232,7 +232,7 @@
     },
     {
       "file": "S24.dc.html",
-      "title": "24. Alternativas consideradas",
+      "title": "24. Quando não compensa",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -242,7 +242,7 @@
     },
     {
       "file": "S25.dc.html",
-      "title": "25. Quando não compensa",
+      "title": "25. Vantagens e limitações",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -252,7 +252,7 @@
     },
     {
       "file": "S26.dc.html",
-      "title": "26. Vantagens e custos",
+      "title": "26. O que mudou no ambiente do time",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -262,17 +262,7 @@
     },
     {
       "file": "S27.dc.html",
-      "title": "27. O que mudou no ambiente do time",
-      "x": 4140,
-      "y": 880,
-      "w": 1280,
-      "h": 720,
-      "page": "p-d",
-      "print": "fixed"
-    },
-    {
-      "file": "S28.dc.html",
-      "title": "28. Referências",
+      "title": "27. Referências",
       "x": 0,
       "y": 0,
       "w": 1280,

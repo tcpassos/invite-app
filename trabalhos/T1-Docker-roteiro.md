@@ -304,18 +304,17 @@ para o ADR.
 4. As vantagens não têm slide próprio, elas estão no slide de ganho e custo, no fim do bloco, com o
    quarteto que ele credita às camadas de um lado. Aqui basta anunciar que o balanço vem no fim e
    seguir para as limitações, senão a mesma lista é dita duas vezes.
-5. Limitações em slide próprio, como nas aulas. Logo depois vem a figura das duas pilhas, máquina
-   virtual e container lado a lado, no lugar das duas listas. Apontar o "SO convidado" repetido três
+5. As limitações ficaram no slide de vantagens e limitações, só as que atingem o protótipo:
+   superfície de ataque nova, I/O mais lento no Windows, banco com estado exigindo backup e
+   upgrade, e a camada a mais de build e orquestração para o time aprender. Logo antes vem a
+   figura das duas pilhas, container contra máquina virtual. Apontar o SO convidado repetido três
    vezes de um lado e ausente do outro, é isso que a figura existe para mostrar.
-   O daemon roda como root, e estar no grupo docker
-   equivale a root no host, sem sudo e sem trilha de auditoria, com rootless e Podman como respostas
-   possíveis. A regra de rede que o Docker escreve passa na frente da do administrador, então um
-   deny de firewall na porta publicada não bloqueia nada. Estado, que traz junto backup e upgrade de
-   versão maior do banco. E o licenciamento do Docker Desktop. O custo de I/O no Windows fica para o
-   slide de ganho e custo, para não repetir.
-   Nenhum número sai daqui sem medição própria. Ou medimos, e o slide traz o modelo da máquina e a
-   data, ou dizemos que a documentação do Docker Desktop recomenda manter os arquivos dentro do WSL2
-   por causa do custo de I/O na fronteira, sem quantificar.
+   Três limitações gerais saíram da tela e ficam para a arguição, se perguntarem: o daemon roda
+   como root e estar no grupo docker equivale a root no host; a regra de rede do Docker é aplicada
+   antes das do administrador, então bloqueio de firewall na porta publicada não tem efeito; e o
+   Docker Desktop é pago para empresa acima de certo porte. Nenhuma delas atinge quatro notebooks
+   sem servidor, por isso não estão no slide.
+   Nenhum número de desempenho sai daqui sem medição própria.
 6. Container e máquina virtual pela superfície de ataque, apresentado pelo Tiago. A VM tem kernel
    próprio e a fronteira é imposta em hardware. O container compartilha o kernel do host e a
    fronteira dele é a interface de chamadas de sistema, mais de trezentas, mais /proc, /sys e ioctl.

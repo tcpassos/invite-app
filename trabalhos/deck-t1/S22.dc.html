@@ -26,30 +26,12 @@
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
     <div class="cartola" style="color:#E94D1C"></div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Limitações e custos</h2>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Container vs máquina virtual</h2>
   </div>
-  <div style="position:absolute; left:72px; top:202px; right:320px; display:flex; flex-direction:column; gap:19px">
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A regra de rede que o Docker escreve é aplicada antes das regras do administrador, então um bloqueio de firewall na porta publicada não tem efeito.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Container com estado continua exigindo backup e upgrade de versão maior do banco.</p>
-      </div>
-      <div class="item">
-        <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">O Docker Desktop é pago para empresa acima de certo porte.</p>
-      </div>
+  <div style="position:absolute; left:72px; top:200px; right:72px; display:flex; justify-content:center">
+<svg width="1100" height="300" viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg"><g font-family="Roboto, sans-serif" font-size="13"><text x="0" y="14" fill="#21049A" font-weight="900">MÁQUINA VIRTUAL</text><rect x="0" y="206" width="500" height="34" fill="#D9D9D9"/><rect x="0" y="168" width="500" height="36" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="0" y="130" width="500" height="36" fill="#21049A"/><text x="600" y="14" fill="#E94D1C" font-weight="900">CONTAINER</text><rect x="600" y="206" width="500" height="34" fill="#D9D9D9"/><rect x="600" y="168" width="500" height="36" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="600" y="130" width="500" height="36" fill="#21049A"/></g></svg>
   </div>
-  <div style="position:absolute; right:72px; top:210px; width:250px; border-left:3px solid #E94D1C; padding-left:20px">
-    <div class="cartola" style="color:#E94D1C; font-size:11px">NO NOSSO CASO</div>
-    <p class="corpo" style="font-size:15px; color:#6B6B78; margin-top:11px">Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.</p>
-  </div>
+  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">A CVE-2019-5736 confirmou o risco: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.</div>
   <div class="rodape" style="color: #6B6B78">
     <span>03 · Vantagens e desvantagens</span><span style="font-weight:900; color: #21049A">22</span>
   </div>

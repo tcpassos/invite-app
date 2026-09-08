@@ -26,12 +26,35 @@
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
     <div class="cartola" style="color:#E94D1C"></div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Container e máquina virtual</h2>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Alternativas consideradas</h2>
   </div>
-  <div style="position:absolute; left:72px; top:200px; right:72px; display:flex; justify-content:center">
-<svg width="1100" height="300" viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg"><g font-family="Roboto, sans-serif" font-size="13"><text x="0" y="14" fill="#21049A" font-weight="900">MÁQUINA VIRTUAL</text><rect x="0" y="206" width="500" height="34" fill="#D9D9D9"/><rect x="0" y="168" width="500" height="36" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="0" y="130" width="500" height="36" fill="#21049A"/><text x="600" y="14" fill="#E94D1C" font-weight="900">CONTAINER</text><rect x="600" y="206" width="500" height="34" fill="#D9D9D9"/><rect x="600" y="168" width="500" height="36" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="600" y="130" width="500" height="36" fill="#21049A"/></g></svg>
+  <div style="position:absolute; left:72px; right:72px; top:206px">
+    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; border-bottom:2px solid #21049A; padding-bottom:12px">
+      <div class="cartola" style="color:#21049A; font-size:11px">OPÇÃO</div>
+      <div class="cartola" style="color:#21049A; font-size:11px">A FAVOR</div>
+      <div class="cartola" style="color:#21049A; font-size:11px">CONTRA</div>
+    </div>
+    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; padding:15px 0; border-bottom:1px solid #EDEDF2">
+      <div class="corpo" style="font-size:17px; color:#21049A; font-weight:400; padding-right:18px">Instalação manual pelo README</div>
+      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Custo zero para começar</div>
+      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Quebra na primeira divergência de versão</div>
+    </div>
+    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; padding:15px 0; border-bottom:1px solid #EDEDF2">
+      <div class="corpo" style="font-size:17px; color:#21049A; font-weight:400; padding-right:18px">VM compartilhada</div>
+      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Isolamento imposto em hardware</div>
+      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Pesada e difícil de versionar</div>
+    </div>
+    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; padding:15px 0; border-bottom:1px solid #EDEDF2">
+      <div class="corpo" style="font-size:17px; color:#21049A; font-weight:400; padding-right:18px">Podman</div>
+      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Mesmo modelo, sem daemon root</div>
+      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Menos material e menos gente do time conhece</div>
+    </div>
+    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; gap:0; padding:15px 0; border-bottom:1px solid #EDEDF2">
+      <div class="corpo" style="font-size:17px; color:#21049A; font-weight:400; padding-right:18px">Compose</div>
+      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Ambiente igual para os quatro integrantes</div>
+      <div class="corpo" style="font-size:16px; color:#1A1A1E; font-weight:300; padding-right:18px">Acrescenta uma camada de build e de orquestração</div>
+    </div>
   </div>
-  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">A CVE-2019-5736 confirmou o risco: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.</div>
   <div class="rodape" style="color: #6B6B78">
     <span>03 · Vantagens e desvantagens</span><span style="font-weight:900; color: #21049A">23</span>
   </div>

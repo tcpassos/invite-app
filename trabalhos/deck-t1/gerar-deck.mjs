@@ -644,26 +644,10 @@ add('terminal', {
   rodapeAlto: 76,
 })
 
-add('conteudo', {
-  bloco: '03 · Vantagens e desvantagens',
-  cartola: '',
-  titulo: 'Limitações e custos',
-  itens: [
-    'O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.',
-    'A regra de rede que o Docker escreve é aplicada antes das regras do administrador, então um bloqueio de firewall na porta publicada não tem efeito.',
-    'Container com estado continua exigindo backup e upgrade de versão maior do banco.',
-    'O Docker Desktop é pago para empresa acima de certo porte.',
-  ],
-  nota: 'Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.',
-  notaTitulo: 'NO NOSSO CASO',
-  right: 320,
-  top: 202,
-})
-
 add('diagrama', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: '',
-  titulo: 'Container e máquina virtual',
+  titulo: 'Container vs máquina virtual',
   svg: svgVm,
   svgNome: 'svgVm',
   legenda: 'A CVE-2019-5736 confirmou o risco: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
@@ -677,7 +661,7 @@ add('tabela', {
   destacar: 3,
   cabecalhos: ['OPÇÃO', 'A FAVOR', 'CONTRA'],
   linhas: [
-    ['README nativo', 'Custo zero para começar', 'Quebra na primeira divergência de versão'],
+    ['Instalação manual pelo README', 'Custo zero para começar', 'Quebra na primeira divergência de versão'],
     ['VM compartilhada', 'Isolamento imposto em hardware', 'Pesada e difícil de versionar'],
     ['Podman', 'Mesmo modelo, sem daemon root', 'Menos material e menos gente do time conhece'],
     ['Compose', 'Ambiente igual para os quatro integrantes', 'Acrescenta uma camada de build e de orquestração'],
@@ -707,7 +691,7 @@ add('duasColunas', {
 add('duasColunas', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: '',
-  titulo: 'Vantagens e custos',
+  titulo: 'Vantagens e limitações',
   tituloA: 'VANTAGENS',
   itensA: [
     'Uma responsabilidade por imagem, com a fronteira declarada.',
@@ -716,10 +700,12 @@ add('duasColunas', {
     'A mesma imagem roda no notebook, no pipeline e na apresentação do produto.',
     'Dá para replicar só a API, se o caminho do convite público for mesmo sem estado.',
   ],
-  tituloB: 'CUSTOS',
+  tituloB: 'LIMITAÇÕES',
   itensB: [
     'Uma superfície de ataque nova, na imagem base e no privilégio de execução.',
     'I/O mais lento, principalmente nas máquinas Windows.',
+    'Container com estado continua exigindo backup e upgrade de versão maior do banco.',
+    'Uma camada a mais de build e orquestração para os quatro aprenderem.',
   ],
   corB: LARANJA,
   tam: 34,
@@ -757,7 +743,7 @@ const paginas = [
   { id: 'p-a', nome: 'Capa e Bloco A', ate: 3 },
   { id: 'p-b', nome: 'Bloco B', ate: 12 },
   { id: 'p-c', nome: 'Bloco C', ate: 19 },
-  { id: 'p-d', nome: 'Bloco D', ate: 27 },
+  { id: 'p-d', nome: 'Bloco D', ate: 26 },
   { id: 'p-f', nome: 'Fecho', ate: 99 },
 ]
 const paginaDe = (n) => paginas.find((p) => n <= p.ate).id
