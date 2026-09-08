@@ -534,7 +534,7 @@ add('diagrama', {
   titulo: 'Camada lógica e tier',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem. A camada lógica da arquitetura é outro conceito.',
+  legenda: 'O projeto lógico é o mesmo nas três opções. Os rascunhos dos próximos slides seguem a de três, e a escolha final é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem. A camada lógica da arquitetura é outro conceito.',
   topSvg: 212,
 })
 
@@ -562,12 +562,14 @@ add('codigo', {
   titulo: 'As interfaces no arquivo de compose',
   linhas: [
     'services:',
+    '  front:',
+    '    image: nginx:alpine',
+    '    ports: ["8080:80"]',
     '  api:',
     '    image: node:22-alpine',
-    '    ports:',
-    '      - "3000:3000"        # interface provida',
+    '    ports: ["3000:3000"]     # interface provida',
     '    environment:',
-    '      DATABASE_URL: ...    # interface requerida',
+    '      DATABASE_URL: ...      # interface requerida',
     '    depends_on: [db]',
     '  db:',
     '    image: postgres:16',
@@ -589,7 +591,7 @@ add('duasColunas', {
   itensA: [
     'Cada imagem tem uma responsabilidade.',
     'O código do front-end não está na imagem da API, então a API não depende dele.',
-    'Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só o de fronteira publica porta para fora, e o banco fica sem mapeamento nenhum.',
+    'Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só os serviços de fronteira publicam porta para fora. O banco fica sem mapeamento nenhum.',
     'Uma regra só documentada depende de revisão manual. Na topologia ela é imposta pela estrutura.',
   ],
   tituloB: 'ACOPLAMENTO',
@@ -606,7 +608,7 @@ add('conteudo', {
   titulo: 'O convite público e o painel<br>têm cargas diferentes',
   itens: [
     'A jornada da anfitriã descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.',
-    'Só o serviço público precisa de réplicas.',
+    'Réplicas só do container da API, por causa do convite público. O painel sozinho não justificaria.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
   right: 120,
@@ -706,7 +708,7 @@ add('duasColunas', {
     'O ambiente fica descrito num arquivo legível, versionado junto com o código.',
     'Trocar runtime ou banco é editar uma linha do arquivo.',
     'A mesma imagem roda no notebook, no pipeline e na apresentação do produto.',
-    'Dá para escalar só o serviço público, se a aplicação for mesmo sem estado.',
+    'Dá para replicar só a API, se o caminho do convite público for mesmo sem estado.',
   ],
   tituloB: 'CUSTOS',
   itensB: [

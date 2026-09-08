@@ -202,7 +202,7 @@
   "titulo": "Camada lógica e tier",
   "svg": "<svg width=\"980\" height=\"256\" viewBox=\"0 0 980 256\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <text x=\"0\" y=\"16\" font-size=\"12\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.4\">AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE FRONT E BANCO RODAM.</text>\n    <g>\n      <rect x=\"0\" y=\"40\" width=\"286\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"16\" y=\"56\" width=\"254\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"143\" y=\"74\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"16\" y=\"88\" width=\"254\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"143\" y=\"106\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apresentação e API</text>\n      <text x=\"143\" y=\"126\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"143\" y=\"146\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"16\" y=\"164\" width=\"254\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"143\" y=\"182\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"143\" y=\"224\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">1 tier</text>\n      <text x=\"143\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">tudo num processo só</text>\n    </g>\n    <g transform=\"translate(347,0)\">\n      <rect x=\"0\" y=\"40\" width=\"120\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"14\" y=\"56\" width=\"92\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"60\" y=\"74\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"140\" y=\"40\" width=\"146\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"154\" y=\"88\" width=\"118\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"213\" y=\"106\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apresentação e API</text>\n      <text x=\"213\" y=\"126\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"213\" y=\"146\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"154\" y=\"164\" width=\"118\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"213\" y=\"182\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"143\" y=\"224\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">2 tiers</text>\n      <text x=\"143\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">front separado</text>\n    </g>\n    <g transform=\"translate(694,0)\">\n      <rect x=\"0\" y=\"40\" width=\"88\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"12\" y=\"56\" width=\"64\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"44\" y=\"74\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"100\" y=\"40\" width=\"98\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"110\" y=\"88\" width=\"78\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"149\" y=\"106\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apres. e API</text>\n      <text x=\"149\" y=\"126\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"149\" y=\"146\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"210\" y=\"40\" width=\"88\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"222\" y=\"56\" width=\"64\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"254\" y=\"74\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"149\" y=\"224\" font-size=\"15\" fill=\"#E94D1C\" font-weight=\"900\" text-anchor=\"middle\">3 tiers</text>\n      <text x=\"149\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">banco isolado</text>\n    </g>\n  </g>\n</svg>",
   "svgNome": "svgTiers",
-  "legenda": "O projeto lógico é o mesmo nas três opções, e a escolha entre elas é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem. A camada lógica da arquitetura é outro conceito.",
+  "legenda": "O projeto lógico é o mesmo nas três opções. Os rascunhos dos próximos slides seguem a de três, e a escolha final é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem. A camada lógica da arquitetura é outro conceito.",
   "topSvg": 212,
   "n": 14
  },
@@ -233,12 +233,14 @@
   "titulo": "As interfaces no arquivo de compose",
   "linhas": [
    "services:",
+   "  front:",
+   "    image: nginx:alpine",
+   "    ports: [\"8080:80\"]",
    "  api:",
    "    image: node:22-alpine",
-   "    ports:",
-   "      - \"3000:3000\"        # interface provida",
+   "    ports: [\"3000:3000\"]     # interface provida",
    "    environment:",
-   "      DATABASE_URL: ...    # interface requerida",
+   "      DATABASE_URL: ...      # interface requerida",
    "    depends_on: [db]",
    "  db:",
    "    image: postgres:16"
@@ -261,7 +263,7 @@
   "itensA": [
    "Cada imagem tem uma responsabilidade.",
    "O código do front-end não está na imagem da API, então a API não depende dele.",
-   "Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só o de fronteira publica porta para fora, e o banco fica sem mapeamento nenhum.",
+   "Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só os serviços de fronteira publicam porta para fora. O banco fica sem mapeamento nenhum.",
    "Uma regra só documentada depende de revisão manual. Na topologia ela é imposta pela estrutura."
   ],
   "tituloB": "ACOPLAMENTO",
@@ -279,7 +281,7 @@
   "titulo": "O convite público e o painel<br>têm cargas diferentes",
   "itens": [
    "A jornada da anfitriã descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.",
-   "Só o serviço público precisa de réplicas.",
+   "Réplicas só do container da API, por causa do convite público. O painel sozinho não justificaria.",
    "Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local."
   ],
   "right": 120,
@@ -412,7 +414,7 @@
    "O ambiente fica descrito num arquivo legível, versionado junto com o código.",
    "Trocar runtime ou banco é editar uma linha do arquivo.",
    "A mesma imagem roda no notebook, no pipeline e na apresentação do produto.",
-   "Dá para escalar só o serviço público, se a aplicação for mesmo sem estado."
+   "Dá para replicar só a API, se o caminho do convite público for mesmo sem estado."
   ],
   "tituloB": "CUSTOS",
   "itensB": [

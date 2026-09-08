@@ -30,12 +30,14 @@
   </div>
   <div style="position:absolute; left:72px; top:206px; width:620px; background:#F4F4F8; border-radius:8px; border:1px solid #D9D9D9; padding:22px 26px; font-family:'Roboto Mono', ui-monospace, Menlo, Consolas, monospace">
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">services:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  front:</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: nginx:alpine</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    ports: ["8080:80"]</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  api:</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: node:22-alpine</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    ports:</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      - "3000:3000"        # interface provida</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    ports: ["3000:3000"]     # interface provida</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    environment:</div>
-    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      DATABASE_URL: ...    # interface requerida</div>
+    <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">      DATABASE_URL: ...      # interface requerida</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    depends_on: [db]</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">  db:</div>
     <div style="font-size:14px; line-height:1.85; color:#1A1A1E; white-space:pre">    image: postgres:16</div>

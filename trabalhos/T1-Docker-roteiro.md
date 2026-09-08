@@ -271,6 +271,13 @@ autonomia de dados e de ciclo de vida por serviço, o que não é o caso e nem e
 
 ---
 
+Coerência entre os slides 14, 16, 17 e 19, para quem apresentar a parte 3: o desenho em destaque
+no 14 é o de três tiers, o rascunho do 16 tem três nós e o compose do 17 agora tem três serviços,
+front, api e db. O que se replica, no 19 e no 27, é o container da API, por causa do convite público,
+e só se esse caminho for sem estado. Não dizer que três tiers é o que permite escalar. O que permite
+é a API separada do banco e sem estado no caminho público, em qualquer desenho com dois ou três.
+O número final de tiers é decisão do documento de decisões arquiteturais.
+
 ## Bloco D, vantagens, desvantagens e considerações finais (7 min, Andreas com Tiago na segurança)
 
 Objetivo: entregar a demonstração sem fingir que existe produto, tratar vantagens e limitações com o
