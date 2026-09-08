@@ -562,7 +562,7 @@ add('codigo', {
   titulo: 'As interfaces no arquivo de compose',
   linhas: [
     'services:',
-    '  front:',
+    '  front-end:',
     '    image: nginx:alpine',
     '    ports: ["8080:80"]',
     '  api:',
@@ -628,10 +628,10 @@ add('terminal', {
   linhas: [
     '$ docker compose up -d',
     '$ docker compose ps',
-    'NAME    IMAGE             STATUS',
-    'front   nginx:alpine      Up',
-    'api     node:22-alpine    Up',
-    'db      postgres:16       Up (healthy)',
+    'NAME        IMAGE             STATUS',
+    'front-end   nginx:alpine      Up',
+    'api         node:22-alpine    Up',
+    'db          postgres:16       Up (healthy)',
     '',
     '$ docker compose exec db psql -U app -c "create table t()"',
     '$ docker compose down && docker compose up -d',
