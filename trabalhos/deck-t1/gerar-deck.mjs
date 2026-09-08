@@ -499,8 +499,6 @@ add('conteudo', {
     'O perfil padrão de seccomp-bpf bloqueia parte das chamadas de sistema disponíveis.',
     'AppArmor ou SELinux entram por cima de tudo, pelo módulo de segurança do próprio kernel.',
   ],
-  nota: 'A opção --privileged devolve tudo de uma vez e ainda desliga o seccomp.',
-  notaTitulo: 'CUIDADO',
   right: 330,
 })
 
@@ -512,7 +510,7 @@ add('impacto', {
   tam: 46,
 })
 
-add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: '', titulo: 'Aplicação no Invite People', sub: 'Mapeamento entre os diagramas da Sprint 2 e o arquivo de compose, com o número de cada task.' })
+add('secao', { bloco: '02 · Aplicação no projeto', num: '02', cartola: '', titulo: 'Aplicação no Invite People', sub: 'Mapeamento entre os diagramas de arquitetura e o arquivo de compose.' })
 
 add('diagrama', {
   bloco: '02 · Aplicação no projeto',
@@ -520,7 +518,7 @@ add('diagrama', {
   titulo: 'Camada lógica e tier',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no ADR, o documento de decisões arquiteturais da Sprint 2. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da Aula 03.',
+  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no ADR, o documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da Aula 03.',
   topSvg: 212,
 })
 
@@ -560,8 +558,8 @@ add('codigo', {
   ],
   larguraCod: 620,
   itens: [
-    'A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong>, o pirulito da UML.',
-    'A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>, o soquete.',
+    'A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong> da UML.',
+    'A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>.',
     'A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.',
     'As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do ADR.',
   ],
@@ -595,7 +593,7 @@ add('conteudo', {
     'Replicar só o serviço público faz sentido, e replicar o painel não faz.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
-  nota: 'Mesma imagem de front-end ou imagens separadas?<br><br>Entrada direta para os dois diagramas da Sprint 2. Ainda não decidida.',
+  nota: 'Mesma imagem de front-end ou imagens separadas?<br><br>Entrada direta para os dois diagramas de arquitetura. Ainda não decidida.',
   notaTitulo: 'EM ABERTO',
   right: 340,
 })
@@ -715,7 +713,7 @@ add('duasColunas', {
   tituloB: 'CUSTA',
   itensB: [
     'Uma superfície de ataque nova, na imagem base e no privilégio de execução.',
-    'I/O mais lento, principalmente nas máquinas Windows. A Aula 03 já avisa que camada extra prejudica desempenho.',
+    'I/O mais lento, principalmente nas máquinas Windows.',
   ],
   corB: LARANJA,
   tam: 34,
@@ -730,7 +728,7 @@ add('conteudo', {
     'O diagrama de implantação deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.',
     'A stack ainda não está decidida, e o ADR #63 é onde ela será registrada.',
   ],
-  nota: 'Insumo direto da Sprint 3, que começa no dia 15 e tem como objetivo declarado definir as tecnologias e os mecanismos da implementação.',
+  nota: 'Insumo direto da próxima sprint, que vai definir as tecnologias e os mecanismos da implementação.',
   notaTitulo: 'PRÓXIMO PASSO',
   right: 330,
 })
@@ -747,7 +745,7 @@ add('duasColunas', {
   tituloB: 'AGORA',
   itensB: [
     'Existe um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando.',
-    'Esse mesmo arquivo é o que vira o diagrama de implantação da Sprint 2.',
+    'Esse mesmo arquivo é o que vira o diagrama de implantação do projeto.',
   ],
 })
 

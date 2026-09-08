@@ -219,10 +219,40 @@ def centrar(alt, topo=196, base=600):
     """Devolve o y que centraliza um bloco de altura alt na area util."""
     return topo if alt >= base - topo else topo + (base - topo - alt) / 2
 
+_MEDIDOR = None
+def _medidor(tam):
+    """Fonte de medicao. Arial no lugar da Roboto, que e mais estreita, entao sobra margem."""
+    global _MEDIDOR
+    if _MEDIDOR is None:
+        try:
+            from PIL import ImageFont, ImageDraw, Image
+            _MEDIDOR = (ImageDraw.Draw(Image.new('RGB', (8, 8))), ImageFont, {})
+        except Exception:
+            _MEDIDOR = False
+    if _MEDIDOR is False:
+        return None
+    desenho, ImageFont, cache = _MEDIDOR
+    chave = int(round(tam))
+    if chave not in cache:
+        cache[chave] = ImageFont.truetype('C:/Windows/Fonts/arial.ttf', max(6, chave))
+    return desenho, cache[chave]
+
 def altura_estimada(html, tam, largura):
-    texto = re.sub(r'<[^>]+>', '', html or '')
-    por_linha = max(1, int(largura / (tam * 0.50)))
-    linhas = max(1, -(-len(texto) // por_linha))
+    texto = re.sub(r'<[^>]+>', ' ', html or '').strip()
+    m = _medidor(tam)
+    if m:
+        desenho, fonte_med = m
+        linhas, atual = 1, ''
+        for pal in texto.split():
+            teste = (atual + ' ' + pal).strip()
+            if desenho.textlength(teste, font=fonte_med) > largura and atual:
+                linhas += 1
+                atual = pal
+            else:
+                atual = teste
+    else:
+        por_linha = max(1, int(largura / (tam * 0.58)))
+        linhas = max(1, -(-len(texto) // por_linha))
     return linhas * tam * 1.32
 
 def nota_lateral(sl, x, y, w, titulo, texto):
@@ -359,7 +389,8 @@ def dg_dois(sl, x, y):
             linha(sl, cx - 12, y + 80, cx, y + 80, LARANJA, 1.6)
     retangulo(sl, x + 580, y + 130, 360, 34, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=3, tracejado=True)
     rotulo(sl, x + 580, y + 140, 360, 'rede nomeada, com resolução por nome de serviço', tam=12, cor=LARANJA, peso=400, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, x + 580, y + 182, 400, 'Cada nó vira um serviço no arquivo de compose, com a imagem por tag e digest.', tam=12, cor=CINZA, peso=300)
+    tbn, tfn = caixa(sl, x + 580, y + 176, 356, 46)
+    escrever(tfn, 'Cada nó vira um serviço no arquivo de compose, com a imagem por tag e digest.', tam=12, cor=CINZA, peso=300, entre=1.4)
 
 DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml,
              'svgTiers': dg_tiers, 'svgDois': dg_dois}
