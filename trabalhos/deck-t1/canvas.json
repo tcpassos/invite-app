@@ -212,7 +212,7 @@
     },
     {
       "file": "S22.dc.html",
-      "title": "22. A remoção do dockershim no Kubernetes 1.24",
+      "title": "22. Limitações e custos",
       "x": 2760,
       "y": 0,
       "w": 1280,
@@ -222,7 +222,7 @@
     },
     {
       "file": "S23.dc.html",
-      "title": "23. Limitações e custos",
+      "title": "23. Container e máquina virtual",
       "x": 4140,
       "y": 0,
       "w": 1280,
@@ -232,7 +232,7 @@
     },
     {
       "file": "S24.dc.html",
-      "title": "24. Container e máquina virtual",
+      "title": "24. Alternativas consideradas",
       "x": 0,
       "y": 880,
       "w": 1280,
@@ -242,7 +242,7 @@
     },
     {
       "file": "S25.dc.html",
-      "title": "25. Alternativas consideradas",
+      "title": "25. Quando não compensa",
       "x": 1380,
       "y": 880,
       "w": 1280,
@@ -252,7 +252,7 @@
     },
     {
       "file": "S26.dc.html",
-      "title": "26. Quando não compensa",
+      "title": "26. Vantagens e custos",
       "x": 2760,
       "y": 880,
       "w": 1280,
@@ -262,7 +262,7 @@
     },
     {
       "file": "S27.dc.html",
-      "title": "27. Vantagens e custos",
+      "title": "27. O que mudou no ambiente do time",
       "x": 4140,
       "y": 880,
       "w": 1280,
@@ -272,17 +272,7 @@
     },
     {
       "file": "S28.dc.html",
-      "title": "28. O que mudou no ambiente do time",
-      "x": 0,
-      "y": 1760,
-      "w": 1280,
-      "h": 720,
-      "page": "p-d",
-      "print": "fixed"
-    },
-    {
-      "file": "S29.dc.html",
-      "title": "29. Referências",
+      "title": "28. Referências",
       "x": 0,
       "y": 0,
       "w": 1280,

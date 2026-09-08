@@ -522,7 +522,7 @@ add('impacto', {
   cartola: '',
   titulo: 'Docker implementa as<br>especificações da OCI',
   logo: 'oci',
-  sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc pode ser trocado por crun, gVisor ou Kata, e o engine por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.',
+  sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc pode ser trocado por crun, gVisor ou Kata, e o engine por Podman. Em 2022 o Kubernetes removeu o adaptador que falava com o Docker Engine e as imagens continuaram funcionando, porque o formato é o da OCI.',
   tam: 46,
 })
 
@@ -634,15 +634,6 @@ add('terminal', {
   ],
   captura: 'A imagem de fundo que a anfitriã envia ao personalizar o convite e o CSV de restrições alimentares que ela exporta não podem ser perdidos quando o container é removido. A decisão de implantação impõe uma restrição às camadas superiores.',
   rodapeAlto: 76,
-})
-
-add('impacto', {
-  bloco: '03 · Estudo de caso',
-  cartola: '',
-  titulo: 'A remoção do dockershim<br>no Kubernetes 1.24',
-  logo: 'k8s',
-  sub: 'Saiu o adaptador embutido que falava com o Docker Engine. O formato das imagens é o da OCI e continuou funcionando. É um caso real de substituição por compatibilidade de interface.',
-  tam: 48,
 })
 
 add('conteudo', {
@@ -758,7 +749,7 @@ const paginas = [
   { id: 'p-a', nome: 'Capa e Bloco A', ate: 3 },
   { id: 'p-b', nome: 'Bloco B', ate: 12 },
   { id: 'p-c', nome: 'Bloco C', ate: 19 },
-  { id: 'p-d', nome: 'Bloco D', ate: 28 },
+  { id: 'p-d', nome: 'Bloco D', ate: 27 },
   { id: 'p-f', nome: 'Fecho', ate: 99 },
 ]
 const paginaDe = (n) => paginas.find((p) => n <= p.ate).id

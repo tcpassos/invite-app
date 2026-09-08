@@ -290,10 +290,10 @@ para o ADR.
    Amarrar em regra que já está escrita, para não ficar genérico. A imagem de fundo que a anfitriã
    envia no UC003 e o CSV gerado no UC008 não podem morrer junto com o container, ou seja, a decisão
    de implantação volta como restrição de projeto para as camadas de cima.
-3. Estudo de caso externo. O Kubernetes removeu o Docker Engine como runtime na versão 1.24, em
-   2022, e nenhuma imagem parou de funcionar, porque imagem é OCI. É substituição por compatibilidade
-   de interface acontecendo em escala real. Se houver tempo, citar Felter et al. 2015, o relatório
-   técnico da IBM que compara desempenho de máquinas virtuais e containers.
+3. O caso do Kubernetes 1.24 deixou de ter slide próprio. A frase está no fim do slide da OCI, na
+   parte 2: em 2022 o Kubernetes removeu o adaptador embutido que falava com o Docker Engine e
+   nenhuma imagem parou de funcionar, porque o formato é o da OCI. Quem apresentar a parte 2 diz
+   isso ali. No bloco de vantagens e desvantagens não precisa voltar ao assunto.
 4. As vantagens não têm slide próprio, elas estão no slide de ganho e custo, no fim do bloco, com o
    quarteto que ele credita às camadas de um lado. Aqui basta anunciar que o balanço vem no fim e
    seguir para as limitações, senão a mesma lista é dita duas vezes.

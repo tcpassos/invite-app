@@ -182,7 +182,7 @@
   "cartola": "",
   "titulo": "Docker implementa as<br>especificações da OCI",
   "logo": "oci",
-  "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc pode ser trocado por crun, gVisor ou Kata, e o engine por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.",
+  "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc pode ser trocado por crun, gVisor ou Kata, e o engine por Podman. Em 2022 o Kubernetes removeu o adaptador que falava com o Docker Engine e as imagens continuaram funcionando, porque o formato é o da OCI.",
   "tam": 46,
   "n": 12
  },
@@ -318,16 +318,6 @@
   "n": 21
  },
  {
-  "modelo": "impacto",
-  "bloco": "03 · Estudo de caso",
-  "cartola": "",
-  "titulo": "A remoção do dockershim<br>no Kubernetes 1.24",
-  "logo": "k8s",
-  "sub": "Saiu o adaptador embutido que falava com o Docker Engine. O formato das imagens é o da OCI e continuou funcionando. É um caso real de substituição por compatibilidade de interface.",
-  "tam": 48,
-  "n": 22
- },
- {
   "modelo": "conteudo",
   "bloco": "03 · Vantagens e desvantagens",
   "cartola": "",
@@ -342,7 +332,7 @@
   "notaTitulo": "NO NOSSO CASO",
   "right": 320,
   "top": 202,
-  "n": 23
+  "n": 22
  },
  {
   "modelo": "diagrama",
@@ -352,7 +342,7 @@
   "svg": "<svg width=\"1100\" height=\"300\" viewBox=\"0 0 1100 300\" xmlns=\"http://www.w3.org/2000/svg\"><g font-family=\"Roboto, sans-serif\" font-size=\"13\"><text x=\"0\" y=\"14\" fill=\"#21049A\" font-weight=\"900\">MÁQUINA VIRTUAL</text><rect x=\"0\" y=\"206\" width=\"500\" height=\"34\" fill=\"#D9D9D9\"/><rect x=\"0\" y=\"168\" width=\"500\" height=\"36\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><rect x=\"0\" y=\"130\" width=\"500\" height=\"36\" fill=\"#21049A\"/><text x=\"600\" y=\"14\" fill=\"#E94D1C\" font-weight=\"900\">CONTAINER</text><rect x=\"600\" y=\"206\" width=\"500\" height=\"34\" fill=\"#D9D9D9\"/><rect x=\"600\" y=\"168\" width=\"500\" height=\"36\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><rect x=\"600\" y=\"130\" width=\"500\" height=\"36\" fill=\"#21049A\"/></g></svg>",
   "svgNome": "svgVm",
   "legenda": "A CVE-2019-5736 confirmou o risco: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.",
-  "n": 24
+  "n": 23
  },
  {
   "modelo": "tabela",
@@ -388,7 +378,7 @@
     "Acrescenta uma camada de build e de orquestração"
    ]
   ],
-  "n": 25
+  "n": 24
  },
  {
   "modelo": "duasColunas",
@@ -409,7 +399,7 @@
   ],
   "corB": "#E94D1C",
   "tam": 34,
-  "n": 26
+  "n": 25
  },
  {
   "modelo": "duasColunas",
@@ -431,7 +421,7 @@
   ],
   "corB": "#E94D1C",
   "tam": 34,
-  "n": 27
+  "n": 26
  },
  {
   "modelo": "diagrama",
@@ -440,7 +430,7 @@
   "titulo": "O que mudou no ambiente do time",
   "svg": "<svg width=\"1100\" height=\"300\" viewBox=\"0 0 1100 300\" xmlns=\"http://www.w3.org/2000/svg\"><g font-family=\"Roboto, sans-serif\" font-size=\"13\"><text x=\"0\" y=\"14\" fill=\"#21049A\" font-weight=\"900\">NO COMEÇO DO PROJETO</text><rect x=\"0\" y=\"40\" width=\"500\" height=\"184\" rx=\"6\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><text x=\"600\" y=\"14\" fill=\"#E94D1C\" font-weight=\"900\">AGORA</text><rect x=\"600\" y=\"40\" width=\"500\" height=\"184\" rx=\"6\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/></g></svg>",
   "svgNome": "svgAntes",
-  "n": 28
+  "n": 27
  },
  {
   "modelo": "conteudo",
@@ -459,6 +449,6 @@
   ],
   "right": 120,
   "top": 200,
-  "n": 29
+  "n": 28
  }
 ]
