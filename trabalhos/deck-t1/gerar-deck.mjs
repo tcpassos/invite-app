@@ -711,14 +711,6 @@ add('duasColunas', {
   tam: 34,
 })
 
-add('diagrama', {
-  bloco: 'Considerações finais',
-  cartola: '',
-  titulo: 'O que mudou no ambiente do time',
-  svg: svgAntes,
-  svgNome: 'svgAntes',
-})
-
 add('conteudo', {
   bloco: 'Referências',
   cartola: '',
@@ -743,7 +735,7 @@ const paginas = [
   { id: 'p-a', nome: 'Capa e Bloco A', ate: 3 },
   { id: 'p-b', nome: 'Bloco B', ate: 12 },
   { id: 'p-c', nome: 'Bloco C', ate: 19 },
-  { id: 'p-d', nome: 'Bloco D', ate: 26 },
+  { id: 'p-d', nome: 'Bloco D', ate: 25 },
   { id: 'p-f', nome: 'Fecho', ate: 99 },
 ]
 const paginaDe = (n) => paginas.find((p) => n <= p.ate).id

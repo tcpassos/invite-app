@@ -363,18 +363,14 @@ pago, esse arquivo já está no repositório, se a stack mudar quanto desse trab
 
 ## Fechamento
 
-O slide de antes e agora mostra os dois artefatos de verdade, a linha do `.gitattributes` de um
-lado e o compose do outro. Não descrever, apontar. A fala: os ambientes deste time já divergiam
-antes de existir a primeira linha de código do produto, e o que temos agora é o arquivo que o slide
-3 prometeu, o que descreve o ambiente inteiro e qualquer um dos quatro sobe com um comando.
+O último slide de conteúdo é o de vantagens e limitações. Depois de percorrer as duas colunas,
+fechar ali mesmo com três frases ditas devagar, sem slide próprio, porque as três já foram títulos
+ao longo da apresentação. Container é um processo comum, isolado por mecanismos do kernel. Imagem é
+o artefato, container é o ambiente de execução. A decisão de arquitetura é em quantos processos
+separados o sistema vai rodar.
 
-Agora a retomada é legítima, porque o slide 3 fez a promessa no minuto dois. Pode dizer "como
-dissemos na abertura".
-
-Ainda sobre o slide de antes e agora, que é o último de conteúdo, fechar com três frases ditas
-devagar, sem slide próprio, porque as três já foram títulos ao longo da apresentação. Container é um
-processo comum, isolado por mecanismos do kernel. Imagem é o artefato, container é o ambiente de
-execução. A decisão de arquitetura é em quantos processos separados o sistema vai rodar.
+A promessa do slide 3, um arquivo que qualquer um dos quatro sobe com um comando, foi cumprida pelo
+compose do slide 17 e pela demonstração do 21. Se quiser retomar, é a esses dois que se aponta.
 
 As pendências saíram da tela, mas ficam na fala: os seis itens de modelagem seguem em aberto e o
 documento de decisões arquiteturais, item #63, ainda não foi escrito. Dizer isso antes de abrir para

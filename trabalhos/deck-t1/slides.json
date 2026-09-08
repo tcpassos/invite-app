@@ -417,15 +417,6 @@
   "n": 25
  },
  {
-  "modelo": "diagrama",
-  "bloco": "Considerações finais",
-  "cartola": "",
-  "titulo": "O que mudou no ambiente do time",
-  "svg": "<svg width=\"1100\" height=\"300\" viewBox=\"0 0 1100 300\" xmlns=\"http://www.w3.org/2000/svg\"><g font-family=\"Roboto, sans-serif\" font-size=\"13\"><text x=\"0\" y=\"14\" fill=\"#21049A\" font-weight=\"900\">NO COMEÇO DO PROJETO</text><rect x=\"0\" y=\"40\" width=\"500\" height=\"184\" rx=\"6\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><text x=\"600\" y=\"14\" fill=\"#E94D1C\" font-weight=\"900\">AGORA</text><rect x=\"600\" y=\"40\" width=\"500\" height=\"184\" rx=\"6\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/></g></svg>",
-  "svgNome": "svgAntes",
-  "n": 26
- },
- {
   "modelo": "conteudo",
   "bloco": "Referências",
   "cartola": "",
@@ -442,6 +433,6 @@
   ],
   "right": 120,
   "top": 200,
-  "n": 27
+  "n": 26
  }
 ]
