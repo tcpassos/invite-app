@@ -18,7 +18,7 @@
   "itens": [
    "É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.",
    "São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.",
-   "A arquitetura já está registrada no Guia da Arquitetura, com MVC no front-end e três camadas no back-end.",
+   "A arquitetura já está registrada na documentação do projeto, com MVC no front-end e três camadas no back-end.",
    "A Sprint 2 tem uma Questão Norteadora a responder: como os componentes serão distribuídos e implantados no ambiente de execução."
   ],
   "nota": "As três camadas do back-end já estão decididas.<br><br>Falta decidir em quantos processos separados elas vão rodar.",
@@ -249,7 +249,7 @@
    "A imagem passa a ter uma responsabilidade só.",
    "O código do front-end não está na imagem da API, então a API não depende dele nem por acidente.",
    "Os serviços conversam por uma rede interna, onde cada um é achado pelo nome. Só o de fronteira publica porta para fora, e o banco fica sem mapeamento nenhum.",
-   "Uma regra escrita na wiki depende de alguém revisar. A mesma regra na topologia é verificada pela estrutura."
+   "Uma regra que só existe escrita depende de alguém lembrar de aplicar. Na topologia ela é garantida pela estrutura."
   ],
   "tituloB": "ACOPLAMENTO",
   "itensB": [
@@ -265,7 +265,7 @@
   "cartola": "",
   "titulo": "O convite público e o painel<br>têm cargas diferentes",
   "itens": [
-   "Marina é a persona da anfitriã, e a jornada dela descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.",
+   "A jornada da anfitriã descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.",
    "Replicar só o serviço público faz sentido, e replicar o painel não faz.",
    "Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local."
   ],
@@ -471,7 +471,7 @@
   "cartola": "",
   "titulo": "O que não estamos afirmando",
   "itens": [
-   "Os seis itens de modelagem da arquitetura estão em To Do. Isto é insumo desses itens, não relato de item concluído.",
+   "Os seis itens de modelagem da arquitetura seguem em aberto. Isto é insumo desses itens, não relato de item concluído.",
    "O ADR, onde a stack será decidida, ainda não foi escrito."
   ],
   "nota": "Container é processo isolado por mecanismo de kernel.<br><br>Imagem é artefato, container é ambiente de execução.<br><br>A decisão arquitetural é a granularidade de tier.",

@@ -11,6 +11,8 @@ PROIBIDO = [
     ('work item',          r'#\d+'),
     ('trabalho da cadeira', r'\bT[1-4]\b'),
     ('aula',               r'\bAula\s?0?\d\b'),
+    # nome de artefato interno, que a plateia nao tem como resolver
+    ('artefato do grupo',  r'\bwiki\b|Guia da Arquitetura|Team Charter|\bTo Do\b|\bDoing\b|\bbacklog\b|\bMarina\b|\bRafael\b|\bJorge\b'),
 ]
 # onde a mencao e legitima: capa identifica o trabalho, referencias citam a bibliografia
 ISENTO = {'trabalho da cadeira': {1}, 'aula': {30}}
