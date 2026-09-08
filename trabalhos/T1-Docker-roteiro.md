@@ -32,8 +32,9 @@ repositório que qualquer um sobe com um comando, e mais adiante o mesmo ambient
 apresentação do produto.
 
 Esse slide é do Guilherme e resolve o bloco de abertura, que antes tinha um slide de conteúdo só.
-Ele deve deixar claro que nada disso está feito, que é proposta, e que o resto da apresentação é o
-exame dessa ideia. A nota lateral do slide já diz isso.
+Ele deve deixar claro, em voz alta, que nada disso está feito, que é proposta, e que o resto da
+apresentação é o exame dessa ideia. Isso não está escrito no slide de propósito. Aviso de pendência
+impresso fica feio e soa a desculpa. Dito, soa a honestidade.
 
 O fecho retoma os três, agora como resultado. Nenhum deles precisa ser repetido no meio.
 

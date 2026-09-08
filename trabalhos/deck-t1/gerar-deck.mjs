@@ -395,10 +395,10 @@ add('conteudo', {
     'É um app web de convites virtuais, onde o convidado confirma presença e o anfitrião consolida as restrições alimentares.',
     'São duas superfícies sobre o mesmo Model, o convite público, que não pede login, e o painel do anfitrião.',
     'A arquitetura já está registrada na documentação do projeto, com MVC no front-end e três camadas no back-end.',
-    'O projeto ainda não decidiu como os componentes serão distribuídos e implantados no ambiente de execução.',
+    'A pergunta desta apresentação é como esses componentes serão distribuídos e implantados no ambiente de execução.',
   ],
-  nota: 'As três camadas do back-end já estão decididas.<br><br>Falta decidir em quantos processos separados elas vão rodar.',
-  notaTitulo: 'ONDE ESTAMOS HOJE',
+  nota: 'Três camadas lógicas no back-end.<br><br>A decisão em jogo é em quantos processos separados elas rodam.',
+  notaTitulo: 'PONTO DE PARTIDA',
   right: 330,
 })
 
@@ -411,9 +411,7 @@ add('conteudo', {
     'Um arquivo no repositório que descreve esse ambiente inteiro, versionado junto com o código, e que qualquer um sobe com um comando.',
     'Mais adiante, o mesmo ambiente que rodou no desenvolvimento também na entrega e na apresentação do produto.',
   ],
-  nota: 'Nada disso está feito. É o que o grupo quer testar, e o resto da apresentação é o exame dessa ideia.',
-  notaTitulo: 'AINDA É PROPOSTA',
-  right: 340,
+  right: 120,
 })
 
 add('secao', { bloco: '01 · Definições e arquitetura', num: '01', cartola: '', titulo: 'Definições e arquitetura', sub: 'Antes de decidir onde cada parte roda, o que o kernel faz quando alguém digita docker run e por que a imagem é em camadas.' })
@@ -579,7 +577,7 @@ add('codigo', {
     'A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong> da UML.',
     'A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>.',
     'A porta da UML é literalmente a porta do container, com o mesmo desenho e o mesmo nome.',
-    'As imagens do arquivo são exemplo. A stack ainda não foi decidida e é assunto do documento de decisões arquiteturais.',
+    'As imagens do arquivo são exemplo. A stack é decisão do documento de decisões arquiteturais.',
   ],
 })
 
@@ -611,9 +609,7 @@ add('conteudo', {
     'Replicar só o serviço público faz sentido, e replicar o painel não faz.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
-  nota: 'Mesma imagem de front-end ou imagens separadas?<br><br>Entrada direta para os dois diagramas de arquitetura. Ainda não decidida.',
-  notaTitulo: 'EM ABERTO',
-  right: 340,
+  right: 120,
 })
 
 add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração é do ambiente e da topologia, não do produto. A implementação do produto começa em outubro.' })
