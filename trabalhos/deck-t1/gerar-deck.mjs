@@ -477,7 +477,7 @@ add('diagrama', {
   titulo: 'As camadas de uma imagem',
   svg: svgCamadas,
   svgNome: 'svgCamadas',
-  legenda: 'A imagem é construída a partir de um Dockerfile, o arquivo de texto que declara a base e os passos, e circula entre máquinas por um registry. Cada instrução vira uma camada, e por isso um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do login do anfitrião, o UC001.',
+  legenda: 'A imagem é construída a partir de um Dockerfile, o arquivo de texto que declara a base e os passos, e circula entre máquinas por um registry. Cada instrução vira uma camada, e por isso um Dockerfile que copia um .env e faz RUN rm na instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo seria a senha do banco e o segredo de sessão do login do anfitrião.',
   topSvg: 196,
 })
 
@@ -518,7 +518,7 @@ add('diagrama', {
   titulo: 'Camada lógica e tier',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no ADR, o documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da Aula 03.',
+  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas entra no ADR, o documento de decisões arquiteturais do projeto. O Docker também usa a palavra <em>layer</em>, mas para o empilhamento do sistema de arquivos da imagem, que é outra coisa e não tem relação com a camada lógica da arquitetura em camadas.',
   topSvg: 212,
 })
 
@@ -707,7 +707,7 @@ add('duasColunas', {
     'Uma responsabilidade por imagem, com a fronteira declarada.',
     'O ambiente vira arquivo legível, versionado junto com o código.',
     'Trocar runtime ou banco passa a ser editar uma linha de arquivo.',
-    'A mesma imagem atravessa notebook, pipeline e a demonstração do T3.',
+    'A mesma imagem atravessa notebook, pipeline e a apresentação do projeto mais adiante.',
     'Dá para escalar só o serviço público, se a aplicação for mesmo sem estado.',
   ],
   tituloB: 'CUSTA',
@@ -726,7 +726,7 @@ add('conteudo', {
   itens: [
     'O grupo recomenda adotar conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto.',
     'O diagrama de implantação deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.',
-    'A stack ainda não está decidida, e o ADR #63 é onde ela será registrada.',
+    'A stack ainda não está decidida, e o ADR é onde ela será registrada.',
   ],
   nota: 'Insumo direto da próxima sprint, que vai definir as tecnologias e os mecanismos da implementação.',
   notaTitulo: 'PRÓXIMO PASSO',
@@ -754,8 +754,8 @@ add('conteudo', {
   cartola: '',
   titulo: 'O que não estamos afirmando',
   itens: [
-    'Os seis itens de modelagem da Sprint 2, do #58 ao #63, estão em To Do. Isto é insumo desses itens, não relato de item concluído.',
-    'O ADR #63, onde a stack será decidida, ainda não foi escrito.',
+    'Os seis itens de modelagem da arquitetura estão em To Do. Isto é insumo desses itens, não relato de item concluído.',
+    'O ADR, onde a stack será decidida, ainda não foi escrito.',
   ],
   nota: 'Container é processo isolado por mecanismo de kernel.<br><br>Imagem é artefato, container é ambiente de execução.<br><br>A decisão arquitetural é a granularidade de tier.',
   notaTitulo: 'PARA LEVAR PARA A P1',
