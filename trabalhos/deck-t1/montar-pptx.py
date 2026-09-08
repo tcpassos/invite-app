@@ -406,7 +406,10 @@ def m_capa(sl, s):
     retangulo(sl, 72, 404, 64, 5, preencher=LARANJA, raio=2)
     tb2, tf2 = caixa(sl, 72, 432, 800, 90)
     escrever(tf2, s['sub'], tam=21, cor=RGBColor(0xD6, 0xCF, 0xF0), peso=300, entre=1.45)
-    for i, (rot, val) in enumerate([('EQUIPE', s['equipe']), ('DISCIPLINA', s['disciplina']), ('DATA', s['data'])]):
+    creditos = [('EQUIPE', s['equipe']), ('DISCIPLINA', s['disciplina'])]
+    if s.get('data'):
+        creditos.append(('DATA', s['data']))
+    for i, (rot, val) in enumerate(creditos):
         cx = 72 + i * 380
         rotulo(sl, cx, 566, 280, rot, tam=10, cor=RGBColor(0x9C, 0x90, 0xD4), espacar=1.4)
         tb3, tf3 = caixa(sl, cx, 586, 280, 70)

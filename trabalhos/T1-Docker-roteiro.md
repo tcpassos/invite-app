@@ -24,6 +24,19 @@ Em UML, o container é um ambiente de execução aninhado no nó do host, e a im
 implantado nele. Ambiente de execução é uma especialização de nó, então nunca dizer "container não
 é nó".
 
+## Onde o deck responde "para que vamos usar"
+
+Está num slide só, o de recomendação, com o título "Para que o grupo vai usar". Antes essa resposta
+estava espalhada em quatro pedaços no último terço e em nenhum momento dita como lista de usos
+pretendidos.
+
+Os três usos concretos, na ordem do slide: ambiente igual para os quatro com o banco sem instalação
+local, um arquivo versionado no repositório que qualquer um sobe com um comando, e a mesma imagem
+mais adiante na entrega e na apresentação do produto.
+
+Vale o Andreas repetir esses três na abertura do bloco dele, porque o slide chega no fim e é a
+resposta que o professor mais provavelmente vai cobrar na arguição.
+
 ## Nada de identificador interno na tela
 
 Regra sem exceção: se a plateia não consegue resolver o termo sozinha, ele não vai no slide. Isso

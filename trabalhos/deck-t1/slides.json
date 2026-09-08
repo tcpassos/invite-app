@@ -4,9 +4,8 @@
   "cartola": "Seminário T1 · Tecnologias emergentes",
   "titulo": "Docker e<br>conteinerização",
   "sub": "Como o empacotamento em containers se aplica ao projeto Invite People",
-  "equipe": "Tiago Passos · Guilherme Toebe<br>Andreas Grings · Gabriel Tomasi",
+  "equipe": "Andreas Grings · Gabriel Tomasi<br>Guilherme Toebe · Tiago Passos",
   "disciplina": "Arquitetura de Software<br>Prof. Kleinner Farias",
-  "data": "08 de setembro<br>de 2026",
   "bloco": "",
   "n": 1
  },
@@ -437,10 +436,12 @@
   "modelo": "conteudo",
   "bloco": "Considerações finais",
   "cartola": "",
-  "titulo": "Recomendação do grupo",
+  "titulo": "Para que o grupo vai usar",
   "itens": [
-   "O grupo recomenda adotar conteinerização como estratégia de empacotamento e de ambiente de desenvolvimento, com o custo declarado junto.",
-   "O diagrama de implantação deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda, e esse arquivo vira artefato do repositório.",
+   "Ambiente de desenvolvimento igual para os quatro, com o banco rodando sem ninguém instalar nada na própria máquina.",
+   "Um arquivo no repositório que descreve esse ambiente inteiro, versionado junto com o código, e que qualquer um sobe com um comando.",
+   "Na entrega e na apresentação do produto, a mesma imagem que rodou no desenvolvimento, sem reconfigurar máquina.",
+   "O diagrama de implantação deixa de ser caixa genérica e passa a ter um arquivo correspondente que roda.",
    "A stack ainda não está decidida, e é o documento de decisões arquiteturais que vai registrar isso."
   ],
   "nota": "Insumo direto da próxima sprint, que vai definir as tecnologias e os mecanismos da implementação.",
