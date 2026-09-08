@@ -452,10 +452,10 @@ def dg_antes(sl, x, y):
         tb, tf = caixa(sl, x0, y + 40 + alt + 16, 500, 70)
         escrever(tf, legenda_txt, tam=15, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.45)
     bloco(x, 'NO COMEÇO DO PROJETO', AZUL,
-          ['# .gitattributes', '*.sh text eol=lf', '', '', '', ''],
+          ['# .gitattributes', '*.sh text eol=lf', '', '', '', '', '', ''],
           'Uma linha no repositório, necessária porque o Git Bash falha no Windows sem ela. Os ambientes do time já divergiam antes do primeiro código do produto.')
     bloco(x + 600, 'AGORA', LARANJA,
-          ['# docker-compose.yml', 'services:', '  api:', '    image: node:22-alpine', '  db:', '    image: postgres:16'],
+          ['# docker-compose.yml', 'services:', '  front-end:', '    image: nginx:alpine', '  api:', '    image: node:22-alpine', '  db:', '    image: postgres:16'],
           'Um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando. Esse arquivo é a base do diagrama de implantação.')
 
 DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml, 'svgVm': dg_vm, 'svgAntes': dg_antes,
