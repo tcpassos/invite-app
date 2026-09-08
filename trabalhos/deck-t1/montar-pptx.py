@@ -112,6 +112,17 @@ def rotulo(sl, x, y, w, texto, *, tam=12, cor=CINZA, peso=400, alinhar=PP_ALIGN.
 
 LOGOS = sys.argv[4] if len(sys.argv) > 4 else '.'
 
+def imagem(sl, nome, x, y, larg):
+    """Logo de projeto (Docker, Kubernetes, OCI), altura calculada pela proporcao do arquivo."""
+    import os
+    from PIL import Image as _Im
+    cam = os.path.join(LOGOS, nome)
+    with _Im.open(cam) as im:
+        w, h = im.size
+    alt = larg * h / w
+    sl.shapes.add_picture(cam, px(x), px(y), px(larg), px(alt))
+    return alt
+
 def logo(sl, claro=False, x=1128, y=48, tam=36):
     """Simbolo institucional, no mesmo canto em todos os slides."""
     import os
@@ -459,6 +470,7 @@ def m_capa(sl, s):
     creditos = [('EQUIPE', s['equipe']), ('DISCIPLINA', s['disciplina'])]
     if s.get('data'):
         creditos.append(('DATA', s['data']))
+    imagem(sl, 'docker.png', 900, 214, 280)
     for i, (rot, val) in enumerate(creditos):
         cx = 72 + i * 380
         rotulo(sl, cx, 566, 280, rot, tam=10, cor=RGBColor(0x9C, 0x90, 0xD4), espacar=1.4)
@@ -471,7 +483,10 @@ def m_secao(sl, s):
     fundo(sl, AZUL)
     retangulo(sl, 0, 0, 10, 720, preencher=LARANJA)
     logo(sl, claro=True)
-    simbolo_bloco(sl, SIMBOLOS.get(s['num'], 'camadas'), 940, 286)
+    if s['num'] == '01':
+        imagem(sl, 'docker.png', 920, 250, 260)
+    else:
+        simbolo_bloco(sl, SIMBOLOS.get(s['num'], 'camadas'), 940, 286)
     rotulo(sl, 92, 128, 400, s['num'], tam=130, cor=RGBColor(0x6E, 0x59, 0xD2), peso=900)
     if s.get('cartola'):
         retangulo(sl, 96, 304, 4, 18, preencher=LARANJA)
@@ -498,7 +513,11 @@ def m_impacto(sl, s):
     if s.get('cartola'):
         retangulo(sl, 96, 172, 4, 18, preencher=LARANJA)
         rotulo(sl, 112, 168, 900, s['cartola'], tam=15, cor=BRANCO, peso=900, maiusc=True, espacar=1.6)
-    tb, tf = caixa(sl, 96, 196, 1020, 200)
+    LOGOS_EXT = {'oci': ('oci-branco.png', 820, 206, 320), 'k8s': ('kubernetes-branco.png', 960, 176, 190)}
+    if s.get('logo') in LOGOS_EXT:
+        nome, lx, ly, lw = LOGOS_EXT[s['logo']]
+        imagem(sl, nome, lx, ly, lw)
+    tb, tf = caixa(sl, 96, 196, 700 if s.get('logo') else 1020, 200)
     escrever(tf, s['titulo'], tam=s.get('tam', 52), cor=BRANCO, peso=900, entre=1.06)
     if s.get('sub'):
         tb2, tf2 = caixa(sl, 96, 430, 900, 160)

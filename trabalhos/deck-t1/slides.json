@@ -183,6 +183,7 @@
   "bloco": "01 · Arquitetura",
   "cartola": "",
   "titulo": "Docker implementa as<br>especificações da OCI",
+  "logo": "oci",
   "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.",
   "tam": 46,
   "n": 12
@@ -325,6 +326,7 @@
   "bloco": "03 · Estudo de caso",
   "cartola": "",
   "titulo": "A remoção do dockershim<br>no Kubernetes 1.24",
+  "logo": "k8s",
   "sub": "O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface.",
   "tam": 48,
   "n": 22
