@@ -100,12 +100,17 @@ na fala e conta nos 25% de relacionar a tecnologia às decisões arquiteturais.
 
 | Bloco | Tema | Min | Slides | Dono |
 |---|---|---|---|---|
-| A | Contexto do projeto e escopo da apresentação | 3 | 1 a 3 | Guilherme |
-| B | Definições, arquitetura do Docker e o que o kernel faz | 6 | 4 a 13 | Tiago |
+| A | Contexto do projeto, linha do tempo e definições | 4 | 1 a 6 | Guilherme |
+| B | Arquitetura do Docker e o que o kernel faz | 6 | 7 a 13 | Tiago |
 | C | Aplicação no Invite People, do diagrama para o arquivo | 6 | 14 a 20 | Gabriel |
-| D | Vantagens, desvantagens, demonstração e considerações finais | 7 | 21 a 28 | Andreas, com Tiago na segurança |
+| D | Vantagens, desvantagens, demonstração e considerações finais | 7 | 21 a 28 | Andreas |
 
-Mais um minuto para as três trocas de apresentador. Total 23, dentro da faixa de 20 a 25.
+Mais um minuto para as três trocas de apresentador. Total 24, dentro da faixa de 20 a 25.
+
+A troca do Guilherme para o Tiago é no slide 7, dentro da seção 01, e não no divisor. Com a troca
+no divisor o bloco de abertura ficava com dois slides de conteúdo para três minutos, e a linha do
+tempo e as duas definições são introdução, não mecanismo. As outras duas trocas ficam nos
+divisores das seções 02 e 03.
 
 No rodapé dos slides os blocos aparecem como as seções numeradas dos divisores, para bater com o
 vocabulário do professor: o A é Introdução, o B é 01 Definições e arquitetura, o C é 02 Aplicação no
@@ -116,7 +121,7 @@ Aplicação no projeto, Vantagens e Desvantagens, Considerações Finais, Refer�
 
 ---
 
-## Bloco A, contexto (3 min, Guilherme)
+## Bloco A, contexto, linha do tempo e definições (4 min, Guilherme)
 
 Objetivo: situar o projeto em quarenta segundos e fechar o contrato de escopo logo no começo, para
 que a ausência de código não pareça desculpa no final.
@@ -133,8 +138,11 @@ que a ausência de código não pareça desculpa no final.
    ele importa, logo antes da demonstração. Na agenda o Guilherme diz os quatro nomes e os quatro
    blocos em voz alta, avisando que cada um responde pelo próprio bloco na arguição.
 3. Terminar no gancho. O último item do slide é a Questão Norteadora da Sprint 2, sobre como os
-   componentes serão distribuídos e implantados. Ler ela em voz alta e passar para o Tiago sem
-   explicar o que vem pela frente. O divisor da seção 01 já faz essa ligação sozinho.
+   componentes serão distribuídos e implantados. Ler ela em voz alta e seguir para o divisor da
+   seção 01 sem explicar o que vem pela frente. O divisor já faz essa ligação sozinho.
+4. Abrir a seção 01 com a linha do tempo e as duas definições, que estão descritas como itens 1 e 2
+   do Bloco B. Passar para o Tiago no slide 7, quando o assunto deixa de ser o que container é e
+   vira o que o kernel faz para criar um.
 
 Perguntas prováveis: por que Docker e não outra da lista, vocês já entregaram o diagrama de
 implantação, qual a diferença entre camada lógica e separação física, o que exatamente vão
@@ -142,11 +150,14 @@ demonstrar já que o produto não existe.
 
 ---
 
-## Bloco B, definições e arquitetura do Docker (6 min, Tiago)
+## Bloco B, arquitetura do Docker e o que o kernel faz (6 min, Tiago)
 
 Objetivo: entregar o critério de 30% definindo container por mecanismo em vez de metáfora, e
 terminar posicionando Docker como implementação de um padrão aberto, que é a ponte para a
 substituibilidade da Aula 05.
+
+Os itens 1 e 2, linha do tempo e definições, são ditos pelo Guilherme nos slides 5 e 6. O Tiago
+entra no slide 7, no item 3.
 
 1. Linha do tempo. chroot em 1979, o primeiro namespace no kernel em 2002, cgroups no mainline em
    2008, Docker em 2013, OCI em 2015, containerd na CNCF em 2017, e a remoção do dockershim no
@@ -284,7 +295,7 @@ e só se esse caminho for sem estado. Não dizer que três tiers é o que permit
 é a API separada do banco e sem estado no caminho público, em qualquer desenho com dois ou três.
 O número final de tiers é decisão do documento de decisões arquiteturais.
 
-## Bloco D, vantagens, desvantagens e considerações finais (7 min, Andreas com Tiago na segurança)
+## Bloco D, vantagens, desvantagens e considerações finais (7 min, Andreas)
 
 Objetivo: entregar a demonstração sem fingir que existe produto, tratar vantagens e limitações com o
 mesmo peso, no padrão das aulas da disciplina, e converter o seminário em recomendação registrada
@@ -325,7 +336,7 @@ para o ADR.
    Docker Desktop é pago para empresa acima de certo porte. Nenhuma delas atinge quatro notebooks
    sem servidor, por isso não estão no slide.
    Nenhum número de desempenho sai daqui sem medição própria.
-7. Container e máquina virtual pela superfície de ataque, apresentado pelo Tiago. A VM tem kernel
+7. Container e máquina virtual pela superfície de ataque. A VM tem kernel
    próprio e a fronteira é imposta em hardware. O container compartilha o kernel do host e a
    fronteira dele é a interface de chamadas de sistema, mais de trezentas, mais /proc, /sys e ioctl.
    Uma CVE só, a do runc de 2019, em que o processo de dentro sobrescrevia o binário do runtime pelo
@@ -403,7 +414,8 @@ A avaliação é individual e vale 15%, então vale combinar quatro regras por e
 3. Segurança e mecanismos de kernel são com o Tiago, em qualquer bloco, e isso é anunciado na
    agenda falada da abertura.
 4. O Guilherme fica com um segundo território técnico simples e defensável, para não passar a
-   arguição inteira calado.
+   arguição inteira calado. A linha do tempo e as duas definições, que agora são dele, cumprem
+   esse papel.
 
 ## Ordem de corte, combinada antes do ensaio
 
