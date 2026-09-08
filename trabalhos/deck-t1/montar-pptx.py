@@ -112,6 +112,11 @@ def rotulo(sl, x, y, w, texto, *, tam=12, cor=CINZA, peso=400, alinhar=PP_ALIGN.
 
 LOGOS = sys.argv[4] if len(sys.argv) > 4 else '.'
 
+def fundo_imagem(sl, nome):
+    """Fundo de pagina inteira do template institucional, no lugar do azul chapado."""
+    import os
+    sl.shapes.add_picture(os.path.join(LOGOS, nome), 0, 0, px(1280), px(720))
+
 def imagem(sl, nome, x, y, larg):
     """Logo de projeto (Docker, Kubernetes, OCI), altura calculada pela proporcao do arquivo."""
     import os
@@ -459,7 +464,7 @@ DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml, '
 # ---------- modelos ----------
 
 def m_capa(sl, s):
-    fundo(sl, AZUL)
+    fundo_imagem(sl, 'fundo-capa.jpg')
     logo_completo(sl, 72, 58, 214)
     rotulo(sl, 72, 200, 700, s['cartola'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 72, 224, 780, 200)
@@ -480,7 +485,7 @@ def m_capa(sl, s):
 SIMBOLOS = {'01': 'camadas', '02': 'mapeamento', '03': 'balanca'}
 
 def m_secao(sl, s):
-    fundo(sl, AZUL)
+    fundo_imagem(sl, 'fundo-secao.jpg')
     retangulo(sl, 0, 0, 10, 720, preencher=LARANJA)
     logo(sl, claro=True)
     if s['num'] == '01':
@@ -508,7 +513,7 @@ def m_citacao(sl, s):
     rodape(sl, s['n'], s['bloco'], True)
 
 def m_impacto(sl, s):
-    fundo(sl, AZUL)
+    fundo_imagem(sl, 'fundo-secao.jpg')
     logo(sl, claro=True)
     if s.get('cartola'):
         retangulo(sl, 96, 172, 4, 18, preencher=LARANJA)
