@@ -380,7 +380,7 @@ def dg_tiers(sl, x, y):
 
 def dg_dois(sl, x, y):
     rotulo(sl, x, y, 400, 'RASCUNHO DO DIAGRAMA DE COMPONENTES', tam=11, cor=AZUL, peso=900, espacar=1.4)
-    retangulo(sl, x, y + 18, 400, 196, borda=CINZA_CLARO)
+    retangulo(sl, x, y + 18, 400, 216, borda=CINZA_CLARO)
     for cx, nome in [(x + 28, 'Convite público'), (x + 222, 'Painel')]:
         retangulo(sl, cx, y + 44, 150, 48, preencher=AZUL, raio=3)
         rotulo(sl, cx, y + 60, 150, nome, tam=13, cor=BRANCO, peso=400, alinhar=PP_ALIGN.CENTER)
@@ -394,7 +394,7 @@ def dg_dois(sl, x, y):
     linha(sl, x + 400, y + 116, x + 560, y + 116, LARANJA, 3)
     rotulo(sl, x + 400, y + 88, 160, 'mapeamento', tam=13, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER)
     rotulo(sl, x + 560, y, 420, 'RASCUNHO DO DIAGRAMA DE IMPLANTAÇÃO', tam=11, cor=LARANJA, peso=900, espacar=1.4)
-    retangulo(sl, x + 560, y + 18, 400, 196, borda=LARANJA, largura=2)
+    retangulo(sl, x + 560, y + 18, 400, 216, borda=LARANJA, largura=2)
     rotulo(sl, x + 580, y + 30, 200, '«device» host', tam=11, cor=LARANJA, peso=900)
     for i, nome in enumerate(['front-end', 'API', 'banco']):
         cx = x + 580 + i * 124
@@ -405,8 +405,8 @@ def dg_dois(sl, x, y):
             linha(sl, cx - 12, y + 80, cx, y + 80, LARANJA, 1.6)
     retangulo(sl, x + 580, y + 130, 360, 34, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=3, tracejado=True)
     rotulo(sl, x + 580, y + 140, 360, 'rede nomeada, com resolução por nome de serviço', tam=12, cor=LARANJA, peso=400, alinhar=PP_ALIGN.CENTER)
-    tbn, tfn = caixa(sl, x + 580, y + 176, 356, 46)
-    escrever(tfn, 'Cada nó corresponde a um serviço no arquivo de compose, com a imagem por tag e digest.', tam=12, cor=CINZA, peso=300, entre=1.4)
+    tbn, tfn = caixa(sl, x + 580, y + 174, 356, 40)
+    escrever(tfn, 'Cada nó corresponde a um serviço no arquivo de compose, com a imagem por tag e digest.', tam=12, cor=CINZA, peso=300, entre=1.3)
 
 def dg_vm(sl, x, y):
     """Duas pilhas lado a lado: maquina virtual com um SO convidado por servico, container com kernel compartilhado."""
