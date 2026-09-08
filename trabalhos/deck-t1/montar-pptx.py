@@ -316,7 +316,7 @@ def dg_pilha(sl, x, y):
         if i:
             linha(sl, cx - gap, y + 79, cx, y + 79, AZUL, 2)
     rotulo(sl, x + 2 * (larg + gap) - 40, y + 20, 90, 'gRPC', tam=13, cor=AZUL, peso=900)
-    itens(sl, ['O shim é o processo pai do container, não o daemon. Reiniciar o daemon não encerra os containers.',
+    itens(sl, ['O processo pai do container é o shim. Reiniciar o daemon não encerra os containers.',
                'Cada peça tem uma responsabilidade e pode ser trocada por outra que respeite a mesma interface.'],
           x, y + 152, 1040, tam=17, gap=20)
 

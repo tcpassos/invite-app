@@ -480,8 +480,8 @@ add('duasColunas', {
   ],
   tituloB: 'CGROUPS V2',
   itensB: [
-    'Os cgroups não isolam nada, eles contabilizam e limitam o consumo de recursos.',
-    'Estourar o limite de memória encerra o processo. Ele não fica lento.',
+    'Os cgroups contabilizam e limitam o consumo de recursos, sem isolar nada.',
+    'Estourar o limite de memória encerra o processo, sem degradação gradual.',
     'O limite de CPU só reduz a velocidade. As requisições mais lentas pioram e a média quase não muda.',
   ],
 })
@@ -522,7 +522,7 @@ add('impacto', {
   cartola: '',
   titulo: 'Docker implementa as<br>especificações da OCI',
   logo: 'oci',
-  sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.',
+  sub: 'Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc pode ser trocado por crun, gVisor ou Kata, e o engine por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.',
   tam: 46,
 })
 
@@ -534,7 +534,7 @@ add('diagrama', {
   titulo: 'Camada lógica e tier',
   svg: svgTiers,
   svgNome: 'svgTiers',
-  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem, não às camadas lógicas da arquitetura.',
+  legenda: 'O projeto lógico é o mesmo nas três opções, e a escolha entre elas é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem. A camada lógica da arquitetura é outro conceito.',
   topSvg: 212,
 })
 
@@ -574,8 +574,8 @@ add('codigo', {
   ],
   larguraCod: 620,
   itens: [
-    'A porta publicada mais o contrato HTTP é a <strong style="font-weight:900">interface provida</strong> da UML.',
-    'A variável de conexão mais a dependência declarada é a <strong style="font-weight:900">interface requerida</strong>.',
+    'A porta publicada mais o contrato HTTP é a interface provida da UML.',
+    'A variável de conexão mais a dependência declarada é a interface requerida.',
     'A porta da UML corresponde à porta publicada do container.',
     'As imagens do arquivo são exemplo. A stack é decisão do documento de decisões arquiteturais.',
   ],
@@ -606,13 +606,13 @@ add('conteudo', {
   titulo: 'O convite público e o painel<br>têm cargas diferentes',
   itens: [
     'A jornada da anfitriã descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.',
-    'Só o serviço público precisa de réplicas. O painel não.',
+    'Só o serviço público precisa de réplicas.',
     'Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local.',
   ],
   right: 120,
 })
 
-add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração é do ambiente e da topologia, não do produto. A implementação do produto começa em outubro.' })
+add('secao', { bloco: '03 · Vantagens e desvantagens', num: '03', cartola: '', titulo: 'Vantagens, desvantagens e demonstração', sub: 'A demonstração mostra o ambiente e a topologia. A implementação do produto começa em outubro.' })
 
 add('terminal', {
   bloco: '03 · Demonstração',
@@ -641,7 +641,7 @@ add('impacto', {
   cartola: '',
   titulo: 'A remoção do dockershim<br>no Kubernetes 1.24',
   logo: 'k8s',
-  sub: 'O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface.',
+  sub: 'Saiu o adaptador embutido que falava com o Docker Engine. O formato das imagens é o da OCI e continuou funcionando. É um caso real de substituição por compatibilidade de interface.',
   tam: 48,
 })
 
@@ -651,8 +651,8 @@ add('conteudo', {
   titulo: 'Limitações e custos',
   itens: [
     'O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.',
-    'A regra de rede que o Docker escreve passa na frente da do administrador, então um deny de firewall na porta publicada não bloqueia nada.',
-    'Container com estado exige backup e upgrade de versão maior do banco. Estar em imagem não resolve isso.',
+    'A regra de rede que o Docker escreve é aplicada antes das regras do administrador, então um bloqueio de firewall na porta publicada não tem efeito.',
+    'Container com estado continua exigindo backup e upgrade de versão maior do banco.',
     'O Docker Desktop é pago para empresa acima de certo porte.',
   ],
   nota: 'Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.',
@@ -691,15 +691,15 @@ add('duasColunas', {
   titulo: 'Quando não compensa',
   tituloA: 'OS QUATRO CRITÉRIOS',
   itensA: [
-    'O primeiro é o monolito que roda num servidor só e nunca vai escalar.',
-    'O segundo é o time sem integração contínua, que só acrescenta um passo de build.',
-    'O terceiro é a aplicação sensível a latência de cauda.',
-    'O quarto é o sistema dominado por estado.',
+    'Um monolito num servidor só, que nunca vai escalar.',
+    'Um time sem integração contínua, para quem é só um passo de build a mais.',
+    'Uma aplicação sensível a latência de cauda.',
+    'Um sistema dominado por estado.',
   ],
   tituloB: 'ONDE NÓS ESTAMOS',
   itensB: [
     'Dois dos quatro se aplicam a nós, porque não temos integração contínua definida nem hospedagem decidida.',
-    'O motivo que se aplica é o ambiente igual para os quatro antes da primeira linha de código.',
+    'O motivo para adotar é o ambiente igual para os quatro antes da primeira linha de código.',
   ],
   corB: LARANJA,
   tam: 34,

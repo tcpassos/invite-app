@@ -35,11 +35,11 @@
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">A regra de rede que o Docker escreve passa na frente da do administrador, então um deny de firewall na porta publicada não bloqueia nada.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">A regra de rede que o Docker escreve é aplicada antes das regras do administrador, então um bloqueio de firewall na porta publicada não tem efeito.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>
-        <p class="corpo" style="font-size:19px; color:#1A1A1E">Container com estado exige backup e upgrade de versão maior do banco. Estar em imagem não resolve isso.</p>
+        <p class="corpo" style="font-size:19px; color:#1A1A1E">Container com estado continua exigindo backup e upgrade de versão maior do banco.</p>
       </div>
       <div class="item">
         <span class="cc" style="font-size:17px; line-height:1.5">//</span>

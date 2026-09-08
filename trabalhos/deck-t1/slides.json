@@ -136,8 +136,8 @@
   ],
   "tituloB": "CGROUPS V2",
   "itensB": [
-   "Os cgroups não isolam nada, eles contabilizam e limitam o consumo de recursos.",
-   "Estourar o limite de memória encerra o processo. Ele não fica lento.",
+   "Os cgroups contabilizam e limitam o consumo de recursos, sem isolar nada.",
+   "Estourar o limite de memória encerra o processo, sem degradação gradual.",
    "O limite de CPU só reduz a velocidade. As requisições mais lentas pioram e a média quase não muda."
   ],
   "n": 8
@@ -182,7 +182,7 @@
   "cartola": "",
   "titulo": "Docker implementa as<br>especificações da OCI",
   "logo": "oci",
-  "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc é trocável por crun, gVisor ou Kata. O engine é trocável por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.",
+  "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc pode ser trocado por crun, gVisor ou Kata, e o engine por Podman. É substituibilidade por compatibilidade de interface, e a seção 03 traz um caso real disso.",
   "tam": 46,
   "n": 12
  },
@@ -202,7 +202,7 @@
   "titulo": "Camada lógica e tier",
   "svg": "<svg width=\"980\" height=\"256\" viewBox=\"0 0 980 256\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <text x=\"0\" y=\"16\" font-size=\"12\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.4\">AS TRÊS CAMADAS LÓGICAS FICAM SEMPRE NA MESMA IMAGEM. O QUE MUDA É ONDE FRONT E BANCO RODAM.</text>\n    <g>\n      <rect x=\"0\" y=\"40\" width=\"286\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"16\" y=\"56\" width=\"254\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"143\" y=\"74\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"16\" y=\"88\" width=\"254\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"143\" y=\"106\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apresentação e API</text>\n      <text x=\"143\" y=\"126\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"143\" y=\"146\" font-size=\"12\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"16\" y=\"164\" width=\"254\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"143\" y=\"182\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"143\" y=\"224\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">1 tier</text>\n      <text x=\"143\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">tudo num processo só</text>\n    </g>\n    <g transform=\"translate(347,0)\">\n      <rect x=\"0\" y=\"40\" width=\"120\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"14\" y=\"56\" width=\"92\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"60\" y=\"74\" font-size=\"13\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"140\" y=\"40\" width=\"146\" height=\"158\" rx=\"5\" fill=\"#21049A\" fill-opacity=\"0.07\" stroke=\"#21049A\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"154\" y=\"88\" width=\"118\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"213\" y=\"106\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apresentação e API</text>\n      <text x=\"213\" y=\"126\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"213\" y=\"146\" font-size=\"11\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"154\" y=\"164\" width=\"118\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"213\" y=\"182\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"143\" y=\"224\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">2 tiers</text>\n      <text x=\"143\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">front separado</text>\n    </g>\n    <g transform=\"translate(694,0)\">\n      <rect x=\"0\" y=\"40\" width=\"88\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"12\" y=\"56\" width=\"64\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"44\" y=\"74\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n      <rect x=\"100\" y=\"40\" width=\"98\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"110\" y=\"88\" width=\"78\" height=\"70\" rx=\"3\" fill=\"#fff\" stroke=\"#21049A\"/>\n      <text x=\"149\" y=\"106\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Apres. e API</text>\n      <text x=\"149\" y=\"126\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Domínio</text>\n      <text x=\"149\" y=\"146\" font-size=\"10.5\" fill=\"#21049A\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n      <rect x=\"210\" y=\"40\" width=\"88\" height=\"158\" rx=\"5\" fill=\"#E94D1C\" fill-opacity=\"0.09\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/>\n      <rect x=\"222\" y=\"56\" width=\"64\" height=\"26\" rx=\"3\" fill=\"#fff\" stroke=\"#D9D9D9\"/><text x=\"254\" y=\"74\" font-size=\"12\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n      <text x=\"149\" y=\"224\" font-size=\"15\" fill=\"#E94D1C\" font-weight=\"900\" text-anchor=\"middle\">3 tiers</text>\n      <text x=\"149\" y=\"245\" font-size=\"13\" fill=\"#6B6B78\" font-weight=\"300\" text-anchor=\"middle\">banco isolado</text>\n    </g>\n  </g>\n</svg>",
   "svgNome": "svgTiers",
-  "legenda": "O projeto lógico é o mesmo nas três opções, e a escolha entre elas é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem, não às camadas lógicas da arquitetura.",
+  "legenda": "O projeto lógico é o mesmo nas três opções, e a escolha entre elas é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem. A camada lógica da arquitetura é outro conceito.",
   "topSvg": 212,
   "n": 14
  },
@@ -245,8 +245,8 @@
   ],
   "larguraCod": 620,
   "itens": [
-   "A porta publicada mais o contrato HTTP é a <strong style=\"font-weight:900\">interface provida</strong> da UML.",
-   "A variável de conexão mais a dependência declarada é a <strong style=\"font-weight:900\">interface requerida</strong>.",
+   "A porta publicada mais o contrato HTTP é a interface provida da UML.",
+   "A variável de conexão mais a dependência declarada é a interface requerida.",
    "A porta da UML corresponde à porta publicada do container.",
    "As imagens do arquivo são exemplo. A stack é decisão do documento de decisões arquiteturais."
   ],
@@ -279,7 +279,7 @@
   "titulo": "O convite público e o painel<br>têm cargas diferentes",
   "itens": [
    "A jornada da anfitriã descreve o link caindo no grupo da família. Isso é pico no convite público, onde o convidado confirma presença, e uma pessoa só no painel, onde a anfitriã vê a lista.",
-   "Só o serviço público precisa de réplicas. O painel não.",
+   "Só o serviço público precisa de réplicas.",
    "Para isso valer, o convite público não pode guardar sessão em memória nem gravar upload em disco local."
   ],
   "right": 120,
@@ -291,7 +291,7 @@
   "num": "03",
   "cartola": "",
   "titulo": "Vantagens, desvantagens e demonstração",
-  "sub": "A demonstração é do ambiente e da topologia, não do produto. A implementação do produto começa em outubro.",
+  "sub": "A demonstração mostra o ambiente e a topologia. A implementação do produto começa em outubro.",
   "n": 20
  },
  {
@@ -323,7 +323,7 @@
   "cartola": "",
   "titulo": "A remoção do dockershim<br>no Kubernetes 1.24",
   "logo": "k8s",
-  "sub": "O que saiu foi o adaptador embutido que falava com o Docker Engine, não o formato das imagens. Como imagem é OCI, nada quebrou. É um caso real de substituição por compatibilidade de interface.",
+  "sub": "Saiu o adaptador embutido que falava com o Docker Engine. O formato das imagens é o da OCI e continuou funcionando. É um caso real de substituição por compatibilidade de interface.",
   "tam": 48,
   "n": 22
  },
@@ -334,8 +334,8 @@
   "titulo": "Limitações e custos",
   "itens": [
    "O daemon roda como root. Estar no grupo docker equivale a root no host, sem sudo e sem trilha de auditoria.",
-   "A regra de rede que o Docker escreve passa na frente da do administrador, então um deny de firewall na porta publicada não bloqueia nada.",
-   "Container com estado exige backup e upgrade de versão maior do banco. Estar em imagem não resolve isso.",
+   "A regra de rede que o Docker escreve é aplicada antes das regras do administrador, então um bloqueio de firewall na porta publicada não tem efeito.",
+   "Container com estado continua exigindo backup e upgrade de versão maior do banco.",
    "O Docker Desktop é pago para empresa acima de certo porte."
   ],
   "nota": "Dos quatro, o do daemon como root é o que atinge o projeto hoje, porque os quatro integrantes rodam na própria máquina.",
@@ -397,15 +397,15 @@
   "titulo": "Quando não compensa",
   "tituloA": "OS QUATRO CRITÉRIOS",
   "itensA": [
-   "O primeiro é o monolito que roda num servidor só e nunca vai escalar.",
-   "O segundo é o time sem integração contínua, que só acrescenta um passo de build.",
-   "O terceiro é a aplicação sensível a latência de cauda.",
-   "O quarto é o sistema dominado por estado."
+   "Um monolito num servidor só, que nunca vai escalar.",
+   "Um time sem integração contínua, para quem é só um passo de build a mais.",
+   "Uma aplicação sensível a latência de cauda.",
+   "Um sistema dominado por estado."
   ],
   "tituloB": "ONDE NÓS ESTAMOS",
   "itensB": [
    "Dois dos quatro se aplicam a nós, porque não temos integração contínua definida nem hospedagem decidida.",
-   "O motivo que se aplica é o ambiente igual para os quatro antes da primeira linha de código."
+   "O motivo para adotar é o ambiente igual para os quatro antes da primeira linha de código."
   ],
   "corB": "#E94D1C",
   "tam": 34,
