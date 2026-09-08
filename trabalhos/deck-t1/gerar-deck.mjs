@@ -343,6 +343,10 @@ const svgTiers = `<svg width="980" height="256" viewBox="0 0 980 256" xmlns="htt
   </g>
 </svg>`
 
+const svgVm = `<svg width="1100" height="300" viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg"><g font-family="Roboto, sans-serif" font-size="13"><text x="0" y="14" fill="#21049A" font-weight="900">MÁQUINA VIRTUAL</text><rect x="0" y="206" width="500" height="34" fill="#D9D9D9"/><rect x="0" y="168" width="500" height="36" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="0" y="130" width="500" height="36" fill="#21049A"/><text x="600" y="14" fill="#E94D1C" font-weight="900">CONTAINER</text><rect x="600" y="206" width="500" height="34" fill="#D9D9D9"/><rect x="600" y="168" width="500" height="36" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="600" y="130" width="500" height="36" fill="#21049A"/></g></svg>`
+
+const svgAntes = `<svg width="1100" height="300" viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg"><g font-family="Roboto, sans-serif" font-size="13"><text x="0" y="14" fill="#21049A" font-weight="900">NO COMEÇO DO PROJETO</text><rect x="0" y="40" width="500" height="184" rx="6" fill="#F2F2F5" stroke="#D9D9D9"/><text x="600" y="14" fill="#E94D1C" font-weight="900">AGORA</text><rect x="600" y="40" width="500" height="184" rx="6" fill="#F2F2F5" stroke="#D9D9D9"/></g></svg>`
+
 const svgDois = `<svg width="960" height="270" viewBox="0 0 960 270" xmlns="http://www.w3.org/2000/svg">
   <g font-family="Roboto, sans-serif">
     <text x="0" y="16" font-size="11" fill="#21049A" font-weight="900" letter-spacing="1.4">RASCUNHO #59, DIAGRAMA DE COMPONENTES</text>
@@ -659,21 +663,13 @@ add('conteudo', {
   top: 202,
 })
 
-add('duasColunas', {
+add('diagrama', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: '',
   titulo: 'Container e máquina virtual',
-  tituloA: 'MÁQUINA VIRTUAL',
-  itensA: ['A máquina virtual tem kernel próprio.', 'A fronteira entre ela e o host é imposta em hardware.', 'Por isso a superfície de ataque fica relativamente estreita.'],
-  tituloB: 'CONTAINER',
-  itensB: [
-    'O container compartilha o kernel do host.',
-    'A fronteira dele é a interface de chamadas de sistema, que são mais de trezentas, somadas a /proc, /sys e ioctl.',
-    'A CVE-2019-5736 mostrou o risco na prática, porque o processo de dentro conseguia sobrescrever o binário do runtime pelo /proc/self/exe.',
-    'Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
-  ],
-  corB: LARANJA,
-  tam: 32,
+  svg: svgVm,
+  svgNome: 'svgVm',
+  legenda: 'A CVE-2019-5736 mostrou o risco na prática: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.',
 })
 
 add('tabela', {
@@ -704,8 +700,8 @@ add('duasColunas', {
   ],
   tituloB: 'ONDE NÓS ESTAMOS',
   itensB: [
-    'Não temos integração contínua definida nem hospedagem decidida, então dois dos critérios ao lado se aplicam a nós.',
-    'O motivo que resta é o ambiente igual para quatro integrantes com stacks diferentes, com o banco rodando sem instalação local, antes de escrever a primeira linha.',
+    'Dois dos quatro se aplicam a nós, porque não temos integração contínua definida nem hospedagem decidida.',
+    'O que resta é o motivo que abriu a apresentação: o ambiente igual para os quatro antes da primeira linha de código.',
   ],
   corB: LARANJA,
   tam: 34,
@@ -732,34 +728,25 @@ add('duasColunas', {
   tam: 34,
 })
 
-add('duasColunas', {
+add('diagrama', {
   bloco: 'Considerações finais',
   cartola: '',
   titulo: 'O que mudou no ambiente do time',
-  tituloA: 'NO COMEÇO DO PROJETO',
-  itensA: [
-    'O repositório tem uma linha de .gitattributes forçando LF nos scripts, porque sem ela o Git Bash quebra no Windows.',
-    'Os ambientes do time já divergem antes de existir a primeira linha de código do produto.',
-  ],
-  tituloB: 'AGORA',
-  itensB: [
-    'Existe um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando.',
-    'Esse mesmo arquivo é o que vira o diagrama de implantação do projeto.',
-  ],
+  svg: svgAntes,
+  svgNome: 'svgAntes',
 })
 
 add('conteudo', {
   bloco: 'Considerações finais',
   cartola: '',
-  titulo: 'O que não estamos afirmando',
+  titulo: 'Três coisas para lembrar',
+  grande: true,
   itens: [
-    'Os seis itens de modelagem da arquitetura seguem em aberto. Isto é insumo desses itens, não relato de item concluído.',
-    'O documento de decisões arquiteturais, onde a stack será decidida, ainda não foi escrito.',
+    'Container é um processo comum, isolado por mecanismos do kernel.',
+    'Imagem é o artefato. Container é o ambiente de execução que roda a imagem.',
+    'A decisão de arquitetura é em quantos processos separados o sistema vai rodar.',
   ],
-  nota: 'Container é processo isolado por mecanismo de kernel.<br><br>Imagem é artefato, container é ambiente de execução.<br><br>A decisão arquitetural é a granularidade de tier.',
-  notaTitulo: 'PARA LEVAR PARA A P1',
-  notaW: 280,
-  right: 350,
+  right: 120,
 })
 
 add('conteudo', {

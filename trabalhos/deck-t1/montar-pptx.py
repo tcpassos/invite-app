@@ -392,7 +392,57 @@ def dg_dois(sl, x, y):
     tbn, tfn = caixa(sl, x + 580, y + 176, 356, 46)
     escrever(tfn, 'Cada nó vira um serviço no arquivo de compose, com a imagem por tag e digest.', tam=12, cor=CINZA, peso=300, entre=1.4)
 
-DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml,
+def dg_vm(sl, x, y):
+    """Duas pilhas lado a lado: maquina virtual com um SO convidado por servico, container com kernel compartilhado."""
+    LEVE = RGBColor(0xFD, 0xEA, 0xE3)
+    def pilha(x0, rotulo_topo, cor_rotulo, base, apps_com_so):
+        rotulo(sl, x0, y, 500, rotulo_topo, tam=12, cor=cor_rotulo, peso=900, maiusc=True, espacar=1.4)
+        # camadas de baixo para cima
+        retangulo(sl, x0, y + 206, 500, 34, preencher=CINZA_CLARO)
+        rotulo(sl, x0, y + 215, 500, 'hardware', tam=13, cor=GRAFITE, peso=400, alinhar=PP_ALIGN.CENTER)
+        retangulo(sl, x0, y + 168, 500, 36, preencher=QUASE, borda=CINZA_CLARO)
+        rotulo(sl, x0, y + 178, 500, base[0], tam=13, cor=GRAFITE, peso=400, alinhar=PP_ALIGN.CENTER)
+        retangulo(sl, x0, y + 130, 500, 36, preencher=AZUL)
+        rotulo(sl, x0, y + 140, 500, base[1], tam=13, cor=BRANCO, peso=900, alinhar=PP_ALIGN.CENTER)
+        for k, nome in enumerate(['app A', 'app B', 'app C']):
+            cx = x0 + 10 + k * 165
+            if apps_com_so:
+                retangulo(sl, cx, y + 92, 150, 36, preencher=LEVE, borda=LARANJA, raio=2)
+                rotulo(sl, cx, y + 102, 150, 'SO convidado', tam=12, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER)
+                topo_app = y + 32
+            else:
+                topo_app = y + 68
+            retangulo(sl, cx, topo_app + 30, 150, 28, preencher=BRANCO, borda=CINZA_CLARO, raio=2)
+            rotulo(sl, cx, topo_app + 36, 150, 'bibliotecas', tam=12, cor=CINZA, peso=300, alinhar=PP_ALIGN.CENTER)
+            retangulo(sl, cx, topo_app, 150, 28, preencher=BRANCO, borda=AZUL, raio=2)
+            rotulo(sl, cx, topo_app + 6, 150, nome, tam=12, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
+    pilha(x, 'MÁQUINA VIRTUAL', AZUL, ('sistema operacional do host', 'hipervisor'), True)
+    pilha(x + 600, 'CONTAINER', LARANJA, ('kernel do host, compartilhado por todos', 'Docker Engine'), False)
+    tb, tf = caixa(sl, x, y + 252, 500, 50)
+    escrever(tf, 'Um kernel inteiro para cada serviço. A fronteira é imposta pelo hardware.', tam=14, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.4)
+    tb2, tf2 = caixa(sl, x + 600, y + 252, 500, 50)
+    escrever(tf2, 'Um kernel só, dividido entre todos. A fronteira é a interface de chamadas de sistema.', tam=14, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.4)
+
+def dg_antes(sl, x, y):
+    """Os dois artefatos reais do repositorio, um de cada lado."""
+    def bloco(x0, rotulo_topo, cor, linhas, legenda_txt):
+        rotulo(sl, x0, y, 500, rotulo_topo, tam=12, cor=cor, peso=900, maiusc=True, espacar=1.4)
+        retangulo(sl, x0, y + 22, 44, 3, preencher=cor)
+        alt = 40 + len(linhas) * 24
+        retangulo(sl, x0, y + 40, 500, alt, preencher=QUASE, borda=CINZA_CLARO, raio=6)
+        for i, l in enumerate(linhas):
+            c = CINZA if l.strip().startswith('#') else GRAFITE
+            rotulo(sl, x0 + 22, y + 58 + i * 24, 460, l, tam=14, cor=c, fonte=MONO)
+        tb, tf = caixa(sl, x0, y + 40 + alt + 16, 500, 70)
+        escrever(tf, legenda_txt, tam=15, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.45)
+    bloco(x, 'NO COMEÇO DO PROJETO', AZUL,
+          ['# .gitattributes', '*.sh text eol=lf', '', '', '', ''],
+          'Uma linha no repositório, porque sem ela o Git Bash quebra no Windows. Os ambientes do time já divergiam antes da primeira linha de código do produto.')
+    bloco(x + 600, 'AGORA', LARANJA,
+          ['# docker-compose.yml', 'services:', '  api:', '    image: node:22-alpine', '  db:', '    image: postgres:16'],
+          'Um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando. É ele que vira o diagrama de implantação.')
+
+DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml, 'svgVm': dg_vm, 'svgAntes': dg_antes,
              'svgTiers': dg_tiers, 'svgDois': dg_dois}
 
 # ---------- modelos ----------
@@ -445,8 +495,9 @@ def m_citacao(sl, s):
 def m_impacto(sl, s):
     fundo(sl, AZUL)
     logo(sl, claro=True)
-    retangulo(sl, 96, 172, 4, 18, preencher=LARANJA)
-    rotulo(sl, 112, 168, 900, s['cartola'], tam=15, cor=BRANCO, peso=900, maiusc=True, espacar=1.6)
+    if s.get('cartola'):
+        retangulo(sl, 96, 172, 4, 18, preencher=LARANJA)
+        rotulo(sl, 112, 168, 900, s['cartola'], tam=15, cor=BRANCO, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 96, 196, 1020, 200)
     escrever(tf, s['titulo'], tam=s.get('tam', 52), cor=BRANCO, peso=900, entre=1.06)
     if s.get('sub'):
@@ -466,8 +517,11 @@ def cabeca(sl, s):
 def m_conteudo(sl, s):
     cabeca(sl, s)
     largura = 1208 - (s.get('right', 320)) - 72 + 30
-    tam, gap, alt = ajustar(s['itens'], largura, 424, maximo=22)
-    y0 = centrar(alt, 206, 636)
+    if s.get('grande'):
+        tam, gap, alt = ajustar(s['itens'], largura, 424, tam=26, gap=34, minimo=20, maximo=28)
+    else:
+        tam, gap, alt = ajustar(s['itens'], largura, 424, maximo=22)
+    y0 = centrar(alt, 176, 636)
     itens(sl, s['itens'], 72, y0, largura, tam=tam, gap=gap)
     if s.get('nota'):
         nota_lateral(sl, 958, y0, 250, s.get('notaTitulo', 'ATENÇÃO'), s['nota'])
@@ -481,7 +535,7 @@ def m_duas(sl, s):
     tamB, gapB, altB = ajustar(s['itensB'], 540, 372, tam=18, gap=22, minimo=14, maximo=21)
     tam, gap = min(tamA, tamB), min(gapA, gapB)
     alt = max(altura_lista(s['itensA'], tam, 540, gap), altura_lista(s['itensB'], tam, 540, gap))
-    y0 = centrar(alt + 52, 210, 636)
+    y0 = centrar(alt + 52, 176, 636)
     for i, (tit, lst, cor) in enumerate([(s['tituloA'], s['itensA'], corA), (s['tituloB'], s['itensB'], corB)]):
         cx = 72 + i * 596
         rotulo(sl, cx, y0, 540, tit, tam=12, cor=cor, peso=900, maiusc=True, espacar=1.2)
@@ -493,7 +547,7 @@ def m_terminal(sl, s):
     cabeca(sl, s)
     alt = 46 + len(s['linhas']) * 25 + 24
     legenda = altura_estimada(s['captura'], 15, 1116)
-    y0 = min(centrar(alt + 24 + legenda, 206, 640), 640 - alt - 24 - legenda)
+    y0 = min(centrar(alt + 24 + legenda, 176, 640), 640 - alt - 24 - legenda)
     retangulo(sl, 72, y0, 1136, alt, preencher=ESCURO, raio=8)
     retangulo(sl, 100, y0 + 22, 34, 3, preencher=LARANJA, raio=2)
     rotulo(sl, 144, y0 + 16, 200, 'TERMINAL', tam=11, cor=RGBColor(0x8A, 0x8A, 0x9A), espacar=1.4)
@@ -510,7 +564,7 @@ def m_codigo(sl, s):
     larg = s.get('larguraCod', 640)
     alt = 44 + len(s['linhas']) * 26
     col = 1208 - (72 + larg + 48)
-    y0 = centrar(max(alt, altura_lista(s['itens'], 17, col, 16)), 210, 620)
+    y0 = centrar(max(alt, altura_lista(s['itens'], 17, col, 16)), 176, 620)
     retangulo(sl, 72, y0, larg, alt, preencher=QUASE, borda=CINZA_CLARO, raio=8)
     for i, l in enumerate(s['linhas']):
         cor = CINZA if l.strip().startswith('#') else GRAFITE
@@ -532,7 +586,7 @@ def m_diagrama(sl, s):
         alt_leg = altura_estimada(s['legenda'], tam_leg, 1116) * 1.16
         topo_leg = 646 - alt_leg
     fundo_util = (topo_leg - 24) if s.get('legenda') else 640
-    desloca = int(round(centrar(max(f.top + f.height for f in novas) / 9525, 210, fundo_util)))
+    desloca = int(round(centrar(max(f.top + f.height for f in novas) / 9525, 176, fundo_util)))
     for f in novas:
         f.top = f.top + Emu(desloca * 9525)
     if s.get('legenda'):
@@ -546,7 +600,7 @@ def m_tabela(sl, s):
     xs = [72, 320, 700]
     ws = [230, 360, 500]
     corpo = sum(max(altura_estimada(c, 16, ws[i] - 18) for i, c in enumerate(lin)) + 26 for lin in s['linhas'])
-    topo = centrar(corpo + 40, 210, 620)
+    topo = centrar(corpo + 40, 176, 620)
     for i, c in enumerate(s['cabecalhos']):
         rotulo(sl, xs[i], topo, ws[i], c, tam=11, cor=AZUL, peso=900, maiusc=True, espacar=1.2)
     retangulo(sl, 72, topo + 24, 1136, 2, preencher=AZUL)
