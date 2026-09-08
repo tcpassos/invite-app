@@ -27,7 +27,6 @@ def main(caminho):
     for i, sl in enumerate(prs.slides, 1):
         txt = ' '.join(' '.join(sh.text_frame.text.split())
                        for sh in sl.shapes if sh.has_text_frame)
-        titulo = ' '.join(sh.text_frame.text.split() for sh in sl.shapes if sh.has_text_frame and False) or txt[:80].lower()
         for nome, pat in PROIBIDO:
             if i in ISENTO_POR_SLIDE.get(nome, set()):
                 continue
