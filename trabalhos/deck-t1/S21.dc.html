@@ -35,11 +35,12 @@
     </div>
     <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose up -d</div>
     <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose ps</div>
-    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">NAME   IMAGE          STATUS</div>
-    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">web    nginx:alpine   Up</div>
-    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">db     postgres:16    Up (healthy)</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">NAME    IMAGE             STATUS</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">front   nginx:alpine      Up</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">api     node:22-alpine    Up</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">db      postgres:16       Up (healthy)</div>
     <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
-    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose run --rm client psql -h db -c "create table t(); "</div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose exec db psql -U app -c "create table t()"</div>
     <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down && docker compose up -d</div>
     <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># a tabela continua lá, o volume sobreviveu</div>
     <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
