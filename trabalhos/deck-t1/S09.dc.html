@@ -26,32 +26,33 @@
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
     <div class="cartola" style="color:#E94D1C"></div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">As camadas de uma imagem</h2>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Dockerfile, imagem e container</h2>
   </div>
-  <div style="position:absolute; left:72px; top:196px; right:72px; display:flex; justify-content:center">
-<svg width="880" height="290" viewBox="0 0 880 290" xmlns="http://www.w3.org/2000/svg">
-  <g font-family="Roboto, sans-serif">
-    <rect x="40" y="216" width="360" height="46" rx="4" fill="#F0F0F5" stroke="#D9D9D9"/>
-    <rect x="40" y="164" width="360" height="46" rx="4" fill="#F0F0F5" stroke="#D9D9D9"/>
-    <rect x="40" y="112" width="360" height="46" rx="4" fill="#F0F0F5" stroke="#D9D9D9"/>
-    <rect x="40" y="54" width="360" height="52" rx="4" fill="#E94D1C" fill-opacity="0.12" stroke="#E94D1C" stroke-dasharray="5 4"/>
-    <text x="60" y="245" font-size="14" fill="#1A1A1E" font-weight="300">camada base (debian, alpine)</text>
-    <text x="60" y="193" font-size="14" fill="#1A1A1E" font-weight="300">dependências</text>
-    <text x="60" y="141" font-size="14" fill="#1A1A1E" font-weight="300">código da aplicação</text>
-    <text x="60" y="79" font-size="14" fill="#E94D1C" font-weight="900">camada de escrita</text>
-    <text x="60" y="97" font-size="12" fill="#6B6B78" font-weight="300">criada pelo container, morre com ele</text>
-    <text x="40" y="34" font-size="11" fill="#6B6B78" font-weight="900" letter-spacing="1.6">SOMENTE LEITURA, ENDEREÇADAS POR DIGEST</text>
-    <line x1="440" y1="60" x2="440" y2="258" stroke="#D9D9D9" stroke-width="1"/>
-    <text x="480" y="96" font-size="15" fill="#21049A" font-weight="900">copy-up</text>
-    <text x="480" y="122" font-size="13.5" fill="#1A1A1E" font-weight="300">alterar um byte de um arquivo grande</text>
-    <text x="480" y="142" font-size="13.5" fill="#1A1A1E" font-weight="300">copia o arquivo inteiro para cima</text>
-    <text x="480" y="184" font-size="15" fill="#21049A" font-weight="900">whiteout</text>
-    <text x="480" y="210" font-size="13.5" fill="#1A1A1E" font-weight="300">apagar cria uma marcação,</text>
-    <text x="480" y="230" font-size="13.5" fill="#1A1A1E" font-weight="300">o arquivo continua na camada de baixo</text>
-  </g>
-</svg>
+  <div style="position:absolute; left:72px; right:72px; top:200px; display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:72px">
+    <div style="background:#F2F2F5; border:1px solid #D9D9D9; border-radius:8px; padding:22px 24px">
+      <div class="cartola" style="color:#E94D1C; font-size:11px">Receita</div>
+      <div style="font-weight:900; color:#21049A; font-size:20px; margin:8px 0 8px">Dockerfile</div>
+      <p class="corpo" style="font-size:15px; color:#3A3A44; margin:0">Arquivo de texto com a imagem base, as dependências e o comando de inicialização.</p>
+      <pre style="margin:12px 0 0; background:#E6E6EC; border-radius:4px; padding:8px 12px; font-family:'Roboto Mono', monospace; font-size:13px; line-height:1.7; color:#1A1A1E">FROM node:22-alpine
+COPY . /app
+CMD ["node", "/app/api.js"]</pre>
+    </div>
+    <div style="background:#F2F2F5; border:1px solid #D9D9D9; border-radius:8px; padding:22px 24px">
+      <div class="cartola" style="color:#E94D1C; font-size:11px">Artefato</div>
+      <div style="font-weight:900; color:#21049A; font-size:20px; margin:8px 0 8px">Imagem</div>
+      <p class="corpo" style="font-size:15px; color:#3A3A44; margin:0">Resultado do build. Pacote em camadas, imutável, publicado num registry.</p>
+      <pre style="margin:12px 0 0; background:#E6E6EC; border-radius:4px; padding:8px 12px; font-family:'Roboto Mono', monospace; font-size:13px; line-height:1.7; color:#1A1A1E">$ docker build -t api:1.0 .
+api:1.0  sha256:9f2c4e…</pre>
+    </div>
+    <div style="background:#F2F2F5; border:1px solid #D9D9D9; border-radius:8px; padding:22px 24px">
+      <div class="cartola" style="color:#E94D1C; font-size:11px">Execução</div>
+      <div style="font-weight:900; color:#21049A; font-size:20px; margin:8px 0 8px">Container</div>
+      <p class="corpo" style="font-size:15px; color:#3A3A44; margin:0">Resultado do run. Processo criado a partir da imagem, com uma camada gravável própria.</p>
+      <pre style="margin:12px 0 0; background:#E6E6EC; border-radius:4px; padding:8px 12px; font-family:'Roboto Mono', monospace; font-size:13px; line-height:1.7; color:#1A1A1E">$ docker run -p 3000:3000 api:1.0
+PID 1  node /app/api.js</pre>
+    </div>
   </div>
-  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">A imagem é construída a partir de um Dockerfile e distribuída por um registry. Cada instrução gera uma camada. Um Dockerfile que copia um .env e o apaga na instrução seguinte deixa o segredo legível na camada anterior. No nosso caso, a senha do banco e o segredo de sessão do anfitrião.</div>
+  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">Um registry, como o Docker Hub, guarda e distribui as imagens. As imagens da demonstração vêm de lá prontas, sem build local.</div>
   <div class="rodape" style="color: #6B6B78">
     <span>01 · Arquitetura</span><span style="font-weight:900; color: #21049A">09</span>
   </div>

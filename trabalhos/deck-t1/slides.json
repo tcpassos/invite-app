@@ -143,15 +143,58 @@
   "n": 8
  },
  {
+  "modelo": "cartoes",
+  "bloco": "01 · Arquitetura",
+  "cartola": "",
+  "titulo": "Dockerfile, imagem e container",
+  "colunas": 3,
+  "setas": [
+   "build",
+   "run"
+  ],
+  "cartoes": [
+   {
+    "k": "Receita",
+    "t": "Dockerfile",
+    "d": "Arquivo de texto com a imagem base, as dependências e o comando de inicialização.",
+    "codigo": [
+     "FROM node:22-alpine",
+     "COPY . /app",
+     "CMD [\"node\", \"/app/api.js\"]"
+    ]
+   },
+   {
+    "k": "Artefato",
+    "t": "Imagem",
+    "d": "Resultado do build. Pacote em camadas, imutável, publicado num registry.",
+    "codigo": [
+     "$ docker build -t api:1.0 .",
+     "api:1.0  sha256:9f2c4e…"
+    ]
+   },
+   {
+    "k": "Execução",
+    "t": "Container",
+    "d": "Resultado do run. Processo criado a partir da imagem, com uma camada gravável própria.",
+    "codigo": [
+     "$ docker run -p 3000:3000 api:1.0",
+     "PID 1  node /app/api.js"
+    ]
+   }
+  ],
+  "legenda": "Um registry, como o Docker Hub, guarda e distribui as imagens. As imagens da demonstração vêm de lá prontas, sem build local.",
+  "n": 9
+ },
+ {
   "modelo": "diagrama",
   "bloco": "01 · Arquitetura",
   "cartola": "",
-  "titulo": "As camadas de uma imagem",
-  "svg": "<svg width=\"880\" height=\"290\" viewBox=\"0 0 880 290\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <rect x=\"40\" y=\"216\" width=\"360\" height=\"46\" rx=\"4\" fill=\"#F0F0F5\" stroke=\"#D9D9D9\"/>\n    <rect x=\"40\" y=\"164\" width=\"360\" height=\"46\" rx=\"4\" fill=\"#F0F0F5\" stroke=\"#D9D9D9\"/>\n    <rect x=\"40\" y=\"112\" width=\"360\" height=\"46\" rx=\"4\" fill=\"#F0F0F5\" stroke=\"#D9D9D9\"/>\n    <rect x=\"40\" y=\"54\" width=\"360\" height=\"52\" rx=\"4\" fill=\"#E94D1C\" fill-opacity=\"0.12\" stroke=\"#E94D1C\" stroke-dasharray=\"5 4\"/>\n    <text x=\"60\" y=\"245\" font-size=\"14\" fill=\"#1A1A1E\" font-weight=\"300\">camada base (debian, alpine)</text>\n    <text x=\"60\" y=\"193\" font-size=\"14\" fill=\"#1A1A1E\" font-weight=\"300\">dependências</text>\n    <text x=\"60\" y=\"141\" font-size=\"14\" fill=\"#1A1A1E\" font-weight=\"300\">código da aplicação</text>\n    <text x=\"60\" y=\"79\" font-size=\"14\" fill=\"#E94D1C\" font-weight=\"900\">camada de escrita</text>\n    <text x=\"60\" y=\"97\" font-size=\"12\" fill=\"#6B6B78\" font-weight=\"300\">criada pelo container, morre com ele</text>\n    <text x=\"40\" y=\"34\" font-size=\"11\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.6\">SOMENTE LEITURA, ENDEREÇADAS POR DIGEST</text>\n    <line x1=\"440\" y1=\"60\" x2=\"440\" y2=\"258\" stroke=\"#D9D9D9\" stroke-width=\"1\"/>\n    <text x=\"480\" y=\"96\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\">copy-up</text>\n    <text x=\"480\" y=\"122\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">alterar um byte de um arquivo grande</text>\n    <text x=\"480\" y=\"142\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">copia o arquivo inteiro para cima</text>\n    <text x=\"480\" y=\"184\" font-size=\"15\" fill=\"#21049A\" font-weight=\"900\">whiteout</text>\n    <text x=\"480\" y=\"210\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">apagar cria uma marcação,</text>\n    <text x=\"480\" y=\"230\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">o arquivo continua na camada de baixo</text>\n  </g>\n</svg>",
-  "svgNome": "svgCamadas",
-  "legenda": "A imagem é construída a partir de um Dockerfile e distribuída por um registry. Cada instrução gera uma camada. Um Dockerfile que copia um .env e o apaga na instrução seguinte deixa o segredo legível na camada anterior. No nosso caso, a senha do banco e o segredo de sessão do anfitrião.",
+  "titulo": "Imagens em camadas e union filesystem",
+  "svg": "<svg width=\"880\" height=\"290\" viewBox=\"0 0 880 290\" xmlns=\"http://www.w3.org/2000/svg\"><g font-family=\"Roboto, sans-serif\" font-size=\"13\"><text x=\"115\" y=\"14\" text-anchor=\"middle\" fill=\"#21049A\" font-weight=\"900\">Container A</text><text x=\"377\" y=\"14\" text-anchor=\"middle\" fill=\"#21049A\" font-weight=\"900\">Container B</text><rect x=\"0\" y=\"24\" width=\"230\" height=\"48\" rx=\"4\" fill=\"#FDEAE3\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/><rect x=\"262\" y=\"24\" width=\"230\" height=\"48\" rx=\"4\" fill=\"#FDEAE3\" stroke=\"#E94D1C\" stroke-dasharray=\"4 4\"/><text x=\"14\" y=\"44\" fill=\"#E94D1C\" font-weight=\"900\">camada gravável</text><text x=\"276\" y=\"44\" fill=\"#E94D1C\" font-weight=\"900\">camada gravável</text><line x1=\"115\" y1=\"72\" x2=\"115\" y2=\"92\" stroke=\"#D9D9D9\"/><line x1=\"377\" y1=\"72\" x2=\"377\" y2=\"92\" stroke=\"#D9D9D9\"/><rect x=\"0\" y=\"92\" width=\"492\" height=\"40\" rx=\"4\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><rect x=\"0\" y=\"138\" width=\"492\" height=\"40\" rx=\"4\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><rect x=\"0\" y=\"184\" width=\"492\" height=\"40\" rx=\"4\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><text x=\"16\" y=\"116\" fill=\"#1A1A1E\">código da API</text><text x=\"16\" y=\"162\" fill=\"#1A1A1E\">runtime: node 22</text><text x=\"16\" y=\"208\" fill=\"#1A1A1E\">base: alpine</text><text x=\"246\" y=\"250\" text-anchor=\"middle\" fill=\"#6B6B78\" font-size=\"12\">imagem: camadas somente leitura, guardadas uma vez no disco</text><line x1=\"540\" y1=\"4\" x2=\"540\" y2=\"290\" stroke=\"#D9D9D9\"/><text x=\"582\" y=\"16\" fill=\"#21049A\" font-weight=\"900\" font-size=\"15\">Somente leitura</text><text x=\"582\" y=\"88\" fill=\"#21049A\" font-weight=\"900\" font-size=\"15\">Compartilhadas</text><text x=\"582\" y=\"160\" fill=\"#21049A\" font-weight=\"900\" font-size=\"15\">Copy-on-write</text><text x=\"582\" y=\"232\" fill=\"#21049A\" font-weight=\"900\" font-size=\"15\">Whiteout</text></g></svg>",
+  "svgNome": "svgUnion",
+  "legenda": "Cada instrução do Dockerfile gera uma camada. Um Dockerfile que copia um .env e o apaga na instrução seguinte deixa o segredo legível na camada anterior. No nosso caso, a senha do banco e o segredo de sessão do anfitrião.",
   "topSvg": 196,
-  "n": 9
+  "n": 10
  },
  {
   "modelo": "diagrama",
@@ -161,7 +204,7 @@
   "svg": "<svg width=\"940\" height=\"270\" viewBox=\"0 0 940 270\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <rect x=\"10\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"85\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">docker CLI</text>\n    <text x=\"85\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">cliente</text>\n    <rect x=\"205\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"280\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">dockerd</text>\n    <text x=\"280\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">daemon, roda como root</text>\n    <rect x=\"400\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#21049A\"/>\n    <text x=\"475\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">containerd</text>\n    <text x=\"475\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">ciclo de vida</text>\n    <rect x=\"595\" y=\"86\" width=\"140\" height=\"60\" rx=\"5\" fill=\"#E94D1C\"/>\n    <text x=\"665\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">shim</text>\n    <text x=\"665\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">um por container</text>\n    <rect x=\"780\" y=\"86\" width=\"150\" height=\"60\" rx=\"5\" fill=\"#E94D1C\"/>\n    <text x=\"855\" y=\"112\" font-size=\"15\" fill=\"#fff\" font-weight=\"900\" text-anchor=\"middle\">runc</text>\n    <text x=\"855\" y=\"131\" font-size=\"12\" fill=\"#ffffffcc\" font-weight=\"300\" text-anchor=\"middle\">cria e sai</text>\n    <path d=\"M160 116 L200 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M355 116 L395 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M550 116 L590 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <path d=\"M735 116 L775 116\" stroke=\"#6B6B78\" stroke-width=\"1.5\" marker-end=\"url(#seta)\"/>\n    <text x=\"375\" y=\"78\" font-size=\"11\" fill=\"#6B6B78\" font-weight=\"400\">gRPC</text>\n    <defs><marker id=\"seta\" markerWidth=\"7\" markerHeight=\"7\" refX=\"6\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L6,3 L0,6 Z\" fill=\"#6B6B78\"/></marker></defs>\n    <text x=\"10\" y=\"196\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">O shim é pai do container e não filho do daemon. Foi esse desenho que fez reiniciar</text>\n    <text x=\"10\" y=\"216\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">o daemon deixar de matar os containers em execução.</text>\n    <text x=\"10\" y=\"248\" font-size=\"13.5\" fill=\"#1A1A1E\" font-weight=\"300\">Cada peça tem uma responsabilidade e pode ser trocada. É a substituibilidade da Aula 05, aplicada ao próprio Docker.</text>\n  </g>\n</svg>",
   "svgNome": "svgPilha",
   "topSvg": 200,
-  "n": 10
+  "n": 11
  },
  {
   "modelo": "conteudo",
@@ -174,7 +217,7 @@
    "AppArmor ou SELinux aplicam uma restrição adicional pelo módulo de segurança do kernel."
   ],
   "right": 330,
-  "n": 11
+  "n": 12
  },
  {
   "modelo": "impacto",
@@ -184,7 +227,7 @@
   "logo": "oci",
   "sub": "Fundada em 2015 sob a Linux Foundation, com a Runtime Spec, a Image Spec e a Distribution Spec. O runc pode ser trocado por crun, gVisor ou Kata, e o engine por Podman. Em 2022 o Kubernetes removeu o adaptador que falava com o Docker Engine e as imagens continuaram funcionando, porque o formato é o da OCI.",
   "tam": 46,
-  "n": 12
+  "n": 13
  },
  {
   "modelo": "secao",
@@ -193,7 +236,7 @@
   "cartola": "",
   "titulo": "Aplicação no Invite People",
   "sub": "Mapeamento entre os diagramas de arquitetura e o arquivo de compose.",
-  "n": 13
+  "n": 14
  },
  {
   "modelo": "diagrama",
@@ -204,7 +247,7 @@
   "svgNome": "svgTiers",
   "legenda": "O projeto lógico é o mesmo nas três opções. Os rascunhos dos próximos slides seguem a de três, e a escolha final é registrada no documento de decisões arquiteturais. No Docker, <em>layer</em> se refere às camadas do sistema de arquivos da imagem. A camada lógica da arquitetura é outro conceito.",
   "topSvg": 212,
-  "n": 14
+  "n": 15
  },
  {
   "modelo": "diagrama",
@@ -214,7 +257,7 @@
   "svg": "<svg width=\"860\" height=\"280\" viewBox=\"0 0 860 280\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <rect x=\"20\" y=\"20\" width=\"400\" height=\"240\" rx=\"4\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"2\"/>\n    <text x=\"40\" y=\"48\" font-size=\"12\" fill=\"#21049A\" font-weight=\"900\" letter-spacing=\"1.4\">&#171;device&#187;</text>\n    <text x=\"40\" y=\"70\" font-size=\"19\" fill=\"#21049A\" font-weight=\"900\">Host de desenvolvimento</text>\n    <rect x=\"52\" y=\"94\" width=\"336\" height=\"146\" rx=\"4\" fill=\"none\" stroke=\"#E94D1C\" stroke-width=\"2\"/>\n    <text x=\"72\" y=\"122\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"900\" letter-spacing=\"1.4\">&#171;executionEnvironment&#187;</text>\n    <text x=\"72\" y=\"144\" font-size=\"17\" fill=\"#E94D1C\" font-weight=\"900\">Container</text>\n    <rect x=\"84\" y=\"164\" width=\"272\" height=\"58\" rx=\"3\" fill=\"#F0F0F5\" stroke=\"#6B6B78\"/>\n    <text x=\"104\" y=\"188\" font-size=\"11\" fill=\"#6B6B78\" font-weight=\"900\" letter-spacing=\"1.2\">&#171;artifact&#187;</text>\n    <text x=\"104\" y=\"209\" font-size=\"15\" fill=\"#1A1A1E\" font-weight=\"400\">imagem (tag + digest)</text>\n    <text x=\"470\" y=\"60\" font-size=\"17\" fill=\"#21049A\" font-weight=\"900\">Ambiente de execução é</text>\n    <text x=\"470\" y=\"84\" font-size=\"17\" fill=\"#21049A\" font-weight=\"900\">uma especialização de nó.</text>\n    <text x=\"470\" y=\"124\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">Por isso nunca dizer que container não é nó.</text>\n    <text x=\"470\" y=\"148\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">O modelo fiel é o container aninhado no host,</text>\n    <text x=\"470\" y=\"172\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">com a imagem implantada dentro dele.</text>\n    <line x1=\"470\" y1=\"200\" x2=\"840\" y2=\"200\" stroke=\"#D9D9D9\"/>\n    <text x=\"470\" y=\"230\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">Máquina virtual, essa sim, é um nó novo,</text>\n    <text x=\"470\" y=\"254\" font-size=\"14.5\" fill=\"#1A1A1E\" font-weight=\"300\">com sistema operacional próprio.</text>\n  </g>\n</svg>",
   "svgNome": "svgUml",
   "topSvg": 210,
-  "n": 15
+  "n": 16
  },
  {
   "modelo": "diagrama",
@@ -224,7 +267,7 @@
   "svg": "<svg width=\"960\" height=\"270\" viewBox=\"0 0 960 270\" xmlns=\"http://www.w3.org/2000/svg\">\n  <g font-family=\"Roboto, sans-serif\">\n    <text x=\"0\" y=\"16\" font-size=\"11\" fill=\"#21049A\" font-weight=\"900\" letter-spacing=\"1.4\">RASCUNHO #59, DIAGRAMA DE COMPONENTES</text>\n    <rect x=\"0\" y=\"34\" width=\"400\" height=\"196\" rx=\"5\" fill=\"none\" stroke=\"#D9D9D9\"/>\n    <rect x=\"28\" y=\"60\" width=\"150\" height=\"48\" rx=\"3\" fill=\"#21049A\"/><text x=\"103\" y=\"90\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Convite público</text>\n    <rect x=\"222\" y=\"60\" width=\"150\" height=\"48\" rx=\"3\" fill=\"#21049A\"/><text x=\"297\" y=\"90\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Painel</text>\n    <rect x=\"125\" y=\"130\" width=\"150\" height=\"44\" rx=\"3\" fill=\"#21049A\"/><text x=\"200\" y=\"157\" font-size=\"13\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">API</text>\n    <rect x=\"125\" y=\"188\" width=\"150\" height=\"30\" rx=\"3\" fill=\"#6B6B78\"/><text x=\"200\" y=\"208\" font-size=\"12\" fill=\"#fff\" font-weight=\"400\" text-anchor=\"middle\">Dados</text>\n    <path d=\"M103 108 L180 130\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/><path d=\"M297 108 L220 130\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/>\n    <path d=\"M200 174 L200 188\" stroke=\"#6B6B78\" stroke-width=\"1.4\"/>\n    <path d=\"M420 130 L520 130\" stroke=\"#E94D1C\" stroke-width=\"2\" marker-end=\"url(#s2)\"/>\n    <text x=\"428\" y=\"120\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"900\">#72</text>\n    <defs><marker id=\"s2\" markerWidth=\"8\" markerHeight=\"8\" refX=\"7\" refY=\"3.5\" orient=\"auto\"><path d=\"M0,0 L7,3.5 L0,7 Z\" fill=\"#E94D1C\"/></marker></defs>\n    <text x=\"560\" y=\"16\" font-size=\"11\" fill=\"#E94D1C\" font-weight=\"900\" letter-spacing=\"1.4\">RASCUNHO #60, DIAGRAMA DE IMPLANTAÇÃO</text>\n    <rect x=\"560\" y=\"34\" width=\"400\" height=\"196\" rx=\"5\" fill=\"none\" stroke=\"#E94D1C\" stroke-width=\"2\"/>\n    <text x=\"580\" y=\"58\" font-size=\"11\" fill=\"#E94D1C\" font-weight=\"900\">&#171;device&#187; host</text>\n    <rect x=\"580\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"636\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"636\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">front</text>\n    <rect x=\"704\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"760\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"760\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">API</text>\n    <rect x=\"828\" y=\"70\" width=\"112\" height=\"52\" rx=\"3\" fill=\"none\" stroke=\"#21049A\" stroke-width=\"1.5\"/><text x=\"884\" y=\"92\" font-size=\"10\" fill=\"#21049A\" font-weight=\"900\" text-anchor=\"middle\">&#171;executionEnvironment&#187;</text><text x=\"884\" y=\"110\" font-size=\"11\" fill=\"#1A1A1E\" font-weight=\"300\" text-anchor=\"middle\">banco</text>\n    <path d=\"M692 96 L704 96\" stroke=\"#E94D1C\" stroke-width=\"1.6\"/><path d=\"M816 96 L828 96\" stroke=\"#E94D1C\" stroke-width=\"1.6\"/>\n    <rect x=\"580\" y=\"146\" width=\"360\" height=\"34\" rx=\"3\" fill=\"#E94D1C\" fill-opacity=\"0.1\" stroke=\"#E94D1C\" stroke-dasharray=\"4 3\"/>\n    <text x=\"760\" y=\"168\" font-size=\"12\" fill=\"#E94D1C\" font-weight=\"400\" text-anchor=\"middle\">rede nomeada, resolução por nome de serviço  ·  #75</text>\n    <text x=\"580\" y=\"206\" font-size=\"12.5\" fill=\"#6B6B78\" font-weight=\"300\">#71 nós  ·  #73 imagem por tag e digest  ·  #74, #76 e #77 são passos de processo</text>\n  </g>\n</svg>",
   "svgNome": "svgDois",
   "topSvg": 214,
-  "n": 16
+  "n": 17
  },
  {
   "modelo": "codigo",
@@ -252,7 +295,7 @@
    "A porta da UML corresponde à porta publicada do container.",
    "As imagens do arquivo são exemplo. A stack é decisão do documento de decisões arquiteturais."
   ],
-  "n": 17
+  "n": 18
  },
  {
   "modelo": "duasColunas",
@@ -272,7 +315,7 @@
    "Onde há separação, o acoplamento continua, agora com latência, falha parcial e ordem de subida."
   ],
   "corB": "#E94D1C",
-  "n": 18
+  "n": 19
  },
  {
   "modelo": "duasColunas",
@@ -290,7 +333,7 @@
    "Só a anfitriã acessa.",
    "Uma pessoa por evento, carga baixa, sem necessidade de réplica."
   ],
-  "n": 19
+  "n": 20
  },
  {
   "modelo": "secao",
@@ -299,7 +342,7 @@
   "cartola": "",
   "titulo": "Vantagens, desvantagens e demonstração",
   "sub": "A demonstração mostra o ambiente e a topologia. A implementação do produto começa em outubro.",
-  "n": 20
+  "n": 21
  },
  {
   "modelo": "terminal",
@@ -323,7 +366,34 @@
   ],
   "captura": "A imagem de fundo que a anfitriã envia ao personalizar o convite e o CSV de restrições alimentares que ela exporta não podem ser perdidos quando o container é removido. A decisão de implantação impõe uma restrição às camadas superiores.",
   "rodapeAlto": 76,
-  "n": 21
+  "n": 22
+ },
+ {
+  "modelo": "cartoes",
+  "bloco": "03 · Vantagens e desvantagens",
+  "cartola": "",
+  "titulo": "Casos de uso na infraestrutura moderna",
+  "colunas": 2,
+  "destacar": 0,
+  "cartoes": [
+   {
+    "t": "Paridade entre ambientes",
+    "d": "A mesma imagem roda na máquina de cada integrante, no teste e na apresentação do produto. É o caso do projeto."
+   },
+   {
+    "t": "Integração e entrega contínuas",
+    "d": "Cada commit constrói uma imagem e roda os testes num ambiente limpo e descartável."
+   },
+   {
+    "t": "Microsserviços",
+    "d": "Cada serviço roda no próprio container e é escalado de forma independente por um orquestrador como o Kubernetes."
+   },
+   {
+    "t": "Escala e densidade",
+    "d": "Réplicas sobem em segundos e dezenas de serviços isolados dividem o mesmo host."
+   }
+  ],
+  "n": 23
  },
  {
   "modelo": "diagrama",
@@ -333,7 +403,7 @@
   "svg": "<svg width=\"1100\" height=\"300\" viewBox=\"0 0 1100 300\" xmlns=\"http://www.w3.org/2000/svg\"><g font-family=\"Roboto, sans-serif\" font-size=\"13\"><text x=\"0\" y=\"14\" fill=\"#21049A\" font-weight=\"900\">MÁQUINA VIRTUAL</text><rect x=\"0\" y=\"206\" width=\"500\" height=\"34\" fill=\"#D9D9D9\"/><rect x=\"0\" y=\"168\" width=\"500\" height=\"36\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><rect x=\"0\" y=\"130\" width=\"500\" height=\"36\" fill=\"#21049A\"/><text x=\"600\" y=\"14\" fill=\"#E94D1C\" font-weight=\"900\">CONTAINER</text><rect x=\"600\" y=\"206\" width=\"500\" height=\"34\" fill=\"#D9D9D9\"/><rect x=\"600\" y=\"168\" width=\"500\" height=\"36\" fill=\"#F2F2F5\" stroke=\"#D9D9D9\"/><rect x=\"600\" y=\"130\" width=\"500\" height=\"36\" fill=\"#21049A\"/></g></svg>",
   "svgNome": "svgVm",
   "legenda": "A CVE-2019-5736 confirmou o risco: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.",
-  "n": 22
+  "n": 24
  },
  {
   "modelo": "tabela",
@@ -369,7 +439,7 @@
     "Acrescenta uma camada de build e de orquestração"
    ]
   ],
-  "n": 23
+  "n": 25
  },
  {
   "modelo": "duasColunas",
@@ -390,7 +460,7 @@
   ],
   "corB": "#E94D1C",
   "tam": 34,
-  "n": 24
+  "n": 26
  },
  {
   "modelo": "duasColunas",
@@ -414,7 +484,7 @@
   ],
   "corB": "#E94D1C",
   "tam": 34,
-  "n": 25
+  "n": 27
  },
  {
   "modelo": "conteudo",
@@ -433,6 +503,6 @@
   ],
   "right": 120,
   "top": 200,
-  "n": 26
+  "n": 28
  }
 ]

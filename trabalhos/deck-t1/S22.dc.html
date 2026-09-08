@@ -26,14 +26,30 @@
 <div class="sl" style="background:#fff">
   <div style="position:absolute; left:72px; top:66px; right:72px">
     <div class="cartola" style="color:#E94D1C"></div>
-    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">Container vs máquina virtual</h2>
+    <h2 class="titulo" style="color:#21049A; font-size:40px; margin-top:14px; max-width:1000px">O que acontece com o dado</h2>
   </div>
-  <div style="position:absolute; left:72px; top:200px; right:72px; display:flex; justify-content:center">
-<svg width="1100" height="300" viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg"><g font-family="Roboto, sans-serif" font-size="13"><text x="0" y="14" fill="#21049A" font-weight="900">MÁQUINA VIRTUAL</text><rect x="0" y="206" width="500" height="34" fill="#D9D9D9"/><rect x="0" y="168" width="500" height="36" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="0" y="130" width="500" height="36" fill="#21049A"/><text x="600" y="14" fill="#E94D1C" font-weight="900">CONTAINER</text><rect x="600" y="206" width="500" height="34" fill="#D9D9D9"/><rect x="600" y="168" width="500" height="36" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="600" y="130" width="500" height="36" fill="#21049A"/></g></svg>
+  <div style="position:absolute; left:72px; top:206px; right:72px; background:#12121A; border-radius:8px; padding:24px 28px; font-family:'Roboto Mono', ui-monospace, Menlo, Consolas, monospace">
+    <div style="display:flex; gap:9px; margin-bottom:18px; align-items:center">
+      <span style="width:34px;height:3px;border-radius:2px;background:#E94D1C"></span>
+      <span style="font-size:11px; letter-spacing:.14em; color:#6B6B78; font-weight:400">TERMINAL</span>
+    </div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose up -d</div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose ps</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">NAME        IMAGE             STATUS</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">front-end   nginx:alpine      Up</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">api         node:22-alpine    Up</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre">db          postgres:16       Up (healthy)</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose exec db psql -U app -c "create table t()"</div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down && docker compose up -d</div>
+    <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># a tabela continua lá, o volume sobreviveu</div>
+    <div style="font-size:15px; line-height:1.75; color:#E4E4EC; white-space:pre"></div>
+    <div style="font-size:15px; line-height:1.75; color:#7FE3A1; white-space:pre">$ docker compose down -v</div>
+    <div style="font-size:15px; line-height:1.75; color:#6B6B78; white-space:pre"># agora o dado some junto com o volume</div>
   </div>
-  <div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:#6B6B78; font-weight:300; line-height:1.5">A CVE-2019-5736 confirmou o risco: o processo de dentro conseguia sobrescrever o binário do runtime. Por isso o documento de decisões arquiteturais precisa registrar que container não dá o mesmo isolamento de uma máquina virtual.</div>
+  <div style="position:absolute; left:72px; bottom:76px; right:72px; font-size:12px; color:#6B6B78; font-weight:400">A imagem de fundo que a anfitriã envia ao personalizar o convite e o CSV de restrições alimentares que ela exporta não podem ser perdidos quando o container é removido. A decisão de implantação impõe uma restrição às camadas superiores.</div>
   <div class="rodape" style="color: #6B6B78">
-    <span>03 · Vantagens e desvantagens</span><span style="font-weight:900; color: #21049A">22</span>
+    <span>03 · Demonstração</span><span style="font-weight:900; color: #21049A">22</span>
   </div>
 </div>
 </x-dc>

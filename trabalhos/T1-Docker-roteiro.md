@@ -100,10 +100,10 @@ na fala e conta nos 25% de relacionar a tecnologia às decisões arquiteturais.
 
 | Bloco | Tema | Min | Slides | Dono |
 |---|---|---|---|---|
-| A | Contexto do projeto e escopo da apresentação | 3 | 3 | Guilherme |
-| B | Definições, arquitetura do Docker e o que o kernel faz | 6 | 7 | Tiago |
-| C | Aplicação no Invite People, do diagrama para o arquivo | 6 | 6 | Gabriel |
-| D | Vantagens, desvantagens, demonstração e considerações finais | 7 | 8 | Andreas, com Tiago na segurança |
+| A | Contexto do projeto e escopo da apresentação | 3 | 1 a 3 | Guilherme |
+| B | Definições, arquitetura do Docker e o que o kernel faz | 6 | 4 a 13 | Tiago |
+| C | Aplicação no Invite People, do diagrama para o arquivo | 6 | 14 a 20 | Gabriel |
+| D | Vantagens, desvantagens, demonstração e considerações finais | 7 | 21 a 28 | Andreas, com Tiago na segurança |
 
 Mais um minuto para as três trocas de apresentador. Total 23, dentro da faixa de 20 a 25.
 
@@ -171,18 +171,24 @@ substituibilidade da Aula 05.
    processo lento, o kernel mata o processo. Limite de CPU é throttling na virada
    de cada período, o que degrada latência de cauda e não a média, e por isso é mais difícil de
    diagnosticar.
-5. A imagem por dentro, com diagrama obrigatório. Camadas somente leitura endereçadas por digest
-   mais a camada de escrita que o container adiciona por cima. overlay2 monta isso com lowerdir,
-   upperdir, workdir e merged. No copy-up, alterar um byte de um arquivo grande copia o arquivo
-   inteiro para a camada de escrita, e é por isso que banco de dados na camada de escrita tem
-   desempenho ruim e precisa de volume. Guardar essa frase, porque o Bloco D volta nela.
+5. Dockerfile, imagem e container, em três cartões com uma amostra de código em cada um. A receita
+   vira imagem no build e a imagem vira container no run. O registry guarda e distribui as imagens,
+   e as da demonstração vêm prontas do Docker Hub, sem build local. O Dockerfile do cartão é o da
+   API que o grupo vai construir mais adiante: base alpine, runtime node 22 e o código por cima. São
+   exatamente as três camadas que aparecem no slide seguinte.
+6. A imagem por dentro, com o diagrama do union filesystem. Dois containers sobre a mesma imagem:
+   as camadas somente leitura existem uma vez no disco e cada container recebe a própria camada
+   gravável. overlay2 monta isso com lowerdir, upperdir, workdir e merged. No copy-on-write, alterar
+   um byte de um arquivo grande copia o arquivo inteiro para a camada gravável, e é por isso que
+   banco de dados na camada gravável tem desempenho ruim e precisa de volume. Guardar essa frase,
+   porque o Bloco D volta nela.
    Whiteout: apagar um arquivo de camada inferior cria uma marcação em vez de apagar. A consequência
    é concreta e vale ligar ao nosso projeto. Um Dockerfile que copia um `.env` e faz `RUN rm` na
    instrução seguinte produz uma imagem em que o segredo continua legível. No nosso caso o segredo
    seria a senha do banco e o segredo de sessão do UC001. Build time e run time são coisas
    diferentes: o que entra na imagem é público, o que entra por variável de ambiente é de execução.
    Essa distinção é justamente o que falta escrever na nossa página Configuração de Ambiente.
-6. A pilha de execução, com diagrama obrigatório. CLI, dockerd, containerd por gRPC, um shim por
+7. A pilha de execução, com diagrama obrigatório. CLI, dockerd, containerd por gRPC, um shim por
    container e o runc. O runc cria os namespaces, configura cgroups, aplica capabilities e seccomp,
    sai sem ficar residente. O shim é pai do container e
    não filho do daemon, e foi esse desenho que fez reiniciar o daemon deixar de matar os containers
@@ -191,7 +197,7 @@ substituibilidade da Aula 05.
    independentes, seccomp-bpf, que bloqueia parte das chamadas
    de sistema, e o LSM por cima. A opção `--privileged` devolve tudo de uma vez e ainda desliga
    seccomp.
-7. OCI como fecho do bloco. Três especificações sob a Linux Foundation desde 2015. Enquadrar no
+8. OCI como fecho do bloco. Três especificações sob a Linux Foundation desde 2015. Enquadrar no
    vocabulário da Aula 03, em que padronização é propriedade de camada e TCP e IP aparecem como
    exemplo. Docker é implementação de um padrão, não o padrão. O runc é trocável por crun, gVisor ou
    Kata, e o engine por Podman. Passagem para o próximo bloco: isso é a substituibilidade por
@@ -271,7 +277,7 @@ autonomia de dados e de ciclo de vida por serviço, o que não é o caso e nem e
 
 ---
 
-Coerência entre os slides 14, 16, 17 e 19, para quem apresentar a parte 3: o desenho em destaque
+Coerência entre os slides 15, 17, 18 e 20, para quem apresentar a parte 3: o desenho em destaque
 no 14 é o de três tiers, o rascunho do 16 tem três nós e o compose do 17 agora tem três serviços,
 front, api e db. O que se replica, no 19 e no 27, é o container da API, por causa do convite público,
 e só se esse caminho for sem estado. Não dizer que três tiers é o que permite escalar. O que permite
@@ -297,14 +303,18 @@ para o ADR.
    Amarrar em regra que já está escrita, para não ficar genérico. A imagem de fundo que a anfitriã
    envia no UC003 e o CSV gerado no UC008 não podem morrer junto com o container, ou seja, a decisão
    de implantação volta como restrição de projeto para as camadas de cima.
-3. O caso do Kubernetes 1.24 deixou de ter slide próprio. A frase está no fim do slide da OCI, na
+3. Casos de uso na infraestrutura moderna, logo depois da demonstração. Quatro cartões: paridade
+   entre ambientes, integração e entrega contínuas, microsserviços, escala e densidade. Só o
+   primeiro está em destaque, porque é o único que o projeto usa. Os outros três são ditos em uma
+   frase cada, para situar o Docker fora do nosso caso sem prometer orquestrador nem pipeline.
+4. O caso do Kubernetes 1.24 deixou de ter slide próprio. A frase está no fim do slide da OCI, na
    parte 2: em 2022 o Kubernetes removeu o adaptador embutido que falava com o Docker Engine e
    nenhuma imagem parou de funcionar, porque o formato é o da OCI. Quem apresentar a parte 2 diz
    isso ali. No bloco de vantagens e desvantagens não precisa voltar ao assunto.
-4. As vantagens não têm slide próprio, elas estão no slide de ganho e custo, no fim do bloco, com o
+5. As vantagens não têm slide próprio, elas estão no slide de ganho e custo, no fim do bloco, com o
    quarteto que ele credita às camadas de um lado. Aqui basta anunciar que o balanço vem no fim e
    seguir para as limitações, senão a mesma lista é dita duas vezes.
-5. As limitações ficaram no slide de vantagens e limitações, só as que atingem o protótipo:
+6. As limitações ficaram no slide de vantagens e limitações, só as que atingem o protótipo:
    superfície de ataque nova, I/O mais lento no Windows, banco com estado exigindo backup e
    upgrade, e a camada a mais de build e orquestração para o time aprender. Logo antes vem a
    figura das duas pilhas, container contra máquina virtual. Apontar o SO convidado repetido três
@@ -315,7 +325,7 @@ para o ADR.
    Docker Desktop é pago para empresa acima de certo porte. Nenhuma delas atinge quatro notebooks
    sem servidor, por isso não estão no slide.
    Nenhum número de desempenho sai daqui sem medição própria.
-6. Container e máquina virtual pela superfície de ataque, apresentado pelo Tiago. A VM tem kernel
+7. Container e máquina virtual pela superfície de ataque, apresentado pelo Tiago. A VM tem kernel
    próprio e a fronteira é imposta em hardware. O container compartilha o kernel do host e a
    fronteira dele é a interface de chamadas de sistema, mais de trezentas, mais /proc, /sys e ioctl.
    Uma CVE só, a do runc de 2019, em que o processo de dentro sobrescrevia o binário do runtime pelo
@@ -324,7 +334,7 @@ para o ADR.
    confiam uns nos outros existem gVisor e Kata.
    Quem apresentar precisa explicar o mecanismo da CVE sem consultar nada. Se não conseguir no
    ensaio, o slide sai.
-7. Alternativas e quando não compensa. Quatro linhas: README com instalação nativa, custo zero e
+8. Alternativas e quando não compensa. Quatro linhas: README com instalação nativa, custo zero e
    quebra na primeira divergência de versão. VM compartilhada, que isola de verdade mas é pesada e
    difícil de versionar. Podman, mesmo modelo sem daemon root, com menos material e menos gente do
    time conhecendo. E o compose, escolhido, com o custo já declarado.
@@ -339,7 +349,7 @@ para o ADR.
    Kubernetes entraria com múltiplos nós, e isso é tema de outro grupo.
    Fecho do slide, sem frase de efeito: o que o Compose acrescenta é uma camada de build e de
    orquestração, e o grupo aceita esse custo pelo ambiente igual para os quatro.
-8. Ganho e custo, em duas colunas, com o quarteto da Aula 03 e os quatro atributos das Questões
+9. Ganho e custo, em duas colunas, com o quarteto da Aula 03 e os quatro atributos das Questões
    Norteadoras nomeados. É aqui que as vantagens são ditas, uma vez só. Manutenibilidade ganha, porque o ambiente passa a ser
    versionado junto com o código. Escalabilidade ganha de forma seletiva, e isso impõe que a
    aplicação seja mesmo sem estado. Segurança ganha isolamento e herda uma superfície nova, imagem
@@ -370,7 +380,7 @@ o artefato, container é o ambiente de execução. A decisão de arquitetura é 
 separados o sistema vai rodar.
 
 A promessa do slide 3, um arquivo que qualquer um dos quatro sobe com um comando, foi cumprida pelo
-compose do slide 17 e pela demonstração do 21. Se quiser retomar, é a esses dois que se aponta.
+compose do slide 18 e pela demonstração do 22. Se quiser retomar, é a esses dois que se aponta.
 
 As pendências saíram da tela, mas ficam na fala: os seis itens de modelagem seguem em aberto e o
 documento de decisões arquiteturais, item #63, ainda não foi escrito. Dizer isso antes de abrir para
@@ -407,7 +417,7 @@ não entram na ordem de corte, porque a demo sozinha vale 10% e não tem substit
 - [ ] Definir dono do compose e commitar antes de domingo (#84)
 - [ ] Capturar o terminal com `ps` e `lsns` numa máquina Linux ou na distro docker-desktop
 - [ ] Desenhar os rascunhos do #59 e do #60, mesmo grosseiros, no draw.io
-- [ ] Desenhar os dois diagramas do Bloco B, pilha de execução e camadas de imagem
+- [x] Desenhar os dois diagramas do Bloco B, pilha de execução e union filesystem
 - [ ] Baixar as imagens na véspera nas máquinas que vão apresentar
 - [ ] Gravar vídeo de 90 segundos da demo como plano B, e guardar de quatro a seis capturas
       numeradas no fim do deck como plano C

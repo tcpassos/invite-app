@@ -103,6 +103,16 @@ def linha(sl, x1, y1, x2, y2, cor=AZUL, largura=2):
     c.line.color.rgb = cor; c.line.width = Pt(largura)
     return c
 
+def seta(sl, x1, y1, x2, y2, cor=LARANJA, largura=2):
+    """Linha com ponta de flecha no destino."""
+    from pptx.oxml.ns import qn
+    from lxml import etree
+    c = linha(sl, x1, y1, x2, y2, cor, largura)
+    ln = c.line._get_or_add_ln()
+    fim = etree.SubElement(ln, qn('a:tailEnd'))
+    fim.set('type', 'triangle'); fim.set('w', 'med'); fim.set('len', 'med')
+    return c
+
 def rotulo(sl, x, y, w, texto, *, tam=12, cor=CINZA, peso=400, alinhar=PP_ALIGN.LEFT, fonte=FONTE, maiusc=False, espacar=None):
     tb, tf = caixa(sl, x, y, w, tam * 1.6, alinhar=alinhar)
     escrever(tf, texto, tam=tam, cor=cor, peso=peso, entre=1.2, fonte=fonte, maiusc=maiusc, espacar=espacar)
@@ -281,27 +291,33 @@ def nota_lateral(sl, x, y, w, titulo, texto):
 
 # ---------- diagramas nativos ----------
 
-def dg_camadas(sl, x, y):
-    dados = [(216, '#F0F0F5', 'camada base (debian, alpine)', GRAFITE, False),
-             (164, '#F0F0F5', 'dependências', GRAFITE, False),
-             (112, '#F0F0F5', 'código da aplicação', GRAFITE, False)]
-    rotulo(sl, x, y - 4, 460, 'CAMADAS DE UMA IMAGEM E DO CONTAINER', tam=11, cor=CINZA, peso=900, espacar=1.6)
-    for topo, _, txt, cor, _ in dados:
-        retangulo(sl, x, y + topo - 40, 360, 46, preencher=QUASE, borda=CINZA_CLARO, raio=4)
-        rotulo(sl, x + 20, y + topo - 40 + 14, 320, txt, tam=14, cor=cor, peso=300)
-    retangulo(sl, x + 372, y + 72, 3, 150, preencher=CINZA_CLARO)
-    tb, tf = caixa(sl, x - 12, y + 236, 384, 40)
-    escrever(tf, 'as três de baixo são somente leitura, endereçadas por digest', tam=13, cor=CINZA, peso=300, entre=1.4)
-    tf.paragraphs[0].alignment = PP_ALIGN.CENTER
-    retangulo(sl, x, y + 14, 360, 52, preencher=RGBColor(0xFD, 0xEA, 0xE3), borda=LARANJA, raio=4, tracejado=True)
-    rotulo(sl, x + 20, y + 24, 320, 'camada de escrita', tam=14, cor=LARANJA, peso=900)
-    rotulo(sl, x + 20, y + 43, 320, 'criada pelo container, removida com ele', tam=12, cor=CINZA, peso=300)
-    linha(sl, x + 420, y + 8, x + 420, y + 234, CINZA_CLARO, 1)
-    for dy, tit, corpo in [(56, 'copy-up', 'alterar um byte de um arquivo grande copia o arquivo inteiro para cima'),
-                           (144, 'whiteout', 'apagar cria uma marcação, o arquivo continua na camada de baixo')]:
-        rotulo(sl, x + 462, y + dy, 380, tit, tam=16, cor=AZUL, peso=900)
-        tb, tf = caixa(sl, x + 462, y + dy + 28, 400, 70)
-        escrever(tf, corpo, tam=15, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.4)
+def dg_union(sl, x, y):
+    """Dois containers sobre a mesma imagem: as camadas somente leitura existem uma vez no disco,
+    cada container recebe a propria camada gravavel por cima."""
+    LEVE = RGBColor(0xFD, 0xEA, 0xE3)
+    ESC = RGBColor(0x3A, 0x3A, 0x44)
+    LW = 230
+    for k, x0 in enumerate((x, x + 262)):
+        rotulo(sl, x0, y, LW, 'Container ' + 'AB'[k], tam=13, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
+        retangulo(sl, x0, y + 24, LW, 48, preencher=LEVE, borda=LARANJA, raio=4, tracejado=True)
+        rotulo(sl, x0 + 14, y + 31, LW - 28, 'camada gravável', tam=13, cor=LARANJA, peso=900)
+        rotulo(sl, x0 + 14, y + 50, LW - 28, 'só deste container', tam=11, cor=CINZA, peso=300)
+        linha(sl, x0 + LW / 2, y + 72, x0 + LW / 2, y + 92, CINZA_CLARO, 1.5)
+    for i, txt in enumerate(('código da API', 'runtime: node 22', 'base: alpine')):
+        yy = y + 92 + i * 46
+        retangulo(sl, x, yy, 492, 40, preencher=QUASE, borda=CINZA_CLARO, raio=4)
+        rotulo(sl, x + 16, yy + 11, 460, txt, tam=13, cor=GRAFITE, peso=300)
+    rotulo(sl, x, y + 236, 492, 'imagem: camadas somente leitura, guardadas uma vez no disco', tam=12, cor=CINZA, peso=300, alinhar=PP_ALIGN.CENTER)
+    linha(sl, x + 540, y + 4, x + 540, y + 290, CINZA_CLARO, 1)
+    textos = [('Somente leitura', 'A imagem é uma pilha de camadas que não muda depois de construída.'),
+              ('Compartilhadas', 'Camadas iguais existem uma vez no disco e servem a todos os containers criados da imagem.'),
+              ('Copy-on-write', 'Cada container tem uma camada gravável própria. Alterar um arquivo o copia inteiro para essa camada.'),
+              ('Whiteout', 'Apagar um arquivo cria uma marcação na camada gravável. O arquivo continua na camada de baixo.')]
+    for i, (tit, corpo) in enumerate(textos):
+        dy = y + 2 + i * 72
+        rotulo(sl, x + 582, dy, 400, tit, tam=15, cor=AZUL, peso=900)
+        tb, tf = caixa(sl, x + 582, dy + 24, 500, 50)
+        escrever(tf, corpo, tam=14, cor=ESC, peso=300, entre=1.4)
 
 def dg_pilha(sl, x, y):
     caixas = [('docker CLI', 'cliente', AZUL), ('dockerd', 'daemon, roda como root', AZUL),
@@ -458,7 +474,7 @@ def dg_antes(sl, x, y):
           ['# docker-compose.yml', 'services:', '  front-end:', '    image: nginx:alpine', '  api:', '    image: node:22-alpine', '  db:', '    image: postgres:16'],
           'Um arquivo que descreve o ambiente inteiro e que qualquer um dos quatro sobe com um comando. Esse arquivo é a base do diagrama de implantação.')
 
-DIAGRAMAS = {'svgCamadas': dg_camadas, 'svgPilha': dg_pilha, 'svgUml': dg_uml, 'svgVm': dg_vm, 'svgAntes': dg_antes,
+DIAGRAMAS = {'svgUnion': dg_union, 'svgPilha': dg_pilha, 'svgUml': dg_uml, 'svgVm': dg_vm, 'svgAntes': dg_antes,
              'svgTiers': dg_tiers, 'svgDois': dg_dois}
 
 # ---------- modelos ----------
@@ -677,10 +693,62 @@ def m_linha_tempo(sl, s):
     escrever(tf2, s['remate'], tam=19, cor=GRAFITE, peso=300, entre=1.45)
     rodape(sl, s['n'], s['bloco'])
 
+def m_cartoes(sl, s):
+    """Grade de cartoes: rotulo pequeno, titulo e um paragrafo curto em cada um.
+    Com 'setas', uma flecha rotulada liga cada cartao ao seguinte. 'destacar' marca um deles."""
+    cabeca(sl, s)
+    cards = s.get('cartoes') or []
+    cols = s.get('colunas', 2)
+    setas = s.get('setas') or []
+    gap = 72 if setas else 24
+    n_lin = -(-len(cards) // cols)
+    larg = (1136 - gap * (cols - 1)) / cols
+    tam_corpo = 16 if cols <= 2 else 15
+    def precisa(c):
+        h = 84 + altura_estimada(c['d'], tam_corpo, larg - 48) * 1.1 + 24
+        if c.get('codigo'):
+            h += 12 + 16 + len(c['codigo']) * 22
+        return h
+    alt_c = max([224 if n_lin == 1 else 180] + [precisa(c) for c in cards])
+    # legenda ancorada acima do rodape, como no modelo de diagrama
+    tam_leg, alt_leg, topo_leg = 17, 0, 0
+    if s.get('legenda'):
+        while tam_leg > 14 and altura_estimada(s['legenda'], tam_leg, 1116) * 1.16 > 96:
+            tam_leg -= 1
+        alt_leg = altura_estimada(s['legenda'], tam_leg, 1116) * 1.16
+        topo_leg = 646 - alt_leg
+    fundo_util = (topo_leg - 24) if s.get('legenda') else 640
+    topo = centrar(n_lin * alt_c + (n_lin - 1) * 24, 176, fundo_util)
+    ESC = RGBColor(0x3A, 0x3A, 0x44)
+    dest = s.get('destacar', -1)
+    for k, c in enumerate(cards):
+        cx = 72 + (k % cols) * (larg + gap)
+        cy = topo + (k // cols) * (alt_c + 24)
+        esc = k == dest
+        retangulo(sl, cx, cy, larg, alt_c, preencher=QUASE, borda=LARANJA if esc else CINZA_CLARO, largura=1.5 if esc else 1, raio=8)
+        rotulo(sl, cx + 24, cy + 20, larg - 48, c.get('k') or f'{k + 1:02d}', tam=11, cor=LARANJA, peso=900, maiusc=True, espacar=1.4)
+        rotulo(sl, cx + 24, cy + 44, larg - 48, c['t'], tam=20, cor=LARANJA if esc else AZUL, peso=900)
+        tb, tf = caixa(sl, cx + 24, cy + 84, larg - 48, alt_c - 100)
+        escrever(tf, c['d'], tam=tam_corpo, cor=ESC, peso=300, entre=1.45)
+        if c.get('codigo'):
+            cy0 = cy + 84 + altura_estimada(c['d'], tam_corpo, larg - 48) * 1.1 + 12
+            retangulo(sl, cx + 16, cy0, larg - 32, 16 + len(c['codigo']) * 22, preencher=RGBColor(0xE6, 0xE6, 0xEC), raio=4)
+            for i, l in enumerate(c['codigo']):
+                rotulo(sl, cx + 28, cy0 + 8 + i * 22, larg - 56, l, tam=13, cor=GRAFITE, fonte=MONO)
+        if setas and (k % cols) < cols - 1 and k < len(cards) - 1:
+            sx, ym = cx + larg, cy + alt_c / 2
+            seta(sl, sx + 12, ym, sx + gap - 12, ym, LARANJA, 2)
+            rotulo(sl, sx, ym - 30, gap, setas[k] if k < len(setas) else '', tam=12, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER)
+    if s.get('legenda'):
+        retangulo(sl, 72, topo_leg + 2, 3, alt_leg - 4, preencher=LARANJA)
+        tb, tf = caixa(sl, 92, topo_leg, 1116, alt_leg + 10)
+        escrever(tf, s['legenda'], tam=tam_leg, cor=ESC, peso=300, entre=1.5)
+    rodape(sl, s['n'], s['bloco'])
+
 MODELOS = {'capa': m_capa, 'secao': m_secao, 'citacao': m_citacao, 'impacto': m_impacto,
            'conteudo': m_conteudo, 'duasColunas': m_duas, 'terminal': m_terminal,
            'codigo': m_codigo, 'diagrama': m_diagrama, 'tabela': m_tabela,
-           'agenda': m_agenda, 'linhaTempo': m_linha_tempo}
+           'agenda': m_agenda, 'linhaTempo': m_linha_tempo, 'cartoes': m_cartoes}
 
 # ---------- montagem ----------
 

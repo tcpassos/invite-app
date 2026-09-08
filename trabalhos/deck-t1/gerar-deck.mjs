@@ -224,9 +224,25 @@ ${s.itens.map((i, k) => `    <div style="display:grid; grid-template-columns: 52
 ${rodape(s.n, s.bloco)}
 </div>`, '#fff')
 
-const modelos = { capa, secao, citacao, impacto, conteudo, duasColunas, terminal, codigo, diagrama, linhaTempo, tabela, agenda }
+const cartoes = (s) => base(`<div class="sl" style="background:#fff">
+${cabecalho(s)}
+  <div style="position:absolute; left:72px; right:72px; top:${s.top || 200}px; display:grid; grid-template-columns: repeat(${s.colunas || 2}, minmax(0, 1fr)); gap:${s.setas ? 72 : 24}px">
+${(s.cartoes || []).map((c, k) => `    <div style="background:#F2F2F5; border:1px solid ${k === s.destacar ? LARANJA : CINZA_CLARO}; border-radius:8px; padding:22px 24px">
+      <div class="cartola" style="color:${LARANJA}; font-size:11px">${c.k || String(k + 1).padStart(2, '0')}</div>
+      <div style="font-weight:900; color:${k === s.destacar ? LARANJA : AZUL}; font-size:20px; margin:8px 0 8px">${c.t}</div>
+      <p class="corpo" style="font-size:15px; color:#3A3A44; margin:0">${c.d}</p>
+      ${c.codigo ? `<pre style="margin:12px 0 0; background:#E6E6EC; border-radius:4px; padding:8px 12px; font-family:'Roboto Mono', monospace; font-size:13px; line-height:1.7; color:${GRAFITE}">${c.codigo.join('\n')}</pre>` : ''}
+    </div>`).join('\n')}
+  </div>
+  ${s.legenda ? `<div style="position:absolute; left:72px; right:72px; bottom:80px; font-size:16px; color:${CINZA}; font-weight:300; line-height:1.5">${s.legenda}</div>` : ''}
+${rodape(s.n, s.bloco)}
+</div>`, '#fff')
+
+const modelos = { capa, secao, citacao, impacto, conteudo, duasColunas, terminal, codigo, diagrama, linhaTempo, tabela, agenda, cartoes }
 
 // ---------- svgs ----------
+
+const svgUnion = `<svg width="880" height="290" viewBox="0 0 880 290" xmlns="http://www.w3.org/2000/svg"><g font-family="Roboto, sans-serif" font-size="13"><text x="115" y="14" text-anchor="middle" fill="#21049A" font-weight="900">Container A</text><text x="377" y="14" text-anchor="middle" fill="#21049A" font-weight="900">Container B</text><rect x="0" y="24" width="230" height="48" rx="4" fill="#FDEAE3" stroke="#E94D1C" stroke-dasharray="4 4"/><rect x="262" y="24" width="230" height="48" rx="4" fill="#FDEAE3" stroke="#E94D1C" stroke-dasharray="4 4"/><text x="14" y="44" fill="#E94D1C" font-weight="900">camada gravável</text><text x="276" y="44" fill="#E94D1C" font-weight="900">camada gravável</text><line x1="115" y1="72" x2="115" y2="92" stroke="#D9D9D9"/><line x1="377" y1="72" x2="377" y2="92" stroke="#D9D9D9"/><rect x="0" y="92" width="492" height="40" rx="4" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="0" y="138" width="492" height="40" rx="4" fill="#F2F2F5" stroke="#D9D9D9"/><rect x="0" y="184" width="492" height="40" rx="4" fill="#F2F2F5" stroke="#D9D9D9"/><text x="16" y="116" fill="#1A1A1E">código da API</text><text x="16" y="162" fill="#1A1A1E">runtime: node 22</text><text x="16" y="208" fill="#1A1A1E">base: alpine</text><text x="246" y="250" text-anchor="middle" fill="#6B6B78" font-size="12">imagem: camadas somente leitura, guardadas uma vez no disco</text><line x1="540" y1="4" x2="540" y2="290" stroke="#D9D9D9"/><text x="582" y="16" fill="#21049A" font-weight="900" font-size="15">Somente leitura</text><text x="582" y="88" fill="#21049A" font-weight="900" font-size="15">Compartilhadas</text><text x="582" y="160" fill="#21049A" font-weight="900" font-size="15">Copy-on-write</text><text x="582" y="232" fill="#21049A" font-weight="900" font-size="15">Whiteout</text></g></svg>`
 
 const svgCamadas = `<svg width="880" height="290" viewBox="0 0 880 290" xmlns="http://www.w3.org/2000/svg">
   <g font-family="Roboto, sans-serif">
@@ -486,13 +502,30 @@ add('duasColunas', {
   ],
 })
 
+add('cartoes', {
+  bloco: '01 · Arquitetura',
+  cartola: '',
+  titulo: 'Dockerfile, imagem e container',
+  colunas: 3,
+  setas: ['build', 'run'],
+  cartoes: [
+    { k: 'Receita', t: 'Dockerfile', d: 'Arquivo de texto com a imagem base, as dependências e o comando de inicialização.',
+      codigo: ['FROM node:22-alpine', 'COPY . /app', 'CMD ["node", "/app/api.js"]'] },
+    { k: 'Artefato', t: 'Imagem', d: 'Resultado do build. Pacote em camadas, imutável, publicado num registry.',
+      codigo: ['$ docker build -t api:1.0 .', 'api:1.0  sha256:9f2c4e…'] },
+    { k: 'Execução', t: 'Container', d: 'Resultado do run. Processo criado a partir da imagem, com uma camada gravável própria.',
+      codigo: ['$ docker run -p 3000:3000 api:1.0', 'PID 1  node /app/api.js'] },
+  ],
+  legenda: 'Um registry, como o Docker Hub, guarda e distribui as imagens. As imagens da demonstração vêm de lá prontas, sem build local.',
+})
+
 add('diagrama', {
   bloco: '01 · Arquitetura',
   cartola: '',
-  titulo: 'As camadas de uma imagem',
-  svg: svgCamadas,
-  svgNome: 'svgCamadas',
-  legenda: 'A imagem é construída a partir de um Dockerfile e distribuída por um registry. Cada instrução gera uma camada. Um Dockerfile que copia um .env e o apaga na instrução seguinte deixa o segredo legível na camada anterior. No nosso caso, a senha do banco e o segredo de sessão do anfitrião.',
+  titulo: 'Imagens em camadas e union filesystem',
+  svg: svgUnion,
+  svgNome: 'svgUnion',
+  legenda: 'Cada instrução do Dockerfile gera uma camada. Um Dockerfile que copia um .env e o apaga na instrução seguinte deixa o segredo legível na camada anterior. No nosso caso, a senha do banco e o segredo de sessão do anfitrião.',
   topSvg: 196,
 })
 
@@ -644,6 +677,20 @@ add('terminal', {
   rodapeAlto: 76,
 })
 
+add('cartoes', {
+  bloco: '03 · Vantagens e desvantagens',
+  cartola: '',
+  titulo: 'Casos de uso na infraestrutura moderna',
+  colunas: 2,
+  destacar: 0,
+  cartoes: [
+    { t: 'Paridade entre ambientes', d: 'A mesma imagem roda na máquina de cada integrante, no teste e na apresentação do produto. É o caso do projeto.' },
+    { t: 'Integração e entrega contínuas', d: 'Cada commit constrói uma imagem e roda os testes num ambiente limpo e descartável.' },
+    { t: 'Microsserviços', d: 'Cada serviço roda no próprio container e é escalado de forma independente por um orquestrador como o Kubernetes.' },
+    { t: 'Escala e densidade', d: 'Réplicas sobem em segundos e dezenas de serviços isolados dividem o mesmo host.' },
+  ],
+})
+
 add('diagrama', {
   bloco: '03 · Vantagens e desvantagens',
   cartola: '',
@@ -733,9 +780,9 @@ add('conteudo', {
 
 const paginas = [
   { id: 'p-a', nome: 'Capa e Bloco A', ate: 3 },
-  { id: 'p-b', nome: 'Bloco B', ate: 12 },
-  { id: 'p-c', nome: 'Bloco C', ate: 19 },
-  { id: 'p-d', nome: 'Bloco D', ate: 25 },
+  { id: 'p-b', nome: 'Bloco B', ate: 13 },
+  { id: 'p-c', nome: 'Bloco C', ate: 20 },
+  { id: 'p-d', nome: 'Bloco D', ate: 27 },
   { id: 'p-f', nome: 'Fecho', ate: 99 },
 ]
 const paginaDe = (n) => paginas.find((p) => n <= p.ate).id
