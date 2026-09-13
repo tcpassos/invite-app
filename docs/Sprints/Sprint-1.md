@@ -31,7 +31,7 @@ A especificação feita aqui virou o backlog do produto, que alimenta as próxim
 | #39 Painel e consolidação | #50, #51 |
 
 ## Scrum Master
-- _[preencher]_
+- Tiago Passos
 
 ## Principais Artefatos
 - [Personas](Sprint-1/Personas.md)

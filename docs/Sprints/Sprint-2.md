@@ -53,7 +53,7 @@ O `docker-compose` montado para a demonstração deve ficar como artefato do pro
 Uma ordem que evita retrabalho: o #58 define as camadas, o #59 detalha os componentes dentro delas, e o #60 aloca esses componentes nos nós. O #61 e o #62 podem correr em paralelo, porque saem dos casos de uso e não dependem dos componentes. O #63 vai sendo escrito conforme as decisões aparecem, não no fim.
 
 ## Scrum Master
-- _[preencher]_
+- Tiago Passos
 
 ## Principais Artefatos
 - Arquitetura em Camadas

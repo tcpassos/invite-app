@@ -29,7 +29,7 @@
 
 # Papéis e Responsabilidades
 - **Product Owner:** professor Kleinner Silva Farias de Oliveira. Define e prioriza o que entra em cada sprint e valida as entregas na Revisão. Não recebe itens do backlog nem tarefas atribuídas no Boards.
-- **Scrum Master:** _[preencher, pode rodar por sprint]_
+- **Scrum Master:** Tiago Passos.
 - **Time de Desenvolvimento:** Tiago Passos, Guilherme Toebe dos Santos, Andreas Grings e Gabriel Tomasi de Melo.
 - Tiago Passos tende à organização e à arquitetura do projeto, atuando também como desenvolvedor. Ver [Tiago Passos](Team-Charter/Tiago-Passos.md).
 - _[distribuir as demais responsabilidades: front-end, back-end, banco de dados, testes e documentação]_
