@@ -2,33 +2,18 @@
 
 Notação UML: fronteira do sistema, atores (Anfitrião, Convidado), casos de uso (mesmos nomes da [Especificação](Especificação-de-Casos-de-Uso.md)) e relações `<<include>>` e `<<extend>>`.
 
-Relações representadas:
-- UC002 `<<include>>` UC003: ao criar o convite, o fluxo abre a personalização.
-- UC005 `<<extend>>` UC006: registrar a observação alimentar é uma extensão opcional da confirmação de presença.
+![Diagrama de Casos de Uso](/.attachments/diagrama-casos-de-uso.png)
 
+## Relações representadas
+- **UC002 `<<include>>` UC003:** ao criar o convite, o fluxo sempre abre a personalização, então UC003 é parte obrigatória de UC002.
+- **UC006 `<<extend>>` UC005:** registrar a observação alimentar é uma extensão opcional da confirmação de presença. A seta parte da extensão para o caso base, que é a direção correta em UML.
 
-```mermaid
-graph LR
-  Anfitriao([Anfitrião])
-  Convidado([Convidado])
-  subgraph Sistema[App de Convites Virtuais]
-    UC001[UC001 Autenticar anfitrião]
-    UC002[UC002 Criar convite]
-    UC003[UC003 Personalizar visual]
-    UC004[UC004 Compartilhar convite]
-    UC005[UC005 Confirmar presença]
-    UC006[UC006 Registrar observação alimentar]
-    UC007[UC007 Ver lista de presença]
-    UC008[UC008 Consolidar e exportar restrições]
-  end
-  Anfitriao --- UC001
-  Anfitriao --- UC002
-  Anfitriao --- UC003
-  Anfitriao --- UC004
-  Anfitriao --- UC007
-  Anfitriao --- UC008
-  Convidado --- UC005
-  Convidado --- UC006
-  UC002 -. «include» .-> UC003
-  UC006 -. «extend» .-> UC005
-```
+## Sobre as associações de ator
+O Anfitrião se associa a UC001, UC002, UC004, UC007 e UC008. O Convidado se associa a UC005.
+
+UC003 e UC006 não recebem associação direta de ator de propósito. UC003 é sempre incluído por UC002, e UC006 estende UC005, então em ambos os casos o ator chega até eles pelo caso de uso base. Ligar o ator direto a um caso incluído ou extensor duplicaria a relação.
+
+## Fonte do diagrama
+O diagrama é gerado a partir de [`diagrama-casos-de-uso.puml`](/.attachments/diagrama-casos-de-uso.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
+
+    docker run --rm -v "<caminho de docs/.attachments>:/data" plantuml/plantuml -tpng /data/diagrama-casos-de-uso.puml
