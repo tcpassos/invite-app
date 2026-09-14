@@ -22,6 +22,7 @@ Como um anfitrião, eu quero criar um convite com os dados do evento, de modo qu
 Critérios de aceitação:
 - Informo nome, data, hora e local.
 - O sistema não deixa salvar com data no passado ou campo obrigatório em branco.
+- Opcionalmente defino um teto de pessoas para o evento.
 - O convite fica salvo como rascunho.
 
 ### H03
@@ -60,17 +61,19 @@ Critérios de aceitação:
 - Respondo sim, não ou talvez.
 - Não preciso de login nem de instalar app.
 - Vejo uma confirmação depois de enviar.
+- Recebo um link pessoal para alterar minha resposta depois.
 
 ### H08
 Como um convidado, eu quero informar quantas pessoas eu levo, de modo que o anfitrião saiba o total certo.
 Critérios de aceitação:
 - Informo o número de acompanhantes ao responder sim ou talvez.
-- O sistema respeita o limite definido pelo anfitrião, quando houver.
+- O sistema respeita o limite de acompanhantes definido pelo anfitrião, quando houver.
+- Se o evento tiver teto de pessoas e ele já estiver atingido, o sistema me informa que está lotado.
 
 ### H09
 Como um convidado, eu quero alterar minha resposta depois, de modo que eu ajuste caso meus planos mudem.
 Critérios de aceitação:
-- Reabro o mesmo link e mudo a resposta enquanto o evento não ocorreu.
+- Reabro o meu link pessoal e mudo a resposta enquanto o evento não ocorreu.
 - O painel do anfitrião reflete a mudança.
 
 ## Épico 5: Observações alimentares
@@ -85,10 +88,11 @@ Critérios de aceitação:
 ## Épico 6: Painel e consolidação
 
 ### H11
-Como um anfitrião, eu quero ver a lista de presença em tempo real, de modo que eu saiba quantos vão comparecer.
+Como um anfitrião, eu quero acompanhar a lista de presença atualizada, de modo que eu saiba quantos vão comparecer.
 Critérios de aceitação:
-- Vejo os confirmados, os pendentes e os que recusaram.
+- Vejo os confirmados, os que responderam talvez e os que recusaram.
 - Vejo o total de pessoas somando os acompanhantes.
+- O painel se atualiza sozinho enquanto fica aberto, sem precisar recarregar a página.
 
 ### H12
 Como um anfitrião, eu quero uma consolidação das restrições alimentares, de modo que eu repasse ao buffet sem retrabalho.
