@@ -17,5 +17,12 @@ Status possíveis: **Proposta**, **Aceita**, **Substituída** e **Descartada**.
 | [0001](Decisões-Arquiteturais/0001-Estilo-arquitetural.md) | MVC no front-end e três camadas no back-end | Aceita |
 | [0002](Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) | Três tiers em containers separados, orquestrados por compose | Aceita |
 | [0003](Decisões-Arquiteturais/0003-Ambiente-de-execução.md) | Execução apenas local durante o desenvolvimento | Aceita |
+| [0004](Decisões-Arquiteturais/0004-Stack-de-implementação.md) | Next.js no front, NestJS na API e PostgreSQL no banco | Aceita |
+| [0005](Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) | Token CSPRNG de 128 bits em base32, separado da chave primária | Aceita |
+| [0006](Decisões-Arquiteturais/0006-Identidade-do-convidado.md) | Link único por convite, identidade criada na resposta | Aceita |
+| [0007](Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) | Consulta periódica em vez de Server-Sent Events | Aceita |
+| [0008](Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) | Teto de capacidade, limite de taxa e tratamento do endpoint aberto | Aceita |
 
-Decisões ainda em aberto, que viram ADR quando fechadas: a stack de implementação e a forma do identificador do link do convite.
+As decisões de 0004 a 0008 foram confrontadas com um levantamento de 19 plataformas equivalentes de convite e RSVP. O relatório fica em `pesquisa-stack-benchmark.md`, no repositório do GitHub.
+
+Ainda em aberto, e previstas como ADR: onde a imagem de fundo enviada pelo anfitrião é armazenada, a autenticação do anfitrião, o envio de e-mail com recuperação de senha, e a observabilidade entre os tiers.

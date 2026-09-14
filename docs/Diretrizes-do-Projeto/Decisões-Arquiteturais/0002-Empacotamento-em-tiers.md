@@ -17,7 +17,7 @@ O time ganhou familiaridade prática com Docker e compose ao preparar o T1, e j�
 
 | Tier | Conteúdo |
 |---|---|
-| Front | Aplicação de interface servida estaticamente |
+| Front | Servidor de renderização (processo Node) e ativos estáticos |
 | API | As três camadas lógicas do back-end na mesma imagem |
 | Banco | Banco de dados com volume nomeado para persistência |
 
@@ -36,6 +36,9 @@ A comunicação entre eles acontece por rede nomeada do compose, com resolução
 - Exige `HEALTHCHECK` com `condition: service_healthy`, senão a API sobe antes do banco estar pronto.
 - O compose é de host único. Se em algum momento o projeto precisar de mais de uma máquina, esta decisão precisa ser revista.
 - Três containers custam mais memória na máquina de cada integrante do que um processo único.
+- **Existem dois saltos de rede no caminho do convite público**, e não um. O navegador chama o tier Front, que renderiza no servidor e chama a API pela rede do compose. Com a camada de Apresentação partida entre dois containers, um erro passa a ter dois lados e nada correlaciona os dois sozinho.
+
+> **Correção de 13/09/2026.** A tabela acima dizia que o tier Front era "aplicação de interface servida estaticamente". Isso estava errado: com a stack do [ADR-0004](0004-Stack-de-implementação.md), o convite público é renderizado no servidor e o container roda um processo Node vivo, não um servidor de arquivos. A decisão de três tiers não mudou, apenas a descrição de um deles estava imprecisa, e por isso o registro foi corrigido em vez de substituído.
 
 ## Relacionados
 
