@@ -28,8 +28,8 @@ Critérios de aceitação:
 ### H03
 Como um anfitrião, eu quero personalizar o visual do convite, de modo que ele combine com o clima da festa.
 Critérios de aceitação:
-- Escolho um tema pronto.
-- Ajusto cores, imagem de fundo e os textos do convite.
+- Escolho um template pronto.
+- Ajusto as cores e os textos do convite.
 - Vejo as mudanças na hora.
 
 ### H04

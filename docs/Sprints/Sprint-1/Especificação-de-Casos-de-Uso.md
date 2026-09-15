@@ -100,25 +100,25 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 **Pós-condições:** as escolhas visuais ficam salvas no convite.
 
 **Fluxo Básico:**
-1. O sistema exibe o editor com um tema inicial e a prévia do convite.
-2. O anfitrião escolhe um tema entre os disponíveis (RN1).
-3. O anfitrião ajusta cores, imagem de fundo e os textos do convite.
+1. O sistema exibe o editor com um template inicial e a prévia do convite.
+2. O anfitrião escolhe um template entre os disponíveis (RN1).
+3. O anfitrião ajusta as cores e os textos do convite (RN2).
 4. O sistema atualiza a prévia a cada mudança.
 5. O anfitrião salva as alterações.
 6. O sistema grava as escolhas no convite (ED1).
 7. O caso de uso é encerrado.
 
 **Fluxos Alternativos:**
-(A1) Fluxo Alternativo ao Passo 3, imagem em formato ou tamanho inválido:
-1.1. O sistema recusa a imagem e informa os formatos e o tamanho aceitos (RN2).
+(A1) Fluxo Alternativo ao Passo 3, texto acima do tamanho máximo do campo:
+1.1. O sistema recusa o texto e informa o limite do campo (RN2).
 1.2. O sistema retorna ao Passo 3.
 
 **Estruturas de Dados:**
-(ED1) Personalização: tema, cores, imagem de fundo e textos, ligados ao convite.
+(ED1) Personalização: template escolhido, cores e textos, ligados ao convite.
 
 **Regras de Negócio:**
-(RN1) O anfitrião parte sempre de um tema, que pode ser ajustado.
-(RN2) A imagem de fundo aceita os formatos JPG e PNG, com tamanho máximo definido pelo sistema.
+(RN1) O anfitrião parte sempre de um template, que pode ser ajustado em cores e textos.
+(RN2) Cada texto do convite tem tamanho máximo definido por campo, para não quebrar o layout do template. Não existe upload de mídia no sistema. Ver ADR-0009.
 
 ### UC004 - Compartilhar convite (gerar link)
 

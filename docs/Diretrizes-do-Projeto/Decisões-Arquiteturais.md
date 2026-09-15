@@ -22,7 +22,8 @@ Status possíveis: **Proposta**, **Aceita**, **Substituída** e **Descartada**.
 | [0006](Decisões-Arquiteturais/0006-Identidade-do-convidado.md) | Link único por convite, identidade criada na resposta | Aceita |
 | [0007](Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) | Consulta periódica em vez de Server-Sent Events | Aceita |
 | [0008](Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) | Teto de capacidade, limite de taxa e tratamento do endpoint aberto | Aceita |
+| [0009](Decisões-Arquiteturais/0009-Personalização-por-template.md) | Personalização por template em HTML e CSS, sem upload de mídia | Aceita |
 
 As decisões de 0004 a 0008 foram confrontadas com um levantamento de 19 plataformas equivalentes de convite e RSVP. O relatório fica em `pesquisa-stack-benchmark.md`, no repositório do GitHub.
 
-Ainda em aberto, e previstas como ADR: onde a imagem de fundo enviada pelo anfitrião é armazenada, a autenticação do anfitrião, o envio de e-mail com recuperação de senha, e a observabilidade entre os tiers.
+Ainda em aberto, e previstas como ADR: a autenticação do anfitrião, o envio de e-mail com recuperação de senha, e a observabilidade entre os tiers.

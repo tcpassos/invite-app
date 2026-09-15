@@ -27,7 +27,7 @@ Um levantamento de 19 produtos equivalentes foi feito para confrontar as escolha
 
 **Next.js é front-end apenas.** Não usar API routes nem server actions para regra de negócio. Se a lógica migrar para o Next, o tier da API perde a razão de existir e o [ADR-0002](0002-Empacotamento-em-tiers.md) vira ficção.
 
-**Delimitação do JSONB:** entram apenas cores e ajustes livres da personalização. Tema fica em coluna tipada por ser conjunto pequeno e fechado. Os textos do convite já estão definidos na Especificação de Casos de Uso e são dado consultado, então ficam em colunas próprias. Imagem de fundo é arquivo e nunca entra no JSONB.
+**Delimitação do JSONB:** entram apenas as cores e os ajustes livres da personalização. O template escolhido fica em coluna tipada por ser conjunto pequeno e fechado. Os textos do convite já estão definidos na Especificação de Casos de Uso e são dado consultado, então ficam em colunas próprias. Não há mídia no modelo, conforme o [ADR-0009](0009-Personalização-por-template.md).
 
 ## Consequências
 
