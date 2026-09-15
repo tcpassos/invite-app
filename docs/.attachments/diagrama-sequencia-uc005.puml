@@ -1,0 +1,251 @@
+@startuml diagrama-sequencia-uc005
+' Fonte do Diagrama de Sequência do UC005, Confirmar presença, com a extensão do UC006,
+' Registrar observação alimentar, da Sprint 2.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -e PLANTUML_LIMIT_SIZE=16384 -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-uc005.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' A variável PLANTUML_LIMIT_SIZE é necessária porque a imagem passa de 4096 pixels de altura,
+' que é o teto padrão do PlantUML. Sem ela o PNG sai cortado no rodapé.
+' Identificadores de método, de rota e de tabela em inglês, conforme o Guia de Estilo. Notas em português.
+' Os três tiers vêm do ADR-0002. As três camadas lógicas da API vêm do ADR-0001.
+' Os nomes de classe e de enumeração seguem o Diagrama de Classes da Sprint 2.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam sequenceMessageAlign first
+skinparam maxMessageSize 220
+hide footbox
+
+actor "Convidado" as Convidado
+
+participant "Navegador\nView do MVC" as BR
+
+box "Tier Front, container Next.js"
+  participant "Front\nRenderização no servidor" as FE
+end box
+
+box "Tier API, container NestJS"
+  participant "Apresentação\nPublicRsvpController" as PR
+  participant "Domínio\nRsvpService" as DM
+  participant "Dados\nInviteRepository" as DA
+end box
+
+box "Tier Banco, container PostgreSQL"
+  participant "Banco\nPostgreSQL" as DB
+end box
+
+== UC005 passos 1 e 2, o convidado abre o link ==
+
+Convidado -> BR : abre o link recebido no grupo
+activate BR
+
+BR -> FE : GET /i/{publicToken}
+activate FE
+
+FE -> PR : GET /public/invites/{publicToken}
+activate PR
+
+PR -> DM : getPublishedInvite(publicToken)
+activate DM
+
+DM -> DA : findPublishedByPublicToken(publicToken)
+activate DA
+DA -> DB : SELECT invite, invite_customization\nWHERE public_token = ? AND status = 'PUBLISHED'
+activate DB
+DB --> DA : linha do convite, ou vazio
+deactivate DB
+DA --> DM : Invite [0..1], InviteCustomization [0..1]
+deactivate DA
+
+alt convite publicado encontrado
+
+  DM -> DA : listDietaryCategories()
+  activate DA
+  DA -> DB : SELECT dietary_category
+  activate DB
+  DB --> DA : categorias
+  deactivate DB
+  DA --> DM : DietaryCategory [0..*]
+  deactivate DA
+
+  DM --> PR : PublishedInvite(invite, customization, categories)
+  PR --> FE : 200, dados do evento e categorias
+  FE --> BR : HTML do convite já renderizado,\ncom o formulário de confirmação
+  BR --> Convidado : exibe o convite e o formulário
+
+else token inválido, convite em rascunho ou despublicado
+
+  DM --> PR : vazio
+  PR --> FE : 404
+  FE --> BR : redireciona para a rota de não encontrado
+  BR --> Convidado : página de não encontrado
+
+end
+
+deactivate DM
+deactivate PR
+deactivate FE
+deactivate BR
+
+== UC005 passos 3 a 6, preenchimento no navegador ==
+
+Convidado -> BR : escolhe a presença: sim, não ou talvez (passo 3)
+activate BR
+
+alt A1, o convidado responde que não vai
+
+  BR --> Convidado : oculta acompanhantes e restrição alimentar\ne pede apenas o nome (A1.1)
+
+else resposta sim ou talvez
+
+  Convidado -> BR : informa o número de acompanhantes (passo 4, RN2)
+
+  opt A3, extensão do passo 4, UC006 Registrar observação alimentar
+    BR --> Convidado : exibe as categorias recebidas com a página\ne o campo de texto livre (UC006 passo 1)
+    Convidado -> BR : marca uma ou mais categorias (UC006 passo 2, RN1)
+    opt marcou uma categoria com requiresDescription
+      Convidado -> BR : descreve a restrição no texto livre (UC006 passo 3, RN2)
+    end
+    Convidado -> BR : confirma a observação (UC006 passo 4)
+  end
+
+end
+
+Convidado -> BR : informa o nome para identificação (passo 5)
+Convidado -> BR : envia a resposta (passo 6)
+
+== UC005 passo 7, validação e registro transacional ==
+
+BR -> PR : POST /public/invites/{publicToken}/rsvp\n{ name, status, companionCount, dietaryNote? }
+activate PR
+
+PR -> PR : enforceRateLimit(publicToken, clientIp)
+activate PR
+deactivate PR
+
+PR -> PR : parseRequest(dto)
+activate PR
+deactivate PR
+
+PR -> DM : registerRsvp(publicToken, rsvpCommand)
+activate DM
+
+DM -> DA : findPublishedByPublicToken(publicToken)
+activate DA
+DA -> DB : SELECT invite\nWHERE public_token = ? AND status = 'PUBLISHED'
+activate DB
+DB --> DA : linha do convite, ou vazio
+deactivate DB
+DA --> DM : Invite [0..1]
+deactivate DA
+
+DM -> DM : checkCompanionLimit(invite, companionCount)
+activate DM
+deactivate DM
+
+opt a resposta traz DietaryNote
+  DM -> DA : listDietaryCategories()
+  activate DA
+  DA -> DB : SELECT dietary_category
+  activate DB
+  DB --> DA : categorias
+  deactivate DB
+  DA --> DM : DietaryCategory [0..*]
+  deactivate DA
+  DM -> DM : validateDietaryNote(dietaryNote, categories)
+  activate DM
+  deactivate DM
+end
+
+alt dados válidos
+
+  DM -> DM : generatePersonalToken()
+  activate DM
+  deactivate DM
+
+  DM -> DM : seatsRequested(status, companionCount)
+  activate DM
+  deactivate DM
+
+  DM -> DA : saveRsvpWithinCapacity(invite, guest, dietaryNote, seatsRequested)
+  activate DA
+note right of DA
+  Checagem do teto e insert na MESMA transação (UC005 RN4, ADR-0008).
+  Validar na Apresentação deixaria duas respostas simultâneas ultrapassarem o limite.
+end note
+
+  DA -> DB : BEGIN
+  DA -> DB : SELECT status, capacity_limit FROM invite\nWHERE id = ? FOR UPDATE
+  activate DB
+  DB --> DA : status, capacityLimit
+  deactivate DB
+
+  opt status = 'PUBLISHED', seatsRequested > 0 e capacityLimit definido
+    DA -> DB : SELECT coalesce(sum(1 + companion_count), 0) FROM guest\nWHERE invite_id = ? AND status = 'ACCEPTED'
+    activate DB
+    DB --> DA : bookedSeats
+    deactivate DB
+  end
+
+  alt convite publicado e bookedSeats + seatsRequested <= capacityLimit,\nou a resposta não ocupa vaga, ou convite sem teto
+
+    DA -> DB : INSERT INTO guest\n(invite_id, name, status, companion_count, personal_token, responded_at)
+
+    opt o convidado passou pelo UC006
+      DA -> DB : INSERT INTO dietary_note (guest_id, free_text)
+      loop para cada categoria marcada (UC006 RN1)
+        DA -> DB : INSERT INTO dietary_note_category (note_id, category_id)
+      end
+    end
+
+    DA -> DB : COMMIT
+    activate DB
+    DB --> DA : confirmado
+    deactivate DB
+    DA --> DM : Guest
+    DM --> PR : RsvpResult(guest, personalToken)
+    PR --> BR : 201, resposta registrada e personalToken
+    BR -> BR : buildPersonalLink(personalToken)
+    activate BR
+    deactivate BR
+    BR --> Convidado : mensagem de sucesso e link pessoal\n/r/{personalToken} para alterar depois
+
+  else A4, teto atingido: capacityLimit definido\ne bookedSeats + seatsRequested > capacityLimit
+
+    DA -> DB : ROLLBACK
+    activate DB
+    DB --> DA : transação desfeita
+    deactivate DB
+    DA --> DM : CapacityExceeded
+    DM --> PR : CapacityExceededError
+    PR --> BR : 409, evento lotado
+    BR --> Convidado : informa que o evento está lotado\ne mantém disponível a resposta não
+
+  else o convite deixou de estar publicado entre a leitura e o registro (UC004 RN3)
+
+    DA -> DB : ROLLBACK
+    activate DB
+    DB --> DA : transação desfeita
+    deactivate DB
+    DA --> DM : InviteNotOpen
+    DM --> PR : InviteNotOpenError
+    PR --> BR : 409, o convite não aceita mais respostas
+    BR --> Convidado : informa que as respostas foram encerradas
+
+  end
+
+  deactivate DA
+
+else A2, dados inválidos (UC005 RN2 ou UC006 RN2)
+
+  DM --> PR : ValidationError(field)
+  PR --> BR : 422, campo com problema
+  BR --> Convidado : aponta o campo, mantém o que já foi preenchido\ne volta ao passo 3
+
+end
+
+deactivate DM
+deactivate PR
+deactivate BR
+
+@enduml

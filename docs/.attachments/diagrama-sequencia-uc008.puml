@@ -1,0 +1,179 @@
+@startuml diagrama-sequencia-uc008
+' Fonte do Diagrama de Sequência do UC008, Consolidar e exportar observações alimentares, da Sprint 2.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-uc008.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' A imagem tem cerca de 3900 pixels de altura, perto do teto padrão de 4096 do PlantUML. Se
+' depois de editar ela sair cortada no rodapé, acrescente -e PLANTUML_LIMIT_SIZE=16384 ao comando.
+' Identificadores de método, de rota e de tabela em inglês, conforme o Guia de Estilo. Notas em português.
+' Os três tiers vêm do ADR-0002. As três camadas lógicas da API vêm do ADR-0001.
+' Os nomes de classe e de enumeração seguem o Diagrama de Classes da Sprint 2.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam sequenceMessageAlign first
+skinparam maxMessageSize 220
+hide footbox
+
+actor "Anfitrião" as Anfitriao
+
+participant "Navegador\nView do MVC" as BR
+
+box "Tier API, container NestJS"
+  participant "Apresentação\nDietaryController" as PR
+  participant "Domínio\nDietaryService" as DM
+  participant "Dados\nInviteRepository" as DA
+end box
+
+box "Tier Banco, container PostgreSQL"
+  participant "Banco\nPostgreSQL" as DB
+end box
+
+== UC008 passos 1 a 3, a consolidação no painel ==
+
+Anfitriao -> BR : abre a consolidação de restrições (passo 1)
+activate BR
+
+BR -> PR : GET /invites/{inviteId}/dietary-summary\ncabeçalho com a sessão do anfitrião
+activate PR
+
+PR -> PR : authenticateSession(session)
+activate PR
+deactivate PR
+
+PR -> DM : consolidateDietaryNotes(inviteId, hostId)
+activate DM
+
+DM -> DA : findById(inviteId)
+activate DA
+DA -> DB : SELECT invite WHERE id = ?
+activate DB
+DB --> DA : linha do convite
+deactivate DB
+DA --> DM : Invite
+deactivate DA
+
+DM -> DM : validateOwnership(invite, hostId)
+activate DM
+deactivate DM
+
+alt o convite é deste anfitrião
+
+  DM -> DA : countGuestsByCategory(inviteId, [ACCEPTED, MAYBE])
+  activate DA
+  DA -> DB : SELECT category_code, count(DISTINCT guest.id)\nFROM guest JOIN dietary_note JOIN dietary_note_category JOIN dietary_category\nWHERE invite_id = ? AND guest.status IN ('ACCEPTED', 'MAYBE')\nGROUP BY category_code
+  activate DB
+  DB --> DA : linhas agregadas
+  deactivate DB
+  DA --> DM : CategoryCount [0..*]
+  deactivate DA
+
+  DM -> DA : listDietaryCategories()
+  activate DA
+  DA -> DB : SELECT dietary_category
+  activate DB
+  DB --> DA : categorias
+  deactivate DB
+  DA --> DM : DietaryCategory [0..*]
+  deactivate DA
+
+  DM -> DA : findDescriptionsByCategories(inviteId, [ACCEPTED, MAYBE],\ncódigos com requiresDescription)
+  activate DA
+  DA -> DB : SELECT DISTINCT guest.name, dietary_note.free_text\nFROM guest JOIN dietary_note JOIN dietary_note_category JOIN dietary_category\nWHERE invite_id = ? AND guest.status IN ('ACCEPTED', 'MAYBE')\nAND category_code IN (?)
+  activate DB
+  DB --> DA : descrições informadas
+  deactivate DB
+  DA --> DM : AllergyDescription [0..*]
+  deactivate DA
+
+  alt há pelo menos uma categoria com contagem maior que zero
+
+    DM --> PR : DietarySummary(counts, descriptions)
+    PR --> BR : 200 { counts, descriptions }
+    BR --> Anfitriao : contagem por categoria (passo 2, ED1, RN1)
+    BR --> Anfitriao : descrições informadas (passo 3)
+
+  else A1, nenhum convidado informou restrição
+
+    DM --> PR : DietarySummary vazio
+    PR --> BR : 200 { vazio }
+    BR --> Anfitriao : informa que não há restrições registradas\ne não oferece a exportação (A1.1)
+
+  end
+
+else o convite não pertence a este anfitrião
+
+  DM --> PR : NotInviteOwner
+  PR --> BR : 404
+  BR --> Anfitriao : convite não encontrado
+
+end
+
+deactivate DM
+deactivate PR
+deactivate BR
+
+== UC008 passos 4 e 5, exportação em CSV ==
+
+opt há restrição registrada, e por isso o painel oferece a exportação
+
+  Anfitriao -> BR : solicita a exportação (passo 4)
+  activate BR
+
+  BR -> PR : GET /invites/{inviteId}/dietary-notes.csv\ncabeçalho com a sessão do anfitrião
+  activate PR
+
+  PR -> PR : authenticateSession(session)
+  activate PR
+  deactivate PR
+
+  PR -> DM : exportDietaryNotes(inviteId, hostId)
+  activate DM
+
+  DM -> DA : findById(inviteId)
+  activate DA
+  DA -> DB : SELECT invite WHERE id = ?
+  activate DB
+  DB --> DA : linha do convite
+  deactivate DB
+  DA --> DM : Invite
+  deactivate DA
+
+  DM -> DM : validateOwnership(invite, hostId)
+  activate DM
+  deactivate DM
+
+  DM -> DA : findGuestsForExport(inviteId, [ACCEPTED, MAYBE])
+  activate DA
+  DA -> DB : SELECT guest.name, guest.status,\nstring_agg(category_code, ';'), dietary_note.free_text\nFROM guest LEFT JOIN dietary_note LEFT JOIN dietary_note_category LEFT JOIN dietary_category\nWHERE invite_id = ? AND guest.status IN ('ACCEPTED', 'MAYBE')\nGROUP BY guest.id, dietary_note.free_text
+  activate DB
+  DB --> DA : uma linha por convidado
+  deactivate DB
+  DA --> DM : ExportRow [0..*]
+  deactivate DA
+
+  DM --> PR : ExportRow [0..*]
+
+  PR -> PR : renderCsv(rows)
+  activate PR
+  loop para cada campo de cada linha (ED2)
+    PR -> PR : neutralizeFormulaPrefix(field)
+    activate PR
+    deactivate PR
+  note right of PR
+    Prefixo de aspa simples em campo que comece com = + - ou @ (ADR-0008).
+    Sem isso o conteúdo executa quando o buffet abre a planilha.
+  end note
+  end
+  deactivate PR
+
+  PR --> BR : 200 text/csv, uma linha por convidado (ED2)
+  BR --> Anfitriao : entrega o arquivo para enviar ao buffet (passo 5)
+
+  deactivate DM
+  deactivate PR
+  deactivate BR
+
+end
+
+@enduml

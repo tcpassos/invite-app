@@ -60,7 +60,7 @@ Uma ordem que evita retrabalho: o #58 define as camadas, o #59 detalha os compon
 - Diagrama de Componentes (UML)
 - Diagrama de Implantação (UML)
 - [Diagrama de Classes](Sprint-2/Diagrama-de-Classes.md) (UML)
-- Diagrama de Sequência (UML)
+- [Diagramas de Sequência](Sprint-2/Diagramas-de-Sequência.md) (UML)
 - [Documento de Decisões Arquiteturais](../Diretrizes-do-Projeto/Decisões-Arquiteturais.md) (ADR), com nove registros escritos
 
 O ponto de partida já existe no [Guia da Arquitetura](../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), que registra a escolha de MVC no front com três camadas no back. O trabalho da sprint é formalizar essa decisão, diagramar e justificar.

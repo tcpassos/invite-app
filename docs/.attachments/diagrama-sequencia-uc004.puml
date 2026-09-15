@@ -1,0 +1,175 @@
+@startuml diagrama-sequencia-uc004
+' Fonte do Diagrama de Sequência do UC004, Compartilhar convite (gerar link), da Sprint 2.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-uc004.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' A imagem tem cerca de 3200 pixels de altura. Se depois de editar ela sair cortada no rodapé,
+' é o teto padrão de 4096 do PlantUML: acrescente -e PLANTUML_LIMIT_SIZE=16384 ao comando.
+' Identificadores de método, de rota e de tabela em inglês, conforme o Guia de Estilo. Notas em português.
+' Os três tiers vêm do ADR-0002. As três camadas lógicas da API vêm do ADR-0001.
+' Os nomes de classe e de enumeração seguem o Diagrama de Classes da Sprint 2.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam sequenceMessageAlign first
+skinparam maxMessageSize 220
+hide footbox
+
+actor "Anfitrião" as Anfitriao
+
+participant "Navegador\nView do MVC" as BR
+
+box "Tier API, container NestJS"
+  participant "Apresentação\nInviteController" as PR
+  participant "Domínio\nInviteService" as DM
+  participant "Dados\nInviteRepository" as DA
+end box
+
+box "Tier Banco, container PostgreSQL"
+  participant "Banco\nPostgreSQL" as DB
+end box
+
+== UC004 passos 1 a 4, publicar e obter o link ==
+
+Anfitriao -> BR : seleciona a opção de compartilhar (passo 1)
+activate BR
+
+BR -> PR : POST /invites/{inviteId}/publish\ncabeçalho com a sessão do anfitrião
+activate PR
+
+PR -> PR : authenticateSession(session)
+activate PR
+deactivate PR
+
+PR -> DM : publishInvite(inviteId, hostId)
+activate DM
+
+DM -> DA : findById(inviteId)
+activate DA
+DA -> DB : SELECT invite WHERE id = ?
+activate DB
+DB --> DA : linha do convite
+deactivate DB
+DA --> DM : Invite
+deactivate DA
+
+DM -> DM : validateForPublication(invite, hostId)
+activate DM
+deactivate DM
+
+alt o convite é deste anfitrião e tem nome, data, hora e local (RN1)
+
+  opt publicToken ainda não existe
+    DM -> DM : generatePublicToken()
+note right of DM
+  128 bits de CSPRNG em base32 Crockford, 26 caracteres (ADR-0005).
+  Gerado no Domínio. A Apresentação nunca cria identificador.
+end note
+    activate DM
+    deactivate DM
+  end
+
+  DM -> DA : publishIfPublishable(inviteId, publicToken)
+  activate DA
+  DA -> DB : UPDATE invite SET public_token = ?, status = 'PUBLISHED'\nWHERE id = ? AND status IN ('DRAFT', 'UNPUBLISHED')
+  activate DB
+  DB --> DA : linhas afetadas
+  deactivate DB
+  DA --> DM : Invite(publicToken, status = PUBLISHED)
+  deactivate DA
+
+  opt o UPDATE afetou zero linhas, outra requisição publicou primeiro
+    DM -> DA : findById(inviteId)
+    activate DA
+    DA -> DB : SELECT invite WHERE id = ?
+    activate DB
+    DB --> DA : linha do convite
+    deactivate DB
+    DA --> DM : Invite
+    deactivate DA
+  end
+
+  DM --> PR : Invite(publicToken, status = PUBLISHED)
+  PR --> BR : 200 { publicToken, status }
+  BR -> BR : buildShareLink(publicToken)
+  activate BR
+  deactivate BR
+  BR --> Anfitriao : exibe o link com a opção de copiar (passo 4)
+
+  Anfitriao -> BR : copia o link (passo 5)
+
+else A1, faltam dados obrigatórios (RN1)
+
+  DM --> PR : InvalidInviteForPublication(missingFields)
+  PR --> BR : 422 { missingFields }
+  BR --> Anfitriao : informa o que falta e não publica (A1.1)
+
+else o convite não pertence a este anfitrião
+
+  DM --> PR : NotInviteOwner
+  PR --> BR : 404
+  BR --> Anfitriao : convite não encontrado
+
+end
+
+deactivate DM
+deactivate PR
+deactivate BR
+
+== A2, extensão do passo 4, o anfitrião encerra as respostas ==
+
+opt o convite está publicado e, mais tarde, o anfitrião despublica
+
+  Anfitriao -> BR : despublica o convite (A2.1)
+  activate BR
+  BR -> PR : POST /invites/{inviteId}/unpublish\ncabeçalho com a sessão do anfitrião
+  activate PR
+  PR -> PR : authenticateSession(session)
+  activate PR
+  deactivate PR
+  PR -> DM : unpublishInvite(inviteId, hostId)
+  activate DM
+
+  DM -> DA : findById(inviteId)
+  activate DA
+  DA -> DB : SELECT invite WHERE id = ?
+  activate DB
+  DB --> DA : linha do convite
+  deactivate DB
+  DA --> DM : Invite
+  deactivate DA
+
+  DM -> DM : validateOwnership(invite, hostId)
+  activate DM
+  deactivate DM
+
+  alt o convite é deste anfitrião e está em status PUBLISHED
+
+    DM -> DA : unpublishIfPublished(inviteId)
+    activate DA
+    DA -> DB : UPDATE invite SET status = 'UNPUBLISHED'\nWHERE id = ? AND status = 'PUBLISHED'
+    activate DB
+    DB --> DA : linhas afetadas
+    deactivate DB
+    DA --> DM : Invite(status = UNPUBLISHED)
+    deactivate DA
+
+    DM --> PR : Invite(status = UNPUBLISHED)
+    PR --> BR : 200 { status }
+    BR --> Anfitriao : avisa que o link não abre mais
+
+  else o convite não é deste anfitrião, ou não está publicado
+
+    DM --> PR : InviteNotPublished ou NotInviteOwner
+    PR --> BR : 409 ou 404
+    BR --> Anfitriao : informa que não há o que despublicar
+
+  end
+
+  deactivate DM
+  deactivate PR
+  deactivate BR
+
+end
+
+@enduml
