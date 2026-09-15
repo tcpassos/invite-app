@@ -231,7 +231,7 @@ Todas são decisões novas, no mesmo sentido da seção 11 do Guia da Arquitetur
 | 3 | O volume nomeado do tier Banco se chama `invite_app_pgdata`, montado em `/var/lib/postgresql/data` | Nome do volume |
 | 4 | Ordem de subida `db`, `api`, `front`, com `HEALTHCHECK` no `db` e `condition: service_healthy` na `api` | A declaração de `HEALTHCHECK` e a ordem de subida |
 | 5 | As `migrations/` são montadas no diretório de inicialização do container `db` e aplicadas por ele | Quem aplica as `migrations/` e em que momento |
-| 6 | O `robots.txt` é artefato do container `front` | Nenhuma, é correção no Diagrama de Componentes |
+| 6 | O `robots.txt` é artefato do container `front` | Nenhuma. A correção já foi aplicada na seção 4.1 do Diagrama de Componentes |
 | 7 | O dispositivo não recebe especificação de hardware enquanto não houver medida | Nenhuma, é limite desta página |
 
 ### 8.1 O custo da decisão 5, dito em voz alta
@@ -252,8 +252,6 @@ Quatro linhas da seção 10.7 do guia não fecham aqui.
 2. **Quais variáveis de ambiente cada container recebe.** Sabe-se que são pelo menos a senha do banco, o segredo de sessão do UC001 e os dois endereços da API da seção 5.2. A lista fechada é do `.env.example` e da página Configuração de Ambiente, que hoje é um marcador de uma linha.
 3. **Onde `SessionGuard` e `RateLimitGuard` guardam estado.** Continua pedindo ADR próprio. Nenhuma das alternativas em discussão acrescenta nó, então este diagrama não muda por causa dela, o que é o mesmo que a seção 10.7 já registrava.
 4. **Se a API ganha réplicas.** Se ganhar, este diagrama muda de verdade, porque passa a ter mais de uma instância do mesmo container e a decisão do contador em memória do `RateLimitGuard` deixa de valer junto.
-
-Fica também a pendência do item 6 da seção 8: a seção 4.1 do Diagrama de Componentes precisa da linha do `robots.txt`.
 
 ---
 

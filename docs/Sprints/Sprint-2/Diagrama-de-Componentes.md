@@ -261,6 +261,7 @@ A implementação começa na Sprint 3, então **nenhum destes artefatos existe h
 | `front-server.bundle` | Executável | Saída de servidor do build do Next.js | Prevista |
 | `front-client.bundle` | Executável | Saída de cliente do build do Next.js, entregue ao navegador | Prevista |
 | `templates/` | Ativo estático | Versionado no repositório, copiado no build | Prevista, ADR-0009 |
+| `robots.txt` | Ativo estático | Versionado no repositório, copiado no build | Prevista, seção 9.5 do Guia da Arquitetura |
 | `invite-app-api:<tag>` | Imagem | Build do `Dockerfile` da API | Prevista |
 | `api.bundle` | Executável | Compilação do TypeScript da API, com as três camadas | Prevista |
 | `contract/` | Módulo de fonte compartilhado | Versionado no repositório, compilado para dentro dos dois lados | Prevista, decisão nova desta página |
@@ -277,6 +278,7 @@ A implementação começa na Sprint 3, então **nenhum destes artefatos existe h
 | `HostPanelPage` | `front-client.bundle` |
 | `ApiClient` | `front-server.bundle` e `front-client.bundle` |
 | `TemplateSet` | `templates/`, com os códigos de template e os limites de texto vindos de `contract/` |
+| Nenhum, é ativo servido pelo tier Front | `robots.txt` |
 | `PublicRsvpController`, `InviteController`, `DietaryController`, `AuthController` | `api.bundle` |
 | `SessionGuard`, `RateLimitGuard`, `HttpExceptionFilter` | `api.bundle` |
 | `RsvpService`, `InviteService`, `AttendanceService`, `DietaryService`, `HostService` | `api.bundle` |
