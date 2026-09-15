@@ -346,7 +346,7 @@ O desenho preliminar saiu das tasks #64 a #67 e foi mexido em oito pontos antes 
 
 **4. Os componentes do tier Front ficaram `Page` e não `View`.** O primeiro rascunho usava o sufixo `View`, que é o vocabulário das linhas de vida dos diagramas de sequência. Não serve aqui. A tabela 7.3 do guia classifica a resolução de rota, a escolha da View e a consulta periódica como **Controller do MVC**, e as duas caixas do front carregam isso junto com a exibição. `Page` nomeia a superfície inteira sem prometer que ali existe só uma das peças do padrão, e o Vocabulário do guia avisa que misturar os nomes torna a leitura ilegível.
 
-**5. `DietaryCategoryRepository` entrou separado do `InviteRepository`.** É a aplicação da regra da seção 5.2 do guia. Isso obriga uma correção que ainda não foi feita: os fontes `diagrama-sequencia-uc005.puml` e `diagrama-sequencia-uc008.puml` ainda mostram `listDietaryCategories()` dentro de `InviteRepository`, em três chamadas ao todo. Enquanto não forem corrigidos, este diagrama e os de sequência se contradizem.
+**5. `DietaryCategoryRepository` entrou separado do `InviteRepository`.** É a aplicação da regra da seção 5.2 do guia. Isso obrigou uma correção nos fontes `diagrama-sequencia-uc005.puml` e `diagrama-sequencia-uc008.puml`, que mostravam `listDietaryCategories()` dentro de `InviteRepository` em três chamadas ao todo. Os três diagramas de sequência ganharam a linha de vida do novo repositório e foram gerados de novo.
 
 **6. Os três tiers ficaram como agrupamento e não viraram caixa de componente.** A primeira versão desenhava Front, API e Banco como componentes com porta publicada e variável de ambiente como interface requerida. Isso é o assunto do diagrama de implantação, onde nó, dispositivo e link de comunicação têm notação própria. Mantidas as duas leituras separadas, as duas entregas não colidem. Essa é também a leitura que o bloco C do roteiro do T1 apresenta, e a seção 5 registra por que as duas convivem.
 
@@ -354,7 +354,7 @@ O desenho preliminar saiu das tasks #64 a #67 e foi mexido em oito pontos antes 
 
 **8. As portas saíram da figura.** A primeira versão punha porta nas duas páginas do front, nas quatro rotas da API e no acesso ao banco. Sete componentes ganhavam corpo de caixa grande e os outros catorze ficavam compactos, o que faz o mesmo tipo de elemento aparecer com duas formas e sugere componente composto onde não há. O critério de porta, com número e mapeamento, é do item #60.
 
-**9. O fonte do UC004 usa um nome de erro fora do catálogo.** O `diagrama-sequencia-uc004.puml` escreve `InviteNotPublished ou NotInviteOwner` no ramo de despublicar, e `InviteNotPublished` não está entre os cinco tipos da seção 9.2 do guia. A tabela 9.1 mapeia esse caso para `InviteNotOpenError`. Esta página adota o catálogo do guia, e a correção do fonte está na seção 10.2.
+**9. O fonte do UC004 usa um nome de erro fora do catálogo.** O `diagrama-sequencia-uc004.puml` escreve `InviteNotPublished ou NotInviteOwner` no ramo de despublicar, e `InviteNotPublished` não está entre os cinco tipos da seção 9.2 do guia. A tabela 9.1 mapeia esse caso para `InviteNotOpenError`. Esta página adota o catálogo do guia, e o fonte foi corrigido junto com os outros dois.
 
 ---
 
@@ -445,7 +445,7 @@ A segunda pergunta de motivação da aula é sobre unidades substituíveis, e a 
 
 | Artefato | Relação |
 |---|---|
-| Diagrama de camadas, seção 2 do Guia da Arquitetura | Mesmas camadas e mesmos tiers. O que lá é uma caixa por camada, aqui são os componentes dentro dela. O rótulo dos pacotes de tier difere hoje e precisa ser alinhado, conforme a seção 10.2 |
+| Diagrama de camadas, seção 2 do Guia da Arquitetura | Mesmas camadas, mesmos tiers e o mesmo rótulo de pacote. O que lá é uma caixa por camada, aqui são os componentes dentro dela |
 | [Diagrama de Classes](Diagrama-de-Classes.md) | Nenhuma classe virou componente. As classes são os classificadores da coluna "o que encapsula" da seção 1 |
 | [Diagramas de Sequência](Diagramas-de-Sequência.md) | Os participantes de camada dos três `.puml`, que são `PublicRsvpController`, `InviteController`, `DietaryController`, `RsvpService`, `InviteService`, `DietaryService` e `InviteRepository`, são componentes desta figura com os mesmos nomes. `Navegador`, `Front` e `Banco` não são componentes, são lugares de execução, e estão tratados na seção 5 e no item #60 |
 | Diagrama de implantação, item #60 | Recebe a seção 4 pronta. Os componentes já estão associados a artefatos, e falta alocar artefato em nó, definir link e número de porta |
@@ -474,12 +474,10 @@ A segunda pergunta de motivação da aula é sobre unidades substituíveis, e a 
 5. **Onde o `RateLimitGuard` guarda estado.** O ADR-0008 exige janela de tempo. Tabela no mesmo banco faria a Apresentação falar com o banco, o que a seção 6.2 do guia proíbe. Contador em memória do processo não cria dependência nenhuma e é o que a figura comporta hoje, mas deixa de valer se a API ganhar réplica, que é a hipótese levantada no bloco C do roteiro do T1 e que vem do convite público sem estado. A decisão merece ADR próprio, e ele decide também se a figura ganha soquete novo.
 6. **Onde o `SessionGuard` guarda estado.** Cookie assinado validado na própria guarda não cria dependência. Tabela de sessão cria, e cai no mesmo problema do item anterior. A pendência 4 dos Diagramas de Sequência já registra que `authenticateSession` não tem ADR.
 7. **As operações de `HostOperations` e de `HostStore` não têm assinatura fechada**, porque o UC001 não tem diagrama de sequência.
-8. **Correções nos fontes de sequência.** `diagrama-sequencia-uc005.puml` e `diagrama-sequencia-uc008.puml` mostram `listDietaryCategories()` em `InviteRepository`, em três chamadas ao todo, e a operação agora é de `DietaryCategoryRepository`. `diagrama-sequencia-uc004.puml` usa `InviteNotPublished`, que não está no catálogo de cinco tipos da seção 9.2 do guia, e a tabela 9.1 manda usar `InviteNotOpenError`.
-9. **O Diagrama de Classes precisa perder as três consultas do painel.** A descrição de `Invite` diz que ela responde também pelas três consultas, e `listAttendance()`, `consolidateDietaryNotes()` e `exportDietaryNotes()` aparecem como operações da entidade. A seção 4.2 do guia adota a leitura oposta e prometeu a correção exata na seção 11, que não existe. Esta página aloca as três em `AttendanceService` e `DietaryService`, então são três artefatos com duas leituras e uma precisa ceder.
-10. **Nada garante que `templates/` e `contract/` continuem coerentes.** Enquanto não houver verificação no build, acrescentar um template exige mexer nos dois lugares na mão, e um limite de texto divergente entre eles só aparece como recusa estranha na tela do UC003.
-11. **O rótulo dos pacotes de tier diverge do diagrama de camadas.** Aqui é `Tier Front`, `Tier API` e `Tier Banco`. O `diagrama-de-camadas.puml` usa `Tier Front, container Next.js` e as duas variantes equivalentes. Para a rastreabilidade da seção 9 ser verdadeira, os dois fontes precisam usar o mesmo rótulo, e a stack fica na prosa e na tabela da seção 8 do guia.
-12. **O nome do serviço do banco no compose não está decidido.** O rótulo da figura é o nome do banco, e o roteiro do T1 usa `db` como nome de serviço. A decisão é do arquivo de compose e do item #60.
-13. **Número de porta não existe como decisão em artefato nenhum.** A porta 3000 aparece no material do T1 como exemplo, e o ADR-0003 fecha no host sem chegar em porta. O número é assunto do item #60 e do arquivo de compose.
+8. **O Diagrama de Classes precisa perder as três consultas do painel.** A descrição de `Invite` diz que ela responde também pelas três consultas, e `listAttendance()`, `consolidateDietaryNotes()` e `exportDietaryNotes()` aparecem como operações da entidade. A seção 4.2 do guia adota a leitura oposta e prometeu a correção exata na seção 11, que não existe. Esta página aloca as três em `AttendanceService` e `DietaryService`, então são três artefatos com duas leituras e uma precisa ceder.
+9. **Nada garante que `templates/` e `contract/` continuem coerentes.** Enquanto não houver verificação no build, acrescentar um template exige mexer nos dois lugares na mão, e um limite de texto divergente entre eles só aparece como recusa estranha na tela do UC003.
+10. **O nome do serviço do banco no compose não está decidido.** O rótulo da figura é o nome do banco, e o roteiro do T1 usa `db` como nome de serviço. A decisão é do arquivo de compose e do item #60.
+11. **Número de porta não existe como decisão em artefato nenhum.** A porta 3000 aparece no material do T1 como exemplo, e o ADR-0003 fecha no host sem chegar em porta. O número é assunto do item #60 e do arquivo de compose.
 
 ---
 

@@ -362,7 +362,7 @@ Pelo critério, os motivos 1 e 2 ficam juntos. As três projeções do painel fi
 
 **Esta regra é decisão nova deste guia, não algo que outro artefato já tenha registrado.** O Diagrama de Classes registra que `Invite` é a raiz do modelo e que `DietaryCategory` é dado de referência, e não fala em repositório em ponto nenhum. A regra segue daquilo, mas não está escrita lá. Está na seção 11 junto com as outras decisões novas.
 
-Os diagramas de sequência do UC005 e do UC008 ainda mostram `listDietaryCategories()` em `InviteRepository`, em três chamadas ao todo, duas no UC005 e uma no UC008. O diagrama do UC004 não usa a operação e não muda. A correção está na seção 11.
+Os diagramas de sequência do UC005 e do UC008 mostravam `listDietaryCategories()` em `InviteRepository`, em três chamadas ao todo, duas no UC005 e uma no UC008. Os dois ganharam a linha de vida de `DietaryCategoryRepository` quando o Diagrama de Componentes separou os dois repositórios. O diagrama do UC004 não usa a operação e não mudou.
 
 ### 5.3 Os dois pacotes da Apresentação, e a regra que faltava
 

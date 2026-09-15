@@ -23,6 +23,7 @@ box "Tier API, container NestJS"
   participant "Apresentação\nDietaryController" as PR
   participant "Domínio\nDietaryService" as DM
   participant "Dados\nInviteRepository" as DA
+  participant "Dados\nDietaryCategoryRepository" as DC
 end box
 
 box "Tier Banco, container PostgreSQL"
@@ -68,14 +69,14 @@ alt o convite é deste anfitrião
   DA --> DM : CategoryCount [0..*]
   deactivate DA
 
-  DM -> DA : listDietaryCategories()
-  activate DA
-  DA -> DB : SELECT dietary_category
+  DM -> DC : listDietaryCategories()
+  activate DC
+  DC -> DB : SELECT dietary_category
   activate DB
-  DB --> DA : categorias
+  DB --> DC : categorias
   deactivate DB
-  DA --> DM : DietaryCategory [0..*]
-  deactivate DA
+  DC --> DM : DietaryCategory [0..*]
+  deactivate DC
 
   DM -> DA : findDescriptionsByCategories(inviteId, [ACCEPTED, MAYBE],\ncódigos com requiresDescription)
   activate DA

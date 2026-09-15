@@ -28,6 +28,7 @@ box "Tier API, container NestJS"
   participant "Apresentação\nPublicRsvpController" as PR
   participant "Domínio\nRsvpService" as DM
   participant "Dados\nInviteRepository" as DA
+  participant "Dados\nDietaryCategoryRepository" as DC
 end box
 
 box "Tier Banco, container PostgreSQL"
@@ -59,14 +60,14 @@ deactivate DA
 
 alt convite publicado encontrado
 
-  DM -> DA : listDietaryCategories()
-  activate DA
-  DA -> DB : SELECT dietary_category
+  DM -> DC : listDietaryCategories()
+  activate DC
+  DC -> DB : SELECT dietary_category
   activate DB
-  DB --> DA : categorias
+  DB --> DC : categorias
   deactivate DB
-  DA --> DM : DietaryCategory [0..*]
-  deactivate DA
+  DC --> DM : DietaryCategory [0..*]
+  deactivate DC
 
   DM --> PR : PublishedInvite(invite, customization, categories)
   PR --> FE : 200, dados do evento e categorias
@@ -144,14 +145,14 @@ activate DM
 deactivate DM
 
 opt a resposta traz DietaryNote
-  DM -> DA : listDietaryCategories()
-  activate DA
-  DA -> DB : SELECT dietary_category
+  DM -> DC : listDietaryCategories()
+  activate DC
+  DC -> DB : SELECT dietary_category
   activate DB
-  DB --> DA : categorias
+  DB --> DC : categorias
   deactivate DB
-  DA --> DM : DietaryCategory [0..*]
-  deactivate DA
+  DC --> DM : DietaryCategory [0..*]
+  deactivate DC
   DM -> DM : validateDietaryNote(dietaryNote, categories)
   activate DM
   deactivate DM

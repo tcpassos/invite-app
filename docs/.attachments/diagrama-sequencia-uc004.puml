@@ -160,7 +160,7 @@ opt o convite está publicado e, mais tarde, o anfitrião despublica
 
   else o convite não é deste anfitrião, ou não está publicado
 
-    DM --> PR : InviteNotPublished ou NotInviteOwner
+    DM --> PR : InviteNotOpenError ou NotInviteOwner
     PR --> BR : 409 ou 404
     BR --> Anfitriao : informa que não há o que despublicar
 
