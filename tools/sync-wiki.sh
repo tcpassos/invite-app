@@ -35,13 +35,15 @@ WIKI_URL="https://dev.azure.com/GUITOEBE/invite-people/_git/invite-people.wiki"
 KEEP=()
 
 # Arquivos e pastas de docs/ que ficam so no GitHub e nao viram pagina da Wiki.
-# "Comecando" esta de fora porque as paginas ainda sao marcadores da fase de
-# implementacao. Quando tiverem conteudo, na Sprint 2, remover as duas linhas
-# e recolocar "Comecando" no docs/.order.
+# O diretorio "Comecando" voltou para a Wiki quando a Configuracao de Ambiente
+# ganhou conteudo. As outras duas paginas dele continuam de fora enquanto forem
+# marcadores. Ao preencher uma delas, tirar a linha daqui e acrescentar o nome
+# no docs/Começando/.order.
+# O nome casa em qualquer profundidade, entao basta o nome do arquivo.
 EXCLUDE=(
   "README.md"
-  "Começando"
-  "Começando.md"
+  "Configuração-do-Projeto.md"
+  "Protótipo-de-Baixo-Nível.md"
 )
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -101,8 +103,10 @@ if command -v rsync >/dev/null 2>&1; then
   rsync "${copy_args[@]}" "$DOCS"/ "$WIKI"/
 else
   cp -r "$DOCS"/. "$WIKI"/
+  # Remove por nome em qualquer profundidade, que e a mesma semantica do
+  # --exclude do rsync. O rm -rf "$WIKI/$name" de antes so pegava a raiz.
   for name in "${EXCLUDE[@]}"; do
-    rm -rf "$WIKI/$name"
+    find "$WIKI" -name "$name" -not -path "$WIKI/.git/*" -exec rm -rf {} + 2>/dev/null || true
   done
 fi
 
