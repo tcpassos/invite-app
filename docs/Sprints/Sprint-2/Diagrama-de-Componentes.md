@@ -1,8 +1,8 @@
 # Diagrama de Componentes
 
-Visão estática da estrutura modular do invite-app. Mostra as unidades que prestam serviço, as interfaces que cada uma provê e requer, e as dependências entre elas.
+Este documento descreve os componentes do invite-app, as interfaces que oferecem e consomem e as dependências entre eles.
 
-A página está organizada pelos sete passos da decomposição sugerida pelo professor, que são também as tasks do item **#59** no Azure Boards. Cada passo tem uma seção e cada seção entrega o resultado que o passo pede.
+A organização segue os sete passos sugeridos pelo professor e usados nas tasks do item #59 no Azure Boards.
 
 | Passo | Task | Resultado | Seção |
 |---|---|---|---|
@@ -14,25 +14,25 @@ A página está organizada pelos sete passos da decomposição sugerida pelo pro
 | 6. Refinar | #69 | Diagrama finalizado | 6 |
 | 7. Revisão por pares | #70 | Feedback incorporado | 7 |
 
-As definições de componente, de interface provida e de interface requerida usadas aqui são as de [Ian04], que é a referência única da Aula 05. Componente é unidade de composição com interfaces especificadas e dependências de contexto explícitas, que pode ser implantada de forma independente ou combinada com outras. O comportamento de um componente é definido pelo par de interfaces, a provida e a requerida, e não apenas pela provida.
+As definições de componente e de interface provida e requerida seguem [Ian04], referência da Aula 05. Um componente é uma unidade de composição com interfaces definidas e dependências explícitas. Seu comportamento depende tanto das interfaces que oferece quanto das que consome.
 
-Nada aqui reabre decisão. O que existe é consequência do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md), do [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), do [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md), do [ADR-0007](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md), do [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) e do [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md), lidos junto com as seções 3 a 9 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). O que é decisão nova desta página está marcado como tal e listado na seção 10.1.
+O diagrama parte do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md), do [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), do [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md), do [ADR-0007](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md), do [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md), do [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) e das seções 3 a 9 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). As decisões tomadas durante esta modelagem estão identificadas e reunidas na seção 10.1.
 
 ---
 
 ## 1. Passo 1, componentes identificados
 
-### 1.1 O teste que uma caixa precisa passar
+### 1.1 Critérios para identificar um componente
 
-Antes da lista, o critério. A dificuldade declarada em [Ian04] para este estilo é identificar o nível de detalhe e a responsabilidade de cada componente, e o erro previsível aqui seria reaproveitar as caixas do [Diagrama de Classes](Diagrama-de-Classes.md). Componente é mais abstrato que classe. `Invite`, `Guest` e `DietaryNote` são classificadores encapsulados por componentes, e não componentes.
+[Ian04] aponta como dificuldade desse tipo de diagrama a escolha do nível de detalhe e da responsabilidade de cada componente. As classes do [Diagrama de Classes](Diagrama-de-Classes.md) não foram reaproveitadas como componentes. `Invite`, `Guest` e `DietaryNote`, por exemplo, são classificadores encapsulados por componentes.
 
-Três perguntas foram aplicadas a cada candidato, e as três precisam de resposta positiva:
+Cada candidato foi avaliado com três perguntas:
 
-1. **Ela presta um serviço que dá para nomear com um substantivo só?** Se o nome precisa de conjunção, são duas responsabilidades.
-2. **Ela encapsula mais de um classificador, ou uma decisão que não cabe em uma função?** Se encapsula uma função, é função.
-3. **Ela tem pelo menos uma interface provida ou requerida com nome?** Bolinha sem nome não comunica, e componente sem nenhuma das duas não tem fronteira.
+1. Presta um serviço que pode ser nomeado com um substantivo? Se o nome precisa de uma conjunção, pode haver duas responsabilidades.
+2. Encapsula mais de um classificador ou uma decisão que não cabe em uma função? Se encapsula apenas uma operação, deve ser uma função.
+3. Tem pelo menos uma interface provida ou requerida com nome? Um componente sem interface definida não tem uma fronteira clara.
 
-Duas restrições de nome vieram junto. Nome de componente não é nome de tecnologia, porque `Next.js` e `NestJS` são stack e entram no passo 4. E nome genérico como `Core`, `Common` ou `Shared` contradiz a definição de coesão dentro do próprio rótulo, já que coesão é número de responsabilidades.
+Também foram evitados nomes de tecnologia, como `Next.js` e `NestJS`, e nomes genéricos, como `Core`, `Common` ou `Shared`. As tecnologias aparecem no passo 4, e o nome do componente deve indicar sua responsabilidade.
 
 ### 1.2 Tier Front
 
@@ -43,9 +43,9 @@ Duas restrições de nome vieram junto. Nome de componente não é nome de tecno
 | `TemplateSet` | Guardar os templates de convite | HTML, CSS e imagem de Open Graph de cada template do ADR-0009 |
 | `ApiClient` | Falar com a API por um ponto só | Chamada HTTP tipada pelo contrato compartilhado do ADR-0004 e leitura do corpo de erro |
 
-**O sufixo é `Page` e não `View`, e o motivo é a tabela 7.3 do Guia da Arquitetura.** Ali a View é apenas a peça que exibe, e a resolução de rota, a escolha da View e a consulta periódica são o **Controller do MVC**. Os dois primeiros componentes carregam as duas peças da sua superfície, então chamá-los de View diria menos do que eles fazem e contrariaria o Vocabulário do guia, que reserva a palavra para a peça que roda no navegador. A parte do Controller que traduz evento do usuário em chamada HTTP está em `ApiClient`.
+O sufixo `Page` foi escolhido porque esses componentes incluem exibição, resolução de rota, seleção da View e consulta periódica. Na tabela 7.3 do Guia da Arquitetura, as três últimas tarefas pertencem ao Controller do MVC. O termo `View` fica reservado para a parte executada no navegador. `ApiClient` traduz os eventos do usuário em chamadas HTTP.
 
-`PublicInvitePage` roda partido entre dois lugares, conforme a seção 7.4 do guia. A metade de leitura roda no servidor do tier Front e a metade de escrita roda no navegador. É um componente só porque é uma responsabilidade só, e a divisão física aparece no passo 4, em dois artefatos.
+`PublicInvitePage` é dividido entre o servidor do tier Front, responsável pela leitura, e o navegador, responsável pela escrita, conforme a seção 7.4 do guia. A divisão física aparece no passo 4, em dois artefatos.
 
 ### 1.3 Tier API, camada de Apresentação
 
@@ -59,7 +59,7 @@ Duas restrições de nome vieram junto. Nome de componente não é nome de tecno
 | `RateLimitGuard` | Controlar tráfego na fronteira pública | A janela de tempo da medida 2 do ADR-0008, contada conforme a seção 4.1 do guia |
 | `HttpExceptionFilter` | Traduzir erro em protocolo, num ponto só | A tabela da seção 9.1 do guia e o formato único de erro da seção 9.3 |
 
-`SessionGuard` e `RateLimitGuard` estão aqui por determinação escrita. A seção 8 do Guia da Arquitetura registra que a sessão do anfitrião e o contador de limite de taxa do ADR-0008 são infraestrutura, ficaram fora do Diagrama de Classes de propósito e **seriam nomeados no diagrama de componentes**. Esta página cumpre o que foi pedido, que é nomear. Onde cada um guarda estado é decisão de ADR e está na seção 10.2.
+`SessionGuard` e `RateLimitGuard` representam a infraestrutura de sessão e de limite de taxa citada na seção 8 do Guia da Arquitetura e no ADR-0008. Por isso aparecem neste diagrama, mas não no Diagrama de Classes. As decisões sobre o estado de cada um estão na seção 10.2.
 
 ### 1.4 Tier API, camada de Domínio
 
@@ -72,7 +72,7 @@ Duas restrições de nome vieram junto. Nome de componente não é nome de tecno
 | `HostService` | Responder pela conta do anfitrião | `Host`, conferência de credencial e unicidade de email do UC001 |
 | `TemplateCatalog` | Guardar as regras de template que o Domínio precisa | `Template`, `ColorSetting` e `TextFieldLimit`, que sustentam a RN2 do UC003 |
 
-`TemplateCatalog` existe porque a página do Diagrama de Classes já apontou o problema. O ADR-0009 coloca os templates no tier Front, o fluxo alternativo do passo 3 do UC003 exige recusar texto acima do limite, e a tabela 9.1 do guia aloca essa validação no Domínio. Sem um componente de Domínio que conheça os limites, ou a validação sobe para a Apresentação, ou o tier API passa a importar do tier Front. As duas saídas são proibidas. De onde vem o dado que ele carrega está no passo 4, na seção 4.3.
+`TemplateCatalog` permite que o Domínio valide os limites de texto exigidos pelo UC003. Embora o ADR-0009 coloque os templates no tier Front, a tabela 9.1 do guia atribui essa validação ao Domínio. A origem dos dados do catálogo está descrita na seção 4.3.
 
 ### 1.5 Tier API, camada de Dados
 
@@ -82,7 +82,7 @@ Duas restrições de nome vieram junto. Nome de componente não é nome de tecno
 | `DietaryCategoryRepository` | Servir o dado de referência alimentar | `DietaryCategory` |
 | `HostRepository` | Persistir e consultar a conta do anfitrião | `Host` |
 
-A separação entre os dois primeiros não é escolha desta página. É a regra da seção 5.2 do Guia da Arquitetura, que diz que operação que não filtra por `inviteId` não pertence ao repositório da raiz de agregação.
+A separação entre `InviteRepository` e `DietaryCategoryRepository` segue a seção 5.2 do Guia da Arquitetura: operações que não filtram por `inviteId` ficam fora do repositório da raiz de agregação.
 
 ### 1.6 Tier Banco
 
@@ -98,9 +98,9 @@ O banco é tier, e a alocação dele em nó é assunto do item #60. Ele aparece 
 
 ## 2. Passo 2, interfaces providas e requeridas
 
-O passo pede lista de interfaces **e dos métodos expostos**. As assinaturas abaixo foram copiadas das tabelas 4.1, 4.2 e 4.3 do Guia da Arquitetura sem simplificar, porque o próprio guia registra que parâmetro omitido em tabela vira parâmetro ausente em código. O que não vem de lá está marcado como decisão nova.
+As assinaturas abaixo vêm das tabelas 4.1, 4.2 e 4.3 do Guia da Arquitetura e mantêm todos os parâmetros definidos nelas. Os nomes criados durante esta modelagem estão marcados como decisões novas.
 
-Convenção adotada, e ela é decisão nova desta página. **Nome de interface é o substantivo do serviço, em inglês, sem prefixo de letra.** Interface de contrato HTTP termina em `Http`, interface de operação de negócio termina em `Operations`, interface de persistência termina em `Store`. O Guia de Estilo fixa o idioma e não fixa a forma, então esta convenção precisa de aval do time.
+Como convenção, o nome da interface usa o substantivo do serviço em inglês, sem prefixo de letra. Contratos HTTP terminam em `Http`, operações de negócio em `Operations` e persistência em `Store`. O Guia de Estilo define o idioma, mas não esse formato, então a convenção ainda precisa ser aprovada pelo time.
 
 ### 2.1 Interfaces providas pelo tier Front
 
@@ -125,7 +125,7 @@ A operação de `TemplateAssets` é decisão nova. Ela existe para que a interfa
 | `RateLimit` | `RateLimitGuard` | `enforceReadLimit(publicToken)` e `enforceWriteLimit(publicToken, clientIp)` | `PublicRsvpController` |
 | `ErrorTranslation` | `HttpExceptionFilter` | `toErrorResponse(error)` | Os quatro controllers |
 
-**As duas operações de `RateLimit` são decisão nova, e elas existem para não apagar uma decisão do guia.** A seção 3.1 traz a assinatura única `enforceRateLimit(publicToken, clientIp)`, mas a seção 4.1 decidiu depois que **no caminho de leitura o limite conta por token de convite apenas**, porque ali o endereço de origem que a API enxerga é o do container do tier Front e contar por ele derrubaria a página do convite para todos ao mesmo tempo. Uma assinatura só esconderia essa decisão. Duas a deixam visível, e a seção 3.1 do guia precisa receber a correção.
+As duas operações de `RateLimit` foram separadas durante esta modelagem. A seção 3.1 do guia traz apenas `enforceRateLimit(publicToken, clientIp)`, mas a seção 4.1 determina que a leitura seja limitada somente pelo token do convite. Nesse fluxo, a API enxerga o IP do container do Front, e usá-lo no contador poderia bloquear a página para todos. A seção 3.1 do guia precisa receber a assinatura atualizada.
 
 `toErrorResponse(error)` também é decisão nova de nome. A operação é a tradução da tabela 9.1 do guia no formato único da seção 9.3, inclusive para as exceções levantadas pelo próprio framework.
 
@@ -151,27 +151,25 @@ As duas operações de `TemplateRules` são decisão nova desta página, porque 
 | `HostStore` | `HostRepository` | Busca do anfitrião por email e gravação da conta, sem assinatura fechada ainda | `HostService` |
 | `PostgresWire` | `invite_app` | Protocolo do PostgreSQL na porta padrão, mais o esquema | `InviteRepository`, `DietaryCategoryRepository` e `HostRepository` |
 
-**`findAttendanceByStatus(inviteId, statuses)` é decisão nova, e ela fecha um buraco.** A rota da lista de presença está na tabela 4.1 do guia e o serviço está na 4.2, mas a tabela 4.3 não tem consulta que os sustente, ou seja, `AttendanceService` requeria um contrato que não entregava o que ele precisa. A operação devolve uma linha por convidado com nome, status e número de acompanhantes, que é a ED1 do UC007, e recebe `statuses` de fora pelo mesmo motivo escrito na 4.3, que é não deixar o filtro virar SQL escrito dentro do repositório. O total de pessoas da RN1 é somado por `AttendanceService` sobre as linhas que já vieram para a tela, o que não contraria a regra do guia contra agregar em memória, porque aquela regra evita carregar linhas só para contá-las, e aqui elas são a própria resposta. A tabela 4.3 do guia precisa receber a mesma linha.
+`findAttendanceByStatus(inviteId, statuses)` foi incluída porque as tabelas 4.1 e 4.2 do guia previam a rota e o serviço da lista de presença, mas a tabela 4.3 não oferecia uma consulta correspondente. A operação devolve nome, status e número de acompanhantes para cada convidado, conforme a ED1 do UC007. O parâmetro `statuses` mantém o filtro fora do SQL do repositório. `AttendanceService` calcula o total da RN1 usando as mesmas linhas que serão exibidas. A tabela 4.3 do guia precisa ser atualizada com essa operação.
 
-### 2.5 O que não é interface nesta página
+### 2.5 Elementos que não são interfaces
 
-Vale escrever a regra, porque ela explica três ausências que um revisor procura.
+Três elementos foram mantidos fora da lista de interfaces:
 
-> **Tipo que atravessa a fronteira não é interface.** Interface especifica serviço, e serviço tem operação. Tipo é dado que viaja pelas operações que já existem.
+> Tipos representam dados trocados pelas operações. Interfaces representam serviços.
 
-São três os casos.
+1. **Catálogo de exceções do Domínio.** `ValidationError`, `InvalidInviteForPublication`, `NotInviteOwner`, `CapacityExceededError` e `InviteNotOpenError` são os tipos da seção 9.2 do guia. `HttpExceptionFilter` importa esses tipos para traduzi-los. Como eles não oferecem operações, não são interfaces providas.
 
-**O catálogo de exceções do Domínio.** `ValidationError`, `InvalidInviteForPublication`, `NotInviteOwner`, `CapacityExceededError` e `InviteNotOpenError` são os cinco tipos da seção 9.2 do guia. `HttpExceptionFilter` os importa para traduzi-los, o que é dependência para baixo, de tipo e não de serviço. Desenhá-los como interface provida criaria uma bolinha sem operação e sem componente que a realize, que é notação inválida.
+2. **Formato de erro da seção 9.3.** Ele é o corpo da resposta enviado pelas quatro interfaces `Http`, não um serviço separado consumido pelo `ApiClient`.
 
-**O formato único de erro da seção 9.3.** Ele é o corpo da resposta e viaja pelas quatro interfaces `Http` que os controllers publicam. Não é um quinto serviço que o `ApiClient` consuma à parte.
-
-**O contrato de tipos compartilhado do ADR-0004.** A consequência positiva registrada lá é que o contrato aparece no diagrama de componentes como interface real, e é o que acontece. Ele não é uma interface própria, ele é **o que tipa as interfaces `PublicInviteHttp`, `HostInviteHttp`, `HostDietaryHttp`, `AuthHttp` e `InviteApi`**. O que o ADR promete é que a fronteira entre os tiers é tipo e não convenção documentada, e cinco interfaces tipadas cumprem isso. O passo 4 trata do artefato.
+3. **Contrato de tipos compartilhado do ADR-0004.** O contrato tipa `PublicInviteHttp`, `HostInviteHttp`, `HostDietaryHttp`, `AuthHttp` e `InviteApi`, mas não é uma interface separada. O artefato correspondente aparece no passo 4.
 
 ---
 
 ## 3. Passo 3, dependências entre componentes
 
-Toda dependência do desenho é uma interface requerida encaixada numa interface provida. Não existe seta solta entre duas caixas, porque em [Ian04] o comportamento do componente é definido pelas duas interfaces, e duas caixas ligadas por uma seta sem nome não dizem o que uma pede à outra.
+Cada dependência é representada pelo encaixe de uma interface requerida em uma interface provida. Não há setas sem identificação entre componentes.
 
 ### 3.1 Dentro do tier Front
 
@@ -185,7 +183,7 @@ Toda dependência do desenho é uma interface requerida encaixada numa interface
 
 `HostPanelPage` requer `TemplateAssets` por causa dos passos 1 e 4 do UC003, em que o painel exibe a prévia do convite e a atualiza a cada mudança. É o mesmo ativo que o convite público usa, e é o primeiro caso de reuso do desenho.
 
-`TemplateSet` não requer nada. Ele é ativo estático e é isso que o ADR-0009 quis dizer ao tirar o upload do sistema.
+`TemplateSet` não requer outra interface, pois contém apenas ativos estáticos, conforme o ADR-0009.
 
 ### 3.2 Dentro da Apresentação, e da Apresentação para o Domínio
 
@@ -204,11 +202,11 @@ Toda dependência do desenho é uma interface requerida encaixada numa interface
 | `AuthController` | `ErrorTranslation` | `HttpExceptionFilter` |
 | `AuthController` | `HostOperations` | `HostService` |
 
-**Os quatro controllers requerem `ErrorTranslation` porque o corpo de erro que sai pelas rotas deles é escrito pelo filtro.** No NestJS o encaixe é registro global no arranque da aplicação e não parâmetro de construtor, que é a única exceção à regra escrita na seção 4.2. O desenho com quatro soquetes numa bolinha só é a forma de dizer que existe um ponto único de tradução, que é o que a seção 9.2 do guia exige, e é coerente com a seção 5.3, que registra o filtro como a única coisa compartilhada entre o pacote público e o pacote autenticado.
+Os quatro controllers usam `ErrorTranslation` porque o filtro gera o corpo das respostas de erro. No NestJS, o filtro é registrado globalmente na inicialização em vez de ser recebido pelo construtor, que é a exceção descrita na seção 4.2. Os quatro encaixes representam o ponto único de tradução exigido pela seção 9.2 do guia.
 
 A ordem de chamada do `PublicRsvpController` está no diagrama de sequência do UC005 e é parte do contrato dele. O limite de taxa primeiro, `parseRequest` depois, e só então o Domínio.
 
-**O pacote público continua com dois serviços de Domínio e nada mais.** `PublicRsvpController` requer `RsvpOperations` e ponto, e aquela interface tem exatamente as duas operações que a seção 5.3 do guia autoriza. A regra vira, no desenho, contagem de soquetes.
+O pacote público mantém apenas os dois serviços de Domínio previstos na seção 5.3 do guia. `PublicRsvpController` requer `RsvpOperations`, que oferece essas duas operações.
 
 ### 3.3 Do Domínio para os Dados, e dentro do Domínio
 
@@ -233,27 +231,27 @@ A ordem de chamada do `PublicRsvpController` está no diagrama de sequência do 
 
 ### 3.5 Verificação da regra do ADR-0001
 
-A regra é uma só. Domínio e Dados nunca dependem da Apresentação.
+A regra verificada aqui é que Domínio e Dados não dependem da Apresentação.
 
 São **31 dependências** no desenho, distribuídas assim: 8 dentro do tier Front, 7 dentro da Apresentação, 5 da Apresentação para o Domínio, 1 dentro do Domínio, 7 do Domínio para os Dados e 3 dos Dados para o tier Banco.
 
-**Nenhuma sobe.** Todo componente de Domínio tem soquete apenas para interface de Dados ou de Domínio, e todo componente de Dados tem soquete apenas para `PostgresWire`. Nenhum controller conhece repositório, o que é a leitura estrita da seção 6.2 do guia virando contagem de linha de tabela.
+Nenhuma dependência aponta para uma camada superior. Os componentes de Domínio usam somente interfaces de Dados ou do próprio Domínio, e os componentes de Dados usam apenas `PostgresWire`. Os controllers não acessam repositórios, conforme a seção 6.2 do guia.
 
 Sete das 31 não cruzam camada, são as de dentro da Apresentação, e as outras 24 descem.
 
-O ponto que mais parece exceção não está desenhado, e por isso fica dito aqui. **`HttpExceptionFilter` conhece os cinco tipos de erro do Domínio**, conforme a seção 2.5. Essa dependência desce, porque ele importa os tipos para traduzi-los em status. O que subiria seria um tipo de erro do Domínio carregando número de status dentro, e a seção 9.2 do guia proíbe isso.
+`HttpExceptionFilter` importa os cinco tipos de erro do Domínio citados na seção 2.5 para convertê-los em status HTTP. Essa dependência continua apontando para baixo. Os tipos do Domínio não carregam códigos HTTP, conforme a seção 9.2 do guia.
 
 ---
 
 ## 4. Passo 4, artefatos por componente
 
-Artefato é o que de fato é implantado. Componente é unidade de projeto, artefato é unidade de entrega, e um artefato costuma carregar vários componentes.
+Componentes são unidades de projeto e artefatos são unidades de entrega e podem conter vários componentes.
 
-A distinção do ADR-0002 vale inteira aqui. **As três camadas lógicas do back-end são um artefato só.** Desenhar três artefatos dentro do container da API repetiria o erro que o ADR-0002 foi escrito para evitar.
+Conforme o ADR-0002, as três camadas lógicas do back-end fazem parte de um único artefato dentro do container da API.
 
 ### 4.1 Inventário de artefatos
 
-A implementação começa na Sprint 3, então **nenhum destes artefatos existe hoje no repositório**. A coluna de situação diz de onde cada um virá, para a página não apresentar plano como fato.
+A implementação começa na Sprint 3. A coluna Situação diferencia o que já existe do que ainda está previsto.
 
 | Artefato | Tipo | Como nasce | Situação |
 |---|---|---|---|
@@ -265,10 +263,10 @@ A implementação começa na Sprint 3, então **nenhum destes artefatos existe h
 | `invite-app-api:<tag>` | Imagem | Build do `Dockerfile` da API | Prevista |
 | `api.bundle` | Executável | Compilação do TypeScript da API, com as três camadas | Prevista |
 | `contract/` | Módulo de fonte compartilhado | Versionado no repositório, compilado para dentro dos dois lados | Prevista, decisão nova desta página |
-| `migrations/` | Script | Versionado no repositório, aplicado contra o banco | Prevista, decisão nova desta página |
-| `postgres:<tag>@<digest>` | Imagem | Obtida do registry, não construída pelo time | Prevista |
-| `docker-compose.yml` | Especificação de implantação | Versionado no repositório | Prevista, o Sprint-2.md a registra como entrega desta sprint, ainda não concluída |
-| `.env`, a partir de um `.env.example` versionado | Configuração | Preenchido por quem sobe o ambiente | Prevista, hoje só aparece no material do T1 como exemplo de segredo vazando em camada de imagem |
+| `migrations/` | Script | Versionado no repositório, aplicado contra o banco | Diretório criado, os scripts SQL entram com a implementação |
+| `postgres:17-alpine` | Imagem | Obtida do registry, não construída pelo time | Definida no Compose |
+| `docker-compose.yml` | Especificação de implantação | Versionado no repositório | Concluída na Sprint 2 |
+| `.env`, a partir de um `.env.example` versionado | Configuração | Preenchido por quem sobe o ambiente | Concluída na Sprint 2 |
 
 ### 4.2 Componente para artefato
 
@@ -286,19 +284,19 @@ A implementação começa na Sprint 3, então **nenhum destes artefatos existe h
 | `InviteRepository`, `DietaryCategoryRepository`, `HostRepository` | `api.bundle` |
 | `invite_app` | `postgres:<tag>@<digest>`, com o esquema vindo de `migrations/` |
 
-No nível de arquivo de código, cada componente da API é uma pasta de módulo do NestJS, que é a forma concreta que o ADR-0004 escolheu para tornar a fronteira visível em revisão de código. O soquete do desenho é o parâmetro declarado no construtor, com a exceção do filtro global registrada na seção 3.2.
+No código, cada componente da API corresponde a uma pasta de módulo do NestJS, conforme o ADR-0004. As interfaces requeridas aparecem como parâmetros do construtor, com exceção do filtro global citado na seção 3.2.
 
-**`PublicInvitePage` aparece em dois artefatos e isso não é erro de tabela.** A parte que renderiza o convite roda no servidor e a parte do formulário roda no navegador, que é a assimetria descrita na seção 7.4 do guia. O build do Next.js separa as duas saídas.
+`PublicInvitePage` aparece em dois artefatos porque a renderização roda no servidor e o formulário roda no navegador, conforme a seção 7.4 do guia. O build do Next.js gera as duas saídas.
 
-**`TemplateSet` é o único componente com artefato próprio fora de um bundle.** Acrescentar um template muda `templates/`, muda a imagem do front e não toca o artefato da API, que é exatamente o que o ADR-0009 pediu ao chamar os templates de ativo versionado.
+`TemplateSet` é o único componente com artefato próprio fora de um bundle. Adicionar um template altera `templates/` e a imagem do Front, sem mudar o artefato da API, conforme o ADR-0009.
 
-### 4.3 O que não é artefato implantado
+### 4.3 Elementos que não são implantados separadamente
 
-**O contrato de tipos do ADR-0004 não é artefato de implantação, e mesmo assim é interface.** As duas coisas convivem. Tipo de TypeScript é apagado na compilação, então não existe arquivo dele rodando em lugar nenhum e ele não aparece no diagrama de implantação. O que aparece nesta página são as cinco interfaces que ele tipa, conforme a seção 2.5, e é assim que a consequência positiva declarada no ADR-0004 se cumpre. A exceção é o trecho que carrega valor de execução, como o enum `RsvpStatus`, que é compilado para dentro dos dois bundles e passa a existir em duas cópias. Isso não é duplicação a corrigir, é o efeito de empacotar dois tiers a partir de uma fonte só.
+O contrato de tipos do ADR-0004 não é implantado como arquivo separado. Os tipos do TypeScript são removidos na compilação, mas continuam definindo as cinco interfaces citadas na seção 2.5. Valores de execução, como o enum `RsvpStatus`, são compilados dentro dos dois bundles e, portanto, aparecem em duas cópias.
 
-**O catálogo de templates tem dois consumidores, e é por isso que `contract/` existe.** `TemplateSet` carrega HTML, CSS e imagem, e mora em `templates/`. `TemplateCatalog` carrega código, nome de exibição, cores padrão e limites de texto por campo. Os dois precisam concordar sobre quais templates existem e qual é o limite de cada campo, e o único lugar que os dois builds podem ler sem que a API importe do front é o módulo compartilhado. É a resposta concreta ao ponto de atenção que o Diagrama de Classes levantou, que diz que o catálogo precisa estar disponível também no tier API. **Nada verifica que `templates/` e `contract/` continuem coerentes**, e isso está na seção 10.2.
+O catálogo de templates tem dois consumidores. `TemplateSet`, em `templates/`, contém HTML, CSS e imagens. `TemplateCatalog` contém código, nome de exibição, cores padrão e limites de texto. O módulo `contract/` compartilha os dados necessários entre os dois builds sem fazer a API importar arquivos do Front. Ainda não há uma verificação automática de consistência entre `templates/` e `contract/`, e essa pendência está na seção 10.2.
 
-**Os `Dockerfile` não são artefatos implantados.** Eles produzem as imagens, e a imagem é que entra no diagrama de implantação, fixada por tag e por digest.
+Os arquivos `Dockerfile` geram as imagens, mas não são implantados. O diagrama de implantação mostra as imagens identificadas por tag e digest.
 
 ---
 
@@ -308,61 +306,61 @@ No nível de arquivo de código, cada componente da API é uma pasta de módulo 
 
 ### Como ler
 
-**A figura usa quatro elementos, e apenas quatro.**
+O diagrama usa quatro elementos:
 
-**Componente** é a caixa com o ícone de retângulo com duas abas no canto. É a unidade que presta serviço. As 21 caixas têm a mesma forma, porque todas são a mesma coisa.
+**Componente:** caixa com duas abas no canto, usada para representar uma unidade que presta serviço.
 
-**Interface provida** é a bolinha ligada ao componente por uma linha. Ela declara o serviço que aquele componente oferece. O nome sempre está escrito, porque bolinha sem nome não diz o que foi oferecido.
+**Interface provida:** círculo ligado ao componente, com o nome do serviço oferecido.
 
-**Interface requerida** é o meio-círculo encaixando na bolinha. Ele declara o serviço que aquele componente consome. Toda dependência do desenho está nesse par, e não existe uma única seta ligando caixa em caixa.
+**Interface requerida:** semicírculo encaixado em uma interface provida, indicando o serviço consumido.
 
-**Pacote** é o retângulo com aba no canto superior esquerdo. Ele agrupa e não presta serviço, então não tem interface própria. São seis, três para os tiers do ADR-0002 e três para as camadas do ADR-0001.
+**Pacote:** retângulo com aba no canto superior esquerdo. Os seis pacotes agrupam os três tiers do ADR-0002 e as três camadas do ADR-0001.
 
-**Não há porta na figura, e a ausência é escolha.** Porta marca o ponto em que o ambiente toca a parte interna de um componente, e o que ela acrescentaria aqui já está dito por outro elemento, que é a fronteira do pacote de tier com as interfaces que a atravessam. Porta com número e com mapeamento para o host é assunto do diagrama de implantação, item #60. Vale registrar que o bloco C do roteiro do T1 apresenta a porta da UML como a porta publicada do container, e as duas leituras convivem porque tratam de diagramas diferentes, uma da visão estática de módulos e outra da topologia de execução.
+As portas não aparecem nesta figura. A fronteira do pacote e as interfaces mostram os pontos de contato necessários para a visão de componentes. Números e mapeamentos de porta fazem parte do diagrama de implantação, item #60. O bloco C do roteiro do T1 usa portas UML no contexto da topologia de execução, que é uma visão diferente.
 
-**A figura não tem legenda, e isso é regra do projeto.** Toda explicação de símbolo fica nesta seção, fora da imagem, como já foi feito no diagrama de camadas do Guia da Arquitetura. A notação é UML padrão, definida na própria Aula 05, e não depende de legenda para ser lida.
+Por regra do projeto, a explicação dos símbolos fica nesta seção e não dentro da figura. A mesma abordagem foi usada no diagrama de camadas do Guia da Arquitetura.
 
-### O que a figura afirma
+### Decisões mostradas na figura
 
-**Os três agrupamentos externos são tiers, e eles marcam origem de entrega, não processo em execução.** Isso precisa ficar dito porque `front-client.bundle` sai do tier Front e roda no navegador, conforme a seção 4.2, e o POST do UC005 parte dali direto para a API sem tocar o tier Front. O navegador não é tier, conforme o Vocabulário do guia, e os dois caminhos de rede estão desenhados no diagrama de camadas da seção 2 do guia e serão alocados em nó no item #60.
+Os três agrupamentos externos representam tiers e indicam a origem dos artefatos, não os processos em execução. `front-client.bundle`, por exemplo, sai do tier Front e roda no navegador. O POST do UC005 vai do navegador para a API. Os caminhos de rede estão no diagrama de camadas da seção 2 do guia e serão associados aos nós no item #60.
 
-**O navegador não aparece.** Ele não é componente e não é tier. `PublicInvitePageHttp` e `HostPanelPageHttp` são bolinhas sem ninguém encaixado nelas, e é assim que se lê um serviço publicado para o ambiente.
+O navegador não aparece porque não é componente nem tier. As interfaces `PublicInvitePageHttp` e `HostPanelPageHttp` sem um consumidor ligado representam serviços publicados para o ambiente.
 
-**As duas guardas aparecem sem nenhuma interface requerida, e isso é declaração e não esquecimento.** Onde `SessionGuard` e `RateLimitGuard` guardam estado ainda não foi decidido, conforme os itens da seção 10.2. A figura não desenha dependência que ninguém decidiu. Fica registrado que as duas alternativas sem soquete novo são cookie assinado validado na própria guarda e contador na memória do processo, e que qualquer alternativa com tabela acrescentaria à Apresentação uma dependência de Dados, que é o que a seção 6.2 do guia proíbe. Quando o ADR sair, a figura é revista.
+`SessionGuard` e `RateLimitGuard` não têm interfaces requeridas porque o armazenamento de estado ainda não havia sido definido. As alternativas que mantêm o desenho atual são validar o cookie na própria guarda e guardar o contador na memória do processo. Uma solução com tabela criaria uma dependência entre Apresentação e Dados, proibida pela seção 6.2 do guia. O diagrama deve ser revisto se essa decisão mudar.
 
-**`ErrorTranslation` recebe quatro soquetes.** É o ponto único de tradução da seção 9.2 do guia aparecendo como encaixe em vez de afirmação.
+Os quatro encaixes em `ErrorTranslation` representam o ponto único de tradução definido na seção 9.2 do guia.
 
-**A dependência só desce.** A figura foi montada com o Front em cima, Apresentação, Domínio, Dados e Banco embaixo, e todo meio-círculo que cruza camada aponta para baixo. Não existe bolinha da Apresentação encaixada em soquete de Domínio ou de Dados.
+As dependências entre camadas apontam para baixo: Front, Apresentação, Domínio, Dados e Banco. Nenhuma interface da Apresentação é consumida pelo Domínio ou pelos Dados.
 
 ---
 
-## 6. Passo 6, refinamento, o que mudou e por quê
+## 6. Passo 6, ajustes feitos no diagrama
 
-O desenho preliminar saiu das tasks #64 a #67 e foi mexido em oito pontos antes de fechar. Cada mudança abaixo tem o motivo e o que ela obriga a corrigir em outro artefato.
+Depois das tasks #64 a #67, o desenho preliminar recebeu os nove ajustes abaixo:
 
-**1. `TokenGenerator` foi descartado como componente.** `generatePublicToken()` e `generatePersonalToken()` aparecem como autochamada dentro do service nos diagramas de sequência do UC004 e do UC005. Pelo teste da seção 1.1, elas reprovam na segunda pergunta, porque encapsulam função e não decisão. Elas continuam sendo responsabilidade do Domínio, dentro de `InviteService` e de `RsvpService`, como os diagramas de sequência já mostram.
+1. **Remoção de `TokenGenerator`.** `generatePublicToken()` e `generatePersonalToken()` são funções internas de `InviteService` e `RsvpService`, como mostram os diagramas de sequência do UC004 e do UC005. Não justificam um componente separado pelos critérios da seção 1.1.
 
-**2. `CsvRenderer` foi descartado pelo mesmo teste.** `renderCsv(rows)` e `neutralizeFormulaPrefix(field)` são serialização de saída, ficam dentro de `DietaryController` e não criam fronteira de dependência nova. Descartar um e manter o outro seria aplicar o critério de forma desigual, e o critério é o que sustenta a granularidade da entrega inteira.
+2. **Remoção de `CsvRenderer`.** `renderCsv(rows)` e `neutralizeFormulaPrefix(field)` tratam da serialização de saída e permanecem em `DietaryController`. Elas não criam uma nova fronteira de dependência.
 
-**3. `listAttendance` ganhou `AttendanceService` em vez de ficar em `InviteService`.** A tabela 4.2 do guia lista a operação sem dono, e o candidato natural era `InviteService`, que já carrega criação, personalização, publicação e despublicação. Juntar a leitura do painel àquilo daria cinco responsabilidades a um componente, o que contradiz a definição de coesão, que é contável e ligada ao princípio da responsabilidade única. A lista de presença muda por motivo próprio, que é o painel e o intervalo de consulta do ADR-0007, e não pelo ciclo de vida do convite. A consequência é que a tabela 4.2 do guia deve registrar `AttendanceService` como dono.
+3. **Criação de `AttendanceService` para `listAttendance`.** `InviteService` já cuida da criação, personalização, publicação e despublicação. A lista de presença muda por motivos ligados ao painel e ao intervalo de consulta do ADR-0007, então ficou em um serviço próprio. A tabela 4.2 do guia deve registrar esse componente como responsável.
 
-**4. Os componentes do tier Front ficaram `Page` e não `View`.** O primeiro rascunho usava o sufixo `View`, que é o vocabulário das linhas de vida dos diagramas de sequência. Não serve aqui. A tabela 7.3 do guia classifica a resolução de rota, a escolha da View e a consulta periódica como **Controller do MVC**, e as duas caixas do front carregam isso junto com a exibição. `Page` nomeia a superfície inteira sem prometer que ali existe só uma das peças do padrão, e o Vocabulário do guia avisa que misturar os nomes torna a leitura ilegível.
+4. **Troca do sufixo `View` por `Page` no Front.** Esses componentes incluem tarefas de Controller do MVC, além da exibição. `Page` representa melhor a superfície completa e evita confusão com as linhas de vida dos diagramas de sequência.
 
-**5. `DietaryCategoryRepository` entrou separado do `InviteRepository`.** É a aplicação da regra da seção 5.2 do guia. Isso obrigou uma correção nos fontes `diagrama-sequencia-uc005.puml` e `diagrama-sequencia-uc008.puml`, que mostravam `listDietaryCategories()` dentro de `InviteRepository` em três chamadas ao todo. Os três diagramas de sequência ganharam a linha de vida do novo repositório e foram gerados de novo.
+5. **Separação de `DietaryCategoryRepository` e `InviteRepository`.** A mudança aplica a regra da seção 5.2 do guia. Os arquivos `diagrama-sequencia-uc005.puml` e `diagrama-sequencia-uc008.puml` foram atualizados para mover `listDietaryCategories()` ao novo repositório.
 
-**6. Os três tiers ficaram como agrupamento e não viraram caixa de componente.** A primeira versão desenhava Front, API e Banco como componentes com porta publicada e variável de ambiente como interface requerida. Isso é o assunto do diagrama de implantação, onde nó, dispositivo e link de comunicação têm notação própria. Mantidas as duas leituras separadas, as duas entregas não colidem. Essa é também a leitura que o bloco C do roteiro do T1 apresenta, e a seção 5 registra por que as duas convivem.
+6. **Uso de agrupamentos para os três tiers.** Front, API e Banco não são componentes. Portas, variáveis de ambiente, nós e links pertencem ao diagrama de implantação. A seção 5 explica a separação entre as duas visões.
 
-**7. O catálogo de erros e o formato de erro saíram da figura.** A primeira versão desenhava `DomainErrors` como interface provida pela camada de Domínio e `ApiErrorFormat` como interface provida pelo filtro. Nenhuma das duas tem operação, e a primeira ainda ficava sem componente que a realizasse, porque pacote não realiza interface. As duas viraram prosa na seção 2.5, e o filtro passou a prover `ErrorTranslation`, que é serviço com operação.
+7. **Remoção de `DomainErrors` e `ApiErrorFormat` da figura.** Nenhum dos dois possui operações. Eles passaram a ser descritos na seção 2.5, enquanto o filtro fornece `ErrorTranslation` como serviço.
 
-**8. As portas saíram da figura.** A primeira versão punha porta nas duas páginas do front, nas quatro rotas da API e no acesso ao banco. Sete componentes ganhavam corpo de caixa grande e os outros catorze ficavam compactos, o que faz o mesmo tipo de elemento aparecer com duas formas e sugere componente composto onde não há. O critério de porta, com número e mapeamento, é do item #60.
+8. **Remoção das portas da figura.** Números e mapeamentos de porta serão tratados no item #60. Mantê-los aqui também fazia componentes do mesmo tipo aparecerem com formas diferentes.
 
-**9. O fonte do UC004 usa um nome de erro fora do catálogo.** O `diagrama-sequencia-uc004.puml` escreve `InviteNotPublished ou NotInviteOwner` no ramo de despublicar, e `InviteNotPublished` não está entre os cinco tipos da seção 9.2 do guia. A tabela 9.1 mapeia esse caso para `InviteNotOpenError`. Esta página adota o catálogo do guia, e o fonte foi corrigido junto com os outros dois.
+9. **Correção do erro usado no UC004.** O arquivo `diagrama-sequencia-uc004.puml` usava `InviteNotPublished`, que não faz parte do catálogo da seção 9.2 do guia. O nome foi trocado por `InviteNotOpenError`, conforme a tabela 9.1.
 
 ---
 
 ## 7. Passo 7, revisão por pares
 
-O passo é do método e não é formalidade. A lista abaixo é o roteiro de revisão, e cada item é uma pergunta que o revisor responde com sim ou não olhando a figura e as tabelas.
+A revisão usa a lista abaixo. Cada item deve ser respondido com sim ou não a partir da figura e das tabelas.
 
 | # | O que verificar | Onde olhar |
 |---|---|---|
@@ -377,9 +375,9 @@ O passo é do método e não é formalidade. A lista abaixo é o roteiro de revi
 | 9 | Todo componente tem artefato associado | Seção 4.2 |
 | 10 | Nada dentro da figura é frase, nota ou legenda | Figura |
 
-Os itens 1 e 2 se conferem na figura em quase todos os pontos. Nos dois feixes mais densos, os quatro soquetes de `ErrorTranslation` e os quatro de `InviteStore`, a contagem a olho é difícil, e a conferência vale pelas tabelas das seções 2 e 3.
+Nos trechos mais densos, com quatro encaixes em `ErrorTranslation` e quatro em `InviteStore`, a conferência deve ser feita pelas tabelas das seções 2 e 3.
 
-**Pontos que precisam de decisão do time e não só de leitura**, porque a revisão não resolve sozinha: as decisões novas da seção 10.1, a criação do `AttendanceService` e a separação das duas operações de `RateLimit`.
+O time ainda precisa aprovar as decisões da seção 10.1, incluindo a criação de `AttendanceService` e a separação das duas operações de `RateLimit`.
 
 Registro da revisão, a preencher na cerimônia:
 
@@ -391,7 +389,7 @@ Registro da revisão, a preencher na cerimônia:
 
 ## 8. Coesão e acoplamento dos componentes
 
-Em [Ian04], coesão trata do **número de responsabilidades** de um componente e está ligada ao princípio da responsabilidade única, e acoplamento trata do **grau de dependência** de um componente em relação aos outros. As duas definições são contáveis, então esta seção conta. A seção 5 do Guia da Arquitetura já fez o mesmo para as camadas, e a frase de lá vale aqui inteira: afirmar coesão e acoplamento sem contar nada é elogio, e elogio não reprova código em revisão.
+Em [Ian04], coesão está ligada ao número de responsabilidades de um componente, enquanto acoplamento indica seu grau de dependência em relação aos demais. Esta seção usa as quantidades de responsabilidades e interfaces para avaliar os dois pontos, seguindo a abordagem da seção 5 do Guia da Arquitetura.
 
 ### 8.1 Os números
 
@@ -405,21 +403,21 @@ São **21 componentes**, **21 interfaces**, todas com dono único, e **31 depend
 | 3 interfaces requeridas | 2 | `PublicRsvpController`, `DietaryController` |
 | 4 interfaces requeridas | 2 | `ApiClient`, `InviteController` |
 
-A coluna soma 21 componentes e as faixas somam 31 soquetes, que é a mesma conta da seção 3.5. A média é de 1,5 interface requerida por componente. Nenhum componente conhece mais do que os que precisa para o próprio caso de uso.
+As faixas totalizam 21 componentes e 31 interfaces requeridas, os mesmos números da seção 3.5. A média é de 1,5 interface requerida por componente.
 
-**`ApiClient` é um dos dois mais acoplados e isso é escolha, não descuido.** Ele concentra as quatro interfaces HTTP para que as duas páginas não conheçam rota nem formato de erro. Tirar o componente não diminui o acoplamento, apenas espalha os quatro soquetes por duas caixas que deveriam cuidar de exibição.
+`ApiClient` é um dos componentes mais acoplados porque concentra as quatro interfaces HTTP. Com isso, as duas páginas não precisam conhecer rotas nem formatos de erro. Removê-lo apenas distribuiria essas dependências entre as páginas.
 
 ### 8.2 Coesão, componente por componente
 
-Cada rótulo da figura nomeia uma responsabilidade. Dois casos merecem atenção declarada, porque são os que ficam mais perto do limite.
+Cada componente tem uma responsabilidade identificada. Dois deles merecem acompanhamento:
 
-**`InviteController` tem quatro interfaces requeridas** e atende três rotas, que são as três de `HostInviteHttp`. Continua coeso porque a responsabilidade é uma, expor o recurso convite ao anfitrião pela rede, e as três rotas mudam pelo mesmo motivo, que é mudança de contrato HTTP. Quando as rotas do UC002 e do UC003 existirem, ele passa a cinco rotas e o teste precisa ser refeito.
+`InviteController` requer quatro interfaces e atende as três rotas de `HostInviteHttp`. Sua responsabilidade é expor o recurso de convite ao anfitrião. Quando forem criadas as rotas do UC002 e do UC003, a coesão deverá ser reavaliada.
 
-**`InviteService` é o componente a vigiar.** Depois do refinamento ele cuida do ciclo de vida do convite, o que reúne criação, personalização, publicação e despublicação. São quatro operações e um motivo de mudança só, a regra do convite. Se a personalização ganhar regra própria, por exemplo validação de paleta ou versionamento de template, o motivo de mudança se separa e o componente deve ser dividido. O teste é o mesmo do refinamento, perguntar se as operações mudam pelo mesmo motivo.
+`InviteService` cuida de criação, personalização, publicação e despublicação. Essas operações pertencem ao ciclo de vida do convite. Se a personalização ganhar regras próprias, como validação de paleta ou versionamento de template, pode ser necessário separar o componente.
 
-### 8.3 Reuso, desenhado e não afirmado
+### 8.3 Reuso
 
-A pergunta de motivação do diagrama, na Aula 05, é como representar arquiteturas baseadas em unidades reusáveis. Na notação, reuso é uma bolinha com mais de um meio-círculo encaixado. São sete no desenho.
+Na notação usada, uma interface com mais de um consumidor indica reuso. O diagrama tem sete casos:
 
 | Interface | Consumidores |
 |---|---|
@@ -431,15 +429,15 @@ A pergunta de motivação do diagrama, na Aula 05, é como representar arquitetu
 | `TemplateAssets` | 2, `PublicInvitePage` e `HostPanelPage` |
 | `InviteApi` | 2, `PublicInvitePage` e `HostPanelPage` |
 
-As duas linhas de repositório não são novidade desta página. A seção 1.6 do Guia da Arquitetura já registrava `listDietaryCategories()` consumida por dois serviços e `findById` consumida por dois serviços como evidência de que a camada serve a mais de um serviço de nível mais alto. O que a figura acrescenta é mostrar isso como encaixe, e não como afirmação em tabela.
+A seção 1.6 do Guia da Arquitetura já registrava o uso de `listDietaryCategories()` e `findById` por mais de um serviço. A figura representa essas relações por meio dos encaixes de interface.
 
-### 8.4 Substituibilidade, com a exceção que já está escrita
+### 8.4 Substituibilidade
 
-A segunda pergunta de motivação da aula é sobre unidades substituíveis, e a resposta honesta tem duas partes.
+Há dois casos a considerar:
 
-**São substituíveis, respeitada a compatibilidade da interface:** os quatro componentes do tier Front, os quatro controllers, `SessionGuard`, `RateLimitGuard`, `HttpExceptionFilter` e os seis componentes do Domínio. Uma implementação nova das mesmas operações entrega o mesmo comportamento.
+Os quatro componentes do tier Front, os quatro controllers, `SessionGuard`, `RateLimitGuard`, `HttpExceptionFilter` e os seis componentes do Domínio podem ser substituídos por implementações compatíveis com as mesmas interfaces.
 
-**`InviteRepository` não é substituível apenas pela assinatura.** `saveRsvpWithinCapacity` garante o teto de capacidade dentro de transação, com bloqueio de linha, e `publishIfPublishable` carrega o predicado no próprio `UPDATE`. Uma substituta precisa oferecer a mesma garantia, não apenas a mesma lista de parâmetros. Isso já está registrado como Parcial na seção 1.6 do Guia da Arquitetura, e pelo mesmo motivo `invite_app` não é substituível por qualquer banco.
+`InviteRepository` também exige garantias de comportamento. `saveRsvpWithinCapacity` verifica o teto dentro de uma transação com bloqueio de linha, e `publishIfPublishable` inclui a condição no próprio `UPDATE`. Uma implementação substituta precisa manter essas garantias, além da assinatura. A mesma restrição se aplica à substituição de `invite_app`, conforme a seção 1.6 do Guia da Arquitetura.
 
 ---
 
@@ -454,9 +452,9 @@ A segunda pergunta de motivação da aula é sobre unidades substituíveis, e a 
 
 ---
 
-## 10. O que ficou em aberto
+## 10. Pendências
 
-### 10.1 Decisões novas desta página, que precisam de aval do time
+### 10.1 Decisões que precisam de aprovação do time
 
 1. A convenção de nome de interface da seção 2.
 2. `AttendanceService` como dono de `listAttendance`.
@@ -469,16 +467,14 @@ A segunda pergunta de motivação da aula é sobre unidades substituíveis, e a 
 
 ### 10.2 Pendências abertas
 
-1. **As correções que esta página obrigou no guia já foram aplicadas, e duas delas esta página tinha errado.** O [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) ganhou as seções 9.3, 9.4, 9.5, 10 e 11, que antes eram citadas pelo nome sem existirem, e a seção 11.2 de lá registra correção por correção. A tabela 4.2 ganhou coluna de componente dono, e a correção era coluna e não linha, porque `listAttendance` já era uma das sete linhas. A tabela 4.3 ganhou a linha de `findAttendanceByStatus` e coluna de repositório. A seção 3.1 ganhou a assinatura dupla do limite de taxa.
+1. **Correções no Guia da Arquitetura.** Foram adicionadas as seções 9.3, 9.4, 9.5, 10 e 11, antes citadas mas inexistentes. A tabela 4.2 recebeu uma coluna para o componente responsável, a tabela 4.3 recebeu `findAttendanceByStatus` e uma coluna de repositório, e a seção 3.1 passou a mostrar as duas assinaturas de limite de taxa. A seção 11.2 do guia registra cada alteração.
 
-   Os dois erros desta página estavam na seção 5.1 do guia. **O "sete serviços de Domínio" não muda**, porque dono é componente e não serviço, e nenhum serviço entrou nem saiu da tabela 4.2. E **a saída de `listDietaryCategories` para `DietaryCategoryStore` não altera contagem nenhuma**, porque o Domínio continua chamando a operação. O que muda o número é só a entrada de `findAttendanceByStatus`, e nove vira dez.
-2. **As rotas do UC002 e do UC003 não existem em artefato nenhum.** A tabela 4.1 tem sete rotas e nenhuma cria convite nem salva personalização. `InviteController` e `InviteService` já carregam a responsabilidade nesta página, e a origem precisa ser corrigida.
-3. **O UC001 não cabe nos dois pacotes da Apresentação que o guia define.** `AuthController` não é do pacote público, porque a regra da seção 5.3 restringe aquele pacote a dois serviços, e não é do pacote autenticado, porque a rota de entrada é anterior à sessão. Falta decidir se entra um terceiro pacote.
-4. **Se a API ganhar réplica, o contador do `RateLimitGuard` deixa de valer.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu contador em memória do processo, e com mais de uma instância cada uma contaria a própria janela. A hipótese de réplica vem do bloco C do roteiro do T1 e está registrada na seção 9 do [Diagrama de Implantação](Diagrama-de-Implantação.md). Enquanto houver uma instância só, as duas guardas continuam sem interface requerida e a figura desta página vale como está.
-5. **As operações de `HostOperations` e de `HostStore` não têm assinatura fechada**, porque o UC001 não tem diagrama de sequência.
-6. **Nada garante que `templates/` e `contract/` continuem coerentes.** Enquanto não houver verificação no build, acrescentar um template exige mexer nos dois lugares na mão, e um limite de texto divergente entre eles só aparece como recusa estranha na tela do UC003.
-7. **O nome do serviço do banco no compose não está decidido.** O rótulo da figura é o nome do banco, e o roteiro do T1 usa `db` como nome de serviço. A decisão é do arquivo de compose e do item #60.
-8. **Número de porta não existe como decisão em artefato nenhum.** A porta 3000 aparece no material do T1 como exemplo, e o ADR-0003 fecha no host sem chegar em porta. O número é assunto do item #60 e do arquivo de compose.
+   Duas contagens foram revistas. A quantidade de serviços de Domínio continua em sete, pois nenhum serviço foi adicionado ou removido da tabela 4.2. A mudança de `listDietaryCategories` para `DietaryCategoryStore` também não altera a contagem de chamadas. Apenas a entrada de `findAttendanceByStatus` muda o total de nove para dez.
+2. **Rotas do UC002 e do UC003.** A tabela 4.1 tem sete rotas, mas nenhuma cria o convite ou salva sua personalização. `InviteController` e `InviteService` já assumem essas responsabilidades, e falta definir as rotas.
+3. **Pacote do UC001.** `AuthController` não cabe no pacote público, restrito aos dois serviços citados na seção 5.3, nem no autenticado, pois a entrada ocorre antes da criação da sessão. Falta decidir se haverá um terceiro pacote.
+4. **Réplicas da API.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) usa um contador em memória para `RateLimitGuard`. Com mais de uma instância, cada processo manteria seu próprio contador. A hipótese está registrada na seção 9 do [Diagrama de Implantação](Diagrama-de-Implantação.md).
+5. **Assinaturas de `HostOperations` e `HostStore`.** Elas ainda não foram definidas porque o UC001 não tem diagrama de sequência.
+6. **Consistência entre `templates/` e `contract/`.** Ainda não há verificação no build. Adicionar um template exige alterar os dois locais manualmente, e limites de texto diferentes podem causar erros no UC003.
 
 ---
 

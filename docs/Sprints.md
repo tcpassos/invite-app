@@ -1,6 +1,6 @@
 # Sprints
 
-Planejamento incremental e iterativo do projeto.
+Registro das entregas e decisões de cada sprint.
 
-- [Sprint 1, Engenharia de Requisitos e Compreensão do Domínio](Sprints/Sprint-1.md)
-- [Sprint 2, Projeto da Arquitetura e Modelagem Estrutural](Sprints/Sprint-2.md)
+- [Sprint 1: requisitos e entendimento do domínio](Sprints/Sprint-1.md)
+- [Sprint 2: arquitetura e modelagem estrutural](Sprints/Sprint-2.md)

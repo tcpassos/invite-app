@@ -1,28 +1,28 @@
 # Diagramas de Sequência
 
-Visão dinâmica. Mostram como os objetos interagem ao longo do tempo nos fluxos mais relevantes do sistema, e principalmente **em que camada cada passo acontece**.
+Os diagramas mostram a ordem das interações nos principais fluxos do sistema e a camada responsável por cada etapa.
 
-As linhas de vida não são classes do [Diagrama de Classes](Diagrama-de-Classes.md). São os **papéis de camada** definidos no [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) e os tiers do [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md). `Invite`, `Guest`, `DietaryNote` e `DietaryCategory` são os dados que trafegam entre elas.
+As linhas de vida representam os papéis de camada definidos no [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) e os tiers do [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), não as classes do [Diagrama de Classes](Diagrama-de-Classes.md). `Invite`, `Guest`, `DietaryNote` e `DietaryCategory` aparecem como dados trocados entre essas linhas.
 
-A regra que os três diagramas tornam visível: **a seta cheia só desce**. A Apresentação chama o Domínio e o Domínio chama os Dados. O que sobe é retorno, na linha tracejada, porque o Domínio e os Dados não conhecem a Apresentação.
+Nos três diagramas, as chamadas seguem da Apresentação para o Domínio e do Domínio para os Dados. As linhas tracejadas mostram os retornos. O Domínio e os Dados não dependem da Apresentação.
 
 ## Diagrama 1, Confirmar presença
 
 ![Diagrama de sequência do UC005](../../.attachments/diagrama-sequencia-uc005.png)
 
-**Descrição:** o UC005 completo, com a extensão do UC006 no passo 4. É o fluxo mais importante do sistema, porque atravessa a fronteira pública e é o único caminho de escrita sem autenticação.
+O diagrama cobre o UC005 e a extensão do UC006 no passo 4. Esse fluxo atravessa a fronteira pública e é o único que permite escrita sem autenticação.
 
-**O que o diagrama prova:**
+### Decisões representadas
 
-**Os dois saltos de rede do ADR-0002 aparecem no caminho de leitura.** O navegador chama o tier Front, que renderiza no servidor e chama o tier API pela rede do compose. Um erro nessa tela tem dois lados, que é exatamente a consequência negativa registrada no ADR-0002.
+Na leitura, o navegador chama o tier Front. O Front renderiza a página no servidor e consulta a API pela rede do Compose. Esse é o caminho de dois saltos descrito no ADR-0002.
 
-**A escrita tem um salto só.** O POST parte do código já em execução no navegador direto para a API. O tier Front não repassa comando, porque o [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md) mantém o Next.js como front-end apenas.
+Na escrita, o POST vai do navegador direto para a API. O tier Front não repassa o comando, conforme a divisão definida no [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md).
 
-**O teto de capacidade é verificado dentro da transação.** Este é o ponto central. A sequência é `BEGIN`, depois `SELECT ... FOR UPDATE` no convite, depois a contagem de vagas ocupadas, depois o `INSERT` e o `COMMIT`. No ramo de evento lotado, `ROLLBACK`.
+O teto de capacidade é verificado dentro da transação. A sequência usa `BEGIN`, `SELECT ... FOR UPDATE`, contagem das vagas ocupadas, `INSERT` e `COMMIT`. No ramo de evento lotado, usa `ROLLBACK`.
 
-Se essa checagem morasse na Apresentação, duas respostas simultâneas em 49 de 50 passariam as duas e o evento fecharia em 51. **É a demonstração concreta de por que a camada de Dados existe separada**, e não uma afirmação de diagrama.
+Se essa verificação fosse feita na Apresentação, duas respostas simultâneas quando houvesse 49 de 50 vagas poderiam ser aceitas, levando o total a 51. Por isso, a regra fica na camada de Dados.
 
-**Alocação por camada, ponto a ponto:**
+### Responsabilidades por camada
 
 | Passo | Camada | Por quê |
 |---|---|---|
@@ -33,50 +33,50 @@ Se essa checagem morasse na Apresentação, duas respostas simultâneas em 49 de
 | Geração do `personalToken` | Domínio | A Apresentação nunca cria identificador |
 | Teto de capacidade (RN4) | Dados | Invariante que depende do estado do banco e exige transação |
 
-**Fluxos alternativos representados:** A1 recusa, que segue para o passo 5 porque a recusa também precisa de nome. A2 dados inválidos. A3 extensão do UC006, dentro de `opt` porque a observação é opcional. A4 evento lotado, com `ROLLBACK`.
+Também aparecem os fluxos A1 (recusa), A2 (dados inválidos), A3 (observação alimentar opcional) e A4 (evento lotado, com `ROLLBACK`). No A1, o fluxo segue para o passo 5 porque a recusa também precisa ser identificada por nome.
 
 ## Diagrama 2, Publicar convite e gerar link
 
 ![Diagrama de sequência do UC004](../../.attachments/diagrama-sequencia-uc004.png)
 
-**Descrição:** o UC004, incluindo a extensão A2 de despublicar.
+O diagrama cobre o UC004 e a extensão A2, usada para despublicar o convite.
 
-**O que o diagrama prova:**
+### Decisões representadas
 
-**O `publicToken` nasce no Domínio.** São 128 bits de CSPRNG em base32 Crockford, 26 caracteres, conforme o [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md). A Apresentação nunca gera identificador.
+O Domínio gera o `publicToken` com 128 bits de CSPRNG em base32 Crockford, totalizando 26 caracteres, conforme o [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md).
 
-**A geração está dentro de um `opt`.** O token só é criado se ainda não existir. Republicar um convite que estava despublicado **reaproveita o link já distribuído**, porque despublicar desativa sem apagar. Sem esse `opt`, republicar mataria um link que o anfitrião já tinha colado no grupo.
+A geração fica dentro de um bloco `opt`, pois o token só é criado quando ainda não existe. Ao republicar um convite, o sistema reaproveita o link anterior. Despublicar apenas desativa o acesso, sem apagar o token.
 
-**A transição de situação é atômica sem transação explícita.** O `UPDATE` carrega a condição no `WHERE`, checando a situação e escrevendo no mesmo comando. É o mesmo raciocínio do teto, aplicado na camada de Dados. Sem o predicado, dois cliques em compartilhar gerariam dois tokens e o segundo sobrescreveria o primeiro.
+A transição de situação é atômica sem uma transação explícita. O `UPDATE` verifica a situação no `WHERE` e faz a alteração no mesmo comando. Isso evita que dois cliques em compartilhar gerem tokens diferentes.
 
-**O `publicToken` do Diagrama de Classes é `[0..1]` por causa deste fluxo.** Antes daqui ele não existe.
+Esse fluxo explica a multiplicidade `[0..1]` do `publicToken` no Diagrama de Classes: o campo não existe antes da primeira publicação.
 
-**Uma escolha de segurança visível:** convite de outro anfitrião responde **404 e não 403**, para não confirmar a existência do recurso. É a mesma linha do ADR-0008 sobre reduzir sinal para quem sonda.
+Quando o convite pertence a outro anfitrião, a API responde 404 em vez de 403 para não confirmar a existência do recurso, conforme o ADR-0008.
 
 ## Diagrama 3, Consolidar e exportar observações alimentares
 
 ![Diagrama de sequência do UC008](../../.attachments/diagrama-sequencia-uc008.png)
 
-**Descrição:** o UC008, a consolidação por categoria e a exportação em CSV. É o fluxo que entrega o diferencial declarado do produto.
+O diagrama cobre o UC008, com a contagem por categoria e a exportação em CSV.
 
-**O que o diagrama prova:**
+### Decisões representadas
 
-**A agregação acontece como consulta no banco, não como laço na aplicação.** O `GROUP BY` por categoria roda na camada de Dados. Trazer todas as linhas para o Domínio e contar em memória seria mover trabalho de agregação para o lugar errado.
+A camada de Dados faz a agregação com `GROUP BY`. As linhas não são carregadas no Domínio apenas para serem contadas em memória.
 
-**A consolidação e a lista não são entidades.** São consultas sobre `Invite` e `Guest`, coerente com o que o Diagrama de Classes já registra. Nenhum passo do diagrama grava tabela de consolidação.
+A consolidação e a lista são consultas sobre `Invite` e `Guest`, não entidades. Nenhuma etapa grava uma tabela de consolidação.
 
-**O tratamento de injeção de fórmula está na Apresentação.** Campo que comece com `=`, `+`, `-` ou `@` recebe prefixo de aspa simples (ADR-0008). Fica na Apresentação porque é **formato de saída**, não regra de domínio. O dado no banco continua íntegro, e quem decide como serializar é quem serializa.
+A Apresentação trata a injeção de fórmula na exportação. Campos iniciados por `=`, `+`, `-` ou `@` recebem uma aspa simples como prefixo (ADR-0008). O banco mantém o valor original, e a alteração vale apenas para o CSV.
 
-Vale registrar o caminho completo: o texto sai de um formulário anônimo, passa pela API, é gravado, é exportado e termina numa planilha aberta na cozinha do buffet. **Nenhum ponto do meio autentica alguém.**
+O texto vem de um formulário anônimo, passa pela API, é armazenado e depois chega a uma planilha usada pelo buffet. Como esse caminho não exige autenticação do convidado, o tratamento na saída é necessário.
 
-## O que a modelagem expôs
+## Pontos em aberto
 
-Pontos que a especificação não resolve e que os diagramas deixaram visíveis:
+Os diagramas encontraram quatro pontos ainda não resolvidos na especificação:
 
-1. **A pré-condição do UC008 bloqueia a exportação quando ninguém tem restrição.** O A1 não oferece a exportação, então numa festa sem nenhuma restrição o anfitrião não consegue exportar a lista de presença, que é metade do que a H12 pede.
-2. **A ED2 do UC008 não tem coluna de acompanhantes.** São quatro colunas e nenhuma diz para quantas pessoas cozinhar, que é a dor declarada da persona do buffet.
-3. **Não há fluxo especificado para alterar a resposta.** A H09 virou apenas a RN3 do UC005, sem passo próprio.
-4. **A autenticação do anfitrião aparece nos três diagramas como `authenticateSession`** e ganhou o [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md). A operação valida a assinatura de um cookie e devolve o `hostId`, sem consultar o banco.
+1. **Exportação sem restrições.** A pré-condição do UC008 bloqueia a exportação quando ninguém informa uma restrição. Nesse caso, o anfitrião também fica sem a lista de presença pedida na H12.
+2. **Número de acompanhantes no CSV.** A ED2 do UC008 define quatro colunas, mas não inclui a quantidade de acompanhantes, necessária para o planejamento do buffet.
+3. **Alteração da resposta.** A H09 aparece apenas como RN3 do UC005 e ainda não tem um fluxo próprio.
+4. **Autenticação do anfitrião.** Nos três diagramas, `authenticateSession` valida a assinatura de um cookie e devolve o `hostId` sem consultar o banco. A decisão está no [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md).
 
 ## Fontes dos diagramas
 

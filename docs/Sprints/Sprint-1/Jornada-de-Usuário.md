@@ -1,6 +1,6 @@
 # Jornada de Usuário
 
-Percurso das [Personas](Personas.md) até seus objetivos. Cada linha é um passo da jornada, com o canal usado e o sentimento do usuário naquele momento. O diagrama final em post-its pode ser montado a partir destas tabelas.
+As tabelas mostram o caminho das [personas](Personas.md) até seus objetivos, incluindo o canal usado e o sentimento em cada etapa. Elas também servem de base para o diagrama em post-its.
 
 ## Jornada da anfitriã ([Marina](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40MarinaAnfitriaPersona)): criar e acompanhar um convite
 
@@ -25,6 +25,6 @@ Percurso das [Personas](Personas.md) até seus objetivos. Cada linha é um passo
 | 2 | Abre no celular e vê o convite e os detalhes do evento | Navegador no celular | Agradado com o visual |
 | 3 | Decide se vai e toca em confirmar presença | App | Decidido |
 | 4 | Escolhe sim e informa que leva um acompanhante | App | Tranquilo |
-| 5 | Marca que é vegetariano e adiciona uma observação | App | Aliviado por não depender de avisar à parte |
+| 5 | Marca que é vegetariano e adiciona uma observação | App | Aliviado por não precisar avisar à parte |
 | 6 | Recebe a confirmação na tela | App | Seguro |
-| 7 | Dias depois muda de ideia e reabre o link para alterar a resposta | App | Prático |
+| 7 | Dias depois, muda de ideia e reabre o link para alterar a resposta | App | Tranquilo |

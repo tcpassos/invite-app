@@ -1,6 +1,6 @@
 # Especificação de Casos de Uso
 
-Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pré-condições, Pós-condições, Fluxo Básico (passos numerados), Fluxos Alternativos (A1, A2 e assim por diante, ligados ao número do passo), Estruturas de Dados (ED1 em diante) e Regras de Negócio (RN1 em diante).
+Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descrição, atores, pré e pós-condições, fluxo básico, fluxos alternativos, estruturas de dados (ED) e regras de negócio (RN).
 
 ## Atores
 - Anfitrião (ator primário do painel)
@@ -50,7 +50,7 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 2.2. O sistema retorna ao Passo 3.
 
 **Estruturas de Dados:**
-(ED1) Conta do anfitrião: nome, email e senha (armazenada de forma segura).
+(ED1) Conta do anfitrião: nome, email e senha armazenada de forma segura.
 
 **Regras de Negócio:**
 (RN1) Email e senha são obrigatórios. A senha tem no mínimo 8 caracteres.
@@ -199,7 +199,7 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 (RN2) O número de acompanhantes é um inteiro maior ou igual a zero e respeita o limite definido pelo anfitrião, quando houver.
 (RN3) O convidado pode alterar a resposta enquanto o evento não tiver ocorrido, usando o link pessoal recebido na confirmação (ED2).
 
-(RN4) Quando o convite tem teto de pessoas, o sistema aceita uma resposta sim apenas se o total de confirmados somado aos acompanhantes, **já incluindo a resposta que está sendo registrada**, for menor ou igual ao teto. Comparar o total anterior deixaria passar uma resposta com acompanhantes que ultrapassa o limite. Respostas talvez não ocupam vaga. A resposta não é sempre aceita. Quem já confirmou pode reduzir acompanhantes ou mudar para não a qualquer momento, o que libera vaga. A verificação é transacional na camada de dados, porque duas respostas simultâneas validadas apenas na apresentação ultrapassariam o teto. Ver ADR-0008.
+(RN4) Quando o convite tem teto de pessoas, o sistema só aceita uma resposta "sim" se o total de confirmados e acompanhantes, incluindo a nova resposta, continuar dentro do limite. Respostas "talvez" não ocupam vaga, e respostas "não" são sempre aceitas. Uma pessoa já confirmada pode reduzir o número de acompanhantes ou mudar a resposta para "não", liberando vagas. A verificação ocorre em uma transação na camada de dados para evitar que respostas simultâneas ultrapassem o teto. Ver ADR-0008.
 
 ### UC006 - Registrar observação alimentar
 

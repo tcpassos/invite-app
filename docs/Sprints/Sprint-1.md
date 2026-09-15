@@ -1,15 +1,16 @@
-# Sprint 1, Engenharia de Requisitos e Compreensão do Domínio
+# Sprint 1: requisitos e entendimento do domínio
 
 ## Objetivos da Sprint
-- Compreender o domínio (convites virtuais, RSVP, restrições alimentares) e as oportunidades de solução levantadas na pesquisa de mercado.
-- Identificar os stakeholders e caracterizar os perfis de usuário (personas).
-- Elicitar, analisar e especificar os requisitos funcionais do MVP.
-- Modelar os cenários de interação entre usuário e sistema (jornada, histórias e casos de uso).
+
+- Entender o domínio de convites virtuais, RSVP e restrições alimentares com base na pesquisa de mercado.
+- Identificar os usuários e demais envolvidos no produto.
+- Definir os requisitos funcionais do MVP.
+- Descrever as interações com o sistema por meio de jornadas, histórias e casos de uso.
 
 ## Itens de Backlog
 Work items no Azure Boards da org `GUITOEBE`, projeto `invite-people`.
 
-O trabalho desta sprint foi de engenharia de requisitos, então os itens são os artefatos produzidos:
+Como a sprint foi dedicada aos requisitos, os itens correspondem aos documentos produzidos:
 
 - #52 Levantar as personas do produto
 - #53 Mapear a jornada dos usuários
@@ -19,7 +20,8 @@ O trabalho desta sprint foi de engenharia de requisitos, então os itens são os
 - #57 Fechar o Team Charter e a Proposta de Trabalho
 
 ## Resultado para o Product Backlog
-A especificação feita aqui virou o backlog do produto, que alimenta as próximas sprints. São 6 épicos com 12 histórias, cada uma com critérios de aceitação e marcada com a tag da persona que atende.
+
+A sprint resultou em 6 épicos e 12 histórias para as etapas seguintes. Cada história tem critérios de aceitação e a tag da persona atendida.
 
 | Épico | Histórias |
 |---|---|
@@ -31,9 +33,11 @@ A especificação feita aqui virou o backlog do produto, que alimenta as próxim
 | #39 Painel e consolidação | #50, #51 |
 
 ## Scrum Master
+
 - Tiago Passos
 
 ## Principais Artefatos
+
 - [Personas](Sprint-1/Personas.md)
 - [Jornada de Usuário](Sprint-1/Jornada-de-Usuário.md)
 - [Histórias de Usuário](Sprint-1/Histórias-de-Usuário.md)
@@ -42,6 +46,7 @@ A especificação feita aqui virou o backlog do produto, que alimenta as próxim
 - [Team Charter](../Team-Charter.md)
 
 ## Cerimônias da Sprint
+
 - Planejamento da Sprint
 - Reunião diária
 - Revisão da Sprint

@@ -2,7 +2,7 @@
 
 Visão de execução. Mostra em que máquina e em que ambiente cada artefato do sistema roda, e por onde esses ambientes conversam.
 
-A página está organizada pelos sete passos da decomposição sugerida pelo professor, que são também as tasks do item **#60** no Azure Boards.
+A organização segue os sete passos sugeridos pelo professor e usados nas tasks do item #60 no Azure Boards.
 
 | Passo | Task | Resultado | Seção |
 |---|---|---|---|
@@ -14,19 +14,19 @@ A página está organizada pelos sete passos da decomposição sugerida pelo pro
 | 6. Refinar | #76 | Diagrama finalizado | 6 |
 | 7. Revisão por pares | #77 | Feedback incorporado | 7 |
 
-O insumo veio pronto da seção 10 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), que distribuiu os artefatos por container na 10.3, montou a tabela de quem conversa com quem na 10.4, e listou na 10.7 o que estava em aberto com o dono de cada item. **Onze linhas daquela lista apontavam para cá.** A seção 8 desta página diz quais delas fecharam e quais continuam abertas.
+A seção 10 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) fornece os dados de entrada: artefatos por container na 10.3, comunicação entre serviços na 10.4 e pendências na 10.7. Onze itens daquela lista dependiam deste diagrama. A seção 8 registra as decisões tomadas.
 
-Uma advertência de tempo verbal vale para a página inteira, a mesma da seção 10 do guia. **Nada descrito aqui existe hoje no repositório.** A implementação começa na Sprint 3 e o `docker-compose.yml` é entrega ainda não concluída da Sprint 2. O que segue é o desenho que o compose vai materializar.
+O diagrama descreve a estrutura prevista para a Sprint 3. O `docker-compose.yml` já está na raiz do repositório, mas os serviços `front` e `api` dependem do código que será implementado na próxima sprint.
 
 ---
 
 ## 1. Passo 1, os nós de implantação
 
-### 1.1 O que conta como nó
+### 1.1 Critério para os nós
 
 Em UML, nó é lugar onde alguma coisa executa, e ele vem em dois tipos. **Dispositivo** é hardware. **Ambiente de execução** é software que hospeda outro software. Um nó pode conter outro, e é assim que o desenho fica.
 
-O [ADR-0003](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) fecha a execução no host de desenvolvimento, via `docker compose up`, sem alvo de publicação. Disso sai a forma do diagrama inteiro: **um dispositivo só.** Não há máquina de aplicação separada de máquina de banco, não há balanceador e não há nuvem. Desenhar qualquer um dos três seria desenhar um ambiente que o projeto decidiu não ter.
+O [ADR-0003](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) limita a execução ao computador de desenvolvimento, usando `docker compose up`, sem ambiente publicado. Por isso, o diagrama tem um único dispositivo. Não há máquinas separadas para aplicação e banco, balanceador ou infraestrutura em nuvem.
 
 | Nó | Tipo | O que é |
 |---|---|---|
@@ -37,31 +37,31 @@ O [ADR-0003](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-d
 | `api` | Container | O processo NestJS com as três camadas |
 | `db` | Container | O PostgreSQL |
 
-São seis nós, um deles dispositivo. O volume nomeado aparece no diagrama ao lado do `db` e não é nó, é onde o estado persiste.
+São seis nós, dos quais um é um dispositivo. O volume nomeado aparece ao lado do `db` como local de persistência, não como nó.
 
-### 1.2 O navegador é nó e continua não sendo tier
+### 1.2 Navegador como nó
 
-Esta é a única coisa que o diagrama de implantação afirma e que os outros diagramas não podiam afirmar, então ela precisa ficar resolvida.
+Neste diagrama, o navegador aparece como local de execução do `front-client.bundle`.
 
-O Vocabulário do Guia da Arquitetura registra que **o navegador não é tier**, porque não é unidade de implantação do sistema, não sobe no `docker compose` e não está no [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md). Nada disso muda aqui.
+O navegador é um nó de execução, mas não um tier. Ele não é iniciado pelo `docker compose` nem faz parte das unidades de implantação definidas no [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md).
 
-Ao mesmo tempo, o `front-client.bundle` é artefato que o sistema produz e entrega, e ele executa no navegador. Um diagrama de implantação que omitisse o navegador esconderia onde metade do tier Front roda, e esconderia justamente a metade que faz o POST do UC005.
+O sistema produz o `front-client.bundle` e o entrega ao navegador, onde ele executa e faz o POST do UC005. Por isso, o navegador precisa aparecer como nó.
 
-> **Tier é de onde o artefato vem. Nó é onde o artefato executa. O navegador é nó e não é tier, e as duas coisas são verdadeiras ao mesmo tempo porque respondem a perguntas diferentes.**
+> Tier indica a unidade que entrega o artefato. Nó indica onde o artefato executa. O navegador é apenas um nó.
 
-O mesmo raciocínio vale ao contrário para o `db`. Ele é tier pelo ADR-0002 e é nó aqui, e nesse caso os dois coincidem. A coincidência em dois dos três tiers é o que torna fácil confundir os conceitos, e o navegador é o caso que desfaz a confusão.
+O `db`, por outro lado, é tanto tier quanto nó. A distinção importa porque tier representa uma unidade de implantação, enquanto nó indica onde um artefato executa.
 
-### 1.3 O nó que não existe, e por quê
+### 1.3 Nós fora do escopo
 
-**Não há nó de rede nem de balanceador.** O ADR-0003 fecha no host e a seção 10.6 do guia registra que não existe ambiente compartilhado acessível fora da apresentação. Acrescentar um nó de borda aqui prometeria infraestrutura que ninguém vai montar.
+Não há nó de rede ou balanceador. O ADR-0003 limita o ambiente ao host local, e a seção 10.6 do guia registra que não existe um ambiente compartilhado.
 
-**Não há segundo dispositivo para o convidado.** No ambiente do projeto, quem abre o convite abre no mesmo computador que roda o compose. É por isso que os endereços do passo 5 são de laço local. Se o time algum dia publicar, o navegador passa a estar em outro dispositivo e essa é a primeira linha que muda no diagrama.
+Também não há um segundo dispositivo para o convidado. Neste ambiente, o convite é aberto no mesmo computador que executa o Compose, por isso os endereços do passo 5 usam `127.0.0.1`. Se houver publicação, o navegador passará para outro dispositivo e o diagrama deverá ser atualizado.
 
 ---
 
 ## 2. Passo 2, componentes para os nós
 
-O mapeamento sai da seção 4.2 do [Diagrama de Componentes](Diagrama-de-Componentes.md), que já ligou cada componente a um artefato, e da seção 10.3 do guia, que ligou cada artefato a um container. Aqui as duas pontas se encontram.
+O mapeamento combina a seção 4.2 do [Diagrama de Componentes](Diagrama-de-Componentes.md), que associa componentes a artefatos, com a seção 10.3 do guia, que associa artefatos a containers.
 
 | Componentes | Artefato que os carrega | Nó onde executa |
 |---|---|---|
@@ -74,9 +74,9 @@ O mapeamento sai da seção 4.2 do [Diagrama de Componentes](Diagrama-de-Compone
 | Os três repositórios | `api.bundle` | `api` |
 | `invite_app` | `postgres:<tag>@<digest>` | `db` |
 
-**Dois componentes executam em dois nós, e isso não é erro de tabela.** `PublicInvitePage` e `ApiClient` aparecem duas vezes. É a assimetria que a seção 10.2 do guia descreve, chegando ao diagrama que mais deixa ela visível: o mesmo código sai de um build só e passa a rodar em dois lugares, um dentro do container e outro fora dele.
+`PublicInvitePage` e `ApiClient` aparecem em dois nós. O mesmo build gera código executado no servidor, dentro do container, e no navegador, fora dele, conforme a seção 10.2 do guia.
 
-**Os 21 componentes couberam em quatro nós e três deles são container.** Nenhum componente ficou sem nó e nenhum nó ficou sem componente. O único nó sem componente é o Docker Engine, que hospeda os três containers e não executa código do sistema por conta própria.
+Os 21 componentes estão distribuídos em quatro nós, dos quais três são containers. O Docker Engine apenas hospeda os containers e não executa um componente do sistema.
 
 ---
 
@@ -84,9 +84,9 @@ O mapeamento sai da seção 4.2 do [Diagrama de Componentes](Diagrama-de-Compone
 
 ### 3.1 O dispositivo
 
-**A máquina do integrante não tem especificação de hardware em artefato nenhum, e esta página não inventa uma.** Não há requisito de processador, de memória nem de disco escrito no projeto. O que existe é a consequência negativa que o ADR-0002 assumiu por escrito, de que três containers custam mais memória na máquina de cada integrante do que um processo único, e a seção 10.6 do guia registra que isso recai sobre as quatro máquinas do time, que são o único ambiente do projeto.
+O projeto não define requisitos de processador, memória ou disco para as máquinas de desenvolvimento. O ADR-0002 apenas registra que três containers consomem mais memória do que um processo único. Por falta de medidas, o diagrama não inclui uma especificação de hardware.
 
-Escrever um número de memória aqui seria transformar palpite em requisito. Se a demonstração do T1 mostrar que alguma máquina do time não aguenta os três containers, aí existe medida e aí vale escrever.
+Os requisitos de hardware só devem ser incluídos depois de medir o consumo dos três containers nas máquinas da equipe.
 
 ### 3.2 Os artefatos por nó
 
@@ -105,13 +105,13 @@ Escrever um número de memória aqui seria transformar palpite em requisito. Se 
 | Docker Engine | `docker-compose.yml` | Especificação de implantação | Versionado |
 | Docker Engine | `.env` | Configuração | Preenchido por quem sobe o ambiente |
 
-O `robots.txt` entra no inventário aqui pela primeira vez. A seção 9.5 do guia decidiu que ele é servido pelo tier Front e é ativo estático versionado, e a seção 4.1 do Diagrama de Componentes ainda não o lista. É correção pendente naquela página.
+O `robots.txt` é um ativo estático do tier Front, conforme a seção 9.5 do guia. Ele também foi adicionado ao inventário da seção 4.1 do Diagrama de Componentes.
 
-### 3.3 O que não é artefato implantado
+### 3.3 Elementos que não são implantados separadamente
 
-**O `contract/` não aparece no diagrama, e a ausência é decisão e não esquecimento.** Ele é módulo de fonte compartilhado, tipo de TypeScript é apagado na compilação, e não existe arquivo dele rodando em lugar nenhum. O único vestígio em execução é o trecho que carrega valor, como o enum `RsvpStatus`, que vai compilado para dentro dos dois bundles. A seção 10.3 do guia trata disso.
+O módulo `contract/` não aparece no diagrama porque seus tipos são removidos na compilação. Valores de execução, como o enum `RsvpStatus`, são compilados dentro dos dois bundles. A seção 10.3 do guia detalha essa decisão.
 
-**Os `Dockerfile` também não.** Eles produzem as imagens, e a imagem é que é implantada. São dois, um do front e um da API, e o terceiro container usa imagem pronta.
+Os arquivos `Dockerfile` também ficam fora. Eles produzem as imagens do Front e da API. O Banco usa uma imagem pronta.
 
 ---
 
@@ -121,25 +121,25 @@ O `robots.txt` entra no inventário aqui pela primeira vez. A seção 9.5 do gui
 
 ### Como ler
 
-**Caixa tridimensional é nó.** O estereótipo diz de que tipo. `<<device>>` é hardware, `<<execution environment>>` é software que hospeda software, e `<<container>>` é o ambiente de execução que o Docker cria.
+**Nó:** caixa tridimensional. `<<device>>` representa hardware, `<<execution environment>>` representa um software que hospeda outro software e `<<container>>` representa o ambiente criado pelo Docker.
 
-**Retângulo com o canto dobrado é artefato.** É o que de fato é implantado, ou seja, imagem, executável, script e arquivo de configuração.
+**Artefato:** retângulo com o canto dobrado. Pode representar imagem, executável, script ou arquivo de configuração.
 
-**Linha cheia entre nós é caminho de comunicação.** O rótulo traz o protocolo e o endereço pelo qual o destino é alcançado. São cinco e estão detalhados no passo 5.
+**Caminho de comunicação:** linha cheia entre nós, identificada pelo protocolo e pelo endereço. Os cinco caminhos estão detalhados no passo 5.
 
-**Linha tracejada com `<<deploy>>` é o mesmo artefato indo executar em outro nó.** Ela aparece uma vez só, do `front-client.bundle` dentro do container `front` para o `front-client.bundle` dentro do Navegador.
+**Implantação:** linha tracejada com `<<deploy>>`. No diagrama, indica que o `front-client.bundle` sai do container `front` e executa no navegador.
 
-**A figura não tem legenda e não tem nota**, como as outras quatro da Sprint 2. Toda explicação de símbolo fica nesta seção.
+As explicações dos símbolos ficam nesta seção, seguindo o padrão dos demais diagramas da Sprint 2.
 
-### O que a figura afirma
+### Decisões mostradas na figura
 
-**Tudo está dentro de um dispositivo só.** É o ADR-0003 desenhado. Quem olhar a figura procurando ambiente de produção não acha, e não acha porque ele não existe.
+Todos os nós ficam dentro de um único dispositivo, conforme o ambiente local definido no ADR-0003.
 
-**O `front-client.bundle` aparece duas vezes e o mesmo nome se repete de propósito.** É o artefato único que atravessa a fronteira do container em tempo de execução, e a seta `<<deploy>>` é a única do desenho que não é caminho de comunicação.
+O `front-client.bundle` aparece no container e no navegador porque é entregue de um nó para executar no outro. A relação `<<deploy>>` representa esse movimento.
 
-**O `db` não tem linha até o Navegador.** Não há caminho desenhado entre os dois, e não há por decisão da seção 6.3 do guia. O que a topologia de fato impede é o acesso de fora da rede, porque o `db` não publica porta, e a seção 10.5 do guia registra que ela não impede o `front` de conectar, porque os três estão na mesma rede nomeada.
+Não há caminho entre o navegador e o `db`, conforme a seção 6.3 do guia. O banco não publica uma porta para fora da rede do Compose, mas continua acessível aos demais containers da rede, como registra a seção 10.5.
 
-**O volume fica ao lado do `db` e não dentro dele.** Ele sobrevive ao container, que é a razão de existir. Os outros dois containers não têm volume porque não guardam estado. O rótulo na figura é o nome do objeto no Docker, `invite_app_pgdata` na versão desenhada, e o `docker-compose.yml` o declara como `pgdata` porque o Compose prefixa tudo com o nome do projeto. O fonte da figura precisa do ajuste.
+O volume fica fora do `db` para persistir mesmo quando o container é removido. Front e API não têm volumes porque não armazenam estado. O Compose declara o volume como `pgdata` e cria o objeto `invite-app_pgdata`, e o nome na fonte do diagrama precisa ser atualizado para seguir esse padrão.
 
 ---
 
@@ -155,45 +155,45 @@ O `robots.txt` entra no inventário aqui pela primeira vez. A seção 9.5 do gui
 | 4 | `api` | `db` | TCP | `db:5432` | Não |
 | 5 | `db` | volume | Montagem | `/var/lib/postgresql/data` | Não se aplica |
 
-**Os links 1 e 3 são os dois saltos do convite público** que o ADR-0002 registra e que a seção 1.7 do guia chama de crítico de desempenho. O link 2 é o salto único do POST do UC005 e das cinco rotas do painel.
+Os links 1 e 3 formam o caminho de dois saltos do convite público descrito no ADR-0002. O link 2 atende ao POST do UC005 e às cinco rotas do painel.
 
-### 5.2 A armadilha dos dois endereços para o mesmo destino
+### 5.2 Endereços da API
 
-A seção 10.4 do guia descreve o problema e esta seção o resolve com número.
+A API usa endereços diferentes dentro e fora da rede do Compose.
 
-**O `api` é alcançado por dois endereços diferentes, e quem escolhe qual usar é quem chama.** O `front`, rodando dentro da rede do compose, chama `api:3000` e usa a resolução por nome de serviço. O navegador não é container, não está na rede e não resolve aquele nome, então chama `127.0.0.1:3001`, que é a porta publicada.
+O `front`, dentro da rede do Compose, chama `api:3000` pelo nome do serviço. O navegador está fora dessa rede e usa a porta publicada em `127.0.0.1:3001`.
 
 > **O endereço da API que vai compilado no `front-client.bundle` nunca é o nome de serviço do compose.** Se `api:3000` aparecer em código entregue ao navegador, o convite quebra na máquina do convidado sem quebrar build nem teste. É o terceiro item da quarta busca da seção 10.5 do guia.
 
-A consequência prática é que o build do front precisa de duas configurações de endereço, uma para o código de servidor e outra para o código de cliente. **Como cada uma chega ao build é decisão que continua aberta**, e está na seção 9.
+O build do Front usa duas configurações: `API_URL_INTERNAL` no servidor e `NEXT_PUBLIC_API_URL` no código enviado ao navegador. Elas já estão declaradas no `docker-compose.yml`.
 
 ### 5.3 Por que a `api` publica porta e o `db` não
 
-O material do T1 enuncia a regra na forma de que só o serviço de fronteira publica porta, com o banco na rede interna sem mapeamento. **No invite-app os serviços de fronteira são dois e não um**, porque o POST do UC005 chega do navegador direto à API, sem passar pelo `front`. Sem a porta publicada da `api`, o fluxo mais importante do sistema não funciona.
+O Front e a API publicam portas porque ambos recebem chamadas do navegador. O POST do UC005 chega diretamente à API, sem passar pelo Front. O banco permanece apenas na rede interna.
 
 O `db` não publica porta porque ninguém fora da rede precisa alcançá-lo. Quem precisa inspecionar o banco durante o desenvolvimento entra pelo `docker compose exec`, que não passa pela rede publicada.
 
 ### 5.4 Ordem de subida
 
-O ADR-0002 exige `HEALTHCHECK` com `condition: service_healthy`, senão a API sobe antes de o banco estar pronto. A ordem que sai disso é `db`, depois `api`, depois `front`.
+O ADR-0002 exige `HEALTHCHECK` com `condition: service_healthy` para evitar que a API inicie antes de o banco estar pronto. A ordem é `db`, `api` e `front`.
 
-O `front` depende da `api` de forma mais fraca, porque ele só chama a API quando chega uma requisição de convite público, e não no arranque. Ele pode subir antes sem quebrar nada, e se a API ainda não estiver de pé quando o primeiro convidado abrir o link, o que aparece é a página de convite indisponível da seção 9.4 do guia. O comportamento já está decidido lá e não precisa de decisão nova aqui.
+O `front` só chama a API quando recebe uma requisição de convite público. Se a API ainda não estiver disponível, ele exibe a página de indisponibilidade definida na seção 9.4 do guia.
 
 ---
 
-## 6. Passo 6, refinamento, o que mudou e por quê
+## 6. Passo 6, ajustes feitos no diagrama
 
-**1. O navegador entrou como nó, depois de ter ficado de fora no primeiro rascunho.** Deixá-lo de fora respeitava a frase do Vocabulário sobre ele não ser tier, e escondia onde o `front-client.bundle` executa. A saída foi separar os dois conceitos por escrito, na seção 1.2, em vez de escolher um dos dois.
+1. **Inclusão do navegador como nó.** O primeiro rascunho não mostrava onde o `front-client.bundle` executava. A seção 1.2 diferencia nó de tier.
 
-**2. O `migrate` não virou um quarto serviço.** A primeira versão tinha um container de execução única que aplicava as `migrations/` e saía. Ele resolveria o problema e criaria outro, porque o compose passaria a ter quatro serviços e a frase "três containers" do ADR-0002 deixaria de descrever o arquivo. A decisão e o custo dela estão na seção 7.3.
+2. **Remoção do serviço `migrate`.** O primeiro rascunho usava um quarto container para aplicar as migrações. A versão atual mantém os três serviços definidos no ADR-0002. A forma de aplicar as migrações e sua limitação estão na seção 8.1.
 
-**3. As portas saíram de exemplo de slide e viraram decisão.** A porta 3000 aparece no material do T1 como exemplo, e o próprio slide que a mostra diz que aquilo é exemplo. A seção 10.7 do guia recusou-se a fixar número e apontou para cá. Aqui os números ficam fixados, marcados como decisão nova que precisa de aval.
+3. **Definição das portas.** O material do T1 usava a porta 3000 apenas como exemplo. Os números adotados neste diagrama passam a ser decisões do projeto e ainda precisam de aprovação.
 
-**4. O nome do serviço do banco ficou `db` e não `invite_app`.** `invite_app` é o nome do banco e aparece dentro do container na figura. O nome do serviço é o que a resolução por nome usa, e `db` é o que o material do T1 emprega. A seção 1.6 do Diagrama de Componentes já tinha separado as duas coisas.
+4. **Nome do serviço de banco.** `db` é o nome usado na rede do Compose. `invite_app` continua sendo o nome do banco dentro do container, como já diferencia a seção 1.6 do Diagrama de Componentes.
 
-**5. O `robots.txt` entrou no inventário.** Ele foi decidido na seção 9.5 do guia e nunca chegou à seção 4.1 do Diagrama de Componentes. Como é ativo servido pelo tier Front, ele é artefato do container `front` e aparece aqui.
+5. **Inclusão do `robots.txt`.** O arquivo é um ativo estático servido pelo tier Front, conforme a seção 9.5 do guia.
 
-**6. Especificação de hardware ficou de fora.** A primeira versão trazia memória e processador mínimos. Nenhum artefato do projeto os define, e a seção 3.1 explica por que eles continuam de fora.
+6. **Remoção das especificações de hardware.** O projeto ainda não definiu requisitos mínimos de memória ou processador, como explicado na seção 3.1.
 
 ---
 
@@ -210,7 +210,7 @@ O `front` depende da `api` de forma mais fraca, porque ele só chama a API quand
 | 7 | Nada dentro da figura é frase, nota ou legenda | Figura |
 | 8 | Nenhum número inventado que algum artefato já tenha decidido de outro jeito | Seção 8 |
 
-**O que precisa de decisão do time e não só de leitura:** as sete decisões novas da seção 8.
+O time ainda precisa aprovar as sete decisões da seção 8.
 
 Registro da revisão, a preencher na cerimônia:
 
@@ -220,9 +220,9 @@ Registro da revisão, a preencher na cerimônia:
 
 ---
 
-## 8. As decisões que este diagrama fechou
+## 8. Decisões tomadas durante a modelagem
 
-Todas são decisões novas, no mesmo sentido da seção 11 do Guia da Arquitetura. Valem como regra até o time avaliar, e não têm o peso de um ADR.
+Estas decisões seguem a seção 11 do Guia da Arquitetura. Elas registram a proposta atual, mas ainda não têm o peso de um ADR.
 
 | # | Decisão | Fecha qual linha da seção 10.7 do guia |
 |---|---|---|
@@ -234,19 +234,19 @@ Todas são decisões novas, no mesmo sentido da seção 11 do Guia da Arquitetur
 | 6 | O `robots.txt` é artefato do container `front` | Nenhuma. A correção já foi aplicada na seção 4.1 do Diagrama de Componentes |
 | 7 | O dispositivo não recebe especificação de hardware enquanto não houver medida | Nenhuma, é limite desta página |
 
-### 8.1 O custo da decisão 5, dito em voz alta
+### 8.1 Limitação da decisão 5
 
-A imagem do PostgreSQL executa os scripts do diretório de inicialização **apenas quando o volume está vazio**. Isso significa que uma mudança de esquema depois da primeira subida não é aplicada sozinha, e a única forma de aplicá-la é derrubar o volume com `docker compose down -v` e subir de novo, perdendo os dados.
+A imagem do PostgreSQL executa os scripts do diretório de inicialização apenas quando o volume está vazio. Portanto, uma mudança de esquema feita depois da primeira inicialização não é aplicada automaticamente. Nesse caso, é preciso remover o volume com `docker compose down -v` e iniciar o ambiente novamente, o que apaga os dados locais.
 
-Para este projeto isso é aceitável e o motivo está escrito no ADR-0003: o ambiente é de desenvolvimento, na máquina de cada integrante, e não guarda dado que alguém precise conservar. A alternativa, uma ferramenta de migração de verdade, custaria um quarto serviço no compose ou faria a `api` carregar o esquema, e as duas contrariam decisões já tomadas.
+Essa limitação foi aceita porque o ADR-0003 restringe o ambiente ao desenvolvimento local, sem dados que precisem ser preservados. Uma ferramenta dedicada exigiria um quarto serviço no Compose ou transferiria para a API a responsabilidade pelo esquema.
 
-> **No dia em que o projeto tiver dado que não pode ser perdido, esta decisão cai.** Ela vale enquanto o ADR-0003 valer, e é a primeira coisa a rever se o time decidir publicar.
+> Esta decisão deve ser revista antes de usar o sistema com dados que precisem ser preservados ou em um ambiente publicado.
 
 ---
 
-## 9. O que continua em aberto
+## 9. Pendências
 
-O `docker-compose.yml` foi escrito depois desta página e fechou duas das quatro linhas que estavam aqui. As duas que sobram são estas.
+Depois da criação do `docker-compose.yml`, permanecem três pontos em aberto:
 
 1. **Valores de tag e de digest das imagens construídas pelo time.** O compose usa `${IMAGE_TAG:-dev}`, que serve enquanto o ADR-0003 valer e não é etiqueta de versão. A imagem do banco já está escolhida e fixada em `postgres:17-alpine`, e o digest continua sem fixar.
 2. **O contador do `RateLimitGuard` supõe uma instância só.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu contador em memória do processo e sessão em cookie assinado, então nenhuma das duas guardas acrescenta nó e este diagrama não muda por causa delas. O que muda o diagrama é o item seguinte.

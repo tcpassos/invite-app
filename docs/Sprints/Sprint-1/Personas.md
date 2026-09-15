@@ -1,12 +1,12 @@
 # Personas
 
-Perfis que representam os usuários e stakeholders do produto. Servem de base para a [Jornada de Usuário](Jornada-de-Usuário.md), as [Histórias de Usuário](Histórias-de-Usuário.md) e os [Casos de Uso](Especificação-de-Casos-de-Uso.md).
+As personas abaixo representam os principais usuários e envolvidos no produto. Elas foram usadas na [Jornada de Usuário](Jornada-de-Usuário.md), nas [Histórias de Usuário](Histórias-de-Usuário.md) e nos [Casos de Uso](Especificação-de-Casos-de-Uso.md).
 
-> Formato conforme a extensão **Personas** do Azure DevOps (Nome, Tag, Perfil, Comportamento e Necessidades). As três já estão cadastradas na extensão, e o nome de cada uma abaixo abre a ficha correspondente no Boards.
+> O formato segue os campos da extensão Personas do Azure DevOps: Nome, Tag, Perfil, Comportamento e Necessidades. As três personas estão cadastradas no Boards, e o nome de cada uma leva à ficha correspondente.
 
-As 12 histórias de usuário no Boards estão marcadas com a tag da persona a que atendem, que é o mecanismo que a extensão usa para associar persona e work item.
+As 12 histórias de usuário no Boards usam a tag da persona correspondente.
 
-Atenção ao formato, porque são duas formas do mesmo nome. Na tag do work item o nome vai **sem** o `@`, por exemplo `MarinaAnfitriaPersona`. O `@` aparece só na exibição da extensão e na referência à persona dentro do texto.
+Nos work items, a tag não leva `@`: `MarinaAnfitriaPersona`. O caractere aparece apenas na extensão e nas referências à persona dentro do texto.
 
 ---
 
@@ -31,7 +31,7 @@ Atenção ao formato, porque são duas formas do mesmo nome. Na tag do work item
 - Criar e personalizar um convite bonito em poucos minutos
 - Compartilhar por link ou WhatsApp com facilidade
 - Acompanhar em tempo real quem confirmou presença
-- Ter as restrições alimentares reunidas de forma automática para repassar ao buffet
+- Reunir as restrições alimentares automaticamente para repassar ao buffet
 
 ---
 
@@ -53,7 +53,7 @@ Atenção ao formato, porque são duas formas do mesmo nome. Na tag do work item
 
 ### Necessidades
 - Confirmar presença em poucos toques, sem login e sem instalar nada
-- Informar de forma simples sua restrição alimentar (vegetariano) e observações
+- Informar sua restrição alimentar e outras observações sem dificuldade
 - Ver os detalhes do evento com clareza (data, horário, local, mapa)
 - Poder alterar a resposta caso mude de ideia
 
@@ -74,6 +74,6 @@ Atenção ao formato, porque são duas formas do mesmo nome. Na tag do work item
 - Tem retrabalho e desperdício quando os números mudam de última hora
 
 ### Necessidades
-- Receber uma consolidação clara e confiável das restrições alimentares (quantos vegetarianos, veganos, alérgicos e assim por diante)
+- Receber uma lista confiável das restrições alimentares, com a quantidade por categoria
 - Saber o número de confirmados para dimensionar a produção
 - Um formato exportável (CSV ou PDF) para levar à cozinha

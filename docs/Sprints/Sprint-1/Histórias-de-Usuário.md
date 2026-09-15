@@ -1,15 +1,15 @@
 # Histórias de Usuário
 
-Baseadas nas [Personas](Personas.md) e na [Jornada de Usuário](Jornada-de-Usuário.md). Formato: "Como um [papel], eu quero [funcionalidade], de modo que [valor]." Cada história traz critérios de aceitação, que orientam os testes e viram base para os work items no Boards.
+Estas histórias foram escritas a partir das [Personas](Personas.md) e da [Jornada de Usuário](Jornada-de-Usuário.md). O formato usado é: "Como [papel], quero [funcionalidade] para [valor]". Os critérios de aceitação serão usados nos testes e nos work items do Boards.
 
 ## Cenário do problema
 
-[Marina](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40MarinaAnfitriaPersona) organiza festas da família e sempre se perde no controle de quem vai e do que cada pessoa pode comer. Os avisos de restrição chegam soltos no WhatsApp e às vezes somem antes de chegar ao buffet. [Rafael](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40RafaelConvidadoPersona), convidado, quer confirmar rápido pelo celular, sem instalar nada, e avisar que é vegetariano sem precisar mandar uma mensagem à parte. [Jorge](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40JorgeBuffetPersona), do buffet, precisa de números confiáveis para planejar a comida.
+[Marina](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40MarinaAnfitriaPersona) organiza festas da família e tem dificuldade para controlar quem vai e o que cada pessoa pode comer. Os avisos de restrição chegam pelo WhatsApp e podem se perder antes de serem repassados ao buffet. [Rafael](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40RafaelConvidadoPersona) quer confirmar pelo celular, sem instalar outro aplicativo, e registrar que é vegetariano no mesmo formulário. [Jorge](https://dev.azure.com/GUITOEBE/invite-people/_apps/hub/agile-extensions.personas.hub?persona=%40JorgeBuffetPersona), responsável pelo buffet, precisa de quantidades confiáveis para planejar a comida.
 
 ## Épico 1: Conta e acesso do anfitrião
 
 ### H01
-Como um anfitrião, eu quero criar uma conta e entrar, de modo que meus eventos fiquem salvos e só eu possa editá-los.
+Como anfitrião, quero criar uma conta e entrar para salvar meus eventos e controlar quem pode editá-los.
 Critérios de aceitação:
 - Consigo me cadastrar com email e senha.
 - Consigo entrar e sair da conta.
@@ -18,7 +18,7 @@ Critérios de aceitação:
 ## Épico 2: Criação e personalização do convite
 
 ### H02
-Como um anfitrião, eu quero criar um convite com os dados do evento, de modo que os convidados saibam quando e onde será.
+Como anfitrião, quero criar um convite com os dados do evento para informar aos convidados quando e onde ele será realizado.
 Critérios de aceitação:
 - Informo nome, data, hora e local.
 - O sistema não deixa salvar com data no passado ou campo obrigatório em branco.
@@ -26,14 +26,14 @@ Critérios de aceitação:
 - O convite fica salvo como rascunho.
 
 ### H03
-Como um anfitrião, eu quero personalizar o visual do convite, de modo que ele combine com o clima da festa.
+Como anfitrião, quero personalizar o convite para que ele combine com a festa.
 Critérios de aceitação:
 - Escolho um template pronto.
 - Ajusto as cores e os textos do convite.
 - Vejo as mudanças na hora.
 
 ### H04
-Como um anfitrião, eu quero pré-visualizar o convite antes de publicar, de modo que eu veja como ele chega ao convidado.
+Como anfitrião, quero visualizar o convite antes de publicar para conferir como ele será exibido aos convidados.
 Critérios de aceitação:
 - Abro uma prévia igual à que o convidado vai ver.
 - Volto para a edição a partir da prévia.
@@ -41,13 +41,13 @@ Critérios de aceitação:
 ## Épico 3: Compartilhamento
 
 ### H05
-Como um anfitrião, eu quero gerar um link do convite, de modo que eu possa enviá-lo pelo WhatsApp.
+Como anfitrião, quero gerar um link do convite para enviá-lo pelo WhatsApp.
 Critérios de aceitação:
 - Gero um link único do convite.
 - O link abre o convite sem pedir login ao convidado.
 
 ### H06
-Como um anfitrião, eu quero publicar e despublicar o convite, de modo que eu controle quando ele fica acessível.
+Como anfitrião, quero publicar e despublicar o convite para controlar quando ele fica acessível.
 Critérios de aceitação:
 - Enquanto rascunho, o link não abre para os convidados.
 - Ao publicar, o link passa a funcionar.
@@ -56,7 +56,7 @@ Critérios de aceitação:
 ## Épico 4: Confirmação de presença
 
 ### H07
-Como um convidado, eu quero confirmar presença sem criar conta, de modo que eu responda em segundos pelo celular.
+Como convidado, quero confirmar presença sem criar conta para responder rapidamente pelo celular.
 Critérios de aceitação:
 - Respondo sim, não ou talvez.
 - Não preciso de login nem de instalar app.
@@ -64,14 +64,14 @@ Critérios de aceitação:
 - Recebo um link pessoal para alterar minha resposta depois.
 
 ### H08
-Como um convidado, eu quero informar quantas pessoas eu levo, de modo que o anfitrião saiba o total certo.
+Como convidado, quero informar quantos acompanhantes levarei para que o anfitrião saiba o total de pessoas.
 Critérios de aceitação:
 - Informo o número de acompanhantes ao responder sim ou talvez.
 - O sistema respeita o limite de acompanhantes definido pelo anfitrião, quando houver.
 - Se o evento tiver teto de pessoas e ele já estiver atingido, o sistema me informa que está lotado.
 
 ### H09
-Como um convidado, eu quero alterar minha resposta depois, de modo que eu ajuste caso meus planos mudem.
+Como convidado, quero alterar minha resposta caso meus planos mudem.
 Critérios de aceitação:
 - Reabro o meu link pessoal e mudo a resposta enquanto o evento não ocorreu.
 - O painel do anfitrião reflete a mudança.
@@ -79,7 +79,7 @@ Critérios de aceitação:
 ## Épico 5: Observações alimentares
 
 ### H10
-Como um convidado, eu quero informar minha restrição alimentar, de modo que o anfitrião saiba o que eu posso comer.
+Como convidado, quero informar minha restrição alimentar para que o anfitrião saiba o que posso comer.
 Critérios de aceitação:
 - Marco categorias como vegetariano, vegano, sem glúten, sem lactose ou alergia.
 - Ao marcar alergia, descrevo a alergia num campo de texto.
@@ -88,14 +88,14 @@ Critérios de aceitação:
 ## Épico 6: Painel e consolidação
 
 ### H11
-Como um anfitrião, eu quero acompanhar a lista de presença atualizada, de modo que eu saiba quantos vão comparecer.
+Como anfitrião, quero acompanhar a lista de presença para saber quantas pessoas irão ao evento.
 Critérios de aceitação:
 - Vejo os confirmados, os que responderam talvez e os que recusaram.
 - Vejo o total de pessoas somando os acompanhantes.
 - O painel se atualiza sozinho enquanto fica aberto, sem precisar recarregar a página.
 
 ### H12
-Como um anfitrião, eu quero uma consolidação das restrições alimentares, de modo que eu repasse ao buffet sem retrabalho.
+Como anfitrião, quero reunir as restrições alimentares para repassá-las ao buffet sem retrabalho.
 Critérios de aceitação:
 - Vejo a contagem por categoria, por exemplo quantos vegetarianos e quantos alérgicos.
 - Vejo as descrições de alergia informadas.
