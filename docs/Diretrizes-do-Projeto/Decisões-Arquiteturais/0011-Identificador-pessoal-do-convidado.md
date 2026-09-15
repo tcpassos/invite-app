@@ -51,5 +51,5 @@ Esta decisão se reabre se **surgir requisito de invalidar a resposta ou o link 
 ## O que esta decisão fecha
 
 - A pendência 2 do [Diagrama de Classes](../../Sprints/Sprint-2/Diagrama-de-Classes.md), sobre entropia, alfabeto e revogação.
-- O item correspondente da seção 11.4 do Guia da Arquitetura.
+- O item correspondente da seção 11.2 do Guia da Arquitetura.
 - A suposição declarada na seção 9.5 do guia, que passa a ser decisão registrada.

@@ -446,7 +446,7 @@ Os quatro componentes do tier Front, os quatro controllers, `SessionGuard`, `Rat
 | Artefato | Relação |
 |---|---|
 | Diagrama de camadas, seção 2 do Guia da Arquitetura | Mesmas camadas, mesmos tiers e o mesmo rótulo de pacote. O que lá é uma caixa por camada, aqui são os componentes dentro dela |
-| [Diagrama de Classes](Diagrama-de-Classes.md) | Nenhuma classe virou componente. As classes são os classificadores da coluna "o que encapsula" da seção 1. As três consultas do painel saíram de `Invite` e estão alocadas em `AttendanceService` e `DietaryService`, conforme a seção 11.3 do Guia da Arquitetura |
+| [Diagrama de Classes](Diagrama-de-Classes.md) | Nenhuma classe virou componente. As classes são os classificadores da coluna "o que encapsula" da seção 1. As três consultas do painel não são operações de `Invite`, e estão alocadas em `AttendanceService` e `DietaryService`, conforme a tabela 4.2 do Guia da Arquitetura |
 | [Diagramas de Sequência](Diagramas-de-Sequência.md) | Os participantes de camada dos três `.puml`, que são `PublicRsvpController`, `InviteController`, `DietaryController`, `RsvpService`, `InviteService`, `DietaryService` e `InviteRepository`, são componentes desta figura com os mesmos nomes. `Navegador`, `Front` e `Banco` não são componentes, são lugares de execução, e estão tratados na seção 5 e no item #60 |
 | Diagrama de implantação, item #60 | Recebe a seção 4 pronta. Os componentes já estão associados a artefatos, e falta alocar artefato em nó, definir link e número de porta |
 
@@ -467,14 +467,11 @@ Os quatro componentes do tier Front, os quatro controllers, `SessionGuard`, `Rat
 
 ### 10.2 Pendências abertas
 
-1. **Correções no Guia da Arquitetura.** Foram adicionadas as seções 9.3, 9.4, 9.5, 10 e 11, antes citadas mas inexistentes. A tabela 4.2 recebeu uma coluna para o componente responsável, a tabela 4.3 recebeu `findAttendanceByStatus` e uma coluna de repositório, e a seção 3.1 passou a mostrar as duas assinaturas de limite de taxa. A seção 11.2 do guia registra cada alteração.
-
-   Duas contagens foram revistas. A quantidade de serviços de Domínio continua em sete, pois nenhum serviço foi adicionado ou removido da tabela 4.2. A mudança de `listDietaryCategories` para `DietaryCategoryStore` também não altera a contagem de chamadas. Apenas a entrada de `findAttendanceByStatus` muda o total de nove para dez.
-2. **Rotas do UC002 e do UC003.** A tabela 4.1 tem sete rotas, mas nenhuma cria o convite ou salva sua personalização. `InviteController` e `InviteService` já assumem essas responsabilidades, e falta definir as rotas.
-3. **Pacote do UC001.** `AuthController` não cabe no pacote público, restrito aos dois serviços citados na seção 5.3, nem no autenticado, pois a entrada ocorre antes da criação da sessão. Falta decidir se haverá um terceiro pacote.
-4. **Réplicas da API.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) usa um contador em memória para `RateLimitGuard`. Com mais de uma instância, cada processo manteria seu próprio contador. A hipótese está registrada na seção 9 do [Diagrama de Implantação](Diagrama-de-Implantação.md).
-5. **Assinaturas de `HostOperations` e `HostStore`.** Elas ainda não foram definidas porque o UC001 não tem diagrama de sequência.
-6. **Consistência entre `templates/` e `contract/`.** Ainda não há verificação no build. Adicionar um template exige alterar os dois locais manualmente, e limites de texto diferentes podem causar erros no UC003.
+1. **Rotas do UC002 e do UC003.** A tabela 4.1 tem sete rotas, mas nenhuma cria o convite ou salva sua personalização. `InviteController` e `InviteService` já assumem essas responsabilidades, e falta definir as rotas.
+2. **Pacote do UC001.** `AuthController` não cabe no pacote público, restrito aos dois serviços citados na seção 5.3, nem no autenticado, pois a entrada ocorre antes da criação da sessão. Falta decidir se haverá um terceiro pacote.
+3. **Réplicas da API.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) usa um contador em memória para `RateLimitGuard`. Com mais de uma instância, cada processo manteria seu próprio contador. A hipótese está registrada na seção 9 do [Diagrama de Implantação](Diagrama-de-Implantação.md).
+4. **Assinaturas de `HostOperations` e `HostStore`.** Elas ainda não foram definidas porque o UC001 não tem diagrama de sequência.
+5. **Consistência entre `templates/` e `contract/`.** Ainda não há verificação no build. Adicionar um template exige alterar os dois locais manualmente, e limites de texto diferentes podem causar erros no UC003.
 
 ---
 

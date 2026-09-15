@@ -54,4 +54,4 @@ O ADR-0003 ser substituído por um que preveja publicação também reabre, porq
 
 - A pendência 4 dos [Diagramas de Sequência](../../Sprints/Sprint-2/Diagramas-de-Sequência.md), sobre `authenticateSession` não ter ADR.
 - As pendências 4 e 5 da seção 10.2 do [Diagrama de Componentes](../../Sprints/Sprint-2/Diagrama-de-Componentes.md), sobre onde as duas guardas guardam estado.
-- O item correspondente da seção 11.4 do Guia da Arquitetura.
+- O item correspondente da seção 11.2 do Guia da Arquitetura.

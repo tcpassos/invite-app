@@ -1135,9 +1135,9 @@ Esta seção também entrega insumo para dois artefatos que a cobraram pelo nome
 
 ---
 
-## 11. Decisões novas, correções pendentes e lacunas
+## 11. Decisões novas e lacunas
 
-Esta seção reúne três coisas: o que o guia decidiu sozinho, o que ele precisa corrigir porque outro artefato chegou depois, e o que continua sem decisão. A introdução já fixou o peso da primeira. **Decisão nova deste guia não tem o mesmo peso de um ADR aceito e precisa de aval do time.** Até o aval, ela vale como regra de código e não vale como fonte da decisão.
+Esta seção reúne duas coisas: o que o guia decidiu sozinho e o que continua sem decisão. A introdução já fixou o peso da primeira. **Decisão nova deste guia não tem o mesmo peso de um ADR aceito e precisa de aval do time.** Até o aval, ela vale como regra de código e não vale como fonte da decisão.
 
 Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O próximo número livre no índice de [Decisões Arquiteturais](Decisões-Arquiteturais.md) é o 0010.
 
@@ -1171,64 +1171,7 @@ Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O pró
 
 **O que esta lista não traz, de propósito.** Alocação que já sai de um diagrama de sequência não é decisão nova, porque já está registrada em artefato, e é o caso dos donos de seis dos sete serviços da tabela 4.2, que a 11.2 nomeia. Regra que vem direto de um ADR também não entra, mesmo quando este guia é o primeiro a escrevê-la em forma de verificação, e é o caso do prefixo de aspa no CSV, que é a medida 5 do ADR-0008.
 
-### 11.2 As correções que o Diagrama de Componentes obriga
-
-O [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-de-Componentes.md) foi derivado das seções 3 a 9 deste guia e fechou coisas que o guia tinha deixado em aberto. Dez pontos do texto ficaram desatualizados por causa disso, e outros quatro, que parecem ter caído junto, continuam válidos. **As correções da tabela abaixo já foram aplicadas ao texto deste guia.** Ela fica como registro do que mudou, para quem leu a versão anterior e para quem seguir a página do Diagrama de Componentes, que erra dois desses números.
-
-| Onde | O que estava escrito | O que passou a valer | Por quê |
-|---|---|---|---|
-| Tabela 4.2 | Três colunas, `Serviço`, `O que faz` e `Caso de uso`, em sete linhas | As mesmas sete linhas, mais uma quarta coluna com o componente dono | A pendência 2 da seção 10.2 do Diagrama de Componentes pede registrar `AttendanceService`. Como `listAttendance` já é a sétima linha, registrar é acrescentar coluna e não linha |
-| Tabela 4.3 | Nove operações, três colunas, sem coluna de repositório | Dez operações, com coluna de repositório. Nove em `InviteRepository` e uma em `DietaryCategoryRepository` | Entra `findAttendanceByStatus(inviteId, statuses)`, da seção 2.4 do Diagrama de Componentes. `listDietaryCategories()` muda de repositório e não sai da conta, porque o Domínio continua chamando a operação |
-| Seção 3.1, controle de tráfego | `enforceRateLimit(publicToken, clientIp)` nas duas rotas públicas | `enforceReadLimit(publicToken)` na leitura e `enforceWriteLimit(publicToken, clientIp)` na escrita | A 3.1 passa `clientIp` também na leitura, que é a chave de contagem que a 4.1 proíbe. A 4.1 é posterior e é a que vale |
-| Tabela 1.6, terceira linha | "nove operações de Dados" | "dez operações de Dados" | Mesma conta da linha da tabela 4.3. O "sete serviços do Domínio" da mesma célula não muda |
-| Seção 5.1, serviços | "sete serviços de Domínio" | Continua sete | Dono é componente, não serviço. Nenhum serviço entrou nem saiu da tabela 4.2 |
-| Seção 5.1, operações | "nove operações de Dados" | Dez | Nove hoje, mais `findAttendanceByStatus`, igual a dez |
-| Seção 5.1, medida ausente | Só duas medidas, serviços e operações | Uma terceira, o Domínio conhece duas interfaces de Dados, `InviteStore` e `DietaryCategoryStore`, em vez de uma | É o número que registra o efeito da separação dos repositórios, e a contagem de operações não o captura |
-| Seção 5.2, frase de origem | "Os três diagramas de sequência colocam nove operações num único `InviteRepository`" | Os três colocam oito operações em `InviteRepository`, e a nona, `findAttendanceByStatus`, não aparece em diagrama de sequência nenhum | Conferido chamada por chamada nos três `.puml`. São `findById`, `findPublishedByPublicToken`, `publishIfPublishable`, `unpublishIfPublished`, `saveRsvpWithinCapacity`, `countGuestsByCategory`, `findDescriptionsByCategories` e `findGuestsForExport` |
-| Seção 5.2, "nove operações" | Nove | Nove | Sai `listDietaryCategories`, entra `findAttendanceByStatus`. O número se mantém por troca, não por estabilidade |
-| Seção 5.2, "três consumidores" | Três | Quatro, com `AttendanceService` | A seção 2.4 do Diagrama de Componentes lista os quatro consumidores de `InviteStore` |
-| Seção 5.2, "quatro tipos de retorno" | Quatro, contando `DietaryCategory` | Três nomeados, `CategoryCount`, `AllergyDescription` e `ExportRow`, mais uma projeção sem nome | `DietaryCategory` passa a vir do outro repositório. A projeção nova é a que `findAttendanceByStatus` devolve, e nenhum artefato a nomeia. Ver a 11.4 |
-| Seção 5.2, motivos de mudança | Três | Dois dentro do `InviteRepository`, e o motivo 2 passa de três para quatro operações | O motivo 3, o dado de referência, sai inteiro junto com `listDietaryCategories`. `findAttendanceByStatus` entra no motivo 2, as projeções de leitura do painel |
-| Tabela 1.6, quinta linha | `listDietaryCategories()` consumida por dois serviços e `findById` consumida por dois | **Fica como está**, com o repositório de cada operação nomeado | A propriedade é sobre a camada e não sobre um repositório |
-| Seção 5.3, a frase dos cinco serviços | "Os outros cinco serviços da tabela 4.2 são exclusivos do pacote autenticado" | Continua certa hoje e quebra no dia em que `HostOperations` entrar na tabela 4.2 | `AuthController` não é do pacote público nem do autenticado, conforme a pendência 4 da seção 10.2 do Diagrama de Componentes |
-
-**Os donos das sete linhas da tabela 4.2, e qual deles é decisão nova.** `RsvpService` responde por `getPublishedInvite` e `registerRsvp`, `InviteService` por `publishInvite` e `unpublishInvite`, `DietaryService` por `consolidateDietaryNotes` e `exportDietaryNotes`, e `AttendanceService` por `listAttendance`. Os seis primeiros saem das linhas de vida dos diagramas de sequência, `RsvpService` no `diagrama-sequencia-uc005.puml`, `InviteService` no `diagrama-sequencia-uc004.puml` e `DietaryService` no `diagrama-sequencia-uc008.puml`, então não são decisão nova. Só o dono de `listAttendance` é, e ele é a linha 5 da 11.1. Sem essa distinção, a coluna inteira vai para aval do time por engano.
-
-**A quinta linha da tabela 1.6 não cai.** Quem lê a separação dos repositórios supõe que a evidência dela morreu junto. Não morreu. A propriedade afirma que uma camada projetada serve a vários serviços de nível mais alto, e `listDietaryCategories()` continua sendo chamada por `RsvpService` no UC005 e por `DietaryService` no UC008, agora a partir de `DietaryCategoryRepository`. O único defeito da linha é de precisão, porque ela lê como se as duas operações viessem do mesmo lugar. A evidência ficou mais forte, e não mais fraca: a camada agora oferece duas interfaces e as duas têm mais de um consumidor, `DietaryCategoryStore` com dois e `InviteStore` com quatro.
-
-**Dois erros da pendência 2 da seção 10.2 do Diagrama de Componentes.** Ela afirma que os dois números da 5.1 mudam, e dá como causa parcial a saída de `listDietaryCategories` para `DietaryCategoryStore`. Nenhuma das duas se sustenta. O sete não muda, e mover uma operação de repositório altera a distribuição e não a contagem, porque o Domínio continua chamando a operação. Quem seguir aquela página escreve número errado nos dois lugares.
-
-**O sete é provisório.** Ele fecha em sete porque `HostOperations` ainda não tem assinatura, o que a própria seção 2.3 do Diagrama de Componentes declara, e porque o UC002 e o UC003 não têm rota nem serviço em artefato nenhum. Escrever oito hoje seria contar um serviço que ninguém sabe assinar. No dia em que os três casos de uso fecharem assinatura, o sete sobe e a frase da 5.3 é reescrita no mesmo movimento.
-
-### 11.3 A divergência com o Diagrama de Classes, e a correção exata
-
-São três operações, três artefatos e duas leituras. O [Diagrama de Classes](../Sprints/Sprint-2/Diagrama-de-Classes.md) coloca `listAttendance()`, `consolidateDietaryNotes()` e `exportDietaryNotes()` como operações da classe `Invite`. A seção 4.2 deste guia as trata como serviços do Domínio. A seção 2.3 do Diagrama de Componentes as aloca em `AttendanceService` e em `DietaryService`.
-
-**O Diagrama de Classes é o artefato que cede**, porque é o único dos três com a leitura oposta e porque as três razões que a seção 4.2 já registra continuam de pé.
-
-A realocação, uma a uma:
-
-- **`listAttendance()`** sai de `Invite` e vira `listAttendance(inviteId, hostId)` em `AttendanceService`, exposta pela interface `AttendanceOperations`.
-- **`consolidateDietaryNotes()`** sai de `Invite` e vira `consolidateDietaryNotes(inviteId, hostId)` em `DietaryService`, exposta pela interface `DietaryOperations`.
-- **`exportDietaryNotes()`** sai de `Invite` e vira `exportDietaryNotes(inviteId, hostId)` em `DietaryService`, na mesma interface.
-
-A edição não estava só nas três linhas do fonte. Eram quatro pontos de texto e a imagem, e **todos já foram aplicados**. A tabela fica como registro do que mudou.
-
-| Arquivo | Onde | O que foi feito |
-|---|---|---|
-| `docs/.attachments/diagrama-de-classes.puml` | Linhas 44 a 46, dentro do bloco `class Invite {` aberto na linha 34 | Remover as três operações |
-| `docs/.attachments/diagrama-de-classes.puml` | Linha 113, dentro do `note right of Invite` aberto na linha 110 | Trocar "/totalPeople e as três operações são consulta, não viram tabela" por uma frase só sobre `/totalPeople` |
-| `Diagrama-de-Classes.md` | Linha 25, responsabilidades de `Invite` | Remover "Responde também pelas três consultas do painel." |
-| `Diagrama-de-Classes.md` | Linha 35, marcador que começa em "As três operações são consulta" | Reescrever mantendo o que a frase afirma de verdadeiro, que as três consultas do painel não viram tabela, e passando a dizer que elas são serviços do Domínio e não operações da entidade |
-| `docs/.attachments/diagrama-de-classes.png` | A imagem inteira | Regerar com o comando que a seção "Fonte do diagrama" daquela página já traz |
-
-**O que fica.** `/totalPeople` continua atributo derivado de `Invite`, na linha 43 do fonte. Ele não é operação e não faz parte da divergência. Vale registrar quem o calcula em execução, que é `AttendanceService`, somando os acompanhantes sobre as linhas que `findAttendanceByStatus` já devolveu, conforme a seção 2.4 do Diagrama de Componentes. É a RN1 do UC007.
-
-**Por que os cinco pontos e não só o fonte.** Remover as operações do `.puml` e deixar a prosa da página afirmando que `Invite` responde pelas três consultas troca uma divergência entre artefatos por uma divergência dentro do mesmo artefato, que é pior, porque ninguém compara duas páginas para encontrá-la.
-
-Com isso os três artefatos passam a dizer a mesma coisa, e a pendência correspondente saiu da seção 10.2 do Diagrama de Componentes.
-
-### 11.4 O que ainda não tem dono
+### 11.2 O que ainda não tem dono
 
 As pendências que a seção 10.2 do [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-de-Componentes.md) já lista não são repetidas aqui. O que segue é o que é do guia, ou o que aquela seção registra sem dizer o que o guia perde junto.
 
