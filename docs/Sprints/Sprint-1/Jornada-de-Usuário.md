@@ -10,7 +10,7 @@ Percurso das [Personas](Personas.md) até seus objetivos. Cada linha é um passo
 | 2 | Procura uma forma rápida de fazer o convite e abre o app | Navegador no celular | Curiosa |
 | 3 | Cria a conta e entra | App | Neutra |
 | 4 | Cadastra o evento (nome, data, hora, local) | App | Focada |
-| 5 | Escolhe um tema e ajusta cores, imagem e textos | App | Satisfeita ao ver o convite tomar forma |
+| 5 | Escolhe um template e ajusta cores e textos | App | Satisfeita ao ver o convite tomar forma |
 | 6 | Gera o link do convite | App | Aliviada |
 | 7 | Compartilha o link no grupo da família | WhatsApp | Confiante |
 | 8 | Acompanha as confirmações ao longo dos dias | App | Ansiosa no começo, tranquila depois |

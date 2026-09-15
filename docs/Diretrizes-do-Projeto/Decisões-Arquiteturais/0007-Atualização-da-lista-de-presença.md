@@ -10,7 +10,7 @@ A H11 pede ver a lista de presença em tempo real, e uma proposta anterior defin
 Ao revisar a especificação, o requisito não se sustenta como está:
 
 - O **UC007** é uma consulta. Não tem pós-condição e não menciona atualização automática em passo nenhum.
-- A única menção a tempo real nos artefatos do projeto está na pesquisa de mercado, como padrão de experiência observado em concorrentes, e nunca virou requisito especificado.
+- A **H11** pedia tempo real sem declarar latência aceitável, o que não é requisito verificável. O termo veio da pesquisa de mercado, como padrão de experiência observado em concorrentes, e não de uma necessidade levantada com o anfitrião.
 - O volume real é de algumas respostas por hora no pico do disparo do convite, não por segundo, e o anfitrião não fica com o painel aberto.
 
 Um levantamento de 19 produtos equivalentes não encontrou Server-Sent Events em nenhum. Os quatro com tempo real confirmado usaram o transporte que já vinha da plataforma deles. Ressalva honesta: essa evidência é de bundle público, e o comportamento do painel autenticado não foi observável em nenhum produto, então ausência de evidência não é evidência de ausência.
@@ -19,7 +19,9 @@ Um levantamento de 19 produtos equivalentes não encontrou Server-Sent Events em
 
 **Consulta periódica pelo cliente, com intervalo entre 15 e 30 segundos, enquanto o painel estiver aberto.**
 
-Server-Sent Events fica descartado nesta fase, e não por ser inadequado. O transporte estava certo para um requisito que nunca foi especificado.
+Server-Sent Events fica descartado nesta fase, e não por ser inadequado. O transporte estava certo para um requisito que nunca teve latência definida.
+
+Como consequência desta decisão, a H11 foi reescrita. Ela deixou de pedir tempo real e passa a pedir que o painel se atualize sozinho enquanto estiver aberto, sem recarregar a página, que é exatamente o que a consulta periódica entrega.
 
 ## Consequências
 
