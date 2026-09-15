@@ -99,17 +99,10 @@ note on link
   Invariante do teto de pessoas (UC002 RN2, UC005 RN4, ADR-0008).
   Com capacityLimit preenchido, a soma de 1 mais companionCount
   de todo Guest com status ACCEPTED não pode ultrapassar capacityLimit.
-  Verificação transacional na camada de Dados.
 end note
 
 Guest "1\nguest" *-- "0..1\nnote" DietaryNote
 
 DietaryNote "0..*\nnotes" -- "0..*\ncategories" DietaryCategory
-
-note right of Invite
-  publicToken nasce na publicação (UC004 passo 3),
-  por isso é opcional enquanto o convite é rascunho.
-  /totalPeople é derivado e não é coluna.
-end note
 
 @enduml

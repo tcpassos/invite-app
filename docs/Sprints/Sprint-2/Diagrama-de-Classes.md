@@ -30,10 +30,9 @@ Todo atributo tem origem rastreável numa Estrutura de Dados ou Regra de Negóci
 
 - `publicToken` é opcional porque nasce apenas na transição para publicado (UC004 passo 3). Enquanto o convite é rascunho, ele não existe. É o token de 128 bits do [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md), em coluna separada da chave primária.
 - A situação ativo ou inativo do link, citada na ED1 do UC004, é derivada de `status` e não vira uma segunda coluna.
-- `capacityLimit` e `maxCompanionsPerGuest` são **limites diferentes e independentes** (UC002 RN2). O primeiro é o teto do evento inteiro, o segundo restringe cada resposta.
-- `/totalPeople` é derivado, indicado pela barra. Não é coluna.
+- `capacityLimit` e `maxCompanionsPerGuest` são **limites diferentes e independentes** (UC002 RN2). O primeiro é o teto do evento inteiro, o segundo restringe cada resposta. O invariante que a nota do diagrama registra é verificado **dentro de transação, na camada de Dados**, e a seção 3.4 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) mostra em número o que acontece quando ele é verificado acima dela.
+- `/totalPeople` é derivado, indicado pela barra, e não é coluna. Quem o calcula em execução é `AttendanceService`, somando os acompanhantes sobre as linhas que `findAttendanceByStatus` já devolveu. É a RN1 do UC007.
 - **As três consultas do painel não são operações desta classe.** A Lista de presença do UC007 é projeção de Guest, a Consolidação do UC008 é agregação por categoria, e a exportação é junção gerada sob demanda. **Nenhuma delas vira tabela**, e nenhuma é método da entidade. Elas são serviços do Domínio, `listAttendance` em `AttendanceService` e as outras duas em `DietaryService`, conforme a seção 11.3 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). A assinatura das três recebe `inviteId` e `hostId`, que não é forma de método de instância de um `Invite` já carregado.
-- `/totalPeople` continua sendo atributo derivado desta classe. Quem o calcula em execução é `AttendanceService`, somando os acompanhantes sobre as linhas que `findAttendanceByStatus` já devolveu. É a RN1 do UC007.
 
 **Origem:** UC002 ED1 e RN2, UC004 ED1, ADR-0005 e ADR-0008.
 
