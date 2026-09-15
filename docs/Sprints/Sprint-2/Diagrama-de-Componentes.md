@@ -446,7 +446,7 @@ A segunda pergunta de motivação da aula é sobre unidades substituíveis, e a 
 | Artefato | Relação |
 |---|---|
 | Diagrama de camadas, seção 2 do Guia da Arquitetura | Mesmas camadas, mesmos tiers e o mesmo rótulo de pacote. O que lá é uma caixa por camada, aqui são os componentes dentro dela |
-| [Diagrama de Classes](Diagrama-de-Classes.md) | Nenhuma classe virou componente. As classes são os classificadores da coluna "o que encapsula" da seção 1 |
+| [Diagrama de Classes](Diagrama-de-Classes.md) | Nenhuma classe virou componente. As classes são os classificadores da coluna "o que encapsula" da seção 1. As três consultas do painel saíram de `Invite` e estão alocadas em `AttendanceService` e `DietaryService`, conforme a seção 11.3 do Guia da Arquitetura |
 | [Diagramas de Sequência](Diagramas-de-Sequência.md) | Os participantes de camada dos três `.puml`, que são `PublicRsvpController`, `InviteController`, `DietaryController`, `RsvpService`, `InviteService`, `DietaryService` e `InviteRepository`, são componentes desta figura com os mesmos nomes. `Navegador`, `Front` e `Banco` não são componentes, são lugares de execução, e estão tratados na seção 5 e no item #60 |
 | Diagrama de implantação, item #60 | Recebe a seção 4 pronta. Os componentes já estão associados a artefatos, e falta alocar artefato em nó, definir link e número de porta |
 
@@ -475,10 +475,9 @@ A segunda pergunta de motivação da aula é sobre unidades substituíveis, e a 
 4. **Onde o `RateLimitGuard` guarda estado.** O ADR-0008 exige janela de tempo. Tabela no mesmo banco faria a Apresentação falar com o banco, o que a seção 6.2 do guia proíbe. Contador em memória do processo não cria dependência nenhuma e é o que a figura comporta hoje, mas deixa de valer se a API ganhar réplica, que é a hipótese levantada no bloco C do roteiro do T1 e que vem do convite público sem estado. A decisão merece ADR próprio, e ele decide também se a figura ganha soquete novo.
 5. **Onde o `SessionGuard` guarda estado.** Cookie assinado validado na própria guarda não cria dependência. Tabela de sessão cria, e cai no mesmo problema do item anterior. A pendência 4 dos Diagramas de Sequência já registra que `authenticateSession` não tem ADR.
 6. **As operações de `HostOperations` e de `HostStore` não têm assinatura fechada**, porque o UC001 não tem diagrama de sequência.
-7. **O Diagrama de Classes precisa perder as três consultas do painel.** A descrição de `Invite` diz que ela responde também pelas três consultas, e `listAttendance()`, `consolidateDietaryNotes()` e `exportDietaryNotes()` aparecem como operações da entidade. A seção 4.2 do guia adota a leitura oposta, e a correção exata agora está escrita na seção 11.3 do guia, arquivo por arquivo e linha por linha. Esta página aloca as três em `AttendanceService` e `DietaryService`, então dos três artefatos o que cede é o Diagrama de Classes. A edição ainda não foi feita.
-8. **Nada garante que `templates/` e `contract/` continuem coerentes.** Enquanto não houver verificação no build, acrescentar um template exige mexer nos dois lugares na mão, e um limite de texto divergente entre eles só aparece como recusa estranha na tela do UC003.
-9. **O nome do serviço do banco no compose não está decidido.** O rótulo da figura é o nome do banco, e o roteiro do T1 usa `db` como nome de serviço. A decisão é do arquivo de compose e do item #60.
-10. **Número de porta não existe como decisão em artefato nenhum.** A porta 3000 aparece no material do T1 como exemplo, e o ADR-0003 fecha no host sem chegar em porta. O número é assunto do item #60 e do arquivo de compose.
+7. **Nada garante que `templates/` e `contract/` continuem coerentes.** Enquanto não houver verificação no build, acrescentar um template exige mexer nos dois lugares na mão, e um limite de texto divergente entre eles só aparece como recusa estranha na tela do UC003.
+8. **O nome do serviço do banco no compose não está decidido.** O rótulo da figura é o nome do banco, e o roteiro do T1 usa `db` como nome de serviço. A decisão é do arquivo de compose e do item #60.
+9. **Número de porta não existe como decisão em artefato nenhum.** A porta 3000 aparece no material do T1 como exemplo, e o ADR-0003 fecha no host sem chegar em porta. O número é assunto do item #60 e do arquivo de compose.
 
 ---
 

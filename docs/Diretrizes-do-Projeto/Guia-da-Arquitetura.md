@@ -1213,9 +1213,9 @@ A realocação, uma a uma:
 - **`consolidateDietaryNotes()`** sai de `Invite` e vira `consolidateDietaryNotes(inviteId, hostId)` em `DietaryService`, exposta pela interface `DietaryOperations`.
 - **`exportDietaryNotes()`** sai de `Invite` e vira `exportDietaryNotes(inviteId, hostId)` em `DietaryService`, na mesma interface.
 
-A edição não está só nas três linhas do fonte. São quatro pontos de texto e a imagem.
+A edição não estava só nas três linhas do fonte. Eram quatro pontos de texto e a imagem, e **todos já foram aplicados**. A tabela fica como registro do que mudou.
 
-| Arquivo | Onde | O que fazer |
+| Arquivo | Onde | O que foi feito |
 |---|---|---|
 | `docs/.attachments/diagrama-de-classes.puml` | Linhas 44 a 46, dentro do bloco `class Invite {` aberto na linha 34 | Remover as três operações |
 | `docs/.attachments/diagrama-de-classes.puml` | Linha 113, dentro do `note right of Invite` aberto na linha 110 | Trocar "/totalPeople e as três operações são consulta, não viram tabela" por uma frase só sobre `/totalPeople` |
@@ -1227,7 +1227,7 @@ A edição não está só nas três linhas do fonte. São quatro pontos de texto
 
 **Por que os cinco pontos e não só o fonte.** Remover as operações do `.puml` e deixar a prosa da página afirmando que `Invite` responde pelas três consultas troca uma divergência entre artefatos por uma divergência dentro do mesmo artefato, que é pior, porque ninguém compara duas páginas para encontrá-la.
 
-Isso fecha a pendência 8 da seção 10.2 do Diagrama de Componentes.
+Com isso os três artefatos passam a dizer a mesma coisa, e a pendência correspondente saiu da seção 10.2 do Diagrama de Componentes.
 
 ### 11.4 O que ainda não tem dono
 

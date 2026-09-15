@@ -5,6 +5,8 @@
 ' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
 ' Identificadores em inglês, conforme o Guia de Estilo.
 ' A descrição de cada classe fica na página da wiki, não dentro do diagrama.
+' As três consultas do painel não são operações de Invite. Elas são serviços do Domínio,
+' conforme a seção 11.3 do Guia da Arquitetura.
 
 skinparam shadowing false
 skinparam monochrome true
@@ -41,9 +43,6 @@ class Invite {
   + capacityLimit : Integer [0..1]
   + maxCompanionsPerGuest : Integer [0..1]
   + /totalPeople : Integer [1]
-  + listAttendance()
-  + consolidateDietaryNotes()
-  + exportDietaryNotes()
 }
 
 class InviteCustomization {
@@ -110,8 +109,7 @@ DietaryNote "0..*\nnotes" -- "0..*\ncategories" DietaryCategory
 note right of Invite
   publicToken nasce na publicação (UC004 passo 3),
   por isso é opcional enquanto o convite é rascunho.
-  /totalPeople e as três operações são consulta,
-  não viram tabela.
+  /totalPeople é derivado e não é coluna.
 end note
 
 @enduml

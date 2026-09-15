@@ -22,7 +22,7 @@ Todo atributo tem origem rastreável numa Estrutura de Dados ou Regra de Negóci
 
 **Descrição:** o convite de um evento. É a raiz do modelo, e tudo que diz respeito a um evento pende dela.
 
-**Responsabilidades:** guardar os dados do evento, controlar a situação de publicação, carregar o identificador público do link, e definir os dois limites opcionais do evento. Responde também pelas três consultas do painel.
+**Responsabilidades:** guardar os dados do evento, controlar a situação de publicação, carregar o identificador público do link, e definir os dois limites opcionais do evento.
 
 **Relações:** pertence a um Host, tem no máximo uma InviteCustomization e agrega de zero a muitos Guest.
 
@@ -32,9 +32,10 @@ Todo atributo tem origem rastreável numa Estrutura de Dados ou Regra de Negóci
 - A situação ativo ou inativo do link, citada na ED1 do UC004, é derivada de `status` e não vira uma segunda coluna.
 - `capacityLimit` e `maxCompanionsPerGuest` são **limites diferentes e independentes** (UC002 RN2). O primeiro é o teto do evento inteiro, o segundo restringe cada resposta.
 - `/totalPeople` é derivado, indicado pela barra. Não é coluna.
-- As três operações são consulta. A Lista de presença do UC007 é projeção de Guest, a Consolidação do UC008 é agregação por categoria, e a exportação é junção gerada sob demanda. **Nenhuma delas vira tabela.**
+- **As três consultas do painel não são operações desta classe.** A Lista de presença do UC007 é projeção de Guest, a Consolidação do UC008 é agregação por categoria, e a exportação é junção gerada sob demanda. **Nenhuma delas vira tabela**, e nenhuma é método da entidade. Elas são serviços do Domínio, `listAttendance` em `AttendanceService` e as outras duas em `DietaryService`, conforme a seção 11.3 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). A assinatura das três recebe `inviteId` e `hostId`, que não é forma de método de instância de um `Invite` já carregado.
+- `/totalPeople` continua sendo atributo derivado desta classe. Quem o calcula em execução é `AttendanceService`, somando os acompanhantes sobre as linhas que `findAttendanceByStatus` já devolveu. É a RN1 do UC007.
 
-**Origem:** UC002 ED1 e RN2, UC004 ED1, UC007, UC008, ADR-0005 e ADR-0008.
+**Origem:** UC002 ED1 e RN2, UC004 ED1, ADR-0005 e ADR-0008.
 
 ### Classe InviteCustomization
 
