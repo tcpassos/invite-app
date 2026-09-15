@@ -76,7 +76,7 @@ Pontos que a especificação não resolve e que os diagramas deixaram visíveis:
 1. **A pré-condição do UC008 bloqueia a exportação quando ninguém tem restrição.** O A1 não oferece a exportação, então numa festa sem nenhuma restrição o anfitrião não consegue exportar a lista de presença, que é metade do que a H12 pede.
 2. **A ED2 do UC008 não tem coluna de acompanhantes.** São quatro colunas e nenhuma diz para quantas pessoas cozinhar, que é a dor declarada da persona do buffet.
 3. **Não há fluxo especificado para alterar a resposta.** A H09 virou apenas a RN3 do UC005, sem passo próprio.
-4. **A autenticação do anfitrião aparece nos três diagramas como `authenticateSession`** e ainda não tem ADR.
+4. **A autenticação do anfitrião aparece nos três diagramas como `authenticateSession`** e ganhou o [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md). A operação valida a assinatura de um cookie e devolve o `hostId`, sem consultar o banco.
 
 ## Fontes dos diagramas
 

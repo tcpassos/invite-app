@@ -83,7 +83,7 @@ A classe não tem atributos próprios porque os únicos textos nomeados na espec
 **Sobre os atributos:**
 
 - `respondedAt` é obrigatório justamente porque o registro nasce na resposta. Se o time voltar a ter lista prévia de convidados, este atributo passa a ser opcional, e o ADR-0006 já registra que a entidade é a mesma nos dois modelos.
-- `personalToken` é a credencial de edição da resposta (UC005 ED2 e RN3), e é o **segundo identificador público do sistema**. O formato e a revogação dele ainda não têm ADR.
+- `personalToken` é a credencial de edição da resposta (UC005 ED2 e RN3), e é o **segundo identificador público do sistema**. O [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) dá a ele a mesma geração do token do convite e registra que não há revogação nesta fase.
 - `companionCount` respeita `maxCompanionsPerGuest` do convite, quando definido (UC005 RN2).
 - Não há chave única por nome. **Dois convidados com o mesmo nome são dois registros**, que é uma consequência assumida no ADR-0006.
 
@@ -127,7 +127,7 @@ Um convidado com mais de uma categoria conta em cada uma na consolidação do UC
 A modelagem revelou lacunas na especificação que ainda precisam de decisão do time:
 
 1. **Os textos da personalização nunca foram nomeados.** Se o UC003 prevê textos próprios além do nome do evento e do local, eles precisam de nome, de passo e de coluna. Enquanto isso não for decidido, InviteCustomization fica sem atributos de texto.
-2. **O `personalToken` do convidado não tem ADR.** Falta decidir entropia, alfabeto, revogação, e o que acontece com ele quando o convite é despublicado.
+2. **O `personalToken` do convidado ganhou ADR.** O [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) repete a geração do ADR-0005, 128 bits em base32 Crockford, registra que não há revogação nesta fase e que despublicar o convite não invalida o link pessoal. O que sobra é a fronteira temporal da RN3 do UC005, que depende do item 4 desta lista.
 3. **As cinco categorias alimentares não estão congeladas por regra.** Elas aparecem no passo 1 do UC006 e na H10, as duas com a palavra "como", que sugere lista aberta. A RN2 do UC006 depende de a categoria alergia existir.
 4. **Fuso horário e fim do evento.** Três regras dependem de tempo, e o Invite tem data e hora separadas, sem duração e sem fuso. No próprio dia da festa a regra fica sem definição.
 

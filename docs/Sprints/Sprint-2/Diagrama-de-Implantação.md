@@ -250,7 +250,7 @@ Quatro linhas da seção 10.7 do guia não fecham aqui.
 
 1. **Valores de tag e de digest das três imagens.** Só existem quando houver build e quando a imagem do PostgreSQL for escolhida. Os marcadores da figura são literais e sem valor de propósito.
 2. **Quais variáveis de ambiente cada container recebe.** Sabe-se que são pelo menos a senha do banco, o segredo de sessão do UC001 e os dois endereços da API da seção 5.2. A lista fechada é do `.env.example` e da página Configuração de Ambiente, que hoje é um marcador de uma linha.
-3. **Onde `SessionGuard` e `RateLimitGuard` guardam estado.** Continua pedindo ADR próprio. Nenhuma das alternativas em discussão acrescenta nó, então este diagrama não muda por causa dela, o que é o mesmo que a seção 10.7 já registrava.
+3. **O contador do `RateLimitGuard` supõe uma instância só.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu contador em memória do processo e sessão em cookie assinado, então nenhuma das duas guardas acrescenta nó e este diagrama não muda por causa delas. O que muda o diagrama é o item seguinte.
 4. **Se a API ganha réplicas.** Se ganhar, este diagrama muda de verdade, porque passa a ter mais de uma instância do mesmo container e a decisão do contador em memória do `RateLimitGuard` deixa de valer junto.
 
 ---

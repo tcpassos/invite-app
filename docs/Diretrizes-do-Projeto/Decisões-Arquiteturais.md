@@ -23,7 +23,12 @@ Status possíveis: **Proposta**, **Aceita**, **Substituída** e **Descartada**.
 | [0007](Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) | Consulta periódica em vez de Server-Sent Events | Aceita |
 | [0008](Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) | Teto de capacidade, limite de taxa e tratamento do endpoint aberto | Aceita |
 | [0009](Decisões-Arquiteturais/0009-Personalização-por-template.md) | Personalização por template em HTML e CSS, sem upload de mídia | Aceita |
+| [0010](Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) | Argon2id, sessão em cookie assinado e guardas sem estado no banco | Aceita |
+| [0011](Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) | Token pessoal com a mesma geração do token do convite, sem revogação | Aceita |
+| [0012](Decisões-Arquiteturais/0012-Observabilidade-entre-os-tiers.md) | Log em saída padrão e correlação por cabeçalho entre os dois saltos | Aceita |
 
 As decisões de 0004 a 0008 foram confrontadas com um levantamento de 19 plataformas equivalentes de convite e RSVP. O relatório fica em `pesquisa-stack-benchmark.md`, no repositório do GitHub.
 
-Ainda em aberto, e previstas como ADR: a autenticação do anfitrião, o envio de e-mail com recuperação de senha, e a observabilidade entre os tiers.
+Ainda em aberto, e previsto como ADR: **o envio de e-mail com recuperação de senha**. Ele continua fora porque nenhum caso de uso o pede. O UC001 tem entrada, cadastro e credencial inválida, e não tem fluxo de recuperação. Decidir transporte de e-mail e política de redefinição antes de existir requisito seria responder uma pergunta que ninguém fez, no mesmo raciocínio que o ADR-0007 usou para descartar o Server-Sent Events.
+
+Há também decisões que o [Guia da Arquitetura](Guia-da-Arquitetura.md) tomou onde nenhum ADR decidia, listadas na seção 11.1 daquele documento. Elas valem como regra de código, precisam de aval do time e não têm o peso de um ADR aceito.
