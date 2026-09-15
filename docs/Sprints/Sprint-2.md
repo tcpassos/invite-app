@@ -59,13 +59,13 @@ Uma ordem que evita retrabalho: o #58 define as camadas, o #59 detalha os compon
 - Arquitetura em Camadas
 - Diagrama de Componentes (UML)
 - Diagrama de Implantação (UML)
-- Diagrama de Classes (UML)
+- [Diagrama de Classes](Sprint-2/Diagrama-de-Classes.md) (UML)
 - Diagrama de Sequência (UML)
-- Documento de Decisões Arquiteturais (ADR)
+- [Documento de Decisões Arquiteturais](../Diretrizes-do-Projeto/Decisões-Arquiteturais.md) (ADR), com nove registros escritos
 
 O ponto de partida já existe no [Guia da Arquitetura](../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), que registra a escolha de MVC no front com três camadas no back. O trabalho da sprint é formalizar essa decisão, diagramar e justificar.
 
-Os diagramas finais são imagens UML feitas no draw.io ou Astah e anexadas em `/.attachments`.
+Os diagramas são gerados com PlantUML, com o fonte `.puml` versionado ao lado do `.png` em `/.attachments`. A renderização roda em container, sem instalar nada além do Docker.
 
 ## Cerimônias da Sprint
 - Planejamento da Sprint

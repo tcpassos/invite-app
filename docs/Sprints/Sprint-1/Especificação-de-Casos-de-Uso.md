@@ -70,7 +70,7 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 **Fluxo Básico:**
 1. O anfitrião seleciona a opção de criar convite.
 2. O sistema exibe o formulário do evento.
-3. O anfitrião informa nome do evento, data, hora e local (RN1). Opcionalmente informa o teto de pessoas do evento (RN2).
+3. O anfitrião informa nome do evento, data, hora e local (RN1). Opcionalmente informa o teto de pessoas do evento e o limite de acompanhantes por convidado (RN2).
 4. O anfitrião confirma a criação.
 5. O sistema valida os dados (RN1) e salva o convite como rascunho (ED1).
 6. O sistema abre a tela de personalização (UC003).
@@ -82,12 +82,12 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 1.2. O sistema retorna ao Passo 3.
 
 **Estruturas de Dados:**
-(ED1) Convite: nome do evento, data, hora, local, situação (rascunho ou publicado), teto de pessoas (opcional) e anfitrião responsável.
+(ED1) Convite: nome do evento, data, hora, local, situação (rascunho ou publicado), teto de pessoas (opcional), limite de acompanhantes por convidado (opcional) e anfitrião responsável.
 
 **Regras de Negócio:**
 (RN1) Nome, data, hora e local são obrigatórios. A data deve ser igual ou posterior ao dia atual.
 
-(RN2) O teto de pessoas é opcional. Quando informado, é um inteiro maior que zero e representa o total de pessoas aceitas no evento, somando os convidados confirmados e os acompanhantes deles.
+(RN2) O convite tem dois limites, ambos opcionais e independentes. O **teto de pessoas** é um inteiro maior que zero e representa o total aceito no evento, somando os convidados confirmados e os acompanhantes deles. O **limite de acompanhantes por convidado** é um inteiro maior ou igual a zero e restringe cada resposta individualmente.
 
 ### UC003 - Personalizar visual do convite
 
@@ -177,8 +177,8 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 
 **Fluxos Alternativos:**
 (A1) Fluxo Alternativo ao Passo 3, o convidado responde que não vai:
-1.1. O sistema registra a ausência e não pede acompanhantes nem restrição.
-1.2. O sistema segue para o Passo 6.
+1.1. O sistema não pede acompanhantes nem restrição alimentar.
+1.2. O sistema segue para o Passo 5, porque a recusa também precisa de nome para aparecer na lista de presença do UC007.
 (A2) Fluxo Alternativo ao Passo 7, dados inválidos:
 2.1. O sistema aponta o campo com problema e mantém o que já foi preenchido.
 2.2. O sistema retorna ao Passo 3.
@@ -190,7 +190,7 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 4.3. O caso de uso é encerrado.
 
 **Estruturas de Dados:**
-(ED1) Confirmação de presença: nome do convidado, status (sim, não ou talvez), número de acompanhantes e data da resposta.
+(ED1) Confirmação de presença: convite a que pertence, nome do convidado, status (sim, não ou talvez), número de acompanhantes e data da resposta.
 
 (ED2) Link pessoal do convidado: token próprio, gerado no registro da resposta e entregue ao convidado na tela de confirmação. É o que permite retornar e editar.
 
@@ -199,7 +199,7 @@ Formato detalhado: `UCxxx - <verbo + objeto>`, com Nome, Descrição, Atores, Pr
 (RN2) O número de acompanhantes é um inteiro maior ou igual a zero e respeita o limite definido pelo anfitrião, quando houver.
 (RN3) O convidado pode alterar a resposta enquanto o evento não tiver ocorrido, usando o link pessoal recebido na confirmação (ED2).
 
-(RN4) Quando o convite tem teto de pessoas, o sistema aceita novas respostas sim apenas enquanto o total de confirmados somado aos acompanhantes for menor que o teto. Respostas talvez não ocupam vaga. A resposta não é sempre aceita. Quem já confirmou pode reduzir acompanhantes ou mudar para não a qualquer momento, o que libera vaga. A verificação é transacional na camada de dados, porque duas respostas simultâneas validadas apenas na apresentação ultrapassariam o teto. Ver ADR-0008.
+(RN4) Quando o convite tem teto de pessoas, o sistema aceita uma resposta sim apenas se o total de confirmados somado aos acompanhantes, **já incluindo a resposta que está sendo registrada**, for menor ou igual ao teto. Comparar o total anterior deixaria passar uma resposta com acompanhantes que ultrapassa o limite. Respostas talvez não ocupam vaga. A resposta não é sempre aceita. Quem já confirmou pode reduzir acompanhantes ou mudar para não a qualquer momento, o que libera vaga. A verificação é transacional na camada de dados, porque duas respostas simultâneas validadas apenas na apresentação ultrapassariam o teto. Ver ADR-0008.
 
 ### UC006 - Registrar observação alimentar
 

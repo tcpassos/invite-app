@@ -3,14 +3,14 @@
 ' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
 '   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-de-classes.puml
 ' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
-' Identificadores em inglês e notas em português, conforme o Guia de Estilo.
-' Cada atributo e cada restrição citam a Especificação de Casos de Uso ou o ADR de origem.
+' Identificadores em inglês, conforme o Guia de Estilo.
+' A descrição de cada classe fica na página da wiki, não dentro do diagrama.
 
 skinparam shadowing false
 skinparam monochrome true
 skinparam classAttributeIconSize 0
-skinparam nodesep 90
-skinparam ranksep 90
+skinparam nodesep 70
+skinparam ranksep 70
 hide empty members
 
 enum InviteStatus {
@@ -97,108 +97,21 @@ Template "1" *-- "1..*\ntextFieldLimits" TextFieldLimit
 
 Invite "1\ninvite" *-- "0..*\nguests" Guest
 note on link
-  Invariante do teto de pessoas.
-  Quando capacityLimit está preenchido, a soma de 1 mais companionCount
-  de todos os Guest com status ACCEPTED não pode ultrapassar capacityLimit.
-  MAYBE não ocupa vaga e DECLINED é sempre aceito.
-  Reduzir acompanhantes ou mudar para DECLINED libera vaga.
-  A verificação é transacional na camada de Dados, porque duas respostas
-  simultâneas validadas na Apresentação ultrapassariam o teto.
-  Fontes: UC002 RN2, UC005 RN4 e ADR-0008.
+  Invariante do teto de pessoas (UC002 RN2, UC005 RN4, ADR-0008).
+  Com capacityLimit preenchido, a soma de 1 mais companionCount
+  de todo Guest com status ACCEPTED não pode ultrapassar capacityLimit.
+  Verificação transacional na camada de Dados.
 end note
 
 Guest "1\nguest" *-- "0..1\nnote" DietaryNote
-note on link
-  A nota só existe quando status é ACCEPTED ou MAYBE, pela pré-condição do UC006.
-  Nota sem categoria marcada significa sem restrição, conforme UC006 A1.
-  Ausência de nota significa que o convidado não passou pelo UC006.
-  O registro da confirmação (UC005 passo 7) e o da observação (UC006 passo 5)
-  são a mesma transação, porque o UC006 é extensão do passo 4 do UC005.
-end note
 
 DietaryNote "0..*\nnotes" -- "0..*\ncategories" DietaryCategory
 
 note right of Invite
-  publicToken nasce na transição para PUBLISHED (UC004 passo 3),
-  por isso é opcional enquanto o convite é rascunho (UC002 pós-condição e H06).
-  Restrição: status diferente de DRAFT implica publicToken preenchido.
-  Despublicar desativa o link sem apagar o token (UC004 RN3 e ADR-0005).
-  O token pode ser trocado para revogar um link vazado sem despublicar (ADR-0005).
-  Formato: 128 bits de CSPRNG em base32 Crockford (ADR-0005).
-  A situação ativo ou inativo da ED1 do UC004 é derivada de status,
-  e não uma segunda coluna.
-end note
-
-note left of Invite
-  /totalPeople e as três operações são consulta e não viram tabela.
-  UC007 ED1 é projeção de Guest. UC008 ED1 é agregação por categoria.
-  UC008 ED2 é junção de Guest com DietaryNote filtrada por ACCEPTED ou MAYBE,
-  gerada sob demanda.
-  O arquivo CSV, o escape na renderização do painel e o prefixo de aspa simples
-  são formato de saída e ficam na Apresentação e API (ADR-0008).
-  O painel do UC007 atualiza por consulta periódica do cliente (ADR-0007),
-  sem entidade de assinatura no modelo.
-end note
-
-note bottom of Guest
-  companionCount respeita maxCompanionsPerGuest do convite, quando definido (UC005 RN2).
-  É limite por resposta e não se confunde com o teto do evento (ADR-0008).
-  A identidade do convidado nasce no ato da resposta, por isso respondedAt
-  é obrigatório (ADR-0006). Voltar a ter lista prévia de convidados
-  torna respondedAt opcional.
-  Dois convidados com o mesmo nome são dois registros, sem chave única por nome.
-  personalToken é a credencial de edição da resposta (UC005 ED2 e RN3).
-  Formato e revogação ainda não têm ADR.
-end note
-
-note bottom of InviteCustomization
-  UC003 ED1 cita template, cores e textos.
-  Os únicos textos nomeados na especificação são eventName e location,
-  que já são atributos de Invite e ficam em colunas próprias (ADR-0004).
-  Enquanto não existir lista de campos de texto da personalização,
-  ela guarda apenas o template e as cores.
-  As cores são o único conteúdo semiestruturado do modelo (ADR-0004),
-  sem binário e sem texto (ADR-0009).
-  A multiplicidade 0..1 existe porque o UC002 salva o rascunho no passo 5
-  e o UC003 só grava as escolhas no passo 6.
-  Sem personalização, o convite renderiza com o template inicial
-  e as cores padrão (UC003 passo 1).
-end note
-
-note right of Template
-  Catálogo estático versionado junto com o código, no tier Front (ADR-0009).
-  Não é tabela. O que fica gravado no convite é o code, em coluna tipada (ADR-0004).
-  O catálogo precisa estar disponível também no tier API. Sem isso,
-  a recusa de texto acima do limite (UC003 A1) e a checagem de que o code existe
-  ficariam na Apresentação, o que o ADR-0001 proíbe.
-  openGraphImage é o ativo pré-renderizado da prévia do link (ADR-0009).
-  Não existe upload de mídia no sistema.
-  TextFieldLimit.field aponta para os campos de texto do convite.
-  Hoje esses campos são eventName e location.
-end note
-
-note right of DietaryCategory
-  Dado de referência com carga inicial de cinco valores (UC006 passo 1 e H10):
-  VEGETARIAN, VEGAN, GLUTEN_FREE, LACTOSE_FREE e ALLERGY.
-  É classe e não enumeração porque requiresDescription é dado da categoria
-  (UC006 RN2) e porque a associação muitos para muitos precisa de uma ponta.
-  Nenhuma regra de negócio congela o conjunto, por isso code é String.
-  Um convidado com mais de uma categoria conta em cada uma (UC008 RN1),
-  que é o comportamento natural do agrupamento e não regra extra.
-end note
-
-note as EscopoDoDiagrama
-  Fora deste diagrama, de propósito.
-  Chave primária substituta e chave estrangeira são assunto do modelo físico
-  e do ADR-0005, não do modelo de domínio.
-  A tabela de ligação entre DietaryNote e DietaryCategory é implementação
-  da associação muitos para muitos.
-  Sessão do anfitrião (UC001 RN2) e contador de limite de taxa (ADR-0008)
-  são infraestrutura e ficam no diagrama de componentes.
-  Atributos sem ED de origem, todos rastreados a regra ou ADR:
-  Invite.maxCompanionsPerGuest (UC005 RN2 e ADR-0008),
-  DietaryCategory.displayName e requiresDescription (UC006 passo 1 e RN2)
-  e a classe Template inteira (UC003 passo 2 e ADR-0009).
+  publicToken nasce na publicação (UC004 passo 3),
+  por isso é opcional enquanto o convite é rascunho.
+  /totalPeople e as três operações são consulta,
+  não viram tabela.
 end note
 
 @enduml
