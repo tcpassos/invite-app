@@ -139,7 +139,7 @@ O `robots.txt` entra no inventário aqui pela primeira vez. A seção 9.5 do gui
 
 **O `db` não tem linha até o Navegador.** Não há caminho desenhado entre os dois, e não há por decisão da seção 6.3 do guia. O que a topologia de fato impede é o acesso de fora da rede, porque o `db` não publica porta, e a seção 10.5 do guia registra que ela não impede o `front` de conectar, porque os três estão na mesma rede nomeada.
 
-**O volume fica ao lado do `db` e não dentro dele.** Ele sobrevive ao container, que é a razão de existir. Os outros dois containers não têm volume porque não guardam estado.
+**O volume fica ao lado do `db` e não dentro dele.** Ele sobrevive ao container, que é a razão de existir. Os outros dois containers não têm volume porque não guardam estado. O rótulo na figura é o nome do objeto no Docker, `invite_app_pgdata` na versão desenhada, e o `docker-compose.yml` o declara como `pgdata` porque o Compose prefixa tudo com o nome do projeto. O fonte da figura precisa do ajuste.
 
 ---
 
@@ -228,7 +228,7 @@ Todas são decisões novas, no mesmo sentido da seção 11 do Guia da Arquitetur
 |---|---|---|
 | 1 | O `front` publica `3000:3000` e a `api` publica `3001:3000`. O `db` não publica porta | Número de porta e mapeamento para o host |
 | 2 | Os serviços do compose se chamam `front`, `api` e `db` | Nome de cada serviço |
-| 3 | O volume nomeado do tier Banco se chama `invite_app_pgdata`, montado em `/var/lib/postgresql/data` | Nome do volume |
+| 3 | O volume do tier Banco é declarado como `pgdata`, montado em `/var/lib/postgresql/data`, e o objeto no Docker fica `invite-app_pgdata` | Nome do volume |
 | 4 | Ordem de subida `db`, `api`, `front`, com `HEALTHCHECK` no `db` e `condition: service_healthy` na `api` | A declaração de `HEALTHCHECK` e a ordem de subida |
 | 5 | As `migrations/` são montadas no diretório de inicialização do container `db` e aplicadas por ele | Quem aplica as `migrations/` e em que momento |
 | 6 | O `robots.txt` é artefato do container `front` | Nenhuma. A correção já foi aplicada na seção 4.1 do Diagrama de Componentes |
@@ -246,12 +246,11 @@ Para este projeto isso é aceitável e o motivo está escrito no ADR-0003: o amb
 
 ## 9. O que continua em aberto
 
-Quatro linhas da seção 10.7 do guia não fecham aqui.
+O `docker-compose.yml` foi escrito depois desta página e fechou duas das quatro linhas que estavam aqui. As duas que sobram são estas.
 
-1. **Valores de tag e de digest das três imagens.** Só existem quando houver build e quando a imagem do PostgreSQL for escolhida. Os marcadores da figura são literais e sem valor de propósito.
-2. **Quais variáveis de ambiente cada container recebe.** Sabe-se que são pelo menos a senha do banco, o segredo de sessão do UC001 e os dois endereços da API da seção 5.2. A lista fechada é do `.env.example` e da página Configuração de Ambiente, que hoje é um marcador de uma linha.
-3. **O contador do `RateLimitGuard` supõe uma instância só.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu contador em memória do processo e sessão em cookie assinado, então nenhuma das duas guardas acrescenta nó e este diagrama não muda por causa delas. O que muda o diagrama é o item seguinte.
-4. **Se a API ganha réplicas.** Se ganhar, este diagrama muda de verdade, porque passa a ter mais de uma instância do mesmo container e a decisão do contador em memória do `RateLimitGuard` deixa de valer junto.
+1. **Valores de tag e de digest das imagens construídas pelo time.** O compose usa `${IMAGE_TAG:-dev}`, que serve enquanto o ADR-0003 valer e não é etiqueta de versão. A imagem do banco já está escolhida e fixada em `postgres:17-alpine`, e o digest continua sem fixar.
+2. **O contador do `RateLimitGuard` supõe uma instância só.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu contador em memória do processo e sessão em cookie assinado, então nenhuma das duas guardas acrescenta nó e este diagrama não muda por causa delas. O que muda o diagrama é o item seguinte.
+3. **Se a API ganha réplicas.** Se ganhar, este diagrama muda de verdade, porque passa a ter mais de uma instância do mesmo container e a decisão do contador em memória do `RateLimitGuard` deixa de valer junto.
 
 ---
 
@@ -263,7 +262,7 @@ Quatro linhas da seção 10.7 do guia não fecham aqui.
 | [Diagrama de Componentes](Diagrama-de-Componentes.md) | A seção 4.2 daquela página ligou componente a artefato, e esta liga artefato a nó. Nenhum componente novo foi criado |
 | [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) | Os três containers e a exigência de `HEALTHCHECK` e de volume |
 | [ADR-0003](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) | O dispositivo único e a ausência de ambiente publicado |
-| `docker-compose.yml` | Entrega pendente da Sprint 2. O ADR-0002 registra que ele é a forma executável deste diagrama, e as sete decisões da seção 8 são o que ele precisa conter |
+| `docker-compose.yml` | **Escrito**, na raiz do repositório. O ADR-0002 registra que ele é a forma executável deste diagrama, e as sete decisões da seção 8 estão todas dentro dele. O `db` sobe e fica saudável hoje. O `api` e o `front` esperam o código da Sprint 3 |
 
 ## Fonte do diagrama
 

@@ -1113,18 +1113,18 @@ Duas decisões posteriores aliviaram parte do quadro, e as duas registram isso p
 
 O ADR-0002 registra que o arquivo de compose vira a forma executável do diagrama de implantação, e que os dois passam a ser a mesma informação em notações diferentes. Como nenhum dos dois existe ainda, essa é a relação prevista entre os dois artefatos e não algo conferível hoje.
 
-Esta seção descreve topologia e para no ponto em que a decisão vira número ou nome. **Nada da tabela abaixo está decidido, e escrever valor aqui transformaria exemplo de slide em decisão de projeto.** A porta 3000 e o nome `db` aparecem no material do T1, e o próprio slide que os mostra diz que as imagens do arquivo são exemplo e que a stack é decisão do documento de decisões arquiteturais. O mesmo material chama o serviço do front de `front` num slide e de `front-end` em outro, então nem a origem é consistente.
+Esta seção descreve topologia e para no ponto em que a decisão vira número ou nome. **Nada da tabela abaixo estava decidido quando ela foi escrita, e escrever valor aqui transformaria exemplo de slide em decisão de projeto.** O item #60 decidiu depois, e o `docker-compose.yml` materializou. As linhas riscadas estão fechadas e ficam como registro de onde cada decisão foi tomada. A porta 3000 e o nome `db` aparecem no material do T1, e o próprio slide que os mostra diz que as imagens do arquivo são exemplo e que a stack é decisão do documento de decisões arquiteturais. O mesmo material chama o serviço do front de `front` num slide e de `front-end` em outro, então nem a origem é consistente.
 
 | O que falta decidir | Por que não está decidido aqui | Dono |
 |---|---|---|
-| Número de porta de cada container e o mapeamento para o host | Nenhum ADR chega em porta. O ADR-0003 fecha no host e para ali | Item #60, task #75, links de comunicação, com o `docker-compose.yml` |
-| Nome de cada serviço no compose | `invite_app` é o nome do banco e não o nome do serviço, conforme a seção 1.6 do Diagrama de Componentes | `docker-compose.yml` e item #60 |
+| ~~Número de porta de cada container e o mapeamento para o host~~ | `3000:3000` no front, `3001:3000` na api, e o `db` sem porta publicada | Fechado |
+| ~~Nome de cada serviço no compose~~ | Decidido no item #60 e escrito no arquivo: `front`, `api` e `db` | Fechado |
 | Valores de tag e de digest das três imagens | O inventário da seção 4.1 do Diagrama de Componentes usa marcadores literais e sem valor | Item #60, task #73, dispositivos e artefatos, com os `Dockerfile` |
-| Nome do volume nomeado do tier Banco | O ADR-0002 exige o volume e não o nomeia | `docker-compose.yml` |
-| A declaração de `HEALTHCHECK` com `condition: service_healthy` e a ordem de subida | O ADR-0002 exige por escrito, e o arquivo que cumpriria a exigência não existe | `docker-compose.yml`, entrega pendente da Sprint 2 |
-| Quais variáveis de ambiente cada container recebe | Nenhum artefato as lista, e a página que deveria listá-las é um marcador de uma linha | `.env.example`, o compose e a [Configuração de Ambiente](../Começando/Configuração-de-Ambiente.md) |
-| Como o endereço da API chega ao código entregue ao navegador | Consequência direta da armadilha da seção 10.4, sem decisão em artefato nenhum | Mesmo grupo da linha acima |
-| Quem aplica as `migrations/` e em que momento | `migrations/` é decisão nova do Diagrama de Componentes e ainda precisa de aval do time | Item #60 e o time |
+| ~~Nome do volume nomeado do tier Banco~~ | Declarado como `pgdata`, que o Compose publica como `invite-app_pgdata` | Fechado |
+| ~~A declaração de `HEALTHCHECK` e a ordem de subida~~ | `pg_isready` no `db`, `service_healthy` na `api` e `service_started` no `front`. Verificado subindo o ambiente | Fechado |
+| ~~Quais variáveis de ambiente cada container recebe~~ | Listadas no `.env.example` e na [Configuração de Ambiente](../Começando/Configuração-de-Ambiente.md) | Fechado |
+| ~~Como o endereço da API chega ao código entregue ao navegador~~ | Por argumento de construção, `NEXT_PUBLIC_API_URL`, porque o Next.js congela essas variáveis na compilação. Trocar o endereço exige reconstruir a imagem do front | Fechado |
+| ~~Quem aplica as `migrations/` e em que momento~~ | O container `db`, na inicialização, com o diretório montado em somente leitura. Só roda com o volume vazio, e o custo está na seção 8.1 do Diagrama de Implantação | Fechado, com custo registrado |
 | Se a API ganha réplica, o que derruba o contador do `RateLimitGuard` | O [ADR-0010](Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu contador em memória do processo, válido com uma instância só | Nenhum ADR trata de réplica hoje. A decisão não acrescenta container, então os tiers continuam três |
 | Se o tier Front repassa o endereço de origem do convidado para a API | A seção 4.1 registra a decisão provisória e diz que a definitiva é do time | O time, com registro na seção 11 |
 | Se a API ganha réplicas | O bloco C do roteiro do T1 levanta a hipótese por causa do pico do convite público, e o próprio roteiro registra que o número final de tiers é decisão dos ADRs. O ADR-0002 decidiu um container por serviço | Nenhum ADR trata disso hoje. A hipótese depende da pendência do `RateLimitGuard`, porque contador na memória do processo deixa de valer com mais de uma réplica |

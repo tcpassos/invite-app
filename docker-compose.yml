@@ -1,0 +1,88 @@
+# Forma executável do Diagrama de Implantação da Sprint 2.
+# As decisões deste arquivo estão na seção 8 daquela página e nos ADRs 0002, 0003, 0010 e 0012.
+#
+# Hoje só o serviço db sobe, porque o código da aplicação começa na Sprint 3:
+#   docker compose up db
+# Quando front/ e api/ existirem, o ambiente inteiro sobe com:
+#   docker compose up
+
+name: invite-app
+
+services:
+
+  # Tier Banco. Não publica porta: quem precisa inspecionar entra por
+  # docker compose exec db psql. Ver seção 5.3 do Diagrama de Implantação.
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # As migrations rodam só quando o volume está vazio. O custo dessa escolha
+      # está escrito na seção 8.1 do Diagrama de Implantação.
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - internal
+
+  # Tier API. As três camadas lógicas do ADR-0001 moram nesta imagem.
+  api:
+    build:
+      context: ./api
+    image: invite-app-api:${IMAGE_TAG:-dev}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      SESSION_SECRET: ${SESSION_SECRET}
+    ports:
+      # 3001 no host porque o navegador chama a API direto no POST do UC005.
+      # São dois serviços de fronteira e não um. Ver seção 5.3.
+      - "3001:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - internal
+
+  # Tier Front. Processo Node que renderiza o convite público no servidor.
+  front:
+    build:
+      context: ./front
+      args:
+        # Endereço que vai compilado no bundle do navegador. Precisa ser argumento
+        # de build porque o Next.js congela NEXT_PUBLIC_* na compilação.
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    image: invite-app-front:${IMAGE_TAG:-dev}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+      # Endereço que o processo do servidor usa. Não é o mesmo de cima, e a
+      # razão está na seção 5.2 do Diagrama de Implantação.
+      API_URL_INTERNAL: http://api:3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      # service_started e não service_healthy: o front não chama a API no arranque,
+      # e com a API fora do ar ele serve a página de convite indisponível da
+      # seção 9.4 do Guia da Arquitetura.
+      api:
+        condition: service_started
+    networks:
+      - internal
+
+volumes:
+  pgdata:
+
+networks:
+  internal:

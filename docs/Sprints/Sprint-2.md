@@ -48,7 +48,7 @@ O tema do T1 foi escolhido de propósito para alimentar o #60. Estudar conteiner
 
 Atenção a uma distinção que vale para o #58, o #59 e o #60: as três camadas do back-end são camadas lógicas e ficam na mesma imagem. O que o container separa são tiers, ou seja, front, API e banco. Camada lógica e separação física não são a mesma coisa.
 
-O `docker-compose` montado para a demonstração deve ficar como artefato do projeto e preencher a página Configuração de Ambiente, hoje um marcador. É entrega prevista desta sprint, ainda não concluída.
+O `docker-compose.yml` está escrito, na raiz do repositório, e a página [Configuração de Ambiente](../Começando/Configuração-de-Ambiente.md) deixou de ser um marcador. Ele materializa as sete decisões da seção 8 do Diagrama de Implantação. Hoje só o serviço `db` sobe, porque o código da aplicação começa na Sprint 3, e os outros dois já estão declarados esperando as pastas `front/` e `api/`.
 
 Uma ordem que evita retrabalho: o #58 define as camadas, o #59 detalha os componentes dentro delas, e o #60 aloca esses componentes nos nós. O #61 e o #62 podem correr em paralelo, porque saem dos casos de uso e não dependem dos componentes. O #63 vai sendo escrito conforme as decisões aparecem, não no fim.
 

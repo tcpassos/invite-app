@@ -1,3 +1,6 @@
 
 # arquivos de trava do Office
 ~$*
+
+# ambiente local, contém segredos
+.env
