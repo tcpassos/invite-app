@@ -304,7 +304,7 @@ No nível de arquivo de código, cada componente da API é uma pasta de módulo 
 
 ## 5. Passo 5, o diagrama
 
-![Diagrama de Componentes](/.attachments/diagrama-de-componentes.png)
+![Diagrama de Componentes](../../.attachments/diagrama-de-componentes.png)
 
 ### Como ler
 
@@ -484,7 +484,7 @@ A segunda pergunta de motivação da aula é sobre unidades substituíveis, e a 
 
 ## Fonte do diagrama
 
-Gerado a partir de [`diagrama-de-componentes.puml`](/.attachments/diagrama-de-componentes.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
+Gerado a partir de [`diagrama-de-componentes.puml`](../../.attachments/diagrama-de-componentes.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
 
     docker run --rm -v "<caminho de docs/.attachments>:/data" plantuml/plantuml -tpng /data/diagrama-de-componentes.puml
 

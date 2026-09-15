@@ -4,7 +4,7 @@ Visão estática do domínio. Apresenta as classes significativas do ponto de vi
 
 Todo atributo tem origem rastreável numa Estrutura de Dados ou Regra de Negócio da [Especificação de Casos de Uso](../Sprint-1/Especificação-de-Casos-de-Uso.md), ou numa [Decisão Arquitetural](../../Diretrizes-do-Projeto/Decisões-Arquiteturais.md). Identificadores em inglês, conforme o [Guia de Estilo](../../Diretrizes-do-Projeto/Guia-de-Estilo.md).
 
-![Diagrama de Classes](/.attachments/diagrama-de-classes.png)
+![Diagrama de Classes](../../.attachments/diagrama-de-classes.png)
 
 ## Descrição das classes
 
@@ -133,6 +133,6 @@ A modelagem revelou lacunas na especificação que ainda precisam de decisão do
 
 ## Fonte do diagrama
 
-Gerado a partir de [`diagrama-de-classes.puml`](/.attachments/diagrama-de-classes.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
+Gerado a partir de [`diagrama-de-classes.puml`](../../.attachments/diagrama-de-classes.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
 
     docker run --rm -v "<caminho de docs/.attachments>:/data" plantuml/plantuml -tpng /data/diagrama-de-classes.puml

@@ -117,7 +117,7 @@ O `robots.txt` entra no inventário aqui pela primeira vez. A seção 9.5 do gui
 
 ## 4. Passo 4, o diagrama
 
-![Diagrama de Implantação](/.attachments/diagrama-de-implantacao.png)
+![Diagrama de Implantação](../../.attachments/diagrama-de-implantacao.png)
 
 ### Como ler
 
@@ -266,6 +266,6 @@ O `docker-compose.yml` foi escrito depois desta página e fechou duas das quatro
 
 ## Fonte do diagrama
 
-Gerado a partir de [`diagrama-de-implantacao.puml`](/.attachments/diagrama-de-implantacao.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
+Gerado a partir de [`diagrama-de-implantacao.puml`](../../.attachments/diagrama-de-implantacao.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
 
     docker run --rm -v "<caminho de docs/.attachments>:/data" plantuml/plantuml -tpng /data/diagrama-de-implantacao.puml

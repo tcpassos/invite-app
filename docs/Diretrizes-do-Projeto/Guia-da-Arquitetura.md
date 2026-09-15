@@ -115,7 +115,7 @@ A Aula 03 fecha lembrando que usar um estilo exige entender benefícios e desvan
 
 ## 2. Diagrama de camadas
 
-![Diagrama de camadas](/.attachments/diagrama-de-camadas.png)
+![Diagrama de camadas](../.attachments/diagrama-de-camadas.png)
 
 ### Como ler
 
@@ -137,7 +137,7 @@ A Aula 03 fecha lembrando que usar um estilo exige entender benefícios e desvan
 
 ### Fonte do diagrama
 
-Gerado a partir de [`diagrama-de-camadas.puml`](/.attachments/diagrama-de-camadas.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
+Gerado a partir de [`diagrama-de-camadas.puml`](../.attachments/diagrama-de-camadas.puml), versionado junto com a imagem. Para regerar depois de editar o fonte, com Docker:
 
     docker run --rm -v "<caminho de docs/.attachments>:/data" plantuml/plantuml -tpng /data/diagrama-de-camadas.puml
 

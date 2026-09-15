@@ -8,7 +8,7 @@ A regra que os três diagramas tornam visível: **a seta cheia só desce**. A Ap
 
 ## Diagrama 1, Confirmar presença
 
-![Diagrama de sequência do UC005](/.attachments/diagrama-sequencia-uc005.png)
+![Diagrama de sequência do UC005](../../.attachments/diagrama-sequencia-uc005.png)
 
 **Descrição:** o UC005 completo, com a extensão do UC006 no passo 4. É o fluxo mais importante do sistema, porque atravessa a fronteira pública e é o único caminho de escrita sem autenticação.
 
@@ -37,7 +37,7 @@ Se essa checagem morasse na Apresentação, duas respostas simultâneas em 49 de
 
 ## Diagrama 2, Publicar convite e gerar link
 
-![Diagrama de sequência do UC004](/.attachments/diagrama-sequencia-uc004.png)
+![Diagrama de sequência do UC004](../../.attachments/diagrama-sequencia-uc004.png)
 
 **Descrição:** o UC004, incluindo a extensão A2 de despublicar.
 
@@ -55,7 +55,7 @@ Se essa checagem morasse na Apresentação, duas respostas simultâneas em 49 de
 
 ## Diagrama 3, Consolidar e exportar observações alimentares
 
-![Diagrama de sequência do UC008](/.attachments/diagrama-sequencia-uc008.png)
+![Diagrama de sequência do UC008](../../.attachments/diagrama-sequencia-uc008.png)
 
 **Descrição:** o UC008, a consolidação por categoria e a exportação em CSV. É o fluxo que entrega o diferencial declarado do produto.
 

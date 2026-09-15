@@ -126,6 +126,20 @@ while IFS= read -r -d '' file; do
 done < <(find "$WIKI" -name "*.md" -not -path "*/.git/*" -print0)
 echo "  $converted arquivo(s) com Mermaid convertido(s)"
 
+# Converte o caminho dos anexos do formato do GitHub para o do Azure Wiki.
+# No GitHub o caminho precisa ser relativo (../.attachments/x.png) para a imagem
+# aparecer no md. No Azure a Wiki resolve a partir da raiz (/.attachments/x.png).
+# Sem esta conversao um dos dois lados fica com imagem quebrada.
+echo "Convertendo caminhos de anexo..."
+anexos=0
+while IFS= read -r -d '' file; do
+  if grep -q '](\(\.\./\)\+\.attachments/' "$file"; then
+    sed -i 's|](\(\.\./\)\+\.attachments/|](/.attachments/|g' "$file"
+    anexos=$((anexos + 1))
+  fi
+done < <(find "$WIKI" -name "*.md" -not -path "*/.git/*" -print0)
+echo "  $anexos arquivo(s) com caminho de anexo convertido(s)"
+
 # As paginas preservadas entram no fim do .order da raiz.
 for page in "${KEEP[@]}"; do
   entry="${page%.md}"
