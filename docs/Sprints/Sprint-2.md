@@ -57,7 +57,7 @@ Uma ordem que evita retrabalho: o #58 define as camadas, o #59 detalha os compon
 
 ## Principais Artefatos
 - Arquitetura em Camadas
-- Diagrama de Componentes (UML)
+- [Diagrama de Componentes](Sprint-2/Diagrama-de-Componentes.md) (UML)
 - Diagrama de Implantação (UML)
 - [Diagrama de Classes](Sprint-2/Diagrama-de-Classes.md) (UML)
 - [Diagramas de Sequência](Sprint-2/Diagramas-de-Sequência.md) (UML)

@@ -1,0 +1,170 @@
+@startuml diagrama-de-componentes
+' Fonte do Diagrama de Componentes da Sprint 2, item #59 do Azure Boards.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-de-componentes.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' A imagem fica abaixo do teto padrão de 4096 pixels, então não precisa de PLANTUML_LIMIT_SIZE.
+' Os três tiers vêm do ADR-0002 e as três camadas lógicas da API vêm do ADR-0001.
+' Identificadores de componente e de interface em inglês, conforme o Guia de Estilo.
+' O diagrama traz rótulo, não explicação. A leitura fica na página do Diagrama de Componentes.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam defaultTextAlignment center
+skinparam nodesep 30
+skinparam ranksep 45
+
+package "Tier Front" {
+
+  component "PublicInvitePage" as PIP
+  component "HostPanelPage" as HPP
+  component "ApiClient" as ACL
+  component "TemplateSet" as TST
+
+  interface "PublicInvitePageHttp" as I_PPAGE
+  interface "HostPanelPageHttp" as I_HPAGE
+  interface "InviteApi" as I_API
+  interface "TemplateAssets" as I_TPLA
+}
+
+package "Tier API" {
+
+  package "Camada de Apresentação" {
+
+    component "PublicRsvpController" as PRC
+    component "InviteController" as INC
+    component "DietaryController" as DIC
+    component "AuthController" as AUC
+    component "RateLimitGuard" as RLG
+    component "SessionGuard" as SGD
+    component "HttpExceptionFilter" as HEF
+
+    interface "PublicInviteHttp" as I_PUBH
+    interface "HostInviteHttp" as I_INVH
+    interface "HostDietaryHttp" as I_DIEH
+    interface "AuthHttp" as I_AUTH
+    interface "RateLimit" as I_RATE
+    interface "SessionAuth" as I_SESS
+    interface "ErrorTranslation" as I_ERRT
+  }
+
+  package "Camada de Domínio" {
+
+    component "RsvpService" as RSS
+    component "InviteService" as INS
+    component "AttendanceService" as ATS
+    component "DietaryService" as DIS
+    component "HostService" as HOS
+    component "TemplateCatalog" as TPC
+
+    interface "RsvpOperations" as I_RSVO
+    interface "InviteOperations" as I_INVO
+    interface "AttendanceOperations" as I_ATTO
+    interface "DietaryOperations" as I_DIEO
+    interface "HostOperations" as I_HOSO
+    interface "TemplateRules" as I_TPLR
+  }
+
+  package "Camada de Dados" {
+
+    component "InviteRepository" as INR
+    component "DietaryCategoryRepository" as DCR
+    component "HostRepository" as HOR
+
+    interface "InviteStore" as I_INVS
+    interface "DietaryCategoryStore" as I_DCS
+    interface "HostStore" as I_HOSS
+  }
+}
+
+package "Tier Banco" {
+  database "invite_app" as DBC
+  interface "PostgresWire" as I_PGW
+}
+
+' Interfaces publicadas pelo tier Front ao ambiente
+I_PPAGE -down- PIP
+I_HPAGE -down- HPP
+
+' Dentro do tier Front
+ACL -up- I_API
+PIP --( I_API
+HPP --( I_API
+
+TST -up- I_TPLA
+PIP --( I_TPLA
+HPP --( I_TPLA
+
+' Interfaces publicadas pela camada de Apresentação ao tier Front
+PRC -up- I_PUBH
+INC -up- I_INVH
+DIC -up- I_DIEH
+AUC -up- I_AUTH
+
+ACL --( I_PUBH
+ACL --( I_INVH
+ACL --( I_DIEH
+ACL --( I_AUTH
+
+' Dentro da camada de Apresentação
+RLG -up- I_RATE
+PRC --( I_RATE
+
+SGD -up- I_SESS
+INC --( I_SESS
+DIC --( I_SESS
+
+HEF -up- I_ERRT
+PRC --( I_ERRT
+INC --( I_ERRT
+DIC --( I_ERRT
+AUC --( I_ERRT
+
+' Da Apresentação para o Domínio
+RSS -up- I_RSVO
+PRC --( I_RSVO
+
+INS -up- I_INVO
+INC --( I_INVO
+
+ATS -up- I_ATTO
+INC --( I_ATTO
+
+DIS -up- I_DIEO
+DIC --( I_DIEO
+
+HOS -up- I_HOSO
+AUC --( I_HOSO
+
+' Dentro da camada de Domínio
+TPC -up- I_TPLR
+INS --( I_TPLR
+
+' Do Domínio para os Dados
+INR -up- I_INVS
+RSS --( I_INVS
+INS --( I_INVS
+ATS --( I_INVS
+DIS --( I_INVS
+
+DCR -up- I_DCS
+RSS --( I_DCS
+DIS --( I_DCS
+
+HOR -up- I_HOSS
+HOS --( I_HOSS
+
+' Dos Dados para o tier Banco
+DBC -up- I_PGW
+INR --( I_PGW
+DCR --( I_PGW
+HOR --( I_PGW
+
+' Ligações ocultas, apenas para empilhar as camadas na vertical.
+' Não representam dependência e não aparecem na imagem.
+RLG -[hidden]down- I_RSVO
+SGD -[hidden]down- I_INVO
+TPC -[hidden]down- I_INVS
+HOS -[hidden]down- I_HOSS
+
+@enduml
