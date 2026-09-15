@@ -1,0 +1,62 @@
+@startuml diagrama-de-implantacao
+' Fonte do Diagrama de Implantação da Sprint 2, item #60 do Azure Boards.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-de-implantacao.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' Um dispositivo só, porque o ADR-0003 fecha a execução no host de desenvolvimento.
+' Os três containers vêm do ADR-0002 e os artefatos da seção 10.3 do Guia da Arquitetura.
+' O diagrama traz rótulo, não explicação. A leitura fica na página do Diagrama de Implantação.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam defaultTextAlignment center
+skinparam nodesep 20
+skinparam ranksep 35
+skinparam artifactFontSize 12
+
+node "Máquina do integrante" <<device>> as HOST {
+
+  node "Navegador" <<execution environment>> as BROWSER {
+    artifact "front-client.bundle" as CLIENTRT
+  }
+
+  node "Docker Engine" <<execution environment>> as ENGINE {
+
+    node "front" <<container>> as CFRONT {
+      artifact "invite-app-front:<tag>" as IMGFRONT
+      artifact "front-server.bundle" as SRVBUNDLE
+      artifact "front-client.bundle" as CLIENTBUNDLE
+      artifact "templates/" as TPL
+      artifact "robots.txt" as ROBOTS
+    }
+
+    node "api" <<container>> as CAPI {
+      artifact "invite-app-api:<tag>" as IMGAPI
+      artifact "api.bundle" as APIBUNDLE
+    }
+
+    node "db" <<container>> as CDB {
+      artifact "postgres:<tag>@<digest>" as IMGDB
+      artifact "migrations/" as MIG
+      database "invite_app" as DB
+    }
+
+    folder "invite_app_pgdata" <<volume>> as VOL
+  }
+}
+
+artifact "docker-compose.yml" as COMPOSE
+artifact ".env" as ENV
+
+BROWSER -down- CFRONT : "HTTP  127.0.0.1:3000"
+BROWSER -down- CAPI : "HTTP  127.0.0.1:3001"
+CFRONT -down- CAPI : "HTTP  api:3000"
+CAPI -down- CDB : "TCP  db:5432"
+CDB -right- VOL : "/var/lib/postgresql/data"
+
+CLIENTBUNDLE .up.> CLIENTRT : "<<deploy>>"
+
+COMPOSE .down.> ENGINE
+ENV .down.> ENGINE
+
+@enduml
