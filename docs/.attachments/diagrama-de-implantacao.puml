@@ -41,7 +41,7 @@ node "Máquina do integrante" <<device>> as HOST {
       database "invite_app" as DB
     }
 
-    folder "invite_app_pgdata" <<volume>> as VOL
+    folder "invite-app_pgdata" <<volume>> as VOL
   }
 }
 

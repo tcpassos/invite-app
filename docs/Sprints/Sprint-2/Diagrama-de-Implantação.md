@@ -139,7 +139,7 @@ O `front-client.bundle` aparece no container e no navegador porque é entregue d
 
 Não há caminho entre o navegador e o `db`, conforme a seção 6.3 do guia. O banco não publica uma porta para fora da rede do Compose, mas continua acessível aos demais containers da rede, como registra a seção 10.5.
 
-O volume fica fora do `db` para persistir mesmo quando o container é removido. Front e API não têm volumes porque não armazenam estado. O Compose declara o volume como `pgdata` e cria o objeto `invite-app_pgdata`, e o nome na fonte do diagrama precisa ser atualizado para seguir esse padrão.
+O volume fica fora do `db` para persistir mesmo quando o container é removido. Front e API não têm volumes porque não armazenam estado. O Compose declara o volume como `pgdata` e cria o objeto `invite-app_pgdata`, que é o nome na figura. Os dois diferem porque o Compose prefixa tudo com o nome do projeto.
 
 ---
 
