@@ -4,40 +4,36 @@
 '   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-de-camadas.puml
 ' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
 ' As três camadas lógicas vêm do ADR-0001 e os três tiers do ADR-0002.
-' O navegador aparece fora dos três tiers de propósito. Ele não é unidade de implantação
-' do sistema, e é dele que sai o POST do UC005, sem passar pelo tier Front.
-' Identificadores em inglês, conforme o Guia de Estilo.
-' A explicação fica na página da wiki, não dentro do diagrama.
+' O diagrama traz rótulo, não explicação. A leitura fica na seção 2 do Guia da Arquitetura.
 
 skinparam shadowing false
 skinparam monochrome true
 skinparam componentStyle rectangle
 skinparam defaultTextAlignment center
 skinparam nodesep 25
-skinparam ranksep 40
-skinparam legendBackgroundColor transparent
+skinparam ranksep 45
 
 actor "Anfitrião" as HOST
 actor "Convidado" as GUEST
 
-node "Navegador\nNão é tier" as BROWSER {
-  component "View do MVC\nTemplate já renderizado, formulário\ndo convite e telas do painel" as VIEW
-  component "Controller do MVC, escrita\nTraduz evento do usuário\nem chamada HTTP" as CTRLW
-  component "Model do front\nProjeção recebida da API\ne estado do formulário" as MODEL
+node "Navegador" as BROWSER {
+  component "View" as VIEW
+  component "Controller" as CTRLW
+  component "Model" as MODEL
 }
 
 package "Tier Front, container Next.js" {
-  component "Controller do MVC, leitura\nResolução de rota e escolha da View\nno servidor, templates do ADR-0009" as SSR
+  component "Controller de renderização" as SSR
 }
 
 package "Tier API, container NestJS" {
   package "Camada de Apresentação" as PRESL {
-    component "Pacote público\nPublicRsvpController\nLimite de taxa" as PUB
-    component "Pacote autenticado\nInviteController, DietaryController\nAutenticação de sessão" as AUT
+    component "PublicRsvpController" as PUB
+    component "InviteController\nDietaryController" as AUT
   }
   component "Camada de Domínio\nServices" as DOM
   component "Camada de Dados\nRepositories" as DATA
-  component "Interesses transversais\nTratamento de erros e registro de log" as CROSS
+  component "Erros e log" as CROSS
 }
 
 package "Tier Banco, container PostgreSQL" {
@@ -47,16 +43,16 @@ package "Tier Banco, container PostgreSQL" {
 HOST -[dotted]-> VIEW
 GUEST -[dotted]-> VIEW
 
-VIEW -[dotted]-> CTRLW : ação
+VIEW -[dotted]-> CTRLW
 VIEW --> MODEL
 CTRLW --> MODEL
 
-VIEW -[dashed]-> SSR : HTTP, pede a página do convite
-SSR -[dashed]-> PUB : HTTP, caminho de leitura
-CTRLW -[dashed]-> PUB : HTTP, caminho de escrita
-CTRLW -[dashed]-> AUT : HTTP, painel do anfitrião
+VIEW -[dashed]-> SSR : HTTP
+SSR -[dashed]-> PUB : HTTP
+CTRLW -[dashed]-> PUB : HTTP
+CTRLW -[dashed]-> AUT : HTTP
 
-MODEL --> PRESL : contrato de tipos (ADR-0004)
+MODEL --> PRESL : contrato de tipos
 
 PUB --> DOM
 AUT --> DOM
@@ -66,20 +62,5 @@ DATA -[dashed]-> DB : SQL
 PRESL -[norank]- CROSS
 DOM -[norank]- CROSS
 DATA -[norank]- CROSS
-
-note right of DOM
-  Camada não é tier. As três camadas
-  lógicas moram no mesmo container.
-  A View e o Controller de escrita
-  rodam no navegador, que não é tier.
-end note
-
-legend bottom
-  Tipos de ligação
-  Linha cheia com ponta: dependência em tempo de compilação. A origem conhece o tipo ou a interface do destino.
-  Linha tracejada com ponta: chamada em tempo de execução que cruza a rede.
-  Linha pontilhada com ponta: evento do usuário. Não cria dependência de código.
-  Linha sem ponta: interesse transversal que atravessa a camada.
-end legend
 
 @enduml

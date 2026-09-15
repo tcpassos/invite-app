@@ -119,7 +119,7 @@ A Aula 03 fecha lembrando que usar um estilo exige entender benefícios e desvan
 
 ### Como ler
 
-**A legenda separa quatro tipos de ligação, e eles não são a mesma coisa.** Linha cheia com ponta é dependência em tempo de compilação, ou seja, quem está na origem conhece o tipo ou a interface do destino e não compila sem ele. Linha tracejada com ponta é chamada em tempo de execução que cruza a rede. Linha pontilhada com ponta é evento do usuário, que não cria dependência de código nenhuma. Linha sem ponta liga um interesse transversal à camada que ele atravessa. Confundir os quatro num símbolo só torna a direção da dependência ilegível na figura, e a direção da dependência é o assunto do documento.
+**O diagrama usa quatro tipos de ligação, e eles não são a mesma coisa.** Linha cheia com ponta é dependência em tempo de compilação, ou seja, quem está na origem conhece o tipo ou a interface do destino e não compila sem ele. Linha tracejada com ponta é chamada em tempo de execução que cruza a rede. Linha pontilhada com ponta é evento do usuário, que não cria dependência de código nenhuma. Linha sem ponta liga um interesse transversal à camada que ele atravessa. Confundir os quatro num símbolo só torna a direção da dependência ilegível na figura, e a direção da dependência é o assunto do documento.
 
 **A dependência só desce, e só a linha cheia responde por ela.** A Apresentação conhece o Domínio, o Domínio conhece os Dados, e o Model do front conhece os tipos que a API publica. Não existe linha cheia subindo. O que sobe é retorno, e retorno não é dependência.
 
@@ -129,11 +129,11 @@ A Aula 03 fecha lembrando que usar um estilo exige entender benefícios e desvan
 
 **Não há atalho.** Não existe linha do navegador nem do tier Front para o Domínio ou para os Dados. A camada de Apresentação é a única porta de entrada do back-end, e é isso que torna verificável a frase do ADR-0001 de que trocar ou reescrever o front não afeta o Domínio.
 
-**A camada de Apresentação aparece dividida em dois pacotes.** O público e o autenticado, conforme a seção 1.4. A autenticação de sessão está dentro do pacote autenticado, e não na caixa de interesses transversais, porque autenticação é responsabilidade da Apresentação e o Domínio nunca vê sessão. As seções 3.1 e 3.2 dizem o mesmo.
+**A camada de Apresentação aparece dividida em dois pacotes.** O público, com o `PublicRsvpController`, e o autenticado, com o `InviteController` e o `DietaryController`, conforme a seção 1.4. A autenticação de sessão pertence ao pacote autenticado e não aos interesses transversais, porque autenticação é responsabilidade da Apresentação e o Domínio nunca vê sessão. As seções 3.1 e 3.2 dizem o mesmo.
 
 **Os interesses transversais são dois, não três.** Tratamento de erros e registro de log atravessam as três camadas e por isso aparecem ligados às três por linha sem ponta. Eles não são uma quarta camada. A Aula 03 traz um exemplo de diagrama em camadas com interesses transversais, e é essa a forma usada aqui.
 
-**As caixas externas são os tiers.** Elas marcam fronteira de container, não fronteira de camada. As três camadas lógicas moram no mesmo container, que é o que a nota do diagrama registra e o que a seção 10 detalha.
+**As caixas externas são os tiers.** Elas marcam fronteira de container, não fronteira de camada. As três camadas lógicas moram no mesmo container, que é o que a seção 10 detalha.
 
 ### Fonte do diagrama
 
