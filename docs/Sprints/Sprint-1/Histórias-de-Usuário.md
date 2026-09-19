@@ -81,7 +81,7 @@ Critérios de aceitação:
 ### H10
 Como convidado, quero informar minha restrição alimentar para que o anfitrião saiba o que posso comer.
 Critérios de aceitação:
-- Marco categorias como vegetariano, vegano, sem glúten, sem lactose ou alergia.
+- Marco entre as cinco categorias: vegetariano, vegano, sem glúten, sem lactose e alergia.
 - Ao marcar alergia, descrevo a alergia num campo de texto.
 - Posso deixar em branco quando não tenho restrição.
 

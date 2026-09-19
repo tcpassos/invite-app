@@ -21,7 +21,7 @@ Tratar a observação alimentar como recurso principal do app. Ela é capturada 
 2. Criar convite e personalizar o visual (template, cores e textos do evento).
 3. Gerar link de compartilhamento.
 4. Confirmação de presença pública (sim, não ou talvez, mais número de acompanhantes), sem login do convidado.
-5. Observação alimentar por convidado (categorias como vegetariano, vegano, sem glúten ou alergia, mais texto livre).
+5. Observação alimentar por convidado (cinco categorias fechadas, de vegetariano a alergia, mais texto livre).
 6. Painel de presença e consolidação alimentar com exportação (CSV).
 
 ### Fora do escopo (MVP)

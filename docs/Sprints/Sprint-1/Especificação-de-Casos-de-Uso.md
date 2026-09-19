@@ -230,6 +230,7 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 **Regras de Negócio:**
 (RN1) O convidado pode marcar mais de uma categoria.
 (RN2) Se a categoria alergia for marcada, a descrição no texto livre é obrigatória.
+(RN3) A lista de categorias é fechada e tem cinco entradas, carregadas na inicialização do banco. São elas `VEGETARIAN` (Vegetariano), `VEGAN` (Vegano), `GLUTEN_FREE` (Sem glúten), `LACTOSE_FREE` (Sem lactose) e `ALLERGY` (Alergia). Apenas `ALLERGY` exige descrição. O anfitrião não cria categoria, porque a contagem por categoria do UC008 só serve ao buffet se for comparável entre convites.
 
 ### UC007 - Visualizar lista de presença
 

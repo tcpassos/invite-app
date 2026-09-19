@@ -107,13 +107,15 @@ A nota só existe quando o status é ACCEPTED ou MAYBE, pela pré-condição do 
 
 **Responsabilidades:** nomear a categoria e declarar se ela exige descrição adicional.
 
+**As cinco entradas da carga inicial**, pela RN3 do UC006: `VEGETARIAN`, `VEGAN`, `GLUTEN_FREE`, `LACTOSE_FREE` e `ALLERGY`. O `code` é o que a agregação do UC008 agrupa, e o `displayName` é o que a tela mostra.
+
 **Relações:** associa-se a muitas DietaryNote.
 
 **Uso de classe:** `requiresDescription` é um dado da categoria, e a RN2 do UC006 depende dele para exigir a descrição quando a categoria é alergia. Por esse motivo, `DietaryCategory` não foi modelada como enumeração.
 
 Um convidado com mais de uma categoria conta em cada uma na consolidação do UC008, que é o comportamento natural do agrupamento.
 
-**Origem:** UC006 passo 1 e RN2, H10.
+**Origem:** UC006 passo 1, RN2 e RN3, H10.
 
 ## Fora do diagrama
 
@@ -124,11 +126,11 @@ Um convidado com mais de uma categoria conta em cada uma na consolidação do UC
 
 ## Pendências que este diagrama expôs
 
-A modelagem encontrou pontos que ainda precisam de decisão do time:
+A modelagem encontrou pontos que dependem de decisão do time. Cada item traz o estado de hoje:
 
 1. **Textos da personalização.** Se o UC003 prevê campos além do nome e do local do evento, é preciso definir seus nomes, passos e colunas. Até lá, `InviteCustomization` fica sem atributos de texto.
 2. **Validade do `personalToken`.** O [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) define a geração com 128 bits em base32 Crockford, sem revogação nesta fase, e mantém o link pessoal válido quando o convite é despublicado. Ainda falta definir até quando a RN3 do UC005 permite alterações, o que depende do item 4.
-3. **Lista de categorias alimentares.** O passo 1 do UC006 e a H10 apresentam as cinco categorias como exemplos, o que sugere uma lista aberta. A RN2 do UC006, porém, depende da existência da categoria alergia.
+3. **Lista de categorias alimentares.** Fechada pela RN3 do UC006. São cinco entradas com carga inicial, e só `ALLERGY` exige descrição.
 4. **Fuso horário e fim do evento.** Três regras dependem de tempo, mas `Invite` tem data e hora separadas, sem duração nem fuso. O comportamento no dia do evento ainda não está definido.
 
 ## Fonte do diagrama
