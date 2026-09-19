@@ -59,6 +59,32 @@ O formato da tabela de descrição de classe da seção 5 é decidido na task **
 
 ## 4. Visão de Casos de Uso
 
+Os oito casos de uso do sistema, com os arquiteturalmente significativos em destaque. A especificação completa está na [Especificação de Casos de Uso](../Sprint-1/Especificação-de-Casos-de-Uso.md) e a figura no [Diagrama de Casos de Uso](../Sprint-1/Diagrama-de-Casos-de-Uso.md).
+
+**O critério.** Um caso de uso é arquiteturalmente significativo quando é o único que exercita alguma decisão de arquitetura. Se ele sair deste documento, aquela decisão fica sem prova em diagrama. Cinco dos oito passam pelo critério, e eles rendem quatro realizações, porque o UC006 é extensão do UC005 e é realizado dentro dele.
+
+| ID | Caso de uso | Ator | Significativo |
+|---|---|---|---|
+| UC001 | Autenticar anfitrião | Anfitrião | **Sim** |
+| UC002 | Criar convite | Anfitrião | Não |
+| UC003 | Personalizar visual do convite | Anfitrião | Não |
+| UC004 | Compartilhar convite (gerar link) | Anfitrião | **Sim** |
+| UC005 | Confirmar presença (RSVP) | Convidado | **Sim** |
+| UC006 | Registrar observação alimentar | Convidado | **Sim**, dentro do UC005 |
+| UC007 | Visualizar lista de presença | Anfitrião | Não |
+| UC008 | Consolidar e exportar observações alimentares | Anfitrião | **Sim** |
+
+**O que cada um sustenta.**
+
+| Realização | A decisão que só ela exercita |
+|---|---|
+| UC001 | O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) inteiro. Argon2id, cookie assinado com `hostId` e instante de expiração, e a recusa que não diz se o errado foi o email ou a senha |
+| UC004 | A única transição de estado do modelo, de rascunho para publicado, e o único lugar onde nasce o `publicToken` do [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) |
+| UC005, com a extensão do UC006 | A única escrita sem sessão do sistema. Carrega o [ADR-0006](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0006-Identidade-do-convidado.md), o [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) inteiro, o [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) e a fronteira temporal do [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md). O teto de capacidade verificado dentro da transação é a demonstração concreta da regra de dependência do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) |
+| UC008 | A única agregação com projeções nomeadas, a única exportação em CSV e o único serviço que consome dois repositórios, que é o que sustenta a separação decidida na seção 5.2 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) |
+
+**Por que os outros três ficam de fora.** UC002 e UC003 são cadastro atrás de sessão e não têm rota em artefato nenhum, então não há o que desenhar sem inventar. UC007 é leitura de projeção com a mesma guarda e o mesmo repositório do UC008, e não prova nada que o UC008 já não prove.
+
 ### 4.1 Realizações de Casos de Uso
 
 As realizações ficam em artefato independente, conforme o template determina e conforme o exemplo do professor confirma. Ver [Documento de Realização de Casos de Uso](Documento-de-Realização-de-Casos-de-Uso.md).
