@@ -85,7 +85,7 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 (ED1) Convite: nome do evento, data, hora, local, situação (rascunho ou publicado), teto de pessoas (opcional), limite de acompanhantes por convidado (opcional) e anfitrião responsável.
 
 **Regras de Negócio:**
-(RN1) Nome, data, hora e local são obrigatórios. A data deve ser igual ou posterior ao dia atual.
+(RN1) Nome, data, hora e local são obrigatórios. A data deve ser igual ou posterior ao dia atual, contado no fuso do projeto (ADR-0013). A data e a hora informadas formam um instante único no convite salvo.
 
 (RN2) O convite tem dois limites, ambos opcionais e independentes. O **teto de pessoas** é um inteiro maior que zero e representa o total aceito no evento, somando os convidados confirmados e os acompanhantes deles. O **limite de acompanhantes por convidado** é um inteiro maior ou igual a zero e restringe cada resposta individualmente.
 
@@ -197,7 +197,7 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 **Regras de Negócio:**
 (RN1) A resposta deve ser uma entre sim, não ou talvez.
 (RN2) O número de acompanhantes é um inteiro maior ou igual a zero e respeita o limite definido pelo anfitrião, quando houver.
-(RN3) O convidado pode alterar a resposta enquanto o evento não tiver ocorrido, usando o link pessoal recebido na confirmação (ED2).
+(RN3) O convidado pode alterar a resposta até o fim do dia do evento, às 23:59:59 no fuso do projeto, usando o link pessoal recebido na confirmação (ED2). Ver ADR-0013.
 
 (RN4) Quando o convite tem teto de pessoas, o sistema só aceita uma resposta "sim" se o total de confirmados e acompanhantes, incluindo a nova resposta, continuar dentro do limite. Respostas "talvez" não ocupam vaga, e respostas "não" são sempre aceitas. Uma pessoa já confirmada pode reduzir o número de acompanhantes ou mudar a resposta para "não", liberando vagas. A verificação ocorre em uma transação na camada de dados para evitar que respostas simultâneas ultrapassem o teto. Ver ADR-0008.
 

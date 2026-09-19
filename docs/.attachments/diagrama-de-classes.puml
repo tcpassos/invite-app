@@ -35,8 +35,7 @@ class Host {
 
 class Invite {
   + eventName : String [1]
-  + eventDate : Date [1]
-  + eventTime : Time [1]
+  + eventStartsAt : DateTime [1]
   + location : String [1]
   + status : InviteStatus [1]
   + publicToken : String [0..1] {unique}

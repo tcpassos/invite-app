@@ -73,7 +73,7 @@ Critérios de aceitação:
 ### H09
 Como convidado, quero alterar minha resposta caso meus planos mudem.
 Critérios de aceitação:
-- Reabro o meu link pessoal e mudo a resposta enquanto o evento não ocorreu.
+- Reabro o meu link pessoal e mudo a resposta até o fim do dia do evento.
 - O painel do anfitrião reflete a mudança.
 
 ## Épico 5: Observações alimentares

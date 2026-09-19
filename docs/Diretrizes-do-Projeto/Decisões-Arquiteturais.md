@@ -26,6 +26,7 @@ Status possíveis: **Proposta**, **Aceita**, **Substituída** e **Descartada**.
 | [0010](Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) | Argon2id, sessão em cookie assinado e guardas sem estado no banco | Aceita |
 | [0011](Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) | Token pessoal com a mesma geração do token do convite, sem revogação | Aceita |
 | [0012](Decisões-Arquiteturais/0012-Observabilidade-entre-os-tiers.md) | Log em saída padrão e correlação por cabeçalho entre os dois saltos | Aceita |
+| [0013](Decisões-Arquiteturais/0013-Tempo-do-evento.md) | Instante único, fuso do projeto e fim do dia como fronteira da alteração | Aceita |
 
 As decisões de 0004 a 0008 foram confrontadas com um levantamento de 19 plataformas equivalentes de convite e RSVP. O relatório fica em `pesquisa-stack-benchmark.md`, no repositório do GitHub.
 

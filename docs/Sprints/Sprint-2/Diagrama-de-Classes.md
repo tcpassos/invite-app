@@ -29,12 +29,13 @@ Cada atributo parte de uma Estrutura de Dados, de uma Regra de Negócio da [Espe
 **Sobre os atributos:**
 
 - `publicToken` é opcional porque nasce apenas na transição para publicado (UC004 passo 3). Enquanto o convite é rascunho, ele não existe. É o token de 128 bits do [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md), em coluna separada da chave primária.
+- `eventStartsAt` é um instante só, e não uma data ao lado de uma hora. O [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md) explica por quê e fixa o fuso do projeto. O formulário continua pedindo data e hora separadas, e quem junta as duas é a camada de Apresentação da API.
 - A situação ativo ou inativo do link, citada na ED1 do UC004, é derivada de `status` e não vira uma segunda coluna.
 - `capacityLimit` e `maxCompanionsPerGuest` são limites independentes (UC002 RN2). O primeiro vale para o evento inteiro e o segundo para cada resposta. A camada de Dados verifica `capacityLimit` dentro de uma transação. A seção 3.4 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) explica o problema de fazer essa verificação em outra camada.
 - `/totalPeople` é derivado, indicado pela barra, e não é coluna. Quem o calcula em execução é `AttendanceService`, somando os acompanhantes sobre as linhas que `findAttendanceByStatus` já devolveu. É a RN1 do UC007.
 - As três consultas do painel não são operações de `Invite`. A lista do UC007 é uma projeção de `Guest`, a consolidação do UC008 agrega por categoria e a exportação monta uma junção sob demanda. Elas também não geram tabelas próprias. No Domínio, `AttendanceService` oferece `listAttendance` e `DietaryService` atende as outras duas consultas, conforme a tabela 4.2 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). As três operações recebem `inviteId` e `hostId`, em vez de operar sobre uma instância já carregada de `Invite`.
 
-**Origem:** UC002 ED1 e RN2, UC004 ED1, ADR-0005 e ADR-0008.
+**Origem:** UC002 ED1 e RN2, UC004 ED1, ADR-0005, ADR-0008 e ADR-0013.
 
 ### Classe InviteCustomization
 
@@ -131,7 +132,7 @@ A modelagem encontrou pontos que dependem de decisão do time. Cada item traz o 
 1. **Textos da personalização.** Se o UC003 prevê campos além do nome e do local do evento, é preciso definir seus nomes, passos e colunas. Até lá, `InviteCustomization` fica sem atributos de texto.
 2. **Validade do `personalToken`.** O [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) define a geração com 128 bits em base32 Crockford, sem revogação nesta fase, e mantém o link pessoal válido quando o convite é despublicado. Ainda falta definir até quando a RN3 do UC005 permite alterações, o que depende do item 4.
 3. **Lista de categorias alimentares.** Fechada pela RN3 do UC006. São cinco entradas com carga inicial, e só `ALLERGY` exige descrição.
-4. **Fuso horário e fim do evento.** Três regras dependem de tempo, mas `Invite` tem data e hora separadas, sem duração nem fuso. O comportamento no dia do evento ainda não está definido.
+4. **Fuso horário e fim do evento.** Fechada pelo [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md). `Invite` passa a ter um instante só, o fuso do projeto é `America/Sao_Paulo` e a RN3 do UC005 vale até o fim do dia do evento.
 
 ## Fonte do diagrama
 
