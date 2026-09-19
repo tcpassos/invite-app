@@ -1,0 +1,63 @@
+@startuml diagrama-de-pacotes
+' Fonte do Diagrama de Pacotes da Sprint 3, task #100 do Azure Boards.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-de-pacotes.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' As três camadas vêm do ADR-0001 e os dois pacotes da Apresentação da seção 5.3 do Guia.
+' O diagrama traz rótulo, não explicação. A leitura fica na seção 5.1 do DAS.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam defaultTextAlignment center
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam packageStyle rectangle
+
+package "front" <<Next.js>> as FRONT {
+  package "view" as VIEW
+  package "controller" as FCTRL
+  package "templates" as TPL
+}
+
+package "contract" <<módulo compartilhado>> as CONTRACT
+
+package "api" <<NestJS>> as API {
+
+  package "apresentacao" as APRES {
+    package "publico" as PUB
+    package "autenticado" as AUT
+    package "autenticacao" as AUTH
+    package "transversal" as CROSS
+  }
+
+  package "dominio" as DOM
+
+  package "dados" as DAT
+
+  package "modelo" as MOD
+}
+
+VIEW ..> FCTRL
+FCTRL ..> TPL
+VIEW ..> TPL
+FCTRL ..> CONTRACT
+
+PUB ..> CROSS
+AUT ..> CROSS
+AUTH ..> CROSS
+
+PUB ..> DOM
+AUT ..> DOM
+AUTH ..> DOM
+
+APRES ..> CONTRACT
+DOM ..> CONTRACT
+
+DOM ..> DAT
+DOM ..> MOD
+DAT ..> MOD
+APRES ..> MOD
+
+FCTRL ..> APRES : HTTP
+
+@enduml
