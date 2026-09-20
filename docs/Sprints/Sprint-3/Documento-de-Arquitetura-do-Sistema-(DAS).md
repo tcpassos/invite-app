@@ -41,19 +41,100 @@ O formato da tabela de descrição de classe da seção 5 é decidido na task **
 
 ### 1.1 Finalidade
 
+Este documento reúne as decisões arquiteturais do invite-app e as apresenta em visões, para que quem for implementar o sistema encontre num lugar só o que precisa saber antes de escrever a primeira linha de código.
+
+O público é o time de desenvolvimento e o Product Owner. O time o usa como referência de onde cada responsabilidade mora e de qual regra de fronteira não pode ser quebrada. O Product Owner o usa para conferir se a solução projetada atende o que a [Visão do Produto](../../Visão-do-Produto.md) pede.
+
+São oito seções. As de 1 a 3 situam o leitor e listam o que restringe a arquitetura. As de 4 a 8 são as visões, cada uma olhando o mesmo sistema por um ângulo diferente.
+
+**O documento se sustenta sozinho.** Nenhuma seção depende de o leitor abrir outro artefato para fazer sentido. Os links existem para quem quiser o texto longo de alguma decisão, e são opcionais.
+
 ### 1.2 Escopo
+
+Cobre a arquitetura do invite-app, a aplicação web de convites com confirmação de presença e observação alimentar. Abrange os três containers do sistema, as camadas lógicas dentro da API, os componentes de cada camada e o modelo de dados que sustenta os oito casos de uso.
+
+Fica de fora o que a Visão do Produto já colocou fora do MVP, e ficam de fora os detalhes de implementação que não mudam a estrutura, como a escolha de biblioteca de componentes visuais.
+
+Quando este documento e um ADR discordarem, **o ADR é a decisão de registro**. Decisão nova nasce em ADR e chega aqui depois, nunca o contrário.
 
 ### 1.3 Definições, Acrônimos e Abreviações
 
+| Termo | O que significa |
+|---|---|
+| Anfitrião | Quem cria o convite e acompanha o painel. É o único ator com conta no sistema |
+| Convidado | Quem abre o link e responde. Não tem cadastro, e a identidade nasce junto com a resposta |
+| RSVP | A confirmação de presença, e o nome do UC005 |
+| Tier | Unidade de implantação, na prática um container. São três |
+| Camada | Divisão lógica dentro da API. São três: Apresentação, Domínio e Dados |
+| `publicToken` | Identificador público do convite, o que vai dentro do link compartilhado |
+| `personalToken` | Identificador pessoal do convidado, o que permite voltar e alterar a resposta |
+| ADR | Architecture Decision Record, um registro por decisão |
+| DAS | Documento de Arquitetura de Software, este documento |
+| MVC | Model, View e Controller, o padrão adotado no front |
+| BCE | Boundary, Control e Entity, a notação usada no Documento de Realização |
+| CSPRNG | Gerador de números aleatórios adequado a uso criptográfico |
+
 ### 1.4 Referências
+
+Todos versionados em `docs/` no repositório GitHub do projeto e publicados na wiki do Azure DevOps.
+
+| Documento | Sprint |
+|---|---|
+| [Visão do Produto](../../Visão-do-Produto.md) | 1 |
+| [Diagrama de Casos de Uso](../Sprint-1/Diagrama-de-Casos-de-Uso.md) | 1 |
+| [Especificação de Casos de Uso](../Sprint-1/Especificação-de-Casos-de-Uso.md) | 1 |
+| [Diagrama de Classes](../Sprint-2/Diagrama-de-Classes.md) | 2 |
+| [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) | 2 |
+| [Diagrama de Implantação](../Sprint-2/Diagrama-de-Implantação.md) | 2 |
+| [Decisões Arquiteturais](../../Diretrizes-do-Projeto/Decisões-Arquiteturais.md), treze ADRs | 2 e 3 |
+| [Documento de Realização de Casos de Uso](Documento-de-Realização-de-Casos-de-Uso.md) | 3 |
+| [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), documento de trabalho do time | 2 |
 
 ---
 
 ## 2. Representação Arquitetural
 
+A arquitetura é apresentada em cinco visões. O template do RUP oferece seis, e a **Visão de Processos fica de fora**, porque o sistema não tem concorrência que renda diagrama próprio. Cada requisição é tratada de forma independente, e o único ponto de disputa, o teto de capacidade, se resolve numa transação de banco descrita na seção 7.1.
+
+| Visão | Seção | Que tipo de elemento ela contém |
+|---|---|---|
+| Casos de Uso | 4 | Casos de uso e atores, com os arquiteturalmente significativos em destaque |
+| Lógica | 5 | Pacotes e classes, com atributos, operações e relações |
+| Implantação | 6 | Nós, artefatos e caminhos de comunicação |
+| Implementação | 7 | Componentes, interfaces e camadas |
+| Dados | 8 | Classes persistentes, estratégias de mapeamento e tabelas |
+
+As realizações de caso de uso ficam num artefato independente, conforme a seção 4.1 indica.
+
+Cada visão descreve o mesmo sistema, e o que muda é o tipo de elemento. O mesmo `InviteRepository` aparece como classe na 5, como componente na 7 e como origem de tabela na 8. Quando duas visões parecerem discordar, a divergência é erro e não perspectiva.
+
 ---
 
 ## 3. Metas e Restrições da Arquitetura
+
+### 3.1 Metas de qualidade
+
+| Meta | Como a arquitetura a atende | ADR |
+|---|---|---|
+| Segurança na fronteira pública | O convite abre sem login, então o link carrega um token de 128 bits de CSPRNG separado da chave primária, a escrita passa por limite de taxa, e o teto de capacidade é verificado dentro de uma transação na camada de Dados | 0005, 0006, 0008, 0011 |
+| Segurança da conta do anfitrião | Senha guardada com Argon2id, sessão em cookie assinado com `HttpOnly` e `SameSite=Lax`, e recusa de credencial que não revela se o errado foi o email ou a senha | 0010 |
+| Privacidade | Os dois tokens e o texto livre da observação alimentar nunca entram em log, e a rota registrada é o molde e não o caminho concreto | 0012 |
+| Manutenibilidade | Três camadas com uma regra de dependência única, separação estrutural por módulos do framework em vez de convenção, e um contrato de tipos compartilhado que o build verifica | 0001, 0004 |
+| Exibição do convite | Renderização no servidor, para que o link mostre prévia ao ser compartilhado e a página chegue pronta ao convidado | 0004 |
+| Simplicidade deliberada | Consulta periódica em vez de Server-Sent Events no painel, e personalização por template em HTML e CSS em vez de upload de mídia | 0007, 0009 |
+
+### 3.2 Restrições
+
+| Restrição | De onde vem |
+|---|---|
+| **A execução é local.** `docker compose up` no computador de quem desenvolve, sem alvo de publicação, sem ambiente compartilhado e sem TLS | ADR-0003 |
+| **São três containers**, um por serviço, o que parte a camada de Apresentação entre dois processos e faz um erro passar a ter dois lados | ADR-0002 |
+| **A pilha está fechada** em Next.js no front, NestJS na API e PostgreSQL no banco | ADR-0004 |
+| **O convidado não tem cadastro.** A identidade nasce na resposta, e por isso o sistema não sabe quem ainda não respondeu | ADR-0006 |
+| **Não há envio de e-mail.** Nenhum caso de uso o pede, então não existe recuperação de senha nem lembrete automático | Especificação de Casos de Uso |
+| **Não há observabilidade além do log em saída padrão.** Sem coletor de métricas, sem painel e sem rastreamento distribuído | ADR-0012 |
+| **O fuso é um só para o projeto inteiro**, `America/Sao_Paulo`, então evento fora dele exibe hora local errada | ADR-0013 |
+| **A equipe tem quatro pessoas e o prazo é o semestre letivo**, o que pesou contra toda decisão que exigisse container ou serviço novo | [Team Charter](../../Team-Charter.md) e [Proposta de Trabalho](../../Proposta-de-Trabalho.md) |
 
 ---
 
@@ -81,13 +162,13 @@ Os oito casos de uso do sistema, com os arquiteturalmente significativos em dest
 | UC001 | O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) inteiro. Argon2id, cookie assinado com `hostId` e instante de expiração, e a recusa que não diz se o errado foi o email ou a senha |
 | UC004 | A única transição de estado do modelo, de rascunho para publicado, e o único lugar onde nasce o `publicToken` do [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) |
 | UC005, com a extensão do UC006 | A única escrita sem sessão do sistema. Carrega o [ADR-0006](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0006-Identidade-do-convidado.md), o [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) inteiro, o [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) e a fronteira temporal do [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md). O teto de capacidade verificado dentro da transação é a demonstração concreta da regra de dependência do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) |
-| UC008 | A única agregação com projeções nomeadas, a única exportação em CSV e o único serviço que consome dois repositórios, que é o que sustenta a separação decidida na seção 5.2 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) |
+| UC008 | A única agregação com projeções nomeadas, a única exportação em CSV e o único serviço que consome dois repositórios, que é o que justifica separar `InviteRepository` de `DietaryCategoryRepository` |
 
 **Por que os outros três ficam de fora.** UC002 e UC003 são cadastro atrás de sessão e não têm rota em artefato nenhum, então não há o que desenhar sem inventar. UC007 é leitura de projeção com a mesma guarda e o mesmo repositório do UC008, e não prova nada que o UC008 já não prove.
 
 ### 4.1 Realizações de Casos de Uso
 
-As realizações ficam em artefato independente, conforme o template determina e conforme o exemplo do professor confirma. Ver [Documento de Realização de Casos de Uso](Documento-de-Realização-de-Casos-de-Uso.md).
+As realizações ficam em artefato independente, conforme o template determina. Ver [Documento de Realização de Casos de Uso](Documento-de-Realização-de-Casos-de-Uso.md).
 
 ---
 
@@ -95,7 +176,7 @@ As realizações ficam em artefato independente, conforme o template determina e
 
 A decomposição do sistema em pacotes, com as classes significativas de cada um.
 
-A divisão parte das três camadas do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) e dos dois pacotes da camada de Apresentação que a seção 5.3 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) define. Pacote aqui é unidade de organização de código, e não componente nem tier, que são assunto das seções 7 e 6.
+A divisão parte das três camadas do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md), e a camada de Apresentação é subdividida por quem alcança cada rota, conforme a tabela abaixo. Pacote aqui é unidade de organização de código, e não componente nem tier, que são assunto das seções 7 e 6.
 
 ### 5.1 Divisão em Pacotes
 
@@ -121,7 +202,7 @@ A divisão parte das três camadas do [ADR-0001](../../Diretrizes-do-Projeto/Dec
 
 Este ponto só aparece quando se desenha o diagrama de pacotes, e decidi-lo errado produz um ciclo de importação que o compilador aceita e que ninguém percebe até a base crescer.
 
-A seção 3.2 do Guia da Arquitetura registra que o **Domínio depende dos Dados**. A seção 3.3 registra que a camada de Dados **devolve as classes do Diagrama de Classes**, ou seja, depende delas.
+A seção 7.1 registra que o **Domínio depende da camada de Dados**. E a camada de Dados **devolve as classes do modelo**, ou seja, depende delas.
 
 Se `Invite`, `Guest` e as outras morarem dentro do pacote de Domínio, o resultado é `dominio` importando `dados` e `dados` importando `dominio`.
 
@@ -131,13 +212,15 @@ Isso não contraria o ADR-0001. A regra de lá é que Domínio e Dados não depe
 
 ### Uma ressalva sobre `autenticacao`
 
-O pacote existe porque `AuthController` precisa morar em algum lugar, e **ele não cabe em nenhum dos dois pacotes que o guia define**. Não é do público, porque a seção 5.3 restringe aquele pacote a dois serviços de Domínio. Não é do autenticado, porque a rota de entrada é anterior à sessão.
+O pacote existe porque `AuthController` precisa morar em algum lugar, e **ele não cabe em nenhum dos dois pacotes que o guia define**. Não é do público, porque aquele pacote atende só as rotas que o convidado alcança. Não é do autenticado, porque a rota de entrada é anterior à sessão.
 
 A pendência 2 da seção 10.2 do [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) registra essa lacuna e diz que falta decidir se entra um terceiro pacote. **Este diagrama adota o terceiro pacote de forma provisória**, porque um diagrama precisa colocar a classe em algum lugar. A decisão continua com o time, e se ela for outra, a figura muda.
 
 ### Formato da descrição de classe
 
-Decidido na task #97 e usado em toda a seção 5, sem variação entre quem escreve. O formato vem dos dois exemplos de DAS que o professor publicou, que repetem a mesma tabela 19 e 31 vezes.
+São dois formatos, usados em toda a seção 5 sem variação entre quem escreve. O critério é estrutural: **classe com atributo próprio leva a descrição completa, classe sem atributo leva a curta.** As nove classes do modelo ficam no primeiro caso, e as vinte comportamentais no segundo.
+
+**Descrição completa:**
 
 | Campo | O que escrever |
 |---|---|
@@ -147,7 +230,9 @@ Decidido na task #97 e usado em toda a seção 5, sem variação entre quem escr
 | Atributos | Nome, tipo e multiplicidade, na grafia do Diagrama de Classes |
 | Métodos | Assinatura completa, com tipo de parâmetro e de retorno |
 
-Duas regras fecham os casos de dúvida. **Classe sem atributo ou sem método próprio leva a linha assim mesmo, com a palavra Nenhum**, porque célula vazia não distingue ausência de esquecimento. E **o nome dos identificadores fica em inglês**, conforme o [Guia de Estilo](../../Diretrizes-do-Projeto/Guia-de-Estilo.md), enquanto o texto de descrição fica em português.
+**Descrição curta**, para controllers, guardas, filtro, serviços e repositórios: Descrição e Operações, e nada mais. Nenhum deles tem atributo próprio, e a linha Relações repetiria o que a figura de componentes da seção 7 já mostra.
+
+Nos dois formatos, **o nome dos identificadores fica em inglês** e o texto de descrição fica em português.
 
 ---
 
