@@ -1,0 +1,165 @@
+@startuml classes-participantes-consolidado
+' Anexo do Documento de Realização: as classes participantes dos quatro casos de uso realizados, juntas.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/classes-participantes-consolidado.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' É a união das quatro figuras por caso de uso, sem nenhuma classe nova.
+' A imagem é alta. Se sair cortada, acrescente -e PLANTUML_LIMIT_SIZE=16384 ao comando.
+' Identificadores em inglês, conforme o Guia de Estilo.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+skinparam nodesep 20
+skinparam ranksep 45
+
+class LoginScreen <<boundary>> {
+  + showSignInOptions() : void
+  + submitSignIn(email : String, password : String) : void
+  + submitSignUp(name : String, email : String, password : String) : void
+  + openHostPanel(session : Session) : void
+  + showInvalidCredentials() : void
+  + showEmailAlreadyRegistered() : void
+}
+
+class HostPanelScreen <<boundary>> {
+  + requestShare(inviteId : UUID) : void
+  + requestUnpublish(inviteId : UUID) : void
+  + buildShareLink(publicToken : String) : String
+  + showShareLink(link : String) : void
+  + showMissingFields(missingFields : String [1..*]) : void
+  + showInviteNotFound() : void
+  + showUnpublished() : void
+  + showNothingToUnpublish() : void
+}
+
+class PublicInviteScreen <<boundary>> {
+  + openInvite(publicToken : String) : void
+  + showInviteForm(invite : Invite, categories : DietaryCategory [0..*]) : void
+  + submitRsvp(rsvpCommand : RsvpCommand) : void
+  + buildPersonalLink(personalToken : String) : String
+  + showConfirmation(link : String) : void
+  + showCapacityExceeded() : void
+  + showValidationError(field : String, rule : String) : void
+}
+
+class DietaryPanelScreen <<boundary>> {
+  + openDietarySummary(inviteId : UUID) : void
+  + showSummary(summary : DietarySummary) : void
+  + showNoDietaryNotes() : void
+  + requestExport(inviteId : UUID) : void
+  + deliverFile(csv : String) : void
+}
+
+class AuthController <<control>> {
+  + signIn(email : String, password : String) : Session
+  + signUp(name : String, email : String, password : String) : Session
+  - hashPassword(password : String) : String
+  - verifyPassword(password : String, passwordHash : String) : Boolean
+  - issueSession(hostId : UUID) : Session
+}
+
+class InviteController <<control>> {
+  + publishInvite(inviteId : UUID, hostId : UUID) : Invite
+  + unpublishInvite(inviteId : UUID, hostId : UUID) : Invite
+  - validateForPublication(invite : Invite, hostId : UUID) : Boolean
+  - validateOwnership(invite : Invite, hostId : UUID) : Boolean
+  - generatePublicToken() : String
+}
+
+class RsvpController <<control>> {
+  + getPublishedInvite(publicToken : String) : Invite [0..1]
+  + registerRsvp(publicToken : String, rsvpCommand : RsvpCommand) : Guest
+  - checkCompanionLimit(invite : Invite, companionCount : Integer) : Boolean
+  - validateDietaryNote(freeText : String [0..1], categories : DietaryCategory [0..*]) : Boolean
+  - generatePersonalToken() : String
+}
+
+class DietaryController <<control>> {
+  + consolidateDietaryNotes(inviteId : UUID, hostId : UUID) : DietarySummary
+  + exportDietaryNotes(inviteId : UUID, hostId : UUID) : String
+  - validateOwnership(invite : Invite, hostId : UUID) : Boolean
+  - renderCsv(rows : ExportRow [0..*]) : String
+  - neutralizeFormulaPrefix(field : String) : String
+}
+
+class Host <<entity>> {
+  + name : String [1]
+  + email : String [1] {unique}
+  + passwordHash : String [1]
+  --
+  + findByEmail(email : String) : Host [0..1]
+}
+
+class Invite <<entity>> {
+  + eventName : String [1]
+  + eventStartsAt : DateTime [1]
+  + location : String [1]
+  + status : InviteStatus [1]
+  + publicToken : String [0..1] {unique}
+  + capacityLimit : Integer [0..1]
+  + maxCompanionsPerGuest : Integer [0..1]
+  --
+  + findById(inviteId : UUID) : Invite [0..1]
+  + findPublishedByPublicToken(publicToken : String) : Invite [0..1]
+  + publish(publicToken : String) : Boolean
+  + unpublish() : Boolean
+  + reserveSeats(seatsRequested : Integer) : Boolean
+  + countGuestsByCategory(statuses : RsvpStatus [1..*]) : CategoryCount [0..*]
+  + findDescriptionsByCategories(statuses : RsvpStatus [1..*], categoryCodes : String [0..*]) : AllergyDescription [0..*]
+  + findGuestsForExport(statuses : RsvpStatus [1..*]) : ExportRow [0..*]
+}
+
+class Guest <<entity>> {
+  + name : String [1]
+  + status : RsvpStatus [1]
+  + companionCount : Integer [1] = 0
+  + personalToken : String [1] {unique}
+  + respondedAt : DateTime [1]
+}
+
+class DietaryNote <<entity>> {
+  + freeText : String [0..1]
+}
+
+class DietaryCategory <<entity>> {
+  + code : String [1] {unique}
+  + displayName : String [1]
+  + requiresDescription : Boolean [1]
+  --
+  + listDietaryCategories() : DietaryCategory [0..*]
+}
+
+enum InviteStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+}
+
+enum RsvpStatus {
+  ACCEPTED
+  DECLINED
+  MAYBE
+}
+
+LoginScreen ..> AuthController
+HostPanelScreen ..> InviteController
+PublicInviteScreen ..> RsvpController
+DietaryPanelScreen ..> DietaryController
+
+AuthController ..> Host
+InviteController ..> Invite
+RsvpController ..> Invite
+RsvpController ..> DietaryCategory
+DietaryController ..> Invite
+DietaryController ..> DietaryCategory
+
+Host "1" -- "0..*" Invite
+Invite "1" *-- "0..*" Guest
+Guest "1" *-- "0..1" DietaryNote
+DietaryNote "0..*" -- "0..*" DietaryCategory
+
+Invite ..> InviteStatus
+Guest ..> RsvpStatus
+
+@enduml
