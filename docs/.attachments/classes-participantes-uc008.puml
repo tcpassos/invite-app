@@ -1,0 +1,59 @@
+@startuml classes-participantes-uc008
+' Classes participantes do UC008, Consolidar e exportar observações alimentares, em notação BCE.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/classes-participantes-uc008.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' É o Diagrama de Classes recortado para este caso de uso, e não o do sistema inteiro.
+' Cada operação corresponde a uma mensagem de diagrama-sequencia-bce-uc008.
+' CategoryCount, AllergyDescription, ExportRow e DietarySummary aparecem só como tipo de retorno.
+' Eles são projeções de leitura, não classes com comportamento, e nenhum artefato declara os campos deles.
+' Identificadores em inglês, conforme o Guia de Estilo.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+class DietaryPanelScreen <<boundary>> {
+  + openDietarySummary(inviteId : UUID) : void
+  + showSummary(summary : DietarySummary) : void
+  + showNoDietaryNotes() : void
+  + requestExport(inviteId : UUID) : void
+  + deliverFile(csv : String) : void
+}
+
+class DietaryController <<control>> {
+  + consolidateDietaryNotes(inviteId : UUID, hostId : UUID) : DietarySummary
+  + exportDietaryNotes(inviteId : UUID, hostId : UUID) : String
+  - validateOwnership(invite : Invite, hostId : UUID) : Boolean
+  - renderCsv(rows : ExportRow [0..*]) : String
+  - neutralizeFormulaPrefix(field : String) : String
+}
+
+class Invite <<entity>> {
+  + eventName : String [1]
+  + eventStartsAt : DateTime [1]
+  + location : String [1]
+  + status : InviteStatus [1]
+  + publicToken : String [0..1] {unique}
+  + capacityLimit : Integer [0..1]
+  + maxCompanionsPerGuest : Integer [0..1]
+  --
+  + findById(inviteId : UUID) : Invite [0..1]
+  + countGuestsByCategory(statuses : RsvpStatus [1..*]) : CategoryCount [0..*]
+  + findDescriptionsByCategories(statuses : RsvpStatus [1..*], categoryCodes : String [0..*]) : AllergyDescription [0..*]
+  + findGuestsForExport(statuses : RsvpStatus [1..*]) : ExportRow [0..*]
+}
+
+class DietaryCategory <<entity>> {
+  + code : String [1] {unique}
+  + displayName : String [1]
+  + requiresDescription : Boolean [1]
+  --
+  + listDietaryCategories() : DietaryCategory [0..*]
+}
+
+DietaryPanelScreen ..> DietaryController
+DietaryController ..> Invite
+DietaryController ..> DietaryCategory
+
+@enduml

@@ -1,0 +1,57 @@
+@startuml classes-participantes-uc004
+' Classes participantes do UC004, Compartilhar convite (gerar link), em notação BCE.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/classes-participantes-uc004.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' É o Diagrama de Classes recortado para este caso de uso, e não o do sistema inteiro.
+' Cada operação corresponde a uma mensagem de diagrama-sequencia-bce-uc004.
+' Identificadores em inglês, conforme o Guia de Estilo.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+class HostPanelScreen <<boundary>> {
+  + requestShare(inviteId : UUID) : void
+  + requestUnpublish(inviteId : UUID) : void
+  + buildShareLink(publicToken : String) : String
+  + showShareLink(link : String) : void
+  + showMissingFields(missingFields : String [1..*]) : void
+  + showInviteNotFound() : void
+  + showUnpublished() : void
+  + showNothingToUnpublish() : void
+}
+
+class InviteController <<control>> {
+  + publishInvite(inviteId : UUID, hostId : UUID) : Invite
+  + unpublishInvite(inviteId : UUID, hostId : UUID) : Invite
+  - validateForPublication(invite : Invite, hostId : UUID) : Boolean
+  - validateOwnership(invite : Invite, hostId : UUID) : Boolean
+  - generatePublicToken() : String
+}
+
+class Invite <<entity>> {
+  + eventName : String [1]
+  + eventStartsAt : DateTime [1]
+  + location : String [1]
+  + status : InviteStatus [1]
+  + publicToken : String [0..1] {unique}
+  + capacityLimit : Integer [0..1]
+  + maxCompanionsPerGuest : Integer [0..1]
+  --
+  + findById(inviteId : UUID) : Invite [0..1]
+  + publish(publicToken : String) : Boolean
+  + unpublish() : Boolean
+}
+
+enum InviteStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+}
+
+HostPanelScreen ..> InviteController
+InviteController ..> Invite
+Invite ..> InviteStatus
+
+@enduml

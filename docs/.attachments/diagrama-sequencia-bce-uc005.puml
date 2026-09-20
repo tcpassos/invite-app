@@ -74,20 +74,22 @@ end
 
 alt a resposta não ocupa vaga, ou a reserva coube no teto (RN4)
 
-  C -> G : 7.5. «create» Guest(name : String, status : RsvpStatus, companionCount : Integer, personalToken : String)
+  C -> C : 7.5. generatePersonalToken() : String
+  C -> G : 7.6. «create» Guest(name : String, status : RsvpStatus, companionCount : Integer, personalToken : String)
   activate G
   G --> C : Guest
   deactivate G
 
   opt o convidado marcou categoria ou escreveu texto livre (UC006)
-    C -> N : 7.6. «create» DietaryNote(freeText : String [0..1], categories : DietaryCategory [0..*])
+    C -> N : 7.7. «create» DietaryNote(freeText : String [0..1], categories : DietaryCategory [0..*])
     activate N
     N --> C : DietaryNote
     deactivate N
   end
 
   C --> B : Guest
-  B --> Ator : 8. confirma e entrega o link pessoal para alterar depois (passo 8, ED2)
+  B -> B : 8. buildPersonalLink(personalToken : String) : String
+  B --> Ator : 9. confirma e entrega o link pessoal para alterar depois (passo 8, ED2)
 
 else A4, o teto de pessoas do evento foi atingido (RN4)
 
