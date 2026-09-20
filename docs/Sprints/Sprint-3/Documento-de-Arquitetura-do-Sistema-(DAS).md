@@ -153,11 +153,75 @@ Duas regras fecham os casos de dúvida. **Classe sem atributo ou sem método pr�
 
 ## 6. Visão de Implantação
 
+![Diagrama de Implantação](../../.attachments/diagrama-de-implantacao.png)
+
+O sistema roda inteiro num dispositivo só, o computador de quem levanta o ambiente com `docker compose up`. O [ADR-0003](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) fecha a execução no host de desenvolvimento, sem ambiente publicado, então não existe máquina separada para aplicação e banco, nem balanceador, nem nó de nuvem.
+
+São seis nós, um dispositivo e cinco ambientes de execução aninhados dentro dele.
+
+| Nó | Tipo | O que executa |
+|---|---|---|
+| Máquina do integrante | Dispositivo | Tudo que segue |
+| Navegador | Ambiente de execução | `front-client.bundle` |
+| Docker Engine | Ambiente de execução | Os três containers |
+| `front` | Container | `front-server.bundle`, os templates e o `robots.txt` |
+| `api` | Container | `api.bundle`, com as três camadas |
+| `db` | Container | PostgreSQL, com o volume `pgdata` montado |
+
+**O navegador é nó e não é tier.** Ele não sobe pelo compose e não é unidade de implantação do [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), mas o `front-client.bundle` sai do container `front` e executa dentro dele, o que a figura mostra com a relação `<<deploy>>`. O `db` é as duas coisas ao mesmo tempo.
+
+Cinco caminhos de comunicação ligam os nós:
+
+| # | De | Para | Protocolo | Endereço de quem chama | Porta no host |
+|---|---|---|---|---|---|
+| 1 | Navegador | `front` | HTTP | `127.0.0.1:3000` | `3000:3000` |
+| 2 | Navegador | `api` | HTTP | `127.0.0.1:3001` | `3001:3000` |
+| 3 | `front` | `api` | HTTP | `api:3000` | Nenhuma, nasce dentro da rede do compose |
+| 4 | `api` | `db` | TCP | `db:5432` | Nenhuma |
+| 5 | `db` | volume `pgdata` | Montagem | `/var/lib/postgresql/data` | Nenhuma |
+
+Os caminhos 1 e 3 formam o convite público em dois saltos. O caminho 2 atende o POST do UC005 e as rotas do painel, que chegam do navegador direto à API.
+
+**A API tem dois endereços, e trocá-los quebra o convite sem quebrar o build.** Dentro da rede do compose, o `front` chama `api:3000` pelo nome do serviço. O navegador está fora dessa rede e usa `127.0.0.1:3001`. O endereço que vai compilado no `front-client.bundle` é sempre o segundo, e por isso ele entra como argumento de build e não como variável de execução.
+
+**O `db` não publica porta.** Ninguém fora da rede do compose precisa alcançá-lo, e quem precisa inspecionar o banco entra por `docker compose exec`. A ordem de subida é `db`, `api` e `front`, garantida por `HEALTHCHECK` com `condition: service_healthy`.
+
 ---
 
 ## 7. Visão da Implementação
 
+![Diagrama de Componentes](../../.attachments/diagrama-de-componentes.png)
+
+São 20 componentes significativos, distribuídos em três containers e organizados pelas camadas lógicas do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md). A figura mostra cada componente, as interfaces que ele publica e as 31 dependências entre eles.
+
+| Onde | Componentes |
+|---|---|
+| Tier Front | `PublicInvitePage`, `HostPanelPage`, `ApiClient` e `TemplateSet` |
+| Apresentação, na API | `PublicRsvpController`, `InviteController`, `DietaryController`, `AuthController`, `SessionGuard`, `RateLimitGuard` e `HttpExceptionFilter` |
+| Domínio, na API | `RsvpService`, `InviteService`, `AttendanceService`, `DietaryService`, `HostService` e `TemplateCatalog` |
+| Dados, na API | `InviteRepository`, `DietaryCategoryRepository` e `HostRepository` |
+
+O módulo `contract/` não é componente. Ele é fonte compartilhada, compilada para dentro do build do Front e do build da API, e é o que faz o contrato de tipos do [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md) ser um tipo verificado no build, e não uma convenção documentada.
+
 ### 7.1 Camadas
+
+![Diagrama de Camadas](../../.attachments/diagrama-de-camadas.png)
+
+São três camadas lógicas dentro da API, mais o MVC no front.
+
+| Camada | O que contém | O que ela não faz |
+|---|---|---|
+| Apresentação | Rota, método, cabeçalho e código de status. Autenticação da sessão, limite de tráfego na fronteira pública, conferência da forma do corpo, tradução de erro do Domínio em protocolo e serialização da saída | Não cria identificador, não decide regra de negócio, não verifica o teto de capacidade, não decide autorização e não fala com o banco |
+| Domínio | As regras, as validações e os cálculos. Gera os dois tokens públicos, compara o dono do convite, valida a nota alimentar e decide o que é resposta aceitável | Não conhece rota nem código de status |
+| Dados | O acesso ao PostgreSQL. As consultas, as projeções do painel e a escrita transacional do teto de capacidade | Não decide quem pode o quê, não gera token, não formata saída e não conduz o caso de uso |
+
+**A regra que determina a inclusão numa camada é uma só, e é a única obrigatória:**
+
+> O Domínio e a camada de Dados nunca dependem da Apresentação. As dependências apontam sempre para dentro.
+
+Dela saem as duas fronteiras que o projeto de fato cobra em revisão de código. **A Apresentação nunca chama a camada de Dados**, porque se ela pudesse ler o convite por conta própria alguém acabaria verificando o teto de capacidade ali. E **a verificação do teto é transacional, dentro da camada de Dados**, porque com duas respostas simultâneas num evento que está em 49 de 50 uma validação na Apresentação deixa as duas passarem e o evento fecha em 51. Essa é a demonstração concreta da regra, e está no [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md).
+
+O projeto não adota inversão de dependência entre Domínio e Dados. O Domínio depende da interface da camada de Dados, que é dependência para baixo e é o que a arquitetura em três camadas prevê. A regra registrada é uma só, e é a de cima.
 
 ---
 
