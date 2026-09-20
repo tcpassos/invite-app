@@ -1,0 +1,83 @@
+@startuml diagrama-objetos-persistentes
+' Fonte do modelo de objetos persistentes, seção 8.1 do DAS, task #105 do board.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-objetos-persistentes.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' É o Diagrama de Classes recortado: só o que persiste no banco.
+' Template e TextFieldLimit saíram, porque o ADR-0009 os define como ativo estático versionado com o código.
+' O atributo derivado /totalPeople saiu, porque derivado não vira coluna.
+' O diagrama traz rótulo, não explicação. A leitura fica na seção 8.1 do DAS.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam nodesep 30
+skinparam ranksep 45
+
+enum InviteStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+}
+
+enum RsvpStatus {
+  ACCEPTED
+  DECLINED
+  MAYBE
+}
+
+class Host {
+  + name : String [1]
+  + email : String [1] {unique}
+  + passwordHash : String [1]
+}
+
+class Invite {
+  + eventName : String [1]
+  + eventStartsAt : DateTime [1]
+  + location : String [1]
+  + status : InviteStatus [1]
+  + publicToken : String [0..1] {unique}
+  + capacityLimit : Integer [0..1]
+  + maxCompanionsPerGuest : Integer [0..1]
+}
+
+class InviteCustomization {
+  + templateCode : String [1]
+}
+
+class ColorSetting <<value>> {
+  + role : String [1]
+  + value : String [1]
+}
+
+class Guest {
+  + name : String [1]
+  + status : RsvpStatus [1]
+  + companionCount : Integer [1] = 0
+  + personalToken : String [1] {unique}
+  + respondedAt : DateTime [1]
+}
+
+class DietaryNote {
+  + freeText : String [0..1]
+}
+
+class DietaryCategory <<reference data>> {
+  + code : String [1] {unique}
+  + displayName : String [1]
+  + requiresDescription : Boolean [1]
+}
+
+Host "1\nhost" -- "0..*\ninvites" Invite
+
+Invite "1\ninvite" *-- "0..1\ncustomization" InviteCustomization
+
+InviteCustomization "1" *-- "0..*\ncolorOverrides" ColorSetting
+
+Invite "1\ninvite" *-- "0..*\nguests" Guest
+
+Guest "1\nguest" *-- "0..1\nnote" DietaryNote
+
+DietaryNote "0..*\nnotes" -- "0..*\ncategories" DietaryCategory
+
+@enduml

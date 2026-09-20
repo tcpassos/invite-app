@@ -505,8 +505,145 @@ O projeto não adota inversão de dependência entre Domínio e Dados. O Domíni
 
 ## 8. Visão de Dados
 
+Esta seção existe porque a conversão do modelo de objetos para o modelo de dados **não é trivial** neste projeto. Três pontos não saem de lugar nenhum por dedução: as cores viram documento, a associação alimentar vira tabela sem classe, e dois campos de formulário viram uma coluna só.
+
 ### 8.1 Modelo de objetos persistentes
+
+![Modelo de objetos persistentes](../../.attachments/diagrama-objetos-persistentes.png)
+
+É a seção 5 recortada, guardando só o que vai para o banco. **Sete classes persistem** e duas ficam de fora.
+
+| Fora do modelo persistente | Por quê |
+|---|---|
+| `Template` | O [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) o define como ativo estático, versionado junto com o código. Catálogo, não tabela |
+| `TextFieldLimit` | Compõe `Template`, então segue o mesmo caminho |
+| `/totalPeople` | Atributo derivado, calculado em execução por `AttendanceService`. Derivado não vira coluna |
+
+`InviteCustomization` ganha aqui um atributo que não tem na seção 5: **`templateCode`**. A associação com `Template` precisa sobreviver, e como o destino dela não persiste, o que fica gravado é o código do template.
 
 ### 8.2 Estratégias
 
+Sete decisões de mapeamento. As três primeiras são as que justificam esta seção existir.
+
+**1. As cores viram um documento, e `ColorSetting` não ganha tabela.** As sobrescritas de cor de um convite são o único conteúdo semiestruturado do modelo, e o [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu PostgreSQL com JSONB por causa delas. `colorOverrides` vira uma coluna `jsonb` em `invite_customization`. A classe continua existindo no modelo de objetos e desaparece do modelo relacional.
+
+**2. A associação alimentar vira uma tabela que não é classe.** `DietaryNote` e `DietaryCategory` se associam muitos para muitos, e isso não tem representação direta em tabela. Entra `dietary_note_category`, com chave primária composta pelas duas chaves estrangeiras. É o único caso em que o modelo relacional tem uma tabela sem origem em classe, e a seção 8.3 a marca como tal.
+
+**3. Dois campos de formulário viram uma coluna.** O passo 3 do UC002 pede data e hora separadas, e o [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md) guarda um instante único. A coluna é `event_starts_at timestamptz`, em UTC, e a junção dos dois campos acontece na camada de Apresentação, no fuso do projeto. Quem lê o banco vê um valor, quem preenche a tela vê dois campos.
+
+**4. O template é referência sem chave estrangeira.** `template_code` aponta para um catálogo que mora no código, não em tabela, então não existe `REFERENCES` para ele. A consequência é que o banco não impede um código inválido, e quem impede é `TemplateCatalog`, no Domínio, com `listTemplateCodes()`.
+
+**5. Os enums viram texto com restrição, e não tipo do banco.** `InviteStatus` e `RsvpStatus` viram `text` com `CHECK`. Tipo enumerado nativo do PostgreSQL obriga a `ALTER TYPE` para acrescentar valor e praticamente não permite remover, o que transforma uma mudança de vocabulário em migração delicada. Com `CHECK`, a lista de valores fica declarada em dois lugares que o build já mantém juntos, o módulo `contract` e a migração.
+
+**6. A chave primária nunca é o token.** Cada tabela tem `id bigint` gerado pelo banco, e os dois tokens públicos moram em colunas próprias com índice único, conforme o [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) e o [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md). Chave primária sequencial exposta em link permitiria adivinhar o convite seguinte.
+
+**7. O teto de capacidade não é restrição de tabela.** A invariante soma linhas de `guest` e compara com uma coluna de `invite`, então ela atravessa registros e não cabe num `CHECK`. Ela é garantida por transação, com `SELECT ... FOR UPDATE` na linha do convite antes da contagem, conforme o [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md). **Isso é decisão de arquitetura e não detalhe de implementação**, porque é o que impede duas respostas simultâneas de estourarem o limite.
+
+Sobre a grafia: tabela e coluna em `snake_case`, classe e atributo em `camelCase`. A tradução é do mapeamento, e nome de coluna nunca aparece em corpo de resposta da API.
+
 ### 8.3 Modelo Relacional
+
+Sete tabelas, seis vindas de classe e uma de associação.
+
+#### `host`
+
+| Coluna | Tipo | Restrição |
+|---|---|---|
+| `id` | `bigint` | Chave primária, gerada pelo banco |
+| `name` | `text` | Obrigatória |
+| `email` | `text` | Obrigatória, índice único sobre `lower(email)` |
+| `password_hash` | `text` | Obrigatória |
+
+O índice único é sobre `lower(email)` e não sobre a coluna crua, porque a RN3 do UC001 proíbe dois cadastros com o mesmo email e ninguém entende maiúscula como email diferente.
+
+#### `invite`
+
+| Coluna | Tipo | Restrição |
+|---|---|---|
+| `id` | `bigint` | Chave primária |
+| `host_id` | `bigint` | Obrigatória, estrangeira para `host(id)` |
+| `event_name` | `text` | Obrigatória |
+| `event_starts_at` | `timestamptz` | Obrigatória |
+| `location` | `text` | Obrigatória |
+| `status` | `text` | Obrigatória, `CHECK` em `DRAFT`, `PUBLISHED` e `UNPUBLISHED` |
+| `public_token` | `text` | Opcional, índice único |
+| `capacity_limit` | `integer` | Opcional, `CHECK` maior que zero |
+| `max_companions_per_guest` | `integer` | Opcional, `CHECK` maior ou igual a zero |
+
+#### `invite_customization`
+
+| Coluna | Tipo | Restrição |
+|---|---|---|
+| `id` | `bigint` | Chave primária |
+| `invite_id` | `bigint` | Obrigatória, **única**, estrangeira para `invite(id)` em cascata |
+| `template_code` | `text` | Obrigatória, sem chave estrangeira, ver estratégia 4 |
+| `color_overrides` | `jsonb` | Obrigatória, padrão documento vazio |
+
+A restrição de unicidade em `invite_id` é o que faz valer a multiplicidade `0..1` da seção 8.1. Sem ela, o banco aceitaria duas personalizações para o mesmo convite.
+
+#### `guest`
+
+| Coluna | Tipo | Restrição |
+|---|---|---|
+| `id` | `bigint` | Chave primária |
+| `invite_id` | `bigint` | Obrigatória, estrangeira para `invite(id)` em cascata |
+| `name` | `text` | Obrigatória |
+| `status` | `text` | Obrigatória, `CHECK` em `ACCEPTED`, `DECLINED` e `MAYBE` |
+| `companion_count` | `integer` | Obrigatória, padrão zero, `CHECK` maior ou igual a zero |
+| `personal_token` | `text` | Obrigatória, índice único |
+| `responded_at` | `timestamptz` | Obrigatória |
+
+#### `dietary_note`
+
+| Coluna | Tipo | Restrição |
+|---|---|---|
+| `id` | `bigint` | Chave primária |
+| `guest_id` | `bigint` | Obrigatória, **única**, estrangeira para `guest(id)` em cascata |
+| `free_text` | `text` | Opcional |
+
+#### `dietary_category`
+
+| Coluna | Tipo | Restrição |
+|---|---|---|
+| `code` | `text` | Chave primária |
+| `display_name` | `text` | Obrigatória |
+| `requires_description` | `boolean` | Obrigatória |
+
+A chave primária aqui é o próprio `code`, e não um `id` gerado, porque é dado de referência com carga inicial fechada e porque a agregação do UC008 agrupa por ele. Cinco linhas entram na inicialização do banco, pela RN3 do UC006.
+
+#### `dietary_note_category`
+
+**Tabela de associação. Não tem classe correspondente na seção 8.1**, e isso é esperado, conforme a estratégia 2.
+
+| Coluna | Tipo | Restrição |
+|---|---|---|
+| `dietary_note_id` | `bigint` | Obrigatória, estrangeira para `dietary_note(id)` em cascata |
+| `category_code` | `text` | Obrigatória, estrangeira para `dietary_category(code)` |
+
+A chave primária é composta pelas duas colunas, o que impede a mesma categoria marcada duas vezes na mesma nota.
+
+#### Índices além das chaves
+
+| Índice | Para quê |
+|---|---|
+| `invite(public_token)`, único | A leitura do convite público, que é a rota mais chamada do sistema |
+| `guest(personal_token)`, único | A abertura do link pessoal do convidado |
+| `guest(invite_id, status)` | A verificação do teto na transação e as três projeções do painel, que sempre filtram por convite e por status |
+| `host(lower(email))`, único | A entrada do UC001 e a RN3 dele |
+
+#### Correspondência entre 8.1 e 8.3
+
+| Classe da 8.1 | Tabela da 8.3 |
+|---|---|
+| `Host` | `host` |
+| `Invite` | `invite` |
+| `InviteCustomization` | `invite_customization` |
+| `ColorSetting` | **Nenhuma.** Vira a coluna `color_overrides`, pela estratégia 1 |
+| `Guest` | `guest` |
+| `DietaryNote` | `dietary_note` |
+| `DietaryCategory` | `dietary_category` |
+| Associação entre `DietaryNote` e `DietaryCategory` | `dietary_note_category`, tabela sem classe, pela estratégia 2 |
+
+As duas divergências são as duas que a seção 8.2 justifica, e não existe terceira. Toda outra classe persistente tem tabela, e toda outra tabela tem classe.
+
+Esta subseção é a entrada direta do diretório `migrations/`, que hoje só tem README.
