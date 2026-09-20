@@ -1,39 +1,48 @@
 # Documento de Arquitetura de Software
 
-**Projeto:** invite-app
-**Versão:** 0.1
+**Projeto:** invite-app, aplicação web de convites com confirmação de presença
+**Versão:** 1.0
+**Data:** 20 de setembro de 2026
 **Autores:** Tiago Passos, Guilherme Toebe dos Santos, Andreas Grings, Gabriel Tomasi de Melo
+**Product Owner:** Kleinner Farias
 
 ## Histórico de Revisões
 
 | Data | Versão | Descrição | Autor |
 |---|---|---|---|
-| 19/09/2026 | 0.1 | Estrutura do documento a partir do template da Aula 07 | Tiago Passos |
+| 19/09/2026 | 0.1 | Estrutura do documento a partir do template do RUP | Tiago Passos |
+| 19/09/2026 | 0.2 | Seções 4 e 5.1, visão de casos de uso e divisão em pacotes | Tiago Passos |
+| 20/09/2026 | 0.3 | Seções 6 e 7, visão de implantação e de implementação | Tiago Passos |
+| 20/09/2026 | 0.4 | Seções 1 a 3, introdução, representação arquitetural e restrições | Tiago Passos |
+| 20/09/2026 | 0.5 | Seção 5.2, descrição das 29 classes por pacote | Tiago Passos |
+| 20/09/2026 | 1.0 | Seção 8, visão de dados, e revisão final do documento | Tiago Passos |
 
 ---
 
-## Como preencher este documento
+## Sumário
 
-> **Este bloco sai antes da entrega.** Ele existe só enquanto o documento está sendo escrito, e a task **#108** o remove junto com a revisão final.
-
-A estrutura segue o template do RUP que o professor disponibilizou na Aula 07. Duas escolhas de formato vieram dos dois exemplos preenchidos que ele publicou junto.
-
-A subseção 1.5 Visão Geral foi retirada, porque nenhum dos dois exemplos a tem. A subseção 5.1 se chama Divisão em Pacotes, que é o nome que os dois exemplos usam no lugar de Pacotes de Design Significativos do template.
-
-Seis das oito seções têm conteúdo já escrito em outro artefato. O trabalho nelas é recortar e adaptar, não redigir do zero.
-
-| Seção | Task | De onde vem o conteúdo |
-|---|---|---|
-| 1. Introdução | #98 | Nada pronto. Texto curto, escrito aqui |
-| 2. Representação Arquitetural | #98 | [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), seções 1 e 2 |
-| 3. Metas e Restrições | #98 | Os 12 [ADRs](../../Diretrizes-do-Projeto/Decisões-Arquiteturais.md), em forma de restrições curtas |
-| 4. Visão de Casos de Uso | #99 | [Especificação de Casos de Uso](../Sprint-1/Especificação-de-Casos-de-Uso.md) e [Diagrama de Casos de Uso](../Sprint-1/Diagrama-de-Casos-de-Uso.md) |
-| 5. Visão Lógica | #100, #101, #102 | [Diagrama de Classes](../Sprint-2/Diagrama-de-Classes.md). Falta o diagrama de pacotes, que é a task #100 |
-| 6. Visão de Implantação | #103 | [Diagrama de Implantação](../Sprint-2/Diagrama-de-Implantação.md), pronto |
-| 7. Visão da Implementação | #104 | [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) e seção 10 do Guia da Arquitetura |
-| 8. Visão de Dados | #105, #106, #107 | Nada pronto. É o único conteúdo inteiramente novo |
-
-O formato da tabela de descrição de classe da seção 5 é decidido na task **#97** e vale para todas as classes, sem variação entre quem escreve.
+- [1. Introdução](#1-introdução)
+  - [1.1 Finalidade](#11-finalidade)
+  - [1.2 Escopo](#12-escopo)
+  - [1.3 Definições, Acrônimos e Abreviações](#13-definições-acrônimos-e-abreviações)
+  - [1.4 Referências](#14-referências)
+- [2. Representação Arquitetural](#2-representação-arquitetural)
+- [3. Metas e Restrições da Arquitetura](#3-metas-e-restrições-da-arquitetura)
+  - [3.1 Metas de qualidade](#31-metas-de-qualidade)
+  - [3.2 Restrições](#32-restrições)
+- [4. Visão de Casos de Uso](#4-visão-de-casos-de-uso)
+  - [4.1 Realizações de Casos de Uso](#41-realizações-de-casos-de-uso)
+- [5. Visão Lógica](#5-visão-lógica)
+  - [5.1 Divisão em Pacotes](#51-divisão-em-pacotes)
+  - [5.2 Classes por pacote](#52-classes-por-pacote)
+  - [5.3 O que esta seção deixa em aberto](#53-o-que-esta-seção-deixa-em-aberto)
+- [6. Visão de Implantação](#6-visão-de-implantação)
+- [7. Visão da Implementação](#7-visão-da-implementação)
+  - [7.1 Camadas](#71-camadas)
+- [8. Visão de Dados](#8-visão-de-dados)
+  - [8.1 Modelo de objetos persistentes](#81-modelo-de-objetos-persistentes)
+  - [8.2 Estratégias](#82-estratégias)
+  - [8.3 Modelo Relacional](#83-modelo-relacional)
 
 ---
 
