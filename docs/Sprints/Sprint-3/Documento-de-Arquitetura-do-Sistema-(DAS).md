@@ -234,6 +234,199 @@ São dois formatos, usados em toda a seção 5 sem variação entre quem escreve
 
 Nos dois formatos, **o nome dos identificadores fica em inglês** e o texto de descrição fica em português.
 
+### 5.2 Classes por pacote
+
+São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
+
+#### `front.view`
+
+**Nenhuma classe nomeada.** As telas do convite público e do painel existem como responsabilidade, e nenhum artefato do projeto as enumera individualmente. Os componentes que resolvem rota e montam essas telas estão em `front.controller`, e a parte que executa no navegador recebe deles o conteúdo já pronto.
+
+#### `front.controller`
+
+| Classe | Descrição | Operações |
+|---|---|---|
+| `PublicInvitePage` | Serve a superfície pública do convite. Resolve a rota, monta a página e entrega o formulário do UC005 com a extensão do UC006 | `GET /i/{publicToken}` |
+| `HostPanelPage` | Serve as telas do painel do anfitrião, incluindo a consulta periódica do [ADR-0007](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) | As rotas de tela do painel |
+| `ApiClient` | Fala com a API por um ponto só, com chamada tipada pelo contrato compartilhado, e lê o corpo de erro | Uma operação por rota da API, tipada pelo contrato do [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md) |
+
+`PublicInvitePage` é partida entre o processo do tier Front, que faz a leitura, e o navegador, que faz a escrita. É a mesma classe em dois lugares de execução, e a seção 6 mostra a divisão em dois artefatos.
+
+#### `front.templates`
+
+| Classe | Descrição | Operações |
+|---|---|---|
+| `TemplateSet` | Guarda o HTML, o CSS e a imagem de Open Graph de cada template do [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) | `templateAssets(templateCode)` |
+
+#### `contract`
+
+**Nenhuma classe.** O pacote carrega os tipos que as duas pontas compartilham, e tipo não é classe. Ele é compilado para dentro do build do Front e do build da API, e some na compilação. Os valores de execução que moram nele, como o enum `RsvpStatus`, acabam duplicados dentro dos dois bundles.
+
+#### `api.apresentacao.publico`
+
+| Classe | Descrição | Operações |
+|---|---|---|
+| `PublicRsvpController` | Expõe a superfície pública do convite. É a única escrita sem sessão do sistema | `GET /public/invites/{publicToken}`, `POST /public/invites/{publicToken}/rsvp`, `parseRequest(dto)` |
+
+#### `api.apresentacao.autenticado`
+
+| Classe | Descrição | Operações |
+|---|---|---|
+| `InviteController` | Expõe o recurso convite ao anfitrião. Publicação, despublicação e lista de presença | `POST /invites/{inviteId}/publish`, `POST /invites/{inviteId}/unpublish`, `GET /invites/{inviteId}/attendance` |
+| `DietaryController` | Expõe a consolidação alimentar ao anfitrião, incluindo a exportação | `GET /invites/{inviteId}/dietary-summary`, `GET /invites/{inviteId}/dietary-notes.csv`, `renderCsv(rows)`, `neutralizeFormulaPrefix(field)` |
+
+#### `api.apresentacao.autenticacao`
+
+| Classe | Descrição | Operações |
+|---|---|---|
+| `AuthController` | Expõe a entrada e o cadastro do anfitrião, fluxo básico e A1 do UC001 | `signIn(email, password)` e `signUp(name, email, password)`. A rota de cada uma ainda não está fechada |
+
+#### `api.apresentacao.transversal`
+
+| Classe | Descrição | Operações |
+|---|---|---|
+| `SessionGuard` | Autentica a sessão do anfitrião validando a assinatura do cookie do [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) | `authenticateSession(session)`, que devolve `hostId` |
+| `RateLimitGuard` | Controla tráfego na fronteira pública, pela medida 2 do [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) | `enforceReadLimit(publicToken)`, `enforceWriteLimit(publicToken, clientIp)` |
+| `HttpExceptionFilter` | Traduz erro do Domínio em protocolo, num ponto só, e monta o corpo único de erro | `toErrorResponse(error)` |
+
+A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura pública quem chama a API é o container do tier Front, então o endereço de origem visível é sempre o mesmo e contá-lo bloquearia a página para todos os convidados de uma vez.
+
+#### `api.dominio`
+
+| Classe | Descrição | Operações |
+|---|---|---|
+| `RsvpService` | Atende o convite público. Devolve o convite publicado e registra a resposta, validando o limite de acompanhantes e derivando as vagas pedidas | `getPublishedInvite(publicToken)`, `registerRsvp(publicToken, rsvpCommand)` |
+| `InviteService` | Conduz a transição de estado do convite, gerando o token público quando ele ainda não existe | `publishInvite(inviteId, hostId)`, `unpublishInvite(inviteId, hostId)` |
+| `AttendanceService` | Monta a lista de presença do painel e o total de pessoas da RN1 do UC007 | `listAttendance(inviteId, hostId)` |
+| `DietaryService` | Monta a contagem por categoria e as descrições do UC008, e devolve as linhas da exportação sem formatá-las | `consolidateDietaryNotes(inviteId, hostId)`, `exportDietaryNotes(inviteId, hostId)` |
+| `HostService` | Cadastro e autenticação do anfitrião | Sem assinatura fechada. A realização do UC001 nomeia `hashPassword`, `verifyPassword` e `issueSession` dentro de um objeto de controle, sem separar o que é deste serviço do que é do controller |
+| `TemplateCatalog` | Carrega o catálogo de templates e sustenta a RN2 do UC003 dentro do Domínio | `listTemplateCodes()`, `textFieldLimits(templateCode)` |
+
+#### `api.dados`
+
+| Classe | Descrição | Operações |
+|---|---|---|
+| `InviteRepository` | Guarda o agregado do convite. Concentra as leituras, as duas transições atômicas e a escrita transacional do teto de capacidade | `findById(inviteId)`, `findPublishedByPublicToken(publicToken)`, `publishIfPublishable(inviteId, publicToken)`, `unpublishIfPublished(inviteId)`, `saveRsvpWithinCapacity(invite, guest, dietaryNote, seatsRequested)`, `countGuestsByCategory(inviteId, statuses)`, `findDescriptionsByCategories(inviteId, statuses, categoryCodes)`, `findGuestsForExport(inviteId, statuses)`, `findAttendanceByStatus(inviteId, statuses)` |
+| `DietaryCategoryRepository` | Serve o dado de referência das cinco categorias alimentares. Fica separado do repositório do convite porque a operação dele não recebe `inviteId` | `listDietaryCategories()` |
+| `HostRepository` | Guarda a conta do anfitrião | `findByEmail(email)`, mais a gravação da conta, sem assinatura fechada |
+
+#### `api.modelo`
+
+As nove classes abaixo vêm do Diagrama de Classes. **Nenhuma tem método próprio**, porque o comportamento mora nos serviços do Domínio, e por isso a linha Métodos repete Nenhum nas nove.
+
+##### `Host`
+
+| | |
+|---|---|
+| **Descrição** | O anfitrião autenticado, dono dos convites que cria |
+| **Responsabilidades** | Guardar a credencial de acesso ao painel e ser proprietário dos convites |
+| **Relações** | Possui de zero a muitos `Invite` |
+| **Atributos** | `name : String [1]`, `email : String [1] {unique}`, `passwordHash : String [1]` |
+| **Métodos** | Nenhum |
+
+##### `Invite`
+
+| | |
+|---|---|
+| **Descrição** | O convite de um evento, e a raiz do modelo |
+| **Responsabilidades** | Guardar os dados do evento, controlar a situação de publicação, carregar o identificador público do link e definir os dois limites opcionais |
+| **Relações** | Pertence a um `Host`, compõe no máximo uma `InviteCustomization` e agrega de zero a muitos `Guest` |
+| **Atributos** | `eventName : String [1]`, `eventStartsAt : DateTime [1]`, `location : String [1]`, `status : InviteStatus [1]`, `publicToken : String [0..1] {unique}`, `capacityLimit : Integer [0..1]`, `maxCompanionsPerGuest : Integer [0..1]`, `/totalPeople : Integer [1]` |
+| **Métodos** | Nenhum |
+
+`publicToken` é opcional porque nasce só na transição para publicado. `/totalPeople` é derivado, indicado pela barra, e não vira coluna. Com `capacityLimit` preenchido, a soma de um mais `companionCount` de todo `Guest` com status `ACCEPTED` não pode ultrapassar o limite, e essa invariante é verificada dentro da transação da camada de Dados.
+
+##### `InviteCustomization`
+
+| | |
+|---|---|
+| **Descrição** | As escolhas visuais aplicadas a um convite |
+| **Responsabilidades** | Apontar o template escolhido e guardar os ajustes de cor que sobrescrevem o padrão |
+| **Relações** | Pertence a um `Invite`, referencia um `Template` e compõe de zero a muitas `ColorSetting` |
+| **Atributos** | Nenhum. Os únicos textos nomeados na especificação, nome do evento e local, já são atributos de `Invite` |
+| **Métodos** | Nenhum |
+
+A multiplicidade é `0..1` porque o UC002 salva o rascunho antes de o UC003 gravar as escolhas. Nesse intervalo o convite existe sem personalização e usa o template inicial.
+
+##### `Template`
+
+| | |
+|---|---|
+| **Descrição** | Um layout de convite em HTML e CSS. Marcada com `<<static asset>>` porque não é tabela, e sim catálogo versionado junto com o código |
+| **Responsabilidades** | Definir o layout, as cores padrão, os limites de tamanho dos campos de texto e a imagem de prévia do link |
+| **Relações** | Referenciado por muitas `InviteCustomization`, compõe uma ou mais `ColorSetting` padrão e uma ou mais `TextFieldLimit` |
+| **Atributos** | `code : String [1] {unique}`, `displayName : String [1]`, `openGraphImage : String [1]` |
+| **Métodos** | Nenhum |
+
+##### `ColorSetting`
+
+| | |
+|---|---|
+| **Descrição** | Objeto de valor que associa um papel de cor a um valor |
+| **Responsabilidades** | Carregar tanto a paleta padrão do template quanto as sobrescritas do convite |
+| **Relações** | Compõe `Template`, como cor padrão, e compõe `InviteCustomization`, como sobrescrita |
+| **Atributos** | `role : String [1]`, `value : String [1]` |
+| **Métodos** | Nenhum |
+
+##### `TextFieldLimit`
+
+| | |
+|---|---|
+| **Descrição** | Objeto de valor que associa um campo de texto ao seu tamanho máximo |
+| **Responsabilidades** | Sustentar a RN2 do UC003, que recusa texto acima do limite do campo |
+| **Relações** | Compõe `Template` |
+| **Atributos** | `field : String [1]`, `maxLength : Integer [1]` |
+| **Métodos** | Nenhum |
+
+##### `Guest`
+
+| | |
+|---|---|
+| **Descrição** | Um convidado que respondeu ao convite. O registro nasce no momento da resposta, sem cadastro prévio pelo anfitrião |
+| **Responsabilidades** | Registrar quem respondeu, o que respondeu, quantas pessoas leva, e carregar a credencial que permite editar a resposta depois |
+| **Relações** | Pertence a um `Invite` e compõe no máximo uma `DietaryNote` |
+| **Atributos** | `name : String [1]`, `status : RsvpStatus [1]`, `companionCount : Integer [1] = 0`, `personalToken : String [1] {unique}`, `respondedAt : DateTime [1]` |
+| **Métodos** | Nenhum |
+
+`personalToken` é o segundo identificador público do sistema, em coluna separada da chave primária. Ele vale até o fim do dia do evento, pela RN3 do UC005.
+
+##### `DietaryNote`
+
+| | |
+|---|---|
+| **Descrição** | A observação alimentar de um convidado, que é o diferencial declarado do produto |
+| **Responsabilidades** | Ligar um convidado às categorias de restrição que ele marcou e ao texto livre que escreveu |
+| **Relações** | Pertence a um `Guest` e associa-se a muitas `DietaryCategory` |
+| **Atributos** | `freeText : String [0..1]` |
+| **Métodos** | Nenhum |
+
+A nota só existe quando o status é `ACCEPTED` ou `MAYBE`. Nota sem categoria marcada significa sem restrição, e ausência de nota significa que o convidado não passou pelo UC006.
+
+##### `DietaryCategory`
+
+| | |
+|---|---|
+| **Descrição** | A categoria de restrição alimentar. Marcada como `<<reference data>>` porque é dado de referência com carga inicial |
+| **Responsabilidades** | Nomear a categoria e declarar se ela exige descrição adicional |
+| **Relações** | Associa-se a muitas `DietaryNote` |
+| **Atributos** | `code : String [1] {unique}`, `displayName : String [1]`, `requiresDescription : Boolean [1]` |
+| **Métodos** | Nenhum |
+
+A lista é fechada em cinco entradas, pela RN3 do UC006: `VEGETARIAN`, `VEGAN`, `GLUTEN_FREE`, `LACTOSE_FREE` e `ALLERGY`. Só `ALLERGY` tem `requiresDescription` verdadeiro. `requiresDescription` é o motivo de a categoria não ser enumeração, porque é dado dela e a RN2 do UC006 depende dele.
+
+##### Enumerações
+
+| Enum | Valores |
+|---|---|
+| `InviteStatus` | `DRAFT`, `PUBLISHED`, `UNPUBLISHED` |
+| `RsvpStatus` | `ACCEPTED`, `DECLINED`, `MAYBE` |
+
+### 5.3 O que esta seção deixa em aberto
+
+Três assinaturas ficam sem fechar, e as três são do mesmo fluxo. `AuthController`, `HostService` e `HostRepository` têm operação nomeada mas não têm assinatura com tipo de parâmetro e de retorno, porque a realização do UC001 usa notação de análise, que reúne controller e serviço num objeto só. Elas fecham quando o UC001 ganhar rota especificada.
+
+E `front.view` não tem classe nomeada, conforme registrado acima.
+
 ---
 
 ## 6. Visão de Implantação
