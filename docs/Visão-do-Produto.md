@@ -22,7 +22,8 @@ Tratar a observação alimentar como recurso principal do app. Ela é capturada 
 3. Gerar link de compartilhamento.
 4. Confirmação de presença pública (sim, não ou talvez, mais número de acompanhantes), sem login do convidado.
 5. Observação alimentar por convidado (cinco categorias fechadas, de vegetariano a alergia, mais texto livre).
-6. Painel de presença e consolidação alimentar com exportação (CSV).
+6. Alteração da resposta pelo convidado, por link pessoal entregue na confirmação, até o fim do dia do evento.
+7. Painel de presença e consolidação alimentar com exportação (CSV).
 
 ### Fora do escopo (MVP)
 Upload de imagem própria pelo anfitrião, lembretes automáticos, check-in por QR code, geração de arte ou texto por IA, lista de presentes e pagamentos. Ficam como candidatos a sprints futuras.

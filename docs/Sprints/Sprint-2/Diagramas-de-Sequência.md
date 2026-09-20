@@ -1,5 +1,13 @@
 # Diagramas de Sequência
 
+> **Os mesmos três fluxos também existem em notação BCE**, no [Documento de Realização de Casos de Uso](../Sprint-3/Documento-de-Realização-de-Casos-de-Uso.md) da Sprint 3, junto com um quarto, o UC001. Não são versões concorrentes: cada notação responde uma pergunta.
+>
+> **Esta página responde onde cada etapa acontece.** As linhas de vida são camadas e tiers, e por isso ela mostra a transação do teto de capacidade, o `SELECT ... FOR UPDATE` e os dois saltos de rede, que é o que sustenta o argumento da alocação por camada logo abaixo.
+>
+> **O Documento de Realização responde quais objetos colaboram.** As linhas de vida são Boundary, Control e Entity, e ali some o repositório e some a transação. O que dependia da transação virou valor de retorno de mensagem.
+>
+> Quem for implementar precisa das duas. Quem quiser conferir a regra de dependência do ADR-0001 usa esta.
+
 Os diagramas mostram a ordem das interações nos principais fluxos do sistema e a camada responsável por cada etapa.
 
 As linhas de vida representam os papéis de camada definidos no [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) e os tiers do [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), não as classes do [Diagrama de Classes](Diagrama-de-Classes.md). `Invite`, `Guest`, `DietaryNote` e `DietaryCategory` aparecem como dados trocados entre essas linhas.
