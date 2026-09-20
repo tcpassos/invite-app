@@ -41,7 +41,7 @@
 - Entrada e saída de membros: _[preencher]_
 
 # Escopo
-- Ver [Visão do Produto](Visão-do-Produto.md). O MVP cobre criação e personalização de convite, confirmação de presença, observações alimentares, painel e consolidação. Lembretes, check-in por QR code, geração por IA e pagamentos ficam fora do MVP.
+- Ver [Visão do Produto](Sprints/Sprint-3/Visão-do-Produto.md). O MVP cobre criação e personalização de convite, confirmação de presença, observações alimentares, painel e consolidação. Lembretes, check-in por QR code, geração por IA e pagamentos ficam fora do MVP.
 
 # Avaliação de Desempenho
 - Progresso medido pela conclusão dos itens do backlog a cada sprint, acompanhado no Azure Boards.

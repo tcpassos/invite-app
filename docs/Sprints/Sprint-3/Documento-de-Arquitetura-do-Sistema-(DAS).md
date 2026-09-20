@@ -52,7 +52,7 @@
 
 Este documento reúne as decisões arquiteturais do invite-app e as apresenta em visões, para que quem for implementar o sistema encontre num lugar só o que precisa saber antes de escrever a primeira linha de código.
 
-O público é o time de desenvolvimento e o Product Owner. O time o usa como referência de onde cada responsabilidade mora e de qual regra de fronteira não pode ser quebrada. O Product Owner o usa para conferir se a solução projetada atende o que a [Visão do Produto](../../Visão-do-Produto.md) pede.
+O público é o time de desenvolvimento e o Product Owner. O time o usa como referência de onde cada responsabilidade mora e de qual regra de fronteira não pode ser quebrada. O Product Owner o usa para conferir se a solução projetada atende o que a [Visão do Produto](Visão-do-Produto.md) pede.
 
 São oito seções. As de 1 a 3 situam o leitor e listam o que restringe a arquitetura. As de 4 a 8 são as visões, cada uma olhando o mesmo sistema por um ângulo diferente.
 
@@ -89,7 +89,7 @@ Todos versionados em `docs/` no repositório GitHub do projeto e publicados na w
 
 | Documento | Sprint |
 |---|---|
-| [Visão do Produto](../../Visão-do-Produto.md) | 1 |
+| [Visão do Produto](Visão-do-Produto.md) | 1 |
 | [Diagrama de Casos de Uso](../Sprint-1/Diagrama-de-Casos-de-Uso.md) | 1 |
 | [Especificação de Casos de Uso](../Sprint-1/Especificação-de-Casos-de-Uso.md) | 1 |
 | [Diagrama de Classes](../Sprint-2/Diagrama-de-Classes.md) | 2 |

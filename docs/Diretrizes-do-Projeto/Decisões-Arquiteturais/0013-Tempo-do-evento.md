@@ -21,7 +21,7 @@
 
 **A saída é o contrário da entrada.** A resposta do convite público carrega `eventStartsAt`, um valor só, e a tela formata. Dois campos existem apenas no caminho de escrita.
 
-**Um fuso para o projeto inteiro, `America/Sao_Paulo`**, na configuração da API. Não há fuso por convite, nem coluna, nem seletor na tela. O anfitrião e os convidados estão na mesma festa, e fuso por convite pediria campo novo, conversão em toda exibição e uma decisão de qual fuso vale quando o anfitrião viaja. Isso é funcionalidade, e não está no escopo do MVP da [Visão do Produto](../../Visão-do-Produto.md).
+**Um fuso para o projeto inteiro, `America/Sao_Paulo`**, na configuração da API. Não há fuso por convite, nem coluna, nem seletor na tela. O anfitrião e os convidados estão na mesma festa, e fuso por convite pediria campo novo, conversão em toda exibição e uma decisão de qual fuso vale quando o anfitrião viaja. Isso é funcionalidade, e não está no escopo do MVP da [Visão do Produto](../../Sprints/Sprint-3/Visão-do-Produto.md).
 
 **A RN1 do UC002 continua comparando por dia**, agora ancorada nesse fuso. Convite para hoje é aceito mesmo quando a hora informada já passou. É o que a regra escrita permite, e é o que serve a quem monta uma festa para daqui a duas horas.
 

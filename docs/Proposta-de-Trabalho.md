@@ -5,7 +5,7 @@ App web para criar convites virtuais personalizáveis, compartilhar por link e c
 Esta é a página inicial da Wiki e serve de índice para as demais seções.
 
 ## Visão do Produto
-Problema, solução, público-alvo, diferencial e escopo do MVP. Ver [Visão do Produto](Visão-do-Produto.md).
+Problema, solução, público-alvo, diferencial e escopo do MVP. Ver [Visão do Produto](Sprints/Sprint-3/Visão-do-Produto.md).
 
 ## Começando
 Instalação, configuração e padronização do projeto. Entra quando a implementação começar, junto com a definição da stack e a preparação do ambiente. Os rascunhos ficam no repositório do GitHub em `docs/Começando` até terem conteúdo.

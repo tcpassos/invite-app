@@ -11,7 +11,7 @@ Um app web que junta, de forma simples, a criação e a personalização visual 
 - O convidado recebe o convite pelo celular. Quer confirmar em segundos e informar sua restrição alimentar.
 - O buffet ou cerimonialista é um stakeholder secundário. Usa a consolidação de restrições e o número de confirmados.
 
-Detalhamento em [Personas](Sprints/Sprint-1/Personas.md).
+Detalhamento em [Personas](../Sprint-1/Personas.md).
 
 ## Diferencial
 Tratar a observação alimentar como recurso principal do app. Ela é capturada por convidado (categoria mais texto livre) e reunida de forma automática para o anfitrião, por exemplo "12 confirmados, 3 vegetarianos, 1 alérgico a amendoim", com exportação. É justamente o que os concorrentes generalistas não cobrem.

@@ -26,7 +26,7 @@ O que fica de fora do script e é feito na mão:
 ## Hierarquia
 - Proposta de Trabalho (página inicial)
   - Visão do Produto
-  - Começando (Configuração de Ambiente, Configuração do Projeto, Protótipo de Baixo Nível)
+  - Começando (Configuração de Ambiente, Configuração do Projeto)
   - Diretrizes do Projeto (Guia da Arquitetura, Guia de Estilo, Instruções de Implementação)
   - Sprints
     - Sprint 1 (Personas, Jornada, Histórias, Casos de Uso, Diagrama de Casos de Uso)
