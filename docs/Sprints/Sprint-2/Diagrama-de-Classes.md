@@ -2,7 +2,7 @@
 
 O diagrama apresenta as classes do domínio, seus atributos e suas relações.
 
-Cada atributo parte de uma Estrutura de Dados, de uma Regra de Negócio da [Especificação de Casos de Uso](../Sprint-1/Especificação-de-Casos-de-Uso.md) ou de uma [Decisão Arquitetural](../../Diretrizes-do-Projeto/Decisões-Arquiteturais.md). Os identificadores estão em inglês, conforme o [Guia de Estilo](../../Diretrizes-do-Projeto/Guia-de-Estilo.md).
+Cada atributo parte de uma Estrutura de Dados, de uma Regra de Negócio da [Especificação de Casos de Uso](../Sprint-1/Especificação-de-Casos-de-Uso.md) ou de uma [Decisão Arquitetural](Decisões-Arquiteturais.md). Os identificadores estão em inglês, conforme o [Guia de Estilo](../../Diretrizes-do-Projeto/Guia-de-Estilo.md).
 
 ![Diagrama de Classes](../../.attachments/diagrama-de-classes.png)
 
@@ -28,8 +28,8 @@ Cada atributo parte de uma Estrutura de Dados, de uma Regra de Negócio da [Espe
 
 **Sobre os atributos:**
 
-- `publicToken` é opcional porque nasce apenas na transição para publicado (UC004 passo 3). Enquanto o convite é rascunho, ele não existe. É o token de 128 bits do [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md), em coluna separada da chave primária.
-- `eventStartsAt` é um instante só, e não uma data ao lado de uma hora. O [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md) explica por quê e fixa o fuso do projeto. O formulário continua pedindo data e hora separadas, e quem junta as duas é a camada de Apresentação da API.
+- `publicToken` é opcional porque nasce apenas na transição para publicado (UC004 passo 3). Enquanto o convite é rascunho, ele não existe. É o token de 128 bits do [ADR-0005](Decisões-Arquiteturais/0005-Identificador-público-do-convite.md), em coluna separada da chave primária.
+- `eventStartsAt` é um instante só, e não uma data ao lado de uma hora. O [ADR-0013](Decisões-Arquiteturais/0013-Tempo-do-evento.md) explica por quê e fixa o fuso do projeto. O formulário continua pedindo data e hora separadas, e quem junta as duas é a camada de Apresentação da API.
 - A situação ativo ou inativo do link, citada na ED1 do UC004, é derivada de `status` e não vira uma segunda coluna.
 - `capacityLimit` e `maxCompanionsPerGuest` são limites independentes (UC002 RN2). O primeiro vale para o evento inteiro e o segundo para cada resposta. A camada de Dados verifica `capacityLimit` dentro de uma transação. A seção 3.4 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) explica o problema de fazer essa verificação em outra camada.
 - `/totalPeople` é derivado, indicado pela barra, e não é coluna. Quem o calcula em execução é `AttendanceService`, somando os acompanhantes sobre as linhas que `findAttendanceByStatus` já devolveu. É a RN1 do UC007.
@@ -47,7 +47,7 @@ Cada atributo parte de uma Estrutura de Dados, de uma Regra de Negócio da [Espe
 
 **Multiplicidade 0..1:** o UC002 salva o rascunho no passo 5, mas o UC003 só grava as escolhas no passo 6. Nesse intervalo, o convite existe sem personalização e usa o template inicial com as cores padrão (UC003 passo 1).
 
-A classe não tem atributos próprios porque os únicos textos nomeados na especificação são o nome do evento e o local, que já são atributos de Invite e ficam em colunas próprias, conforme o [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md). As cores são o único conteúdo semiestruturado do modelo. Não há mídia, por decisão do [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md).
+A classe não tem atributos próprios porque os únicos textos nomeados na especificação são o nome do evento e o local, que já são atributos de Invite e ficam em colunas próprias, conforme o [ADR-0004](Decisões-Arquiteturais/0004-Stack-de-implementação.md). As cores são o único conteúdo semiestruturado do modelo. Não há mídia, por decisão do [ADR-0009](Decisões-Arquiteturais/0009-Personalização-por-template.md).
 
 **Origem:** UC003 ED1.
 
@@ -59,7 +59,7 @@ A classe não tem atributos próprios porque os únicos textos nomeados na espec
 
 **Relações:** referenciado por muitas InviteCustomization, possui suas ColorSetting padrão e suas TextFieldLimit.
 
-O [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) coloca os templates no tier Front, mas o fluxo A1 do UC003 exige validar o tamanho dos textos no Domínio. Por isso, o tier API também precisa ter acesso ao catálogo de limites. O contrato de tipos compartilhado do ADR-0004 permite essa divisão.
+O [ADR-0009](Decisões-Arquiteturais/0009-Personalização-por-template.md) coloca os templates no tier Front, mas o fluxo A1 do UC003 exige validar o tamanho dos textos no Domínio. Por isso, o tier API também precisa ter acesso ao catálogo de limites. O contrato de tipos compartilhado do ADR-0004 permite essa divisão.
 
 **Origem:** UC003 passo 2 e RN1, ADR-0009.
 
@@ -75,7 +75,7 @@ O [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personaliz
 
 ### Classe Guest
 
-**Descrição:** um convidado que respondeu ao convite. O registro é criado no momento da resposta, sem cadastro prévio pelo anfitrião, conforme o [ADR-0006](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0006-Identidade-do-convidado.md).
+**Descrição:** um convidado que respondeu ao convite. O registro é criado no momento da resposta, sem cadastro prévio pelo anfitrião, conforme o [ADR-0006](Decisões-Arquiteturais/0006-Identidade-do-convidado.md).
 
 **Responsabilidades:** registrar quem respondeu, o que respondeu, quantas pessoas leva, e carregar a credencial que permite editar a resposta depois.
 
@@ -84,7 +84,7 @@ O [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personaliz
 **Sobre os atributos:**
 
 - `respondedAt` é obrigatório justamente porque o registro nasce na resposta. Se o time voltar a ter lista prévia de convidados, este atributo passa a ser opcional, e o ADR-0006 já registra que a entidade é a mesma nos dois modelos.
-- `personalToken` é a credencial de edição da resposta (UC005 ED2 e RN3), e é o **segundo identificador público do sistema**. O [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) dá a ele a mesma geração do token do convite e registra que não há revogação nesta fase.
+- `personalToken` é a credencial de edição da resposta (UC005 ED2 e RN3), e é o **segundo identificador público do sistema**. O [ADR-0011](Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) dá a ele a mesma geração do token do convite e registra que não há revogação nesta fase.
 - `companionCount` respeita `maxCompanionsPerGuest` do convite, quando definido (UC005 RN2).
 - Não há chave única por nome. Dois convidados com o mesmo nome geram registros diferentes, conforme o ADR-0006.
 
@@ -123,16 +123,16 @@ Um convidado com mais de uma categoria conta em cada uma na consolidação do UC
 - **Chave primária e chave estrangeira** são modelo físico. O ADR-0005 trata da separação entre chave primária e identificador público.
 - **A tabela de ligação** entre DietaryNote e DietaryCategory é implementação da associação muitos para muitos.
 - **Sessão do anfitrião** e o **contador de limite de taxa** do ADR-0008 são infraestrutura e aparecem no diagrama de componentes.
-- **O painel não tem entidade de assinatura**, porque o [ADR-0007](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) escolheu consulta periódica.
+- **O painel não tem entidade de assinatura**, porque o [ADR-0007](Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) escolheu consulta periódica.
 
 ## Pendências que este diagrama expôs
 
 A modelagem encontrou pontos que dependem de decisão do time. Cada item traz o estado de hoje:
 
 1. **Textos da personalização.** Se o UC003 prevê campos além do nome e do local do evento, é preciso definir seus nomes, passos e colunas. Até lá, `InviteCustomization` fica sem atributos de texto.
-2. **Validade do `personalToken`.** O [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) define a geração com 128 bits em base32 Crockford, sem revogação nesta fase, e mantém o link pessoal válido quando o convite é despublicado. Ainda falta definir até quando a RN3 do UC005 permite alterações, o que depende do item 4.
+2. **Validade do `personalToken`.** O [ADR-0011](Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) define a geração com 128 bits em base32 Crockford, sem revogação nesta fase, e mantém o link pessoal válido quando o convite é despublicado. Ainda falta definir até quando a RN3 do UC005 permite alterações, o que depende do item 4.
 3. **Lista de categorias alimentares.** Fechada pela RN3 do UC006. São cinco entradas com carga inicial, e só `ALLERGY` exige descrição.
-4. **Fuso horário e fim do evento.** Fechada pelo [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md). `Invite` passa a ter um instante só, o fuso do projeto é `America/Sao_Paulo` e a RN3 do UC005 vale até o fim do dia do evento.
+4. **Fuso horário e fim do evento.** Fechada pelo [ADR-0013](Decisões-Arquiteturais/0013-Tempo-do-evento.md). `Invite` passa a ter um instante só, o fuso do projeto é `America/Sao_Paulo` e a RN3 do UC005 vale até o fim do dia do evento.
 
 ## Fonte do diagrama
 

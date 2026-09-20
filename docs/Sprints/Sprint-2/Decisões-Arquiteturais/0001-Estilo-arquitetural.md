@@ -32,5 +32,5 @@ O MVC no front se justifica pela característica central do produto, que são du
 
 ## Relacionados
 
-- [Guia da Arquitetura](../Guia-da-Arquitetura.md), que detalha responsabilidades por camada
+- [Guia da Arquitetura](../../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), que detalha responsabilidades por camada
 - [ADR-0002](0002-Empacotamento-em-tiers.md), que trata de como estas camadas são empacotadas

@@ -1,6 +1,6 @@
 # Configuração de Ambiente
 
-Como subir o invite-app na sua máquina. O ambiente inteiro roda em containers, conforme o [ADR-0003](../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-de-execução.md), e não há nada para instalar além do Docker.
+Como subir o invite-app na sua máquina. O ambiente inteiro roda em containers, conforme o [ADR-0003](../Sprints/Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md), e não há nada para instalar além do Docker.
 
 A topologia que este arquivo materializa está no [Diagrama de Implantação](../Sprints/Sprint-2/Diagrama-de-Implantação.md). O `docker-compose.yml` fica na raiz do repositório.
 
@@ -22,7 +22,7 @@ Nada de Node, de npm e de PostgreSQL instalados na máquina. Tudo isso mora dent
 O `.env` não vai para o repositório, e o `.gitignore` já cuida disso. Troque pelo menos dois valores:
 
 - `POSTGRES_PASSWORD`, a senha do banco.
-- `SESSION_SECRET`, o segredo que assina o cookie de sessão do anfitrião ([ADR-0010](../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md)). Gere um valor aleatório:
+- `SESSION_SECRET`, o segredo que assina o cookie de sessão do anfitrião ([ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md)). Gere um valor aleatório:
 
       node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 
@@ -98,7 +98,7 @@ Isso **apaga os dados**. É aceitável enquanto o ADR-0003 valer, porque o ambie
 
 **A porta já está em uso.** Alguma outra coisa na máquina ocupa a 3000 ou a 3001. Descubra o que é, ou mude o lado esquerdo do mapeamento no `docker-compose.yml`. O lado direito é a porta dentro do container e não muda.
 
-**A `api` não sobe e o log fala do banco.** Ela espera o `db` ficar saudável antes de iniciar, conforme o `HEALTHCHECK` que o [ADR-0002](../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) exige. Se o `db` não fica saudável, o problema é ele, e `docker compose logs db` mostra.
+**A `api` não sobe e o log fala do banco.** Ela espera o `db` ficar saudável antes de iniciar, conforme o `HEALTHCHECK` que o [ADR-0002](../Sprints/Sprint-2/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) exige. Se o `db` não fica saudável, o problema é ele, e `docker compose logs db` mostra.
 
 **O convite abre mas o formulário não envia.** Provável endereço errado no bundle do navegador. Confira a `NEXT_PUBLIC_API_URL` e reconstrua a imagem do front.
 

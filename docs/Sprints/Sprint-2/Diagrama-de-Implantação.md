@@ -26,7 +26,7 @@ O diagrama descreve a estrutura prevista para a Sprint 3. O `docker-compose.yml`
 
 Em UML, nó é lugar onde alguma coisa executa, e ele vem em dois tipos. **Dispositivo** é hardware. **Ambiente de execução** é software que hospeda outro software. Um nó pode conter outro, e é assim que o desenho fica.
 
-O [ADR-0003](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) limita a execução ao computador de desenvolvimento, usando `docker compose up`, sem ambiente publicado. Por isso, o diagrama tem um único dispositivo. Não há máquinas separadas para aplicação e banco, balanceador ou infraestrutura em nuvem.
+O [ADR-0003](Decisões-Arquiteturais/0003-Ambiente-de-execução.md) limita a execução ao computador de desenvolvimento, usando `docker compose up`, sem ambiente publicado. Por isso, o diagrama tem um único dispositivo. Não há máquinas separadas para aplicação e banco, balanceador ou infraestrutura em nuvem.
 
 | Nó | Tipo | O que é |
 |---|---|---|
@@ -43,7 +43,7 @@ São seis nós, dos quais um é um dispositivo. O volume nomeado aparece ao lado
 
 Neste diagrama, o navegador aparece como local de execução do `front-client.bundle`.
 
-O navegador é um nó de execução, mas não um tier. Ele não é iniciado pelo `docker compose` nem faz parte das unidades de implantação definidas no [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md).
+O navegador é um nó de execução, mas não um tier. Ele não é iniciado pelo `docker compose` nem faz parte das unidades de implantação definidas no [ADR-0002](Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md).
 
 O sistema produz o `front-client.bundle` e o entrega ao navegador, onde ele executa e faz o POST do UC005. Por isso, o navegador precisa aparecer como nó.
 
@@ -95,7 +95,7 @@ Os requisitos de hardware só devem ser incluídos depois de medir o consumo dos
 | `front` | `invite-app-front:<tag>` | Imagem | Build do `Dockerfile` do front |
 | `front` | `front-server.bundle` | Executável | Saída de servidor do build do Next.js |
 | `front` | `front-client.bundle` | Executável | Saída de cliente do mesmo build, servida ao navegador |
-| `front` | `templates/` | Ativo estático | Versionado, copiado no build, pelo [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) |
+| `front` | `templates/` | Ativo estático | Versionado, copiado no build, pelo [ADR-0009](Decisões-Arquiteturais/0009-Personalização-por-template.md) |
 | `front` | `robots.txt` | Ativo estático | Versionado, copiado no build, pela seção 9.5 do guia |
 | Navegador | `front-client.bundle` | Executável | O mesmo arquivo, entregue pela resposta HTTP |
 | `api` | `invite-app-api:<tag>` | Imagem | Build do `Dockerfile` da API |
@@ -249,7 +249,7 @@ Essa limitação foi aceita porque o ADR-0003 restringe o ambiente ao desenvolvi
 Depois da criação do `docker-compose.yml`, permanecem três pontos em aberto:
 
 1. **Valores de tag e de digest das imagens construídas pelo time.** O compose usa `${IMAGE_TAG:-dev}`, que serve enquanto o ADR-0003 valer e não é etiqueta de versão. A imagem do banco já está escolhida e fixada em `postgres:17-alpine`, e o digest continua sem fixar.
-2. **O contador do `RateLimitGuard` supõe uma instância só.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu contador em memória do processo e sessão em cookie assinado, então nenhuma das duas guardas acrescenta nó e este diagrama não muda por causa delas. O que muda o diagrama é o item seguinte.
+2. **O contador do `RateLimitGuard` supõe uma instância só.** O [ADR-0010](Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu contador em memória do processo e sessão em cookie assinado, então nenhuma das duas guardas acrescenta nó e este diagrama não muda por causa delas. O que muda o diagrama é o item seguinte.
 3. **Se a API ganha réplicas.** Se ganhar, este diagrama muda de verdade, porque passa a ter mais de uma instância do mesmo container e a decisão do contador em memória do `RateLimitGuard` deixa de valer junto.
 
 ---
@@ -260,8 +260,8 @@ Depois da criação do `docker-compose.yml`, permanecem três pontos em aberto:
 |---|---|
 | Seção 10 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) | Entrada direta. A 10.3 deu os artefatos por container, a 10.4 deu os caminhos e a 10.7 deu a lista do que decidir aqui |
 | [Diagrama de Componentes](Diagrama-de-Componentes.md) | A seção 4.2 daquela página ligou componente a artefato, e esta liga artefato a nó. Nenhum componente novo foi criado |
-| [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) | Os três containers e a exigência de `HEALTHCHECK` e de volume |
-| [ADR-0003](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) | O dispositivo único e a ausência de ambiente publicado |
+| [ADR-0002](Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) | Os três containers e a exigência de `HEALTHCHECK` e de volume |
+| [ADR-0003](Decisões-Arquiteturais/0003-Ambiente-de-execução.md) | O dispositivo único e a ausência de ambiente publicado |
 | `docker-compose.yml` | **Escrito**, na raiz do repositório. O ADR-0002 registra que ele é a forma executável deste diagrama, e as sete decisões da seção 8 estão todas dentro dele. O `db` sobe e fica saudável hoje. O `api` e o `front` esperam o código da Sprint 3 |
 
 ## Fonte do diagrama

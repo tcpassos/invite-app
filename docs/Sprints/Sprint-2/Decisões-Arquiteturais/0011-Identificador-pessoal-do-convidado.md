@@ -9,7 +9,7 @@ O passo 8 do UC005 entrega ao convidado um link pessoal para alterar a resposta 
 
 O Diagrama de Classes registra `personalToken` como `String [1] {unique}` em `Guest` e o chama de **segundo identificador público do sistema**. A pendência 2 daquela página diz que ele não tem ADR e que faltam entropia, alfabeto e revogação.
 
-A falta ficou mais cara do que parecia quando a seção 9.5 do [Guia da Arquitetura](../Guia-da-Arquitetura.md) decidiu a política de exposição do link pessoal. Aquela seção escreve, com todas as letras, que a política **supõe** que o `personalToken` tenha pelo menos a entropia do `publicToken`, e que sem essa decisão o colapso das respostas de não encontrado naquela rota não se sustenta. A política de lá depende desta decisão para valer.
+A falta ficou mais cara do que parecia quando a seção 9.5 do [Guia da Arquitetura](../../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) decidiu a política de exposição do link pessoal. Aquela seção escreve, com todas as letras, que a política **supõe** que o `personalToken` tenha pelo menos a entropia do `publicToken`, e que sem essa decisão o colapso das respostas de não encontrado naquela rota não se sustenta. A política de lá depende desta decisão para valer.
 
 O [ADR-0005](0005-Identificador-público-do-convite.md) já resolveu o problema equivalente para o convite: 128 bits de gerador criptográfico, base32 Crockford, 26 caracteres, em coluna separada da chave primária.
 
@@ -50,6 +50,6 @@ Esta decisão se reabre se **surgir requisito de invalidar a resposta ou o link 
 
 ## O que esta decisão fecha
 
-- A pendência 2 do [Diagrama de Classes](../../Sprints/Sprint-2/Diagrama-de-Classes.md), sobre entropia, alfabeto e revogação.
+- A pendência 2 do [Diagrama de Classes](../Diagrama-de-Classes.md), sobre entropia, alfabeto e revogação.
 - O item correspondente da seção 11.2 do Guia da Arquitetura.
 - A suposição declarada na seção 9.5 do guia, que passa a ser decisão registrada.

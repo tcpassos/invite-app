@@ -32,4 +32,4 @@ As decisões de 0004 a 0008 foram confrontadas com um levantamento de 19 platafo
 
 Ainda em aberto, e previsto como ADR: **o envio de e-mail com recuperação de senha**. Ele continua fora porque nenhum caso de uso o pede. O UC001 tem entrada, cadastro e credencial inválida, e não tem fluxo de recuperação. Decidir transporte de e-mail e política de redefinição antes de existir requisito seria responder uma pergunta que ninguém fez, no mesmo raciocínio que o ADR-0007 usou para descartar o Server-Sent Events.
 
-Há também decisões que o [Guia da Arquitetura](Guia-da-Arquitetura.md) tomou onde nenhum ADR decidia, listadas na seção 11.1 daquele documento. Elas valem como regra de código, precisam de aval do time e não têm o peso de um ADR aceito.
+Há também decisões que o [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) tomou onde nenhum ADR decidia, listadas na seção 11.1 daquele documento. Elas valem como regra de código, precisam de aval do time e não têm o peso de um ADR aceito.

@@ -95,7 +95,7 @@ Todos versionados em `docs/` no repositório GitHub do projeto e publicados na w
 | [Diagrama de Classes](../Sprint-2/Diagrama-de-Classes.md) | 2 |
 | [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) | 2 |
 | [Diagrama de Implantação](../Sprint-2/Diagrama-de-Implantação.md) | 2 |
-| [Decisões Arquiteturais](../../Diretrizes-do-Projeto/Decisões-Arquiteturais.md), treze ADRs | 2 e 3 |
+| [Decisões Arquiteturais](../Sprint-2/Decisões-Arquiteturais.md), treze ADRs | 2 e 3 |
 | [Documento de Realização de Casos de Uso](Documento-de-Realização-de-Casos-de-Uso.md) | 3 |
 | [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), documento de trabalho do time | 2 |
 
@@ -168,9 +168,9 @@ Os oito casos de uso do sistema, com os arquiteturalmente significativos em dest
 
 | Realização | A decisão que só ela exercita |
 |---|---|
-| UC001 | O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) inteiro. Argon2id, cookie assinado com `hostId` e instante de expiração, e a recusa que não diz se o errado foi o email ou a senha |
-| UC004 | A única transição de estado do modelo, de rascunho para publicado, e o único lugar onde nasce o `publicToken` do [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) |
-| UC005, com a extensão do UC006 | A única escrita sem sessão do sistema. Carrega o [ADR-0006](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0006-Identidade-do-convidado.md), o [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) inteiro, o [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) e a fronteira temporal do [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md). O teto de capacidade verificado dentro da transação é a demonstração concreta da regra de dependência do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) |
+| UC001 | O [ADR-0010](../Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) inteiro. Argon2id, cookie assinado com `hostId` e instante de expiração, e a recusa que não diz se o errado foi o email ou a senha |
+| UC004 | A única transição de estado do modelo, de rascunho para publicado, e o único lugar onde nasce o `publicToken` do [ADR-0005](../Sprint-2/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) |
+| UC005, com a extensão do UC006 | A única escrita sem sessão do sistema. Carrega o [ADR-0006](../Sprint-2/Decisões-Arquiteturais/0006-Identidade-do-convidado.md), o [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) inteiro, o [ADR-0011](../Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) e a fronteira temporal do [ADR-0013](../Sprint-2/Decisões-Arquiteturais/0013-Tempo-do-evento.md). O teto de capacidade verificado dentro da transação é a demonstração concreta da regra de dependência do [ADR-0001](../Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) |
 | UC008 | A única agregação com projeções nomeadas, a única exportação em CSV e o único serviço que consome dois repositórios, que é o que justifica separar `InviteRepository` de `DietaryCategoryRepository` |
 
 **Por que os outros três ficam de fora.** UC002 e UC003 são cadastro atrás de sessão e não têm rota em artefato nenhum, então não há o que desenhar sem inventar. UC007 é leitura de projeção com a mesma guarda e o mesmo repositório do UC008, e não prova nada que o UC008 já não prove.
@@ -185,7 +185,7 @@ As realizações ficam em artefato independente, conforme o template determina. 
 
 A decomposição do sistema em pacotes, com as classes significativas de cada um.
 
-A divisão parte das três camadas do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md), e a camada de Apresentação é subdividida por quem alcança cada rota, conforme a tabela abaixo. Pacote aqui é unidade de organização de código, e não componente nem tier, que são assunto das seções 7 e 6.
+A divisão parte das três camadas do [ADR-0001](../Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetural.md), e a camada de Apresentação é subdividida por quem alcança cada rota, conforme a tabela abaixo. Pacote aqui é unidade de organização de código, e não componente nem tier, que são assunto das seções 7 e 6.
 
 ### 5.1 Divisão em Pacotes
 
@@ -196,8 +196,8 @@ A divisão parte das três camadas do [ADR-0001](../../Diretrizes-do-Projeto/Dec
 | Pacote | Camada | O que contém |
 |---|---|---|
 | `front.view` | Apresentação no sentido amplo, no navegador | Telas do convite público e do painel |
-| `front.controller` | Apresentação no sentido amplo, partida entre o tier Front e o navegador | Resolução de rota, chamada à API e a consulta periódica do [ADR-0007](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) |
-| `front.templates` | Nenhuma, é ativo estático | Os templates em HTML e CSS do [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) |
+| `front.controller` | Apresentação no sentido amplo, partida entre o tier Front e o navegador | Resolução de rota, chamada à API e a consulta periódica do [ADR-0007](../Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) |
+| `front.templates` | Nenhuma, é ativo estático | Os templates em HTML e CSS do [ADR-0009](../Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) |
 | `contract` | Nenhuma, é módulo compartilhado | Os tipos que as duas pontas usam, compilados para dentro dos dois builds |
 | `api.apresentacao.publico` | Apresentação | `PublicRsvpController`, a única escrita sem autenticação do sistema |
 | `api.apresentacao.autenticado` | Apresentação | `InviteController` e `DietaryController` |
@@ -256,8 +256,8 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 | Classe | Descrição | Operações |
 |---|---|---|
 | `PublicInvitePage` | Serve a superfície pública do convite. Resolve a rota, monta a página e entrega o formulário do UC005 com a extensão do UC006 | `GET /i/{publicToken}` |
-| `HostPanelPage` | Serve as telas do painel do anfitrião, incluindo a consulta periódica do [ADR-0007](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) | As rotas de tela do painel |
-| `ApiClient` | Fala com a API por um ponto só, com chamada tipada pelo contrato compartilhado, e lê o corpo de erro | Uma operação por rota da API, tipada pelo contrato do [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md) |
+| `HostPanelPage` | Serve as telas do painel do anfitrião, incluindo a consulta periódica do [ADR-0007](../Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) | As rotas de tela do painel |
+| `ApiClient` | Fala com a API por um ponto só, com chamada tipada pelo contrato compartilhado, e lê o corpo de erro | Uma operação por rota da API, tipada pelo contrato do [ADR-0004](../Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) |
 
 `PublicInvitePage` é partida entre o processo do tier Front, que faz a leitura, e o navegador, que faz a escrita. É a mesma classe em dois lugares de execução, e a seção 6 mostra a divisão em dois artefatos.
 
@@ -265,7 +265,7 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 
 | Classe | Descrição | Operações |
 |---|---|---|
-| `TemplateSet` | Guarda o HTML, o CSS e a imagem de Open Graph de cada template do [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) | `templateAssets(templateCode)` |
+| `TemplateSet` | Guarda o HTML, o CSS e a imagem de Open Graph de cada template do [ADR-0009](../Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) | `templateAssets(templateCode)` |
 
 #### `contract`
 
@@ -294,8 +294,8 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 
 | Classe | Descrição | Operações |
 |---|---|---|
-| `SessionGuard` | Autentica a sessão do anfitrião validando a assinatura do cookie do [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) | `authenticateSession(session)`, que devolve `hostId` |
-| `RateLimitGuard` | Controla tráfego na fronteira pública, pela medida 2 do [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) | `enforceReadLimit(publicToken)`, `enforceWriteLimit(publicToken, clientIp)` |
+| `SessionGuard` | Autentica a sessão do anfitrião validando a assinatura do cookie do [ADR-0010](../Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) | `authenticateSession(session)`, que devolve `hostId` |
+| `RateLimitGuard` | Controla tráfego na fronteira pública, pela medida 2 do [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) | `enforceReadLimit(publicToken)`, `enforceWriteLimit(publicToken, clientIp)` |
 | `HttpExceptionFilter` | Traduz erro do Domínio em protocolo, num ponto só, e monta o corpo único de erro | `toErrorResponse(error)` |
 
 A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura pública quem chama a API é o container do tier Front, então o endereço de origem visível é sempre o mesmo e contá-lo bloquearia a página para todos os convidados de uma vez.
@@ -442,7 +442,7 @@ E `front.view` não tem classe nomeada, conforme registrado acima.
 
 ![Diagrama de Implantação](../../.attachments/diagrama-de-implantacao.png)
 
-O sistema roda inteiro num dispositivo só, o computador de quem levanta o ambiente com `docker compose up`. O [ADR-0003](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) fecha a execução no host de desenvolvimento, sem ambiente publicado, então não existe máquina separada para aplicação e banco, nem balanceador, nem nó de nuvem.
+O sistema roda inteiro num dispositivo só, o computador de quem levanta o ambiente com `docker compose up`. O [ADR-0003](../Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) fecha a execução no host de desenvolvimento, sem ambiente publicado, então não existe máquina separada para aplicação e banco, nem balanceador, nem nó de nuvem.
 
 São seis nós, um dispositivo e cinco ambientes de execução aninhados dentro dele.
 
@@ -455,7 +455,7 @@ São seis nós, um dispositivo e cinco ambientes de execução aninhados dentro 
 | `api` | Container | `api.bundle`, com as três camadas |
 | `db` | Container | PostgreSQL, com o volume `pgdata` montado |
 
-**O navegador é nó e não é tier.** Ele não sobe pelo compose e não é unidade de implantação do [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), mas o `front-client.bundle` sai do container `front` e executa dentro dele, o que a figura mostra com a relação `<<deploy>>`. O `db` é as duas coisas ao mesmo tempo.
+**O navegador é nó e não é tier.** Ele não sobe pelo compose e não é unidade de implantação do [ADR-0002](../Sprint-2/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), mas o `front-client.bundle` sai do container `front` e executa dentro dele, o que a figura mostra com a relação `<<deploy>>`. O `db` é as duas coisas ao mesmo tempo.
 
 Cinco caminhos de comunicação ligam os nós:
 
@@ -479,7 +479,7 @@ Os caminhos 1 e 3 formam o convite público em dois saltos. O caminho 2 atende o
 
 ![Diagrama de Componentes](../../.attachments/diagrama-de-componentes.png)
 
-São 20 componentes significativos, distribuídos em três containers e organizados pelas camadas lógicas do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md). A figura mostra cada componente, as interfaces que ele publica e as 31 dependências entre eles.
+São 20 componentes significativos, distribuídos em três containers e organizados pelas camadas lógicas do [ADR-0001](../Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetural.md). A figura mostra cada componente, as interfaces que ele publica e as 31 dependências entre eles.
 
 | Onde | Componentes |
 |---|---|
@@ -488,7 +488,7 @@ São 20 componentes significativos, distribuídos em três containers e organiza
 | Domínio, na API | `RsvpService`, `InviteService`, `AttendanceService`, `DietaryService`, `HostService` e `TemplateCatalog` |
 | Dados, na API | `InviteRepository`, `DietaryCategoryRepository` e `HostRepository` |
 
-O módulo `contract/` não é componente. Ele é fonte compartilhada, compilada para dentro do build do Front e do build da API, e é o que faz o contrato de tipos do [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md) ser um tipo verificado no build, e não uma convenção documentada.
+O módulo `contract/` não é componente. Ele é fonte compartilhada, compilada para dentro do build do Front e do build da API, e é o que faz o contrato de tipos do [ADR-0004](../Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) ser um tipo verificado no build, e não uma convenção documentada.
 
 ### 7.1 Camadas
 
@@ -506,7 +506,7 @@ São três camadas lógicas dentro da API, mais o MVC no front.
 
 > O Domínio e a camada de Dados nunca dependem da Apresentação. As dependências apontam sempre para dentro.
 
-Dela saem as duas fronteiras que o projeto de fato cobra em revisão de código. **A Apresentação nunca chama a camada de Dados**, porque se ela pudesse ler o convite por conta própria alguém acabaria verificando o teto de capacidade ali. E **a verificação do teto é transacional, dentro da camada de Dados**, porque com duas respostas simultâneas num evento que está em 49 de 50 uma validação na Apresentação deixa as duas passarem e o evento fecha em 51. Essa é a demonstração concreta da regra, e está no [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md).
+Dela saem as duas fronteiras que o projeto de fato cobra em revisão de código. **A Apresentação nunca chama a camada de Dados**, porque se ela pudesse ler o convite por conta própria alguém acabaria verificando o teto de capacidade ali. E **a verificação do teto é transacional, dentro da camada de Dados**, porque com duas respostas simultâneas num evento que está em 49 de 50 uma validação na Apresentação deixa as duas passarem e o evento fecha em 51. Essa é a demonstração concreta da regra, e está no [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md).
 
 O projeto não adota inversão de dependência entre Domínio e Dados. O Domínio depende da interface da camada de Dados, que é dependência para baixo e é o que a arquitetura em três camadas prevê. A regra registrada é uma só, e é a de cima.
 
@@ -524,7 +524,7 @@ Esta seção existe porque a conversão do modelo de objetos para o modelo de da
 
 | Fora do modelo persistente | Por quê |
 |---|---|
-| `Template` | O [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) o define como ativo estático, versionado junto com o código. Catálogo, não tabela |
+| `Template` | O [ADR-0009](../Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) o define como ativo estático, versionado junto com o código. Catálogo, não tabela |
 | `TextFieldLimit` | Compõe `Template`, então segue o mesmo caminho |
 | `/totalPeople` | Atributo derivado, calculado em execução por `AttendanceService`. Derivado não vira coluna |
 
@@ -534,19 +534,19 @@ Esta seção existe porque a conversão do modelo de objetos para o modelo de da
 
 Sete decisões de mapeamento. As três primeiras são as que justificam esta seção existir.
 
-**1. As cores viram um documento, e `ColorSetting` não ganha tabela.** As sobrescritas de cor de um convite são o único conteúdo semiestruturado do modelo, e o [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu PostgreSQL com JSONB por causa delas. `colorOverrides` vira uma coluna `jsonb` em `invite_customization`. A classe continua existindo no modelo de objetos e desaparece do modelo relacional.
+**1. As cores viram um documento, e `ColorSetting` não ganha tabela.** As sobrescritas de cor de um convite são o único conteúdo semiestruturado do modelo, e o [ADR-0004](../Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu PostgreSQL com JSONB por causa delas. `colorOverrides` vira uma coluna `jsonb` em `invite_customization`. A classe continua existindo no modelo de objetos e desaparece do modelo relacional.
 
 **2. A associação alimentar vira uma tabela que não é classe.** `DietaryNote` e `DietaryCategory` se associam muitos para muitos, e isso não tem representação direta em tabela. Entra `dietary_note_category`, com chave primária composta pelas duas chaves estrangeiras. É o único caso em que o modelo relacional tem uma tabela sem origem em classe, e a seção 8.3 a marca como tal.
 
-**3. Dois campos de formulário viram uma coluna.** O passo 3 do UC002 pede data e hora separadas, e o [ADR-0013](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0013-Tempo-do-evento.md) guarda um instante único. A coluna é `event_starts_at timestamptz`, em UTC, e a junção dos dois campos acontece na camada de Apresentação, no fuso do projeto. Quem lê o banco vê um valor, quem preenche a tela vê dois campos.
+**3. Dois campos de formulário viram uma coluna.** O passo 3 do UC002 pede data e hora separadas, e o [ADR-0013](../Sprint-2/Decisões-Arquiteturais/0013-Tempo-do-evento.md) guarda um instante único. A coluna é `event_starts_at timestamptz`, em UTC, e a junção dos dois campos acontece na camada de Apresentação, no fuso do projeto. Quem lê o banco vê um valor, quem preenche a tela vê dois campos.
 
 **4. O template é referência sem chave estrangeira.** `template_code` aponta para um catálogo que mora no código, não em tabela, então não existe `REFERENCES` para ele. A consequência é que o banco não impede um código inválido, e quem impede é `TemplateCatalog`, no Domínio, com `listTemplateCodes()`.
 
 **5. Os enums viram texto com restrição, e não tipo do banco.** `InviteStatus` e `RsvpStatus` viram `text` com `CHECK`. Tipo enumerado nativo do PostgreSQL obriga a `ALTER TYPE` para acrescentar valor e praticamente não permite remover, o que transforma uma mudança de vocabulário em migração delicada. Com `CHECK`, a lista de valores fica declarada em dois lugares que o build já mantém juntos, o módulo `contract` e a migração.
 
-**6. A chave primária nunca é o token.** Cada tabela tem `id bigint` gerado pelo banco, e os dois tokens públicos moram em colunas próprias com índice único, conforme o [ADR-0005](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) e o [ADR-0011](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md). Chave primária sequencial exposta em link permitiria adivinhar o convite seguinte.
+**6. A chave primária nunca é o token.** Cada tabela tem `id bigint` gerado pelo banco, e os dois tokens públicos moram em colunas próprias com índice único, conforme o [ADR-0005](../Sprint-2/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) e o [ADR-0011](../Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md). Chave primária sequencial exposta em link permitiria adivinhar o convite seguinte.
 
-**7. O teto de capacidade não é restrição de tabela.** A invariante soma linhas de `guest` e compara com uma coluna de `invite`, então ela atravessa registros e não cabe num `CHECK`. Ela é garantida por transação, com `SELECT ... FOR UPDATE` na linha do convite antes da contagem, conforme o [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md). **Isso é decisão de arquitetura e não detalhe de implementação**, porque é o que impede duas respostas simultâneas de estourarem o limite.
+**7. O teto de capacidade não é restrição de tabela.** A invariante soma linhas de `guest` e compara com uma coluna de `invite`, então ela atravessa registros e não cabe num `CHECK`. Ela é garantida por transação, com `SELECT ... FOR UPDATE` na linha do convite antes da contagem, conforme o [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md). **Isso é decisão de arquitetura e não detalhe de implementação**, porque é o que impede duas respostas simultâneas de estourarem o limite.
 
 Sobre a grafia: tabela e coluna em `snake_case`, classe e atributo em `camelCase`. A tradução é do mapeamento, e nome de coluna nunca aparece em corpo de resposta da API.
 

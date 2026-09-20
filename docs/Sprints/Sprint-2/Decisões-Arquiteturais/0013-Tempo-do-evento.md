@@ -5,13 +5,13 @@
 
 ## Contexto
 
-`Invite` tem dois atributos de tempo, `eventDate : Date` e `eventTime : Time`, sem duração e sem fuso. A pendência 4 do [Diagrama de Classes](../../Sprints/Sprint-2/Diagrama-de-Classes.md) registra isso, e três regras do sistema dependem de tempo sem ter onde se apoiar.
+`Invite` tem dois atributos de tempo, `eventDate : Date` e `eventTime : Time`, sem duração e sem fuso. A pendência 4 do [Diagrama de Classes](../Diagrama-de-Classes.md) registra isso, e três regras do sistema dependem de tempo sem ter onde se apoiar.
 
 **A RN1 do UC002** diz que a data deve ser igual ou posterior ao dia atual. Dia atual segundo qual relógio não está escrito em lugar nenhum. Um container rodando em UTC e um anfitrião em Brasília discordam por três horas sobre que dia é hoje, então um convite criado às 22h de sexta já é sábado para o servidor. A mesma regra recusa data válida ou aceita data inválida conforme quem ganha.
 
 **A RN3 do UC005** permite alterar a resposta enquanto o evento não tiver ocorrido. Ocorrido não tem âncora. Uma festa que começa às 20h não terminou às 20h01, e sem duração o único instante calculável é o de início, o que tiraria o link pessoal do convidado na hora em que a festa começa. O [ADR-0011](0011-Identificador-pessoal-do-convidado.md) registrou a lacuna por escrito e declarou que a fronteira da RN3 não é implementável enquanto ela existir.
 
-**A tabela 9.1 do [Guia da Arquitetura](../Guia-da-Arquitetura.md)** já promete 422 `VALIDATION_FAILED` para data no passado. A API precisa implementar a comparação de qualquer jeito, com definição ou sem ela.
+**A tabela 9.1 do [Guia da Arquitetura](../../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md)** já promete 422 `VALIDATION_FAILED` para data no passado. A API precisa implementar a comparação de qualquer jeito, com definição ou sem ela.
 
 ## Decisão
 
@@ -21,7 +21,7 @@
 
 **A saída é o contrário da entrada.** A resposta do convite público carrega `eventStartsAt`, um valor só, e a tela formata. Dois campos existem apenas no caminho de escrita.
 
-**Um fuso para o projeto inteiro, `America/Sao_Paulo`**, na configuração da API. Não há fuso por convite, nem coluna, nem seletor na tela. O anfitrião e os convidados estão na mesma festa, e fuso por convite pediria campo novo, conversão em toda exibição e uma decisão de qual fuso vale quando o anfitrião viaja. Isso é funcionalidade, e não está no escopo do MVP da [Visão do Produto](../../Sprints/Sprint-3/Visão-do-Produto.md).
+**Um fuso para o projeto inteiro, `America/Sao_Paulo`**, na configuração da API. Não há fuso por convite, nem coluna, nem seletor na tela. O anfitrião e os convidados estão na mesma festa, e fuso por convite pediria campo novo, conversão em toda exibição e uma decisão de qual fuso vale quando o anfitrião viaja. Isso é funcionalidade, e não está no escopo do MVP da [Visão do Produto](../../Sprint-3/Visão-do-Produto.md).
 
 **A RN1 do UC002 continua comparando por dia**, agora ancorada nesse fuso. Convite para hoje é aceito mesmo quando a hora informada já passou. É o que a regra escrita permite, e é o que serve a quem monta uma festa para daqui a duas horas.
 
@@ -51,7 +51,7 @@ Esta decisão **não aciona** a condição de reabertura do ADR-0011, que fala e
 
 ## O que esta decisão fecha
 
-- A pendência 4 do [Diagrama de Classes](../../Sprints/Sprint-2/Diagrama-de-Classes.md), sobre fuso horário e fim do evento.
+- A pendência 4 do [Diagrama de Classes](../Diagrama-de-Classes.md), sobre fuso horário e fim do evento.
 - A consequência negativa do [ADR-0011](0011-Identificador-pessoal-do-convidado.md) sobre a fronteira indefinida da RN3 do UC005.
-- O item de fuso horário e fim do evento da seção 11.2 do [Guia da Arquitetura](../Guia-da-Arquitetura.md).
+- O item de fuso horário e fim do evento da seção 11.2 do [Guia da Arquitetura](../../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md).
 - A dependência aberta que a task #106 registra para escrever a seção 8 do DAS.

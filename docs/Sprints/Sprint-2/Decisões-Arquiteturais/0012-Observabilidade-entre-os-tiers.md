@@ -7,7 +7,7 @@
 
 O [ADR-0002](0002-Empacotamento-em-tiers.md) assumiu por escrito uma consequência negativa que nenhum artefato tratou depois: com a camada de Apresentação partida entre dois containers, **um erro passa a ter dois lados e nada correlaciona os dois sozinho**. Quem lê o registro do tier Front e quem lê o da API não tem como saber que as duas linhas são a mesma falha.
 
-O diagrama de camadas desenha "Erros e log" como interesse transversal ligado às três camadas, e a seção 9.4 do [Guia da Arquitetura](../Guia-da-Arquitetura.md) registra que **não existe nenhuma regra de log escrita em artefato nenhum do projeto**.
+O diagrama de camadas desenha "Erros e log" como interesse transversal ligado às três camadas, e a seção 9.4 do [Guia da Arquitetura](../../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) registra que **não existe nenhuma regra de log escrita em artefato nenhum do projeto**.
 
 Duas decisões recentes cercaram o assunto sem fechá-lo. A seção 9.3 do guia criou o `traceId`, de 64 bits em hexadecimal, sorteado pelo filtro de exceção e escrito no corpo do erro e na linha de log da mesma resposta. Ele nasce dentro da API, então **não cobre o salto do tier Front para a API**, que é justamente onde o erro tem dois lados. A seção 9.5 decidiu o que nunca pode entrar em log, que é o token do convite, o token pessoal e o texto livre da observação alimentar.
 

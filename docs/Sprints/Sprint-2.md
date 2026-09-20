@@ -61,12 +61,12 @@ A ordem prevista é #58, #59 e #60: primeiro as camadas, depois os componentes e
 
 ## Principais Artefatos
 
-- Arquitetura em Camadas
+- [Arquitetura em Camadas](Sprint-2/Arquitetura-em-Camadas.md)
 - [Diagrama de Componentes](Sprint-2/Diagrama-de-Componentes.md) (UML)
 - [Diagrama de Implantação](Sprint-2/Diagrama-de-Implantação.md) (UML)
 - [Diagrama de Classes](Sprint-2/Diagrama-de-Classes.md) (UML)
 - [Diagramas de Sequência](Sprint-2/Diagramas-de-Sequência.md) (UML)
-- [Documento de Decisões Arquiteturais](../Diretrizes-do-Projeto/Decisões-Arquiteturais.md) (ADR), com 12 registros
+- [Documento de Decisões Arquiteturais](Sprint-2/Decisões-Arquiteturais.md) (ADR), com 13 registros
 
 O [Guia da Arquitetura](../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) registra o ponto de partida: MVC no front e três camadas no back. Nesta sprint, essa estrutura foi detalhada nos diagramas e nas decisões arquiteturais.
 

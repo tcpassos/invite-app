@@ -11,7 +11,7 @@ Nada disso tinha ADR. A operação `authenticateSession(session)` aparece em qua
 
 Junto com ela ficou aberta uma segunda pergunta, e as duas têm a mesma restrição. O Diagrama de Componentes desenhou `SessionGuard` e `RateLimitGuard` **sem nenhuma interface requerida**, e declarou por escrito que isso não é esquecimento: onde as duas guardas guardam estado não foi decidido, e a figura não desenha dependência que ninguém decidiu.
 
-A restrição que amarra as duas é a seção 6.2 do [Guia da Arquitetura](../Guia-da-Arquitetura.md). O projeto adota a leitura estrita, em que a camada de Apresentação **nunca** chama a camada de Dados. Tabela de sessão ou tabela de contador no banco principal faria a Apresentação falar com o banco, que a seção 6.3 lista como violação e a segunda busca da 6.4 encontra em revisão. Qualquer alternativa com tabela acrescenta um soquete às duas guardas e muda a figura de componentes.
+A restrição que amarra as duas é a seção 6.2 do [Guia da Arquitetura](../../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). O projeto adota a leitura estrita, em que a camada de Apresentação **nunca** chama a camada de Dados. Tabela de sessão ou tabela de contador no banco principal faria a Apresentação falar com o banco, que a seção 6.3 lista como violação e a segunda busca da 6.4 encontra em revisão. Qualquer alternativa com tabela acrescenta um soquete às duas guardas e muda a figura de componentes.
 
 O [ADR-0003](0003-Ambiente-de-execução.md) fecha a execução num host só, e o [ADR-0002](0002-Empacotamento-em-tiers.md) decidiu um container por serviço, então hoje existe **uma instância da API**, não várias.
 
@@ -52,6 +52,6 @@ O ADR-0003 ser substituído por um que preveja publicação também reabre, porq
 
 ## O que esta decisão fecha
 
-- A pendência 4 dos [Diagramas de Sequência](../../Sprints/Sprint-2/Diagramas-de-Sequência.md), sobre `authenticateSession` não ter ADR.
-- As pendências 4 e 5 da seção 10.2 do [Diagrama de Componentes](../../Sprints/Sprint-2/Diagrama-de-Componentes.md), sobre onde as duas guardas guardam estado.
+- A pendência 4 dos [Diagramas de Sequência](../Diagramas-de-Sequência.md), sobre `authenticateSession` não ter ADR.
+- As pendências 4 e 5 da seção 10.2 do [Diagrama de Componentes](../Diagrama-de-Componentes.md), sobre onde as duas guardas guardam estado.
 - O item correspondente da seção 11.2 do Guia da Arquitetura.

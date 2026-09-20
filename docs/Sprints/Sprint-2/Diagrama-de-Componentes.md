@@ -16,7 +16,7 @@ A organização segue os sete passos sugeridos pelo professor e usados nas tasks
 
 As definições de componente e de interface provida e requerida seguem [Ian04], referência da Aula 05. Um componente é uma unidade de composição com interfaces definidas e dependências explícitas. Seu comportamento depende tanto das interfaces que oferece quanto das que consome.
 
-O diagrama parte do [ADR-0001](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0001-Estilo-arquitetural.md), do [ADR-0002](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), do [ADR-0004](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0004-Stack-de-implementação.md), do [ADR-0007](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md), do [ADR-0008](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md), do [ADR-0009](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0009-Personalização-por-template.md) e das seções 3 a 9 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). As decisões tomadas durante esta modelagem estão identificadas e reunidas na seção 10.1.
+O diagrama parte do [ADR-0001](Decisões-Arquiteturais/0001-Estilo-arquitetural.md), do [ADR-0002](Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), do [ADR-0004](Decisões-Arquiteturais/0004-Stack-de-implementação.md), do [ADR-0007](Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md), do [ADR-0008](Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md), do [ADR-0009](Decisões-Arquiteturais/0009-Personalização-por-template.md) e das seções 3 a 9 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). As decisões tomadas durante esta modelagem estão identificadas e reunidas na seção 10.1.
 
 ---
 
@@ -469,7 +469,7 @@ Os quatro componentes do tier Front, os quatro controllers, `SessionGuard`, `Rat
 
 1. **Rotas do UC002 e do UC003.** A tabela 4.1 tem sete rotas, mas nenhuma cria o convite ou salva sua personalização. `InviteController` e `InviteService` já assumem essas responsabilidades, e falta definir as rotas.
 2. **Pacote do UC001.** `AuthController` não cabe no pacote público, restrito aos dois serviços citados na seção 5.3, nem no autenticado, pois a entrada ocorre antes da criação da sessão. Falta decidir se haverá um terceiro pacote.
-3. **Réplicas da API.** O [ADR-0010](../../Diretrizes-do-Projeto/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) usa um contador em memória para `RateLimitGuard`. Com mais de uma instância, cada processo manteria seu próprio contador. A hipótese está registrada na seção 9 do [Diagrama de Implantação](Diagrama-de-Implantação.md).
+3. **Réplicas da API.** O [ADR-0010](Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) usa um contador em memória para `RateLimitGuard`. Com mais de uma instância, cada processo manteria seu próprio contador. A hipótese está registrada na seção 9 do [Diagrama de Implantação](Diagrama-de-Implantação.md).
 4. **Assinaturas de `HostOperations` e `HostStore`.** Elas ainda não foram definidas porque o UC001 não tem diagrama de sequência.
 5. **Consistência entre `templates/` e `contract/`.** Ainda não há verificação no build. Adicionar um template exige alterar os dois locais manualmente, e limites de texto diferentes podem causar erros no UC003.
 
