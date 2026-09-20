@@ -1,0 +1,98 @@
+@startuml diagrama-sequencia-bce-uc004
+' Realização do UC004, Compartilhar convite (gerar link), em notação BCE.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-bce-uc004.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' Boundary é a tela do painel. Control reúne InviteController e InviteService.
+' Entity é Invite, que responde também pela persistência dele.
+' Só as chamadas são numeradas, retorno não leva número.
+' Identificadores em inglês, conforme o Guia de Estilo. Rótulos de fluxo em português.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam sequenceMessageAlign first
+skinparam maxMessageSize 260
+hide footbox
+
+actor "Anfitrião" as Ator
+boundary "HostPanelScreen" as B
+control "InviteController" as C
+entity "Invite" as I
+
+== Fluxo básico, publicar e obter o link ==
+
+Ator -> B : 1. seleciona a opção de compartilhar
+activate B
+
+B -> C : 2. publishInvite(inviteId : UUID, hostId : UUID) : Invite
+activate C
+
+C -> I : 2.1. findById(inviteId : UUID) : Invite [0..1]
+activate I
+I --> C : Invite [0..1]
+deactivate I
+
+C -> C : 2.2. validateForPublication(invite : Invite, hostId : UUID) : Boolean
+
+alt o convite é deste anfitrião e tem nome, data, hora e local (RN1)
+
+  C -> C : 2.3. generatePublicToken() : String
+  C -> I : 2.4. publish(publicToken : String) : Boolean
+  activate I
+  I --> C : Invite(status = PUBLISHED)
+  deactivate I
+  C --> B : Invite
+  B -> B : 3. buildShareLink(publicToken : String) : String
+  B --> Ator : 4. exibe o link com a opção de copiar
+  Ator -> B : 5. copia o link
+
+else A1, faltam dados obrigatórios (RN1)
+
+  C --> B : InvalidInviteForPublication
+  B --> Ator : 4. informa o que falta e não publica (A1.1)
+
+else o convite não pertence a este anfitrião
+
+  C --> B : NotInviteOwner
+  B --> Ator : 4. informa que o convite não foi encontrado
+
+end
+
+deactivate C
+deactivate B
+
+== A2, extensão do passo 4, o anfitrião encerra as respostas ==
+
+Ator -> B : 1.1. despublica o convite
+activate B
+
+B -> C : 1.2. unpublishInvite(inviteId : UUID, hostId : UUID) : Invite
+activate C
+
+C -> I : 1.2.1. findById(inviteId : UUID) : Invite [0..1]
+activate I
+I --> C : Invite [0..1]
+deactivate I
+
+C -> C : 1.2.2. validateOwnership(invite : Invite, hostId : UUID) : Boolean
+
+alt o convite é deste anfitrião e está em status PUBLISHED
+
+  C -> I : 1.2.3. unpublish() : Boolean
+  activate I
+  I --> C : Invite(status = UNPUBLISHED)
+  deactivate I
+  C --> B : Invite
+  B --> Ator : 1.3. avisa que o link não abre mais
+
+else o convite não é deste anfitrião, ou não está publicado
+
+  C --> B : InviteNotOpenError ou NotInviteOwner
+  B --> Ator : 1.3. informa que não há o que despublicar
+
+end
+
+deactivate C
+deactivate B
+
+@enduml

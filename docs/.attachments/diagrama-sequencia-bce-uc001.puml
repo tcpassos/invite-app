@@ -1,7 +1,7 @@
-@startuml diagrama-sequencia-uc001
+@startuml diagrama-sequencia-bce-uc001
 ' Fonte do Diagrama de Sequência do UC001, Autenticar anfitrião, da Sprint 3, task #123.
 ' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
-'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-uc001.puml
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-bce-uc001.puml
 ' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
 ' Notação BCE, para o Documento de Realização de Casos de Uso. Não há versão em camadas deste fluxo.
 ' Boundary é a tela de acesso. Control reúne AuthController e HostService. Entity reúne Host e HostRepository.

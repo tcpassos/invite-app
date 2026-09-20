@@ -1,0 +1,107 @@
+@startuml diagrama-sequencia-bce-uc005
+' Realização do UC005, Confirmar presença (RSVP), com a extensão do UC006, em notação BCE.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-bce-uc005.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' Boundary é a página pública do convite. Control reúne PublicRsvpController e RsvpService.
+' As entidades respondem também pela persistência delas.
+' A guarda do teto de capacidade vira a mensagem reserveSeats, porque em BCE não há
+' repositório nem transação para mostrá-la. Ver UC005 RN4 e ADR-0008.
+' Só as chamadas são numeradas, retorno não leva número.
+' Identificadores em inglês, conforme o Guia de Estilo. Rótulos de fluxo em português.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam sequenceMessageAlign first
+skinparam maxMessageSize 250
+hide footbox
+
+actor "Convidado" as Ator
+boundary "PublicInviteScreen" as B
+control "RsvpController" as C
+entity "Invite" as I
+entity "DietaryCategory" as DC
+entity "Guest" as G
+entity "DietaryNote" as N
+
+== Fluxo básico, abrir o convite ==
+
+Ator -> B : 1. abre o link do convite
+activate B
+
+B -> C : 2. getPublishedInvite(publicToken : String) : Invite [0..1]
+activate C
+
+C -> I : 2.1. findPublishedByPublicToken(publicToken : String) : Invite [0..1]
+activate I
+I --> C : Invite [0..1]
+deactivate I
+
+C -> DC : 2.2. listDietaryCategories() : DietaryCategory [0..*]
+activate DC
+DC --> C : DietaryCategory [0..*]
+deactivate DC
+
+C --> B : Invite e DietaryCategory [0..*]
+B --> Ator : 3. exibe os dados do evento, o formulário e as cinco categorias (passo 2, UC006 passo 1)
+
+== Fluxo básico, responder ==
+
+Ator -> B : 4. escolhe a presença, os acompanhantes e o nome (passos 3 a 5, RN1 e RN2)
+
+opt marcou categoria com requiresDescription (UC006 RN2)
+  Ator -> B : 5. descreve a restrição no campo de texto livre
+end
+
+Ator -> B : 6. envia a resposta
+
+B -> C : 7. registerRsvp(publicToken : String, rsvpCommand : RsvpCommand) : Guest
+
+C -> I : 7.1. findPublishedByPublicToken(publicToken : String) : Invite [0..1]
+activate I
+I --> C : Invite [0..1]
+deactivate I
+
+C -> C : 7.2. checkCompanionLimit(invite : Invite, companionCount : Integer) : Boolean
+C -> C : 7.3. validateDietaryNote(freeText : String [0..1], categories : DietaryCategory [0..*]) : Boolean
+
+opt a resposta é sim, que é a única que ocupa vaga (RN4)
+  C -> I : 7.4. reserveSeats(seatsRequested : Integer) : Boolean
+  activate I
+  I --> C : Boolean
+  deactivate I
+end
+
+alt a resposta não ocupa vaga, ou a reserva coube no teto (RN4)
+
+  C -> G : 7.5. «create» Guest(name : String, status : RsvpStatus, companionCount : Integer, personalToken : String)
+  activate G
+  G --> C : Guest
+  deactivate G
+
+  opt o convidado marcou categoria ou escreveu texto livre (UC006)
+    C -> N : 7.6. «create» DietaryNote(freeText : String [0..1], categories : DietaryCategory [0..*])
+    activate N
+    N --> C : DietaryNote
+    deactivate N
+  end
+
+  C --> B : Guest
+  B --> Ator : 8. confirma e entrega o link pessoal para alterar depois (passo 8, ED2)
+
+else A4, o teto de pessoas do evento foi atingido (RN4)
+
+  C --> B : CapacityExceededError
+  B --> Ator : 8. informa que o evento está lotado e mantém disponível a resposta não (A4.1 e A4.2)
+
+else A2, dados inválidos
+
+  C --> B : ValidationError
+  B --> Ator : 8. aponta o campo com problema e mantém o que já foi preenchido (A2.1)
+
+end
+
+deactivate C
+deactivate B
+
+@enduml

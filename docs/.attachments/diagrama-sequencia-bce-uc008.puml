@@ -1,0 +1,97 @@
+@startuml diagrama-sequencia-bce-uc008
+' Realização do UC008, Consolidar e exportar observações alimentares, em notação BCE.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-bce-uc008.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' Boundary é a tela de consolidação do painel. Control reúne DietaryController e DietaryService.
+' As entidades respondem também pela persistência delas.
+' Só as chamadas são numeradas, retorno não leva número.
+' Identificadores em inglês, conforme o Guia de Estilo. Rótulos de fluxo em português.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam sequenceMessageAlign first
+skinparam maxMessageSize 250
+hide footbox
+
+actor "Anfitrião" as Ator
+boundary "DietaryPanelScreen" as B
+control "DietaryController" as C
+entity "Invite" as I
+entity "DietaryCategory" as DC
+
+== Fluxo básico, consolidar ==
+
+Ator -> B : 1. abre a consolidação alimentar do convite
+activate B
+
+B -> C : 2. consolidateDietaryNotes(inviteId : UUID, hostId : UUID) : DietarySummary
+activate C
+
+C -> I : 2.1. findById(inviteId : UUID) : Invite [0..1]
+activate I
+I --> C : Invite [0..1]
+deactivate I
+
+C -> C : 2.2. validateOwnership(invite : Invite, hostId : UUID) : Boolean
+
+C -> DC : 2.3. listDietaryCategories() : DietaryCategory [0..*]
+activate DC
+DC --> C : DietaryCategory [0..*]
+deactivate DC
+
+C -> I : 2.4. countGuestsByCategory(statuses : RsvpStatus [1..*]) : CategoryCount [0..*]
+activate I
+I --> C : CategoryCount [0..*]
+deactivate I
+
+C -> I : 2.5. findDescriptionsByCategories(statuses : RsvpStatus [1..*], categoryCodes : String [0..*]) : AllergyDescription [0..*]
+activate I
+I --> C : AllergyDescription [0..*]
+deactivate I
+
+C --> B : DietarySummary
+
+alt há pelo menos uma categoria com contagem maior que zero
+
+  B --> Ator : 3. exibe a contagem por categoria e as descrições das alergias (passo 2, ED1, RN1)
+
+else nenhum convidado registrou observação
+
+  B --> Ator : 3. informa que não há observação alimentar registrada
+
+end
+
+deactivate C
+deactivate B
+
+== Fluxo básico, exportar ==
+
+Ator -> B : 4. solicita a exportação
+activate B
+
+B -> C : 5. exportDietaryNotes(inviteId : UUID, hostId : UUID) : String
+activate C
+
+C -> I : 5.1. findById(inviteId : UUID) : Invite [0..1]
+activate I
+I --> C : Invite [0..1]
+deactivate I
+
+C -> C : 5.2. validateOwnership(invite : Invite, hostId : UUID) : Boolean
+
+C -> I : 5.3. findGuestsForExport(statuses : RsvpStatus [1..*]) : ExportRow [0..*]
+activate I
+I --> C : ExportRow [0..*]
+deactivate I
+
+C -> C : 5.4. neutralizeFormulaPrefix(field : String) : String
+C -> C : 5.5. renderCsv(rows : ExportRow [0..*]) : String
+
+C --> B : arquivo CSV
+B --> Ator : 6. entrega o arquivo com uma linha por convidado (ED2)
+
+deactivate C
+deactivate B
+
+@enduml
