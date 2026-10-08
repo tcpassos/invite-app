@@ -191,7 +191,7 @@ A divisão parte das três camadas do [ADR-0001](../Sprint-2/Decisões-Arquitetu
 
 ![Diagrama de pacotes](../../.attachments/diagrama-de-pacotes.png)
 
-**Como ler.** Retângulo com aba é pacote. Seta tracejada é dependência, ou seja, o pacote de origem importa alguma coisa do destino. A única seta rotulada é a do `controller` para a `apresentacao`, porque aquela dependência cruza a rede e não é importação de código.
+**Como ler.** Retângulo com aba é pacote. Seta tracejada é dependência, ou seja, o pacote de origem importa alguma coisa do destino. A única seta rotulada é a do `controller` para a `presentation`, porque aquela dependência cruza a rede e não é importação de código.
 
 | Pacote | Camada | O que contém |
 |---|---|---|
@@ -199,27 +199,27 @@ A divisão parte das três camadas do [ADR-0001](../Sprint-2/Decisões-Arquitetu
 | `front.controller` | Apresentação no sentido amplo, partida entre o tier Front e o navegador | Resolução de rota, chamada à API e a consulta periódica do [ADR-0007](../Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) |
 | `front.templates` | Nenhuma, é ativo estático | Os templates em HTML e CSS do [ADR-0009](../Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) |
 | `contract` | Nenhuma, é módulo compartilhado | Os tipos que as duas pontas usam, compilados para dentro dos dois builds |
-| `api.apresentacao.publico` | Apresentação | `PublicRsvpController`, a única escrita sem autenticação do sistema |
-| `api.apresentacao.autenticado` | Apresentação | `InviteController` e `DietaryController` |
-| `api.apresentacao.autenticacao` | Apresentação | `AuthController`, ver a ressalva abaixo |
-| `api.apresentacao.transversal` | Apresentação | `SessionGuard`, `RateLimitGuard` e `HttpExceptionFilter` |
-| `api.dominio` | Domínio | Os seis serviços, de `RsvpService` a `TemplateCatalog` |
-| `api.dados` | Dados | `InviteRepository`, `DietaryCategoryRepository` e `HostRepository` |
-| `api.modelo` | Atravessa Domínio e Dados | As classes do [Diagrama de Classes](../Sprint-2/Diagrama-de-Classes.md) e os dois enums |
+| `api.presentation.public` | Apresentação | `PublicRsvpController`, a única escrita sem autenticação do sistema |
+| `api.presentation.authenticated` | Apresentação | `InviteController` e `DietaryController` |
+| `api.presentation.auth` | Apresentação | `AuthController`, ver a ressalva abaixo |
+| `api.presentation.common` | Apresentação | `SessionGuard`, `RateLimitGuard` e `HttpExceptionFilter` |
+| `api.domain` | Domínio | Os seis serviços, de `RsvpService` a `TemplateCatalog` |
+| `api.data` | Dados | `InviteRepository`, `DietaryCategoryRepository` e `HostRepository` |
+| `api.model` | Atravessa Domínio e Dados | As classes do [Diagrama de Classes](../Sprint-2/Diagrama-de-Classes.md) e os dois enums |
 
-### Por que `modelo` é pacote irmão e não filho do Domínio
+### Por que `model` é pacote irmão e não filho do Domínio
 
 Este ponto só aparece quando se desenha o diagrama de pacotes, e decidi-lo errado produz um ciclo de importação que o compilador aceita e que ninguém percebe até a base crescer.
 
 A seção 7.1 registra que o **Domínio depende da camada de Dados**. E a camada de Dados **devolve as classes do modelo**, ou seja, depende delas.
 
-Se `Invite`, `Guest` e as outras morarem dentro do pacote de Domínio, o resultado é `dominio` importando `dados` e `dados` importando `dominio`.
+Se `Invite`, `Guest` e as outras morarem dentro do pacote de Domínio, o resultado é `domain` importando `data` e `data` importando `domain`.
 
-> **As classes de modelo ficam em pacote próprio, no mesmo nível de `dominio` e de `dados`.** Nenhum dos dois importa o outro por causa delas, e os dois importam `modelo`.
+> **As classes de modelo ficam em pacote próprio, no mesmo nível de `domain` e de `data`.** Nenhum dos dois importa o outro por causa delas, e os dois importam `model`.
 
-Isso não contraria o ADR-0001. A regra de lá é que Domínio e Dados não dependem da Apresentação, e ela continua valendo. `modelo` não é uma quarta camada, é onde vivem os classificadores que duas camadas trocam entre si.
+Isso não contraria o ADR-0001. A regra de lá é que Domínio e Dados não dependem da Apresentação, e ela continua valendo. `model` não é uma quarta camada, é onde vivem os classificadores que duas camadas trocam entre si.
 
-### Uma ressalva sobre `autenticacao`
+### Uma ressalva sobre `auth`
 
 O pacote existe porque `AuthController` precisa morar em algum lugar, e **ele não cabe em nenhum dos dois pacotes que o guia define**. Não é do público, porque aquele pacote atende só as rotas que o convidado alcança. Não é do autenticado, porque a rota de entrada é anterior à sessão.
 
@@ -271,26 +271,26 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 
 **Nenhuma classe.** O pacote carrega os tipos que as duas pontas compartilham, e tipo não é classe. Ele é compilado para dentro do build do Front e do build da API, e some na compilação. Os valores de execução que moram nele, como o enum `RsvpStatus`, acabam duplicados dentro dos dois bundles.
 
-#### `api.apresentacao.publico`
+#### `api.presentation.public`
 
 | Classe | Descrição | Operações |
 |---|---|---|
 | `PublicRsvpController` | Expõe a superfície pública do convite. É a única escrita sem sessão do sistema | `GET /public/invites/{publicToken}`, `POST /public/invites/{publicToken}/rsvp`, `parseRequest(dto)` |
 
-#### `api.apresentacao.autenticado`
+#### `api.presentation.authenticated`
 
 | Classe | Descrição | Operações |
 |---|---|---|
 | `InviteController` | Expõe o recurso convite ao anfitrião. Publicação, despublicação e lista de presença | `POST /invites/{inviteId}/publish`, `POST /invites/{inviteId}/unpublish`, `GET /invites/{inviteId}/attendance` |
 | `DietaryController` | Expõe a consolidação alimentar ao anfitrião, incluindo a exportação | `GET /invites/{inviteId}/dietary-summary`, `GET /invites/{inviteId}/dietary-notes.csv`, `renderCsv(rows)`, `neutralizeFormulaPrefix(field)` |
 
-#### `api.apresentacao.autenticacao`
+#### `api.presentation.auth`
 
 | Classe | Descrição | Operações |
 |---|---|---|
 | `AuthController` | Expõe a entrada e o cadastro do anfitrião, fluxo básico e A1 do UC001 | `signIn(email, password)` e `signUp(name, email, password)`. A rota de cada uma ainda não está fechada |
 
-#### `api.apresentacao.transversal`
+#### `api.presentation.common`
 
 | Classe | Descrição | Operações |
 |---|---|---|
@@ -300,7 +300,7 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 
 A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura pública quem chama a API é o container do tier Front, então o endereço de origem visível é sempre o mesmo e contá-lo bloquearia a página para todos os convidados de uma vez.
 
-#### `api.dominio`
+#### `api.domain`
 
 | Classe | Descrição | Operações |
 |---|---|---|
@@ -311,7 +311,7 @@ A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura púb
 | `HostService` | Cadastro e autenticação do anfitrião | Sem assinatura fechada. A realização do UC001 nomeia `hashPassword`, `verifyPassword` e `issueSession` dentro de um objeto de controle, sem separar o que é deste serviço do que é do controller |
 | `TemplateCatalog` | Carrega o catálogo de templates e sustenta a RN2 do UC003 dentro do Domínio | `listTemplateCodes()`, `textFieldLimits(templateCode)` |
 
-#### `api.dados`
+#### `api.data`
 
 | Classe | Descrição | Operações |
 |---|---|---|
@@ -319,7 +319,7 @@ A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura púb
 | `DietaryCategoryRepository` | Serve o dado de referência das cinco categorias alimentares. Fica separado do repositório do convite porque a operação dele não recebe `inviteId` | `listDietaryCategories()` |
 | `HostRepository` | Guarda a conta do anfitrião | `findByEmail(email)`, mais a gravação da conta, sem assinatura fechada |
 
-#### `api.modelo`
+#### `api.model`
 
 As nove classes abaixo vêm do Diagrama de Classes. **Nenhuma tem método próprio**, porque o comportamento mora nos serviços do Domínio, e por isso a linha Métodos repete Nenhum nas nove.
 

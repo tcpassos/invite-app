@@ -171,8 +171,8 @@ alt dados válidos
   DM -> DA : saveRsvpWithinCapacity(invite, guest, dietaryNote, seatsRequested)
   activate DA
 note right of DA
-  Checagem do teto e insert na MESMA transação (UC005 RN4, ADR-0008).
-  Validar na Apresentação deixaria duas respostas simultâneas ultrapassarem o limite.
+  Teto e insert na mesma transação
+  (UC005 RN4, ADR-0008)
 end note
 
   DA -> DB : BEGIN

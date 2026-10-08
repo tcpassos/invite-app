@@ -162,8 +162,8 @@ opt há restrição registrada, e por isso o painel oferece a exportação
     activate PR
     deactivate PR
   note right of PR
-    Prefixo de aspa simples em campo que comece com = + - ou @ (ADR-0008).
-    Sem isso o conteúdo executa quando o buffet abre a planilha.
+    Prefixo de aspa contra fórmula
+    (ADR-0008)
   end note
   end
   deactivate PR

@@ -62,8 +62,8 @@ alt o convite é deste anfitrião e tem nome, data, hora e local (RN1)
   opt publicToken ainda não existe
     DM -> DM : generatePublicToken()
 note right of DM
-  128 bits de CSPRNG em base32 Crockford, 26 caracteres (ADR-0005).
-  Gerado no Domínio. A Apresentação nunca cria identificador.
+  Token de 128 bits, base32 Crockford
+  (ADR-0005)
 end note
     activate DM
     deactivate DM

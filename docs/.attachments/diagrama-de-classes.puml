@@ -95,9 +95,8 @@ Template "1" *-- "1..*\ntextFieldLimits" TextFieldLimit
 
 Invite "1\ninvite" *-- "0..*\nguests" Guest
 note on link
-  Invariante do teto de pessoas (UC002 RN2, UC005 RN4, ADR-0008).
-  Com capacityLimit preenchido, a soma de 1 mais companionCount
-  de todo Guest com status ACCEPTED não pode ultrapassar capacityLimit.
+  Invariante do teto de pessoas
+  (UC005 RN4, ADR-0008)
 end note
 
 Guest "1\nguest" *-- "0..1\nnote" DietaryNote

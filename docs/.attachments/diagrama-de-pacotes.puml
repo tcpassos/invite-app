@@ -4,7 +4,7 @@
 '   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-de-pacotes.puml
 ' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
 ' As três camadas vêm do ADR-0001 e os dois pacotes da Apresentação da seção 5.3 do Guia.
-' O pacote modelo é irmão de dominio e dados, e não filho, para não criar ciclo.
+' O pacote model é irmão de domain e data, e não filho, para não criar ciclo.
 ' O diagrama traz rótulo, não explicação. A leitura fica na seção 5.1 do DAS.
 
 skinparam shadowing false
@@ -23,16 +23,16 @@ package contract <<compartilhado>>
 
 package api <<NestJS>> {
 
-  package apresentacao {
-    package publico
-    package autenticado
-    package autenticacao
-    package transversal
+  package presentation {
+    package public
+    package authenticated
+    package auth
+    package common
   }
 
-  package dominio
-  package dados
-  package modelo
+  package domain
+  package data
+  package model
 }
 
 view ..> controller
@@ -40,22 +40,22 @@ view ..> templates
 controller ..> templates
 controller ..> contract
 
-publico ..> transversal
-autenticado ..> transversal
-autenticacao ..> transversal
+public ..> common
+authenticated ..> common
+auth ..> common
 
-publico ..> dominio
-autenticado ..> dominio
-autenticacao ..> dominio
+public ..> domain
+authenticated ..> domain
+auth ..> domain
 
-apresentacao ..> contract
-dominio ..> contract
+presentation ..> contract
+domain ..> contract
 
-dominio ..> dados
-dominio ..> modelo
-dados ..> modelo
-apresentacao ..> modelo
+domain ..> data
+domain ..> model
+data ..> model
+presentation ..> model
 
-controller ..> apresentacao : HTTP
+controller ..> presentation : HTTP
 
 @enduml
