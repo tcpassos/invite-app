@@ -51,6 +51,8 @@ Estas peças são usadas por mais de uma parte e já estão prontas. Use em vez 
 
 Rodando no Docker Desktop, todas as requisições do navegador chegam à API com o mesmo endereço, o do gateway da rede do Docker. Então, na sua máquina, os limites por endereço contam você e qualquer outra aba como uma pessoa só.
 
+**Forma do corpo**, em `presentation/common/parse-request.ts`. O controller lê o corpo com `asObject` e os campos com `optionalString`, `optionalInteger` e as outras. Campo no tipo errado vira 400. Campo ausente passa como `undefined`, porque ausência é a regra `required`, e quem recusa é o Domínio com 422. Faixa, conjunto de valores e tamanho também são do Domínio.
+
 **Tokens**, em `domain/tokens.ts`. `generatePublicToken()` na publicação e `generatePersonalToken()` no registro da resposta. É o mesmo gerador, como o ADR-0011 pede.
 
 **Conferência de dono**, em `domain/ownership.ts`. Todo serviço do painel faz `validateOwnership(await repo.findById(inviteId), hostId)`. Convite que não existe e convite de outro anfitrião saem pelo mesmo `NotInviteOwner`, que vira o mesmo 404.

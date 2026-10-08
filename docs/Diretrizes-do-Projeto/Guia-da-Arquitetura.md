@@ -1256,7 +1256,7 @@ Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O pró
 | 33 | Data, hora e limites só mudam com o convite em rascunho, por `PUT /invites/{inviteId}` | 4.1 | Nenhum caso de uso previa editar o convite depois de criado | O erro de digitação no rascunho só se corrige criando outro convite |
 | 34 | Os números do limite de taxa da fronteira pública | 4.1 | A medida 2 do ADR-0008 decide o limite e não os números | Os números ficam escolhidos por quem implementa, sem registro |
 
-As linhas 20 a 33 receberam o aval do time em 07/10/2026.
+As linhas 20 a 33 receberam o aval do time em 07/10/2026, e a linha 34 em 08/10/2026.
 
 > **Nenhuma linha desta tabela vale contra um ADR.** Se um ADR futuro decidir o contrário de qualquer uma delas, o ADR é a fonte da decisão e a linha sai daqui, conforme a divisão de trabalho declarada na introdução.
 
