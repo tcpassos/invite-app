@@ -1,0 +1,7 @@
+# Prettier formata código. Markdown aqui é prosa, com regra de escrita própria.
+**/*.md
+docs/
+trabalhos/
+migrations/
+tools/revisao-codex/
+package-lock.json

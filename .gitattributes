@@ -1,2 +1,9 @@
-# Scripts precisam de LF, senao o Git Bash no Windows quebra com ": command not found".
-*.sh text eol=lf
+# Todo texto fica com final de linha LF, inclusive no Windows. O Prettier exige LF,
+# e o Git Bash quebra script com CRLF com ": command not found".
+* text=auto eol=lf
+
+# Binários, para o git nunca tentar converter.
+*.png binary
+*.jpg binary
+*.pdf binary
+*.pptx binary

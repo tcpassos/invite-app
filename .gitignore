@@ -4,3 +4,10 @@
 
 # ambiente local, contém segredos
 .env
+
+# dependências e saídas de build
+node_modules/
+dist/
+.next/
+coverage/
+*.tsbuildinfo

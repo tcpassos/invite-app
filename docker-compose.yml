@@ -9,7 +9,6 @@
 name: invite-app
 
 services:
-
   # Tier Banco. Não publica porta: quem precisa inspecionar entra por
   # docker compose exec db psql. Ver seção 5.3 do Diagrama de Implantação.
   db:
@@ -25,7 +24,7 @@ services:
       # está escrito na seção 8.1 do Diagrama de Implantação.
       - ./migrations:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -47,7 +46,7 @@ services:
     ports:
       # 3001 no host porque o navegador chama a API direto no POST do UC005.
       # São dois serviços de fronteira e não um. Ver seção 5.3.
-      - "3001:3000"
+      - '3001:3000'
     depends_on:
       db:
         condition: service_healthy
@@ -71,7 +70,7 @@ services:
       # razão está na seção 5.2 do Diagrama de Implantação.
       API_URL_INTERNAL: http://api:3000
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       # service_started e não service_healthy: o front não chama a API no arranque,
       # e com a API fora do ar ele serve a página de convite indisponível da
