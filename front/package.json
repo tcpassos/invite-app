@@ -1,0 +1,28 @@
+{
+  "name": "@invite-app/front",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tier Front: Next.js que renderiza o convite público e serve o painel do anfitrião",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@invite-app/contract": "*",
+    "next": "^16.4.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^16.4.0",
+    "@types/node": "^24.19.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "vitest": "^4.1.11"
+  }
+}

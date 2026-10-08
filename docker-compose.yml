@@ -1,9 +1,7 @@
 # Forma executável do Diagrama de Implantação da Sprint 2.
 # As decisões deste arquivo estão na seção 8 daquela página e nos ADRs 0002, 0003, 0010 e 0012.
 #
-# O banco e a API já sobem:
-#   docker compose up db api
-# Quando front/ existir, o ambiente inteiro sobe com:
+# O ambiente inteiro sobe com:
 #   docker compose up
 #
 # As imagens são construídas a partir da raiz do repositório, porque a API e o

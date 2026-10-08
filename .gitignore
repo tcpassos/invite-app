@@ -11,3 +11,6 @@ dist/
 .next/
 coverage/
 *.tsbuildinfo
+
+# gerado pelo Next.js a cada build
+next-env.d.ts

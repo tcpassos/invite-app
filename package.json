@@ -27,6 +27,7 @@
   },
   "workspaces": [
     "contract",
-    "api"
+    "api",
+    "front"
   ]
 }

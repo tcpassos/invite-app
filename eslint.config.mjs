@@ -7,8 +7,10 @@ import { importX } from 'eslint-plugin-import-x';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import prettier from 'eslint-config-prettier';
 import globals from 'globals';
+import nextPlugin from '@next/eslint-plugin-next';
 
 const camada = (pasta) => `./api/src/${pasta}`;
+const pacoteDoFront = (pasta) => `./front/src/${pasta}`;
 
 export default tseslint.config(
   { ignores: ['**/node_modules/**', '**/dist/**', '**/.next/**', 'docs/**', 'trabalhos/**'] },
@@ -66,12 +68,52 @@ export default tseslint.config(
               from: './api',
               message: 'O front não importa código da API. A conversa é por HTTP.',
             },
+            // DAS 5.1: no front, a view usa o controller e o controller não conhece a view.
+            {
+              target: pacoteDoFront('controller'),
+              from: pacoteDoFront('view'),
+              message: 'O controller não importa da view (DAS, seção 5.1).',
+            },
+            // DAS 5.1: templates é ativo estático e não depende de código nenhum.
+            {
+              target: pacoteDoFront('templates'),
+              from: [pacoteDoFront('view'), pacoteDoFront('controller'), pacoteDoFront('app')],
+              message: 'templates é ativo estático e não importa código (DAS, seção 5.1).',
+            },
             {
               target: './contract',
               from: ['./api', './front'],
               message: 'O contract é compartilhado e não importa da API nem do front.',
             },
           ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['front/**/*.{ts,tsx,js,mjs}'],
+    plugins: { '@next/next': nextPlugin },
+    languageOptions: { globals: { ...globals.browser } },
+    settings: { next: { rootDir: 'front/' } },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+      // Guia da Arquitetura, 10.5: o front não fala com o banco, e a rede não impede.
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: ['pg', 'kysely'].map((name) => ({
+            name,
+            message: 'O front não fala com o banco (Guia da Arquitetura, 10.5).',
+          })),
+        },
+      ],
+      // ADR-0004 e Guia, 6.4: Next.js é front-end apenas, sem server actions.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "ExpressionStatement[directive='use server']",
+          message: 'Sem server actions no front (ADR-0004). A regra de negócio fica na API.',
         },
       ],
     },
