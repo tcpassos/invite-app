@@ -1,6 +1,6 @@
 # Configuração de Ambiente
 
-Como subir o invite-app na sua máquina. O ambiente inteiro roda em containers, conforme o [ADR-0003](../Sprints/Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md), e não há nada para instalar além do Docker.
+Como subir o invite-app na sua máquina e como trabalhar no código. O ambiente inteiro roda em containers, conforme o [ADR-0003](../Sprints/Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md). Para só subir e usar, basta o Docker. Para mexer no código, entra também o Node.
 
 A topologia que este arquivo materializa está no [Diagrama de Implantação](../Sprints/Sprint-2/Diagrama-de-Implantação.md). O `docker-compose.yml` fica na raiz do repositório.
 
@@ -11,7 +11,7 @@ Docker com Compose v2 ou mais novo. Testado com Docker 29.3 e Compose v5.
     docker version
     docker compose version
 
-Nada de Node, de npm e de PostgreSQL instalados na máquina. Tudo isso mora dentro dos containers.
+Para mexer no código, Node 24, a versão do arquivo `.nvmrc` na raiz. O npm vem junto. PostgreSQL instalado na máquina não é preciso em caso nenhum, porque o banco sempre roda em container.
 
 ## Primeira vez
 
@@ -30,11 +30,12 @@ O `.env` não vai para o repositório, e o `.gitignore` já cuida disso. Troque 
 
     docker compose up
 
-**O que sobe hoje é só o banco**, porque o código da aplicação começa na Sprint 3 e as pastas `front/` e `api/` ainda não existem. Até lá, use:
+Sobem os três serviços, na ordem `db`, `api`, `front`. A primeira vez demora alguns minutos, porque as imagens da API e do front são construídas na hora.
 
-    docker compose up db
+**3. Confira que está de pé.**
 
-Quando as duas pastas existirem, `docker compose up` sobe os três de uma vez, na ordem `db`, `api`, `front`.
+- `http://127.0.0.1:3000` abre a página inicial do front.
+- `http://127.0.0.1:3001/qualquer` responde um JSON com `"code":"NOT_FOUND"`. É a API respondendo no formato de erro da seção 9.3 do Guia da Arquitetura, o que mostra que ela subiu e que o filtro de erro está ativo.
 
 ## Comandos do dia a dia
 
@@ -84,6 +85,48 @@ Por isso são duas variáveis. A `API_URL_INTERNAL` fica fixa no `docker-compose
 **A `NEXT_PUBLIC_API_URL` é argumento de construção, não variável de execução.** O Next.js congela tudo que começa com `NEXT_PUBLIC_` no momento da compilação. Mudar o valor no `.env` não tem efeito nenhum sobre uma imagem já construída, e é preciso reconstruir:
 
     docker compose up --build front
+
+## Para mexer no código
+
+O repositório é um monorepo com três pacotes, e um `npm install` na raiz instala todos.
+
+| Pasta | O que é |
+|---|---|
+| `contract/` | Os tipos que a API e o front compartilham, como o formato de erro e as situações do convite |
+| `api/` | O tier API, em NestJS. O mapa das pastas está no README dela |
+| `front/` | O tier Front, em Next.js. O mapa das pastas também está no README dele |
+
+Na primeira vez:
+
+    npm install
+    npm run build --workspace contract
+
+O `contract` precisa estar compilado antes de tudo, porque a API e o front leem os tipos dele já prontos. Se você mudar alguma coisa nele, compile de novo.
+
+Para trabalhar no front com recarga automática, suba o banco e a API pelo compose e rode o front fora dele. O README do front diz as duas variáveis que o `dev` precisa.
+
+    docker compose up -d db api
+    npm run dev --workspace front
+
+Na API o caminho mais simples é reconstruir o container a cada mudança, com `docker compose up --build api`. O `dev` da API rodando fora do compose não alcança o banco dele, que não publica porta. Quem preferir o `dev` sobe um banco descartável numa porta separada, como mostra o README da API.
+
+## Antes de abrir um pull request
+
+Rode na raiz:
+
+| O que confere | Comando |
+|---|---|
+| Regras de lint, inclusive a regra de camadas | `npm run lint` |
+| Formatação | `npm run format:check`, e `npm run format` para corrigir |
+| Tipos | `npm run typecheck` |
+| Testes | `npm test` |
+| Build | `npm run build` |
+
+**A regra de camadas é verificada pelo lint.** Se o Domínio importar da Apresentação, se a Apresentação importar dos Dados, se o front importar algo da API ou se o controller do front importar da view, o `npm run lint` falha e diz qual decisão foi quebrada.
+
+Os testes de integração do banco aparecem como pulados quando não há banco de teste. Para rodá-los, siga o README da API, que mostra como subir um banco descartável numa porta separada.
+
+O GitHub roda as mesmas conferências em todo pull request, com os testes de banco incluídos, e constrói as duas imagens do compose. O resultado aparece no próprio PR.
 
 ## Quando o esquema do banco mudar
 
