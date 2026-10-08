@@ -35,14 +35,11 @@ WIKI_URL="https://dev.azure.com/GUITOEBE/invite-people/_git/invite-people.wiki"
 KEEP=()
 
 # Arquivos e pastas de docs/ que ficam so no GitHub e nao viram pagina da Wiki.
-# O diretorio "Comecando" voltou para a Wiki quando a Configuracao de Ambiente
-# ganhou conteudo. As outras duas paginas dele continuam de fora enquanto forem
-# marcadores. Ao preencher uma delas, tirar a linha daqui e acrescentar o nome
-# no docs/Começando/.order.
+# Paginas que ainda sao marcadores ficam de fora da Wiki. Ao preencher uma delas,
+# tirar a linha daqui e conferir o nome no .order da pasta.
 # O nome casa em qualquer profundidade, entao basta o nome do arquivo.
 EXCLUDE=(
   "README.md"
-  "Configuração-do-Projeto.md"
   "Protótipo-de-Baixo-Nível.md"
 )
 
