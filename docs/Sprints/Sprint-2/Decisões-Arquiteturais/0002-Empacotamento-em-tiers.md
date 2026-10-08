@@ -7,7 +7,7 @@
 
 O [ADR-0001](0001-Estilo-arquitetural.md) definiu três camadas no back-end, mas camada e tier não são a mesma coisa. As três camadas são **lógicas** e podem perfeitamente morar na mesma imagem. O que um container separa é **tier**, ou seja, unidade de implantação.
 
-Essa distinção precisa estar registrada porque confundir as duas coisas é o erro mais comum ao desenhar o diagrama de implantação, e foi um ponto corrigido durante a preparação do seminário sobre Docker.
+Essa distinção precisa estar registrada porque confundir as duas coisas é o erro mais comum ao desenhar o diagrama de implantação.
 
 O time ganhou familiaridade prática com Docker e compose ao preparar o T1, e já existe um problema concreto de padronização de ambiente entre os quatro integrantes.
 

@@ -65,7 +65,7 @@ O benefício é o mesmo nas três: permite trocar a camada de Apresentação sem
 
 ### 3.1 A leitura adotada sobre o acesso aos Dados
 
-O material da disciplina admite duas leituras. Numa, a Apresentação traduz comandos em ações sobre o Domínio **e** sobre os Dados. Noutra, o Domínio esconde os Dados da Apresentação.
+O método de projeto em camadas admite duas leituras. Numa, a Apresentação traduz comandos em ações sobre o Domínio **e** sobre os Dados. Noutra, o Domínio esconde os Dados da Apresentação.
 
 **Este projeto adota a leitura estrita: a Apresentação nunca chama a camada de Dados.**
 

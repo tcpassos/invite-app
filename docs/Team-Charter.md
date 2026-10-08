@@ -13,7 +13,7 @@
 - App de Convites Virtuais. Azure DevOps `GUITOEBE/invite-people`, GitHub `tcpassos/invite-app`
 
 # Duração do Projeto
-- De 04/Ago/2026 (Aula 01) a 03/Nov/2026 (Aula 14, apresentação do Pitch Final), cerca de 3 meses.
+- De 04/Ago/2026 a 03/Nov/2026, cerca de 3 meses.
 
 # Missão e Objetivos
 - **Missão:** facilitar a criação de convites virtuais bonitos e a gestão de presença e restrições alimentares em um só app.
@@ -46,20 +46,17 @@
 # Avaliação de Desempenho
 - Progresso medido pela conclusão dos itens do backlog a cada sprint, acompanhado no Azure Boards.
 - Revisão do que foi entregue na Revisão da Sprint e ajustes na Retrospectiva.
-- Avaliação final pelo professor, que atua como Product Owner, conforme os critérios da disciplina.
+- Avaliação final pelo Product Owner.
 
 # Atividades e Marcos
-| Marco | Aula | Data | Entrega |
-|---|---|---|---|
-| Sprint 1 | Aula 03 | 18/Ago | Engenharia de requisitos: personas, jornada, histórias, casos de uso e diagrama |
-| Sprint 2 | Aula 05 | 01/Set | Arquitetura e modelagem estrutural: camadas, componentes, implantação, classes, sequência e ADR |
-| T1 | Aula 06 | 08/Set | Seminário sobre Docker e conteinerização, 10% do Grau A |
-| Sprint 3 | Aula 07 | 15/Set | Visão do produto, protótipo de baixa fidelidade, realização de casos de uso e DAS |
-| Sprint 4 | Aula 10 | 06/Out | Backlog priorizado e início da implementação versionada no GitHub |
-| Sprint 5 | Aula 12 | 20/Out | Incremento funcional da aplicação |
-| Entrega final | Aula 14 | 03/Nov | Protótipo funcional, artefatos consolidados e apresentação do Pitch Final |
-
-A data da Aula 14 aparece como "26/05" no Moodle, que é um erro de digitação. Pela sequência semanal, entre a Aula 13 em 27/Out e a Aula 15 em 10/Nov, cai em 03/Nov. Confirmar com o professor antes de tratar como definitiva.
+| Marco | Data | Entrega |
+|---|---|---|
+| Sprint 1 | 18/Ago | Engenharia de requisitos: personas, jornada, histórias, casos de uso e diagrama |
+| Sprint 2 | 01/Set | Arquitetura e modelagem estrutural: camadas, componentes, implantação, classes, sequência e ADR |
+| Sprint 3 | 15/Set | Visão do produto, protótipo de baixa fidelidade, realização de casos de uso e DAS |
+| Sprint 4 | 06/Out | Backlog priorizado e início da implementação versionada no GitHub |
+| Sprint 5 | 20/Out | Incremento funcional da aplicação |
+| Entrega final | 03/Nov | Protótipo funcional, artefatos consolidados e apresentação do Pitch Final |
 
 A implementação do MVP acontece nas Sprints 4 e 5, seguindo os épicos: conta e acesso, criação e personalização do convite, compartilhamento, confirmação de presença, observações alimentares, painel e consolidação.
 

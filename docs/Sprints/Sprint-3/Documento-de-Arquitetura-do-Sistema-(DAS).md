@@ -479,7 +479,7 @@ Os caminhos 1 e 3 formam o convite público em dois saltos. O caminho 2 atende o
 
 ![Diagrama de Componentes](../../.attachments/diagrama-de-componentes.png)
 
-São 20 componentes significativos, distribuídos em três containers e organizados pelas camadas lógicas do [ADR-0001](../Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetural.md). A figura mostra cada componente, as interfaces que ele publica e as 31 dependências entre eles.
+A figura tem 21 componentes, os 20 de software listados abaixo e o banco `invite_app`, distribuídos em três containers e organizados pelas camadas lógicas do [ADR-0001](../Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetural.md). A figura mostra cada componente, as interfaces que ele publica e as 31 dependências entre eles.
 
 | Onde | Componentes |
 |---|---|

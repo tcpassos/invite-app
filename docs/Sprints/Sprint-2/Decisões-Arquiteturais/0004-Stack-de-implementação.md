@@ -7,7 +7,7 @@
 
 O [ADR-0001](0001-Estilo-arquitetural.md) definiu MVC no front e três camadas no back, e o [ADR-0002](0002-Empacotamento-em-tiers.md) definiu três tiers em containers. Faltava escolher as tecnologias.
 
-O critério adotado foi **qual stack melhor evidencia e sustenta as decisões arquiteturais**, e não qual o time digita mais rápido. A implementação nesta disciplina é mínima, e o artefato avaliado é a arquitetura.
+O critério adotado foi **qual stack melhor evidencia e sustenta as decisões arquiteturais**, e não qual o time digita mais rápido. A implementação prevista é mínima, e o artefato principal é a arquitetura.
 
 Um levantamento de 19 produtos equivalentes foi feito para confrontar as escolhas. Os resultados estão em `pesquisa-stack-benchmark.md`, no repositório do GitHub.
 
@@ -37,7 +37,7 @@ Um levantamento de 19 produtos equivalentes foi feito para confrontar as escolha
 - O convite público responde com HTML pronto, o que atende a prévia de link no WhatsApp e o tempo de carregamento no celular.
 
 **Negativas**
-- **Apenas um integrante tem experiência prévia com esta stack.** Decisão consciente: o critério foi mérito arquitetural, e a implementação nesta disciplina é mínima. Se o escopo de código crescer, esta decisão precisa ser reavaliada.
+- **Apenas um integrante tem experiência prévia com esta stack.** Decisão consciente: o critério foi mérito arquitetural, e a implementação prevista é mínima. Se o escopo de código crescer, esta decisão precisa ser reavaliada.
 - O levantamento de mercado **não sustenta NestJS**. Nenhum dos 19 produtos usa. A justificativa acima é de contexto próprio e é assim que deve ser defendida. Apelar a popularidade no segmento seria falso.
 - O levantamento também **não sustenta PostgreSQL como padrão do segmento**. Houve uma única confirmação direta em 19 produtos, porque banco de dados não é observável por HTTP. A justificativa é técnica e própria.
 - Com o front renderizando no servidor e chamando a API pela rede, existem dois saltos no caminho do convite público, e um erro passa a ter dois lados. Ver [ADR-0002](0002-Empacotamento-em-tiers.md).

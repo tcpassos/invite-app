@@ -7,7 +7,7 @@
 
 O [ADR-0002](0002-Empacotamento-em-tiers.md) definiu três containers orquestrados por compose, mas não onde eles rodam. O diagrama de implantação precisa de nós concretos, e sem essa definição ele fica genérico.
 
-O projeto é um MVP de disciplina, avaliado pelos artefatos produzidos e por uma apresentação final. Não há requisito de disponibilidade, de usuários reais nem de acesso externo. O Team Charter registra que o projeto não tem custo financeiro.
+O projeto é um MVP, avaliado pelos artefatos produzidos e por uma apresentação final. Não há requisito de disponibilidade, de usuários reais nem de acesso externo. O Team Charter registra que o projeto não tem custo financeiro.
 
 ## Decisão
 
@@ -21,7 +21,7 @@ O nó do diagrama de implantação é, portanto, o **host de desenvolvimento**, 
 - Custo zero e nenhuma credencial de nuvem para gerenciar ou vazar.
 - O diagrama de implantação fica com um nó só, o que simplifica o desenho sem torná-lo incorreto.
 - Qualquer integrante sobe o ambiente inteiro com um comando, sem depender de acesso compartilhado.
-- Não gasta tempo de sprint com infraestrutura que a disciplina não cobra.
+- Não gasta tempo de sprint com infraestrutura que o projeto não exige.
 
 **Negativas**
 - A demonstração final depende da máquina de quem apresenta. Mitigação: ensaiar a subida do ambiente antes, e ter um plano de contingência com capturas de tela.

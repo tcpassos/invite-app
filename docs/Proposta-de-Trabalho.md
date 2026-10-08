@@ -18,6 +18,8 @@ Instalação, configuração e padronização do projeto. Entra quando a impleme
 ## Sprints
 - [Sprint 1, Engenharia de Requisitos e Compreensão do Domínio](Sprints/Sprint-1.md)
 - [Sprint 2, Projeto da Arquitetura e Modelagem Estrutural](Sprints/Sprint-2.md)
+- [Sprint 3, Projeto da Solução e Prototipação](Sprints/Sprint-3.md)
+- [Sprint 4, Implementação Incremental da Solução](Sprints/Sprint-4.md)
 
 ## Team Charter
 Missão, papéis, escopo e membros do time. Ver [Team Charter](Team-Charter.md).

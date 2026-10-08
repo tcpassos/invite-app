@@ -14,7 +14,7 @@ A organização segue os sete passos sugeridos pelo professor e usados nas tasks
 | 6. Refinar | #69 | Diagrama finalizado | 6 |
 | 7. Revisão por pares | #70 | Feedback incorporado | 7 |
 
-As definições de componente e de interface provida e requerida seguem [Ian04], referência da Aula 05. Um componente é uma unidade de composição com interfaces definidas e dependências explícitas. Seu comportamento depende tanto das interfaces que oferece quanto das que consome.
+As definições de componente e de interface provida e requerida seguem [Ian04]. Um componente é uma unidade de composição com interfaces definidas e dependências explícitas. Seu comportamento depende tanto das interfaces que oferece quanto das que consome.
 
 O diagrama parte do [ADR-0001](Decisões-Arquiteturais/0001-Estilo-arquitetural.md), do [ADR-0002](Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), do [ADR-0004](Decisões-Arquiteturais/0004-Stack-de-implementação.md), do [ADR-0007](Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md), do [ADR-0008](Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md), do [ADR-0009](Decisões-Arquiteturais/0009-Personalização-por-template.md) e das seções 3 a 9 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). As decisões tomadas durante esta modelagem estão identificadas e reunidas na seção 10.1.
 

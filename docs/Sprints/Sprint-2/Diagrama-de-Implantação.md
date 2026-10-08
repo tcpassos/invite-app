@@ -183,11 +183,11 @@ O `front` só chama a API quando recebe uma requisição de convite público. Se
 
 ## 6. Passo 6, ajustes feitos no diagrama
 
-1. **Inclusão do navegador como nó.** O primeiro rascunho não mostrava onde o `front-client.bundle` executava. A seção 1.2 diferencia nó de tier.
+1. **Navegador como nó.** O diagrama mostra onde o `front-client.bundle` executa, e a seção 1.2 diferencia nó de tier.
 
-2. **Remoção do serviço `migrate`.** O primeiro rascunho usava um quarto container para aplicar as migrações. A versão atual mantém os três serviços definidos no ADR-0002. A forma de aplicar as migrações e sua limitação estão na seção 8.1.
+2. **Sem serviço `migrate`.** As migrações não ganham um quarto container, e o diagrama mantém os três serviços definidos no ADR-0002. A forma de aplicar as migrações e sua limitação estão na seção 8.1.
 
-3. **Definição das portas.** O material do T1 usava a porta 3000 apenas como exemplo. Os números adotados neste diagrama passam a ser decisões do projeto e ainda precisam de aprovação.
+3. **Portas.** Os números de porta são decisão do projeto e estão na seção 5.
 
 4. **Nome do serviço de banco.** `db` é o nome usado na rede do Compose. `invite_app` continua sendo o nome do banco dentro do container, como já diferencia a seção 1.6 do Diagrama de Componentes.
 
@@ -220,7 +220,7 @@ Registro da revisão, a preencher na cerimônia:
 
 ---
 
-## 8. Decisões tomadas durante a modelagem
+## 8. Decisões de modelagem
 
 Estas decisões seguem a seção 11 do Guia da Arquitetura. Elas registram a proposta atual, mas ainda não têm o peso de um ADR.
 

@@ -7,7 +7,7 @@
 
 O produto expõe duas interfaces bem diferentes sobre o mesmo conjunto de dados. O convite público, que o convidado abre por link e sem login, e o painel do anfitrião, que exige autenticação. As duas leem e escrevem sobre as mesmas entidades: convite, confirmação de presença e observação alimentar.
 
-O time tem quatro integrantes com experiência desigual, e a implementação do MVP acontece em duas sprints. A disciplina avalia a justificativa arquitetural, não apenas o funcionamento.
+O time tem quatro integrantes com experiência desigual, e a implementação do MVP acontece em duas sprints. O projeto é julgado pela justificativa arquitetural, não apenas pelo funcionamento.
 
 ## Decisão
 
