@@ -22,6 +22,11 @@ export default tseslint.config(
       'import-x/resolver-next': [createTypeScriptImportResolver({ alwaysTryTypes: true })],
     },
     rules: {
+      // Parâmetro ou variável começando com _ é não usado de propósito.
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       'import-x/no-restricted-paths': [
         'error',
         {

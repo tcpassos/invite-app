@@ -11,7 +11,8 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "npm run test --workspaces --if-present"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
@@ -25,6 +26,7 @@
     "typescript-eslint": "^8.71.1"
   },
   "workspaces": [
-    "contract"
+    "contract",
+    "api"
   ]
 }

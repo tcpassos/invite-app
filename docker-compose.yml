@@ -1,10 +1,13 @@
 # Forma executável do Diagrama de Implantação da Sprint 2.
 # As decisões deste arquivo estão na seção 8 daquela página e nos ADRs 0002, 0003, 0010 e 0012.
 #
-# Hoje só o serviço db sobe, porque o código da aplicação começa na Sprint 3:
-#   docker compose up db
-# Quando front/ e api/ existirem, o ambiente inteiro sobe com:
+# O banco e a API já sobem:
+#   docker compose up db api
+# Quando front/ existir, o ambiente inteiro sobe com:
 #   docker compose up
+#
+# As imagens são construídas a partir da raiz do repositório, porque a API e o
+# front compilam o contract/ para dentro delas (Guia da Arquitetura, 10.3).
 
 name: invite-app
 
@@ -35,7 +38,8 @@ services:
   # Tier API. As três camadas lógicas do ADR-0001 moram nesta imagem.
   api:
     build:
-      context: ./api
+      context: .
+      dockerfile: api/Dockerfile
     image: invite-app-api:${IMAGE_TAG:-dev}
     restart: unless-stopped
     environment:
@@ -56,7 +60,8 @@ services:
   # Tier Front. Processo Node que renderiza o convite público no servidor.
   front:
     build:
-      context: ./front
+      context: .
+      dockerfile: front/Dockerfile
       args:
         # Endereço que vai compilado no bundle do navegador. Precisa ser argumento
         # de build porque o Next.js congela NEXT_PUBLIC_* na compilação.
