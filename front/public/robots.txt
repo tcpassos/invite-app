@@ -1,0 +1,5 @@
+# As rotas de convite carregam tokens secretos (ADR-0005) e não podem ser indexadas.
+# Política por rota na seção 9.5 do Guia da Arquitetura.
+User-agent: *
+Disallow: /i/
+Disallow: /r/

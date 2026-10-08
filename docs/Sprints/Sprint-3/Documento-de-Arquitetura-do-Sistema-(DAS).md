@@ -656,4 +656,4 @@ A chave primária é composta pelas duas colunas, o que impede a mesma categoria
 
 As duas divergências são as duas que a seção 8.2 justifica, e não existe terceira. Toda outra classe persistente tem tabela, e toda outra tabela tem classe.
 
-Esta subseção é a entrada direta do diretório `migrations/`, que hoje só tem README.
+Esta subseção é a entrada direta dos arquivos de `migrations/`.

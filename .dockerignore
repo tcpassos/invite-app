@@ -1,0 +1,12 @@
+# O contexto de build é a raiz do repositório. Só código entra.
+**/node_modules
+**/dist
+**/.next
+**/coverage
+.git
+.env
+docs
+trabalhos
+tools
+migrations
+*.md

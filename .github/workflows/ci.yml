@@ -1,0 +1,65 @@
+# Integração contínua. Roda em todo pull request e em todo push na main.
+# Confere o mesmo que cada pessoa confere na própria máquina antes de abrir o PR,
+# e mais as duas imagens do compose.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  codigo:
+    name: Lint, tipos, testes e build
+    runs-on: ubuntu-latest
+    services:
+      # Banco descartável para os testes de integração do esquema (api/src/data).
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: teste
+          POSTGRES_PASSWORD: teste
+          POSTGRES_DB: teste
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U teste -d teste"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgres://teste:teste@localhost:5432/teste
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      # A API e o front leem os tipos do contract já compilado.
+      - run: npm run build --workspace contract
+      - run: npm run typecheck
+      # O container de serviço sobe antes do checkout, então as migrações entram aqui,
+      # na mesma ordem em que o container db do compose as aplica.
+      - name: Aplicar migrações no banco de teste
+        run: |
+          for arquivo in migrations/*.sql; do
+            psql "$TEST_DATABASE_URL" -v ON_ERROR_STOP=1 -q -f "$arquivo"
+          done
+      - run: npm test
+      - run: npm run build
+
+  imagens:
+    name: Imagens do compose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      # O compose lê o .env para montar o argumento de build do front.
+      - run: cp .env.example .env
+      - run: docker compose build api front
