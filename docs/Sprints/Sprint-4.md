@@ -19,8 +19,17 @@
 
 Work items no Azure Boards da org `GUITOEBE`, projeto `invite-people`, iteration Sprint 4.
 
+A Sprint 4 vai de 06/10 a 19/10 e fecha o fluxo central de ponta a ponta: o anfitrião entra, cria e publica o convite, e o convidado abre o link e responde com acompanhantes e restrição alimentar.
+
+- **#125** Fundação do código
 - **#40** H01, criar conta e entrar como anfitrião
 - **#41** H02, criar convite com os dados do evento
+- **#44** H05, gerar link do convite
+- **#46** H07, confirmar presença sem criar conta
+- **#47** H08, informar quantidade de acompanhantes
+- **#49** H10, informar restrição alimentar
+
+As demais histórias do MVP ficam na Sprint 5.
 
 ## Principais Artefatos
 
