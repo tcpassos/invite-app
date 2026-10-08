@@ -79,10 +79,10 @@ O texto vem de um formulário anônimo, passa pela API, é armazenado e depois c
 
 ## Pontos em aberto
 
-Os diagramas encontraram quatro pontos ainda não resolvidos na especificação:
+Os diagramas encontraram quatro pontos que a especificação não resolvia:
 
-1. **Exportação sem restrições.** A pré-condição do UC008 bloqueia a exportação quando ninguém informa uma restrição. Nesse caso, o anfitrião também fica sem a lista de presença pedida na H12.
-2. **Número de acompanhantes no CSV.** A ED2 do UC008 define quatro colunas, mas não inclui a quantidade de acompanhantes, necessária para o planejamento do buffet.
+1. **Exportação sem restrições.** A pré-condição do UC008 bloqueava a exportação quando ninguém informava uma restrição. Nesse caso, o anfitrião também ficava sem a lista de presença pedida na H12. Resolvido no A1 e no A2 do UC008: o CSV sai sempre que houver resposta sim ou talvez.
+2. **Número de acompanhantes no CSV.** A ED2 do UC008 definia quatro colunas, sem a quantidade de acompanhantes, necessária para o planejamento do buffet. Resolvido na ED2 do UC008, que ganhou a coluna.
 3. **Alteração da resposta.** A H09 aparece apenas como RN3 do UC005 e ainda não tem um fluxo próprio.
 4. **Autenticação do anfitrião.** Nos três diagramas, `authenticateSession` valida a assinatura de um cookie e devolve o `hostId` sem consultar o banco. A decisão está no [ADR-0010](Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md).
 

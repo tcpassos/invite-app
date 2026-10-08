@@ -36,10 +36,15 @@ export const ValidationRule = {
   DateNotInPast: 'dateNotInPast',
   DescriptionRequired: 'descriptionRequired',
   MaxLength: 'maxLength',
+  // UC001 RN1: a senha tem no mínimo oito caracteres.
+  MinLength: 'minLength',
+  // UC001 RN3: o email já tem conta.
+  AlreadyRegistered: 'alreadyRegistered',
 } as const;
 export type ValidationRule = (typeof ValidationRule)[keyof typeof ValidationRule];
 
-// `field` é o nome do campo no contrato, nunca o nome da coluna no banco.
+// `field` é o nome do campo no contrato, nunca o nome da coluna no banco. Campo
+// dentro de objeto usa ponto, como `dietaryNote.freeText` e `colorOverrides.primary`.
 export interface ErrorDetail {
   field: string;
   rule: ValidationRule;
