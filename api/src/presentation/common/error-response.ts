@@ -41,6 +41,8 @@ const RULE_MESSAGES: Record<ValidationRule, string> = {
   dateNotInPast: 'A data do evento não pode estar no passado.',
   descriptionRequired: 'Descreva a restrição alimentar marcada.',
   maxLength: 'O texto passou do tamanho permitido.',
+  minLength: 'O texto é mais curto que o mínimo permitido.',
+  alreadyRegistered: 'Já existe uma conta com este email.',
 };
 
 export interface ErrorResponse {

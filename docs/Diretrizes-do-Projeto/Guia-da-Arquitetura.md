@@ -287,8 +287,49 @@ Três regras valem para todos eles.
 | `GET /invites/{inviteId}/dietary-summary` | UC008 passo 1 | Autenticado | Sessão do anfitrião |
 | `GET /invites/{inviteId}/dietary-notes.csv` | UC008 passo 4 | Autenticado | Sessão do anfitrião |
 | `GET /invites/{inviteId}/attendance` | UC007, consulta periódica do [ADR-0007](../Sprints/Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) | Autenticado | Sessão do anfitrião |
+| `POST /auth/sign-up` | UC001 A1 | Auth | Nenhuma. A resposta abre a sessão |
+| `POST /auth/sign-in` | UC001 passos 3 a 5 | Auth | Nenhuma. A resposta abre a sessão |
+| `POST /auth/sign-out` | Sair do painel, conforme o [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) | Auth | Nenhuma. Apaga o cookie com ou sem sessão válida |
+| `GET /auth/session` | Entrada do painel | Auth | Sessão do anfitrião |
+| `GET /invites` | Entrada do painel, a lista de convites do anfitrião | Autenticado | Sessão do anfitrião |
+| `POST /invites` | UC002 passo 5 | Autenticado | Sessão do anfitrião |
+| `GET /invites/{inviteId}` | UC003 passo 1 e tela do convite no painel | Autenticado | Sessão do anfitrião |
+| `PUT /invites/{inviteId}/customization` | UC003 passo 6 | Autenticado | Sessão do anfitrião |
+| `GET /public/responses/{personalToken}` | UC005 ED2 e RN3, item 6 do MVP da [Visão do Produto](../Sprints/Sprint-3/Visão-do-Produto.md) | Público | Nenhuma, com limite de taxa |
+| `PUT /public/responses/{personalToken}` | UC005 RN3 e RN4 | Público | Nenhuma, com limite de taxa |
 
-As seis primeiras saem dos diagramas de sequência. A última é derivada do ADR-0007 e do UC007, que não têm diagrama de sequência.
+As seis primeiras saem dos diagramas de sequência. A sétima é derivada do ADR-0007 e do UC007, que não têm diagrama de sequência. As dez últimas são decisão nova, registrada na seção 11, e cobrem o que o MVP pede e nenhum diagrama desenhou: a entrada do anfitrião, a criação e a personalização do convite, e a alteração da resposta pelo link pessoal.
+
+**O que cada rota recebe e devolve.** Os nomes da tabela são os tipos de `contract/`, que a API e o front importam do mesmo lugar. As recusas listadas são as próprias de cada rota. Toda rota pode ainda responder 400 de forma e 500, as rotas de sessão respondem 401 sem cookie válido, e as públicas respondem 429.
+
+| Rota | Entrada | Saída | Recusas próprias |
+|---|---|---|---|
+| `POST /auth/sign-up` | `SignUpRequest` | 201 `HostProfile` | 422 com `required`, `maxLength`, `minLength` na senha e `alreadyRegistered` no email |
+| `POST /auth/sign-in` | `SignInRequest` | 200 `HostProfile` | 401 `UNAUTHENTICATED`, igual para email inexistente e para senha errada |
+| `POST /auth/sign-out` | Nada | 204 | Nenhuma |
+| `GET /auth/session` | Nada | 200 `HostProfile` | Só o 401 comum às rotas de sessão |
+| `GET /invites` | Nada | 200 `InviteSummary[]`, o mais novo primeiro | Nenhuma |
+| `POST /invites` | `CreateInviteRequest` | 201 `InviteDetails` | 422 com `required`, `dateNotInPast`, `minValue` nos dois limites e `maxLength` no nome e no local |
+| `GET /invites/{inviteId}` | Nada | 200 `InviteDetails` | 404 |
+| `PUT /invites/{inviteId}/customization` | `CustomizeInviteRequest` | 200 `InviteDetails` | 404, e 422 com `allowedValue` no template e nas cores, `required` e `maxLength` nos dois textos |
+| `POST /invites/{inviteId}/publish` | Nada | 200 `PublishInviteResponse` | 404 e 422 `INVITE_NOT_PUBLISHABLE` |
+| `POST /invites/{inviteId}/unpublish` | Nada | 200 `UnpublishInviteResponse` | 404 e 409 `INVITE_NOT_OPEN` |
+| `GET /invites/{inviteId}/attendance` | Nada | 200 `AttendanceList` | 404 |
+| `GET /invites/{inviteId}/dietary-summary` | Nada | 200 `DietarySummary` | 404 |
+| `GET /invites/{inviteId}/dietary-notes.csv` | Nada | 200 em `text/csv`, uma linha por convidado | 404 |
+| `GET /public/invites/{publicToken}` | Nada | 200 `PublishedInvite` | 404 |
+| `POST /public/invites/{publicToken}/rsvp` | `RsvpRequest` | 201 `RsvpResult` | 404, 422 com `required`, `allowedValue`, `minValue`, `companionLimit`, `descriptionRequired` e `maxLength`, e 409 `CAPACITY_EXCEEDED` ou `INVITE_NOT_OPEN` |
+| `GET /public/responses/{personalToken}` | Nada | 200 `GuestResponsePage` | 404 |
+| `PUT /public/responses/{personalToken}` | `RsvpRequest` | 200 `GuestResponsePage` | 404, as mesmas 422 do POST, 409 `CAPACITY_EXCEEDED`, e 409 `INVITE_NOT_OPEN` depois do fim do dia do evento |
+
+Seis pontos dessa tabela não saem de artefato nenhum e precisam ser lidos junto com ela.
+
+- **Os limites do convite têm outro nome no contrato.** No modelo eles são `capacityLimit` e `maxCompanionsPerGuest`, e no contrato são `peopleLimit` e `companionLimit`. A terceira busca da seção 6.4 procura os nomes do modelo dentro do tier Front, e o formulário do UC002 precisa enviar os dois valores. É o mesmo caso do `rule` da seção 9.3, e a saída é a mesma: quem cede é o nome do contrato. A Apresentação da API faz a tradução. A busca continua valendo, porque o nome do modelo segue proibido no front, e a revisão passa a olhar também comparação com `peopleLimit` e `companionLimit` em código do front, que seria regra de negócio decidida no Next.
+- **A entrada recusada responde 401, e não 422.** O 422 aponta um campo, e qualquer campo apontado diria se o problema foi o email ou a senha, que é o que o A2 do UC001 proíbe. O Domínio devolve ausência de valor e a Apresentação decide o 401, o mesmo caminho do 404 na seção 3.1. A tela de entrada escreve o próprio texto para esse caso. Nas outras telas do painel, o 401 leva de volta à entrada.
+- **O UC003 edita o nome do evento e o local, e mais nada do convite.** O Diagrama de Classes registra que esses são os textos da personalização. Data, hora e os dois limites não têm caso de uso de edição depois de criados, e por isso não têm rota. Se o time quiser editá-los, entra uma rota `PUT /invites/{inviteId}` com caso de uso atrás.
+- **O link pessoal tem duas rotas no pacote público.** A leitura é feita pelo tier Front no servidor, como a página do convite, e conta o limite de taxa por token pessoal apenas, pelo mesmo motivo da leitura do convite. A alteração sai do navegador e conta por token pessoal e por endereço de origem. A leitura funciona com o convite despublicado e depois do fim do evento, com `editable` falso nesse último caso, conforme a seção 9.5. A alteração não se repete automaticamente, pela regra da seção 9.4.
+- **Com `DECLINED`, a resposta grava zero acompanhantes e nenhuma observação alimentar**, mesmo que venham no corpo. É o A1 do UC005 aplicado no Domínio, e não uma recusa, porque a tela que esconde os campos pode ter deixado valor preenchido de antes.
+- **O catálogo de templates e os tamanhos de texto moram em `contract/`.** A API precisa deles para validar a RN2 do UC003, e o front para montar o editor. Os números iniciais são 80 caracteres para o nome do anfitrião e do convidado, 500 para o texto livre da observação alimentar, que é o tamanho máximo que a medida 3 do ADR-0008 pede e não fixa, e senha entre 8 e 128. Os limites do nome do evento e do local são de cada template.
 
 Por que a leitura pública também entra no limite de taxa. A medida 2 do ADR-0008 não restringe o limite à escrita. Ela diz "por token de convite e por endereço de origem" e justifica por repasse abusivo do link, que é comportamento de leitura: um link colado num grupo grande gera GET em massa, não POST em massa. Restringir o limite ao POST seria estreitar o ADR, e o guia não faz isso em silêncio.
 
@@ -312,7 +353,21 @@ As seis primeiras saem dos diagramas de sequência. `listAttendance` é derivada
 
 Estes são serviços, não métodos da entidade. O [Diagrama de Classes](../Sprints/Sprint-2/Diagrama-de-Classes.md) coloca `listAttendance()`, `consolidateDietaryNotes()` e `exportDietaryNotes()` como operações de `Invite`. Este guia adota a outra leitura, por três razões. A assinatura recebe `inviteId` e `hostId`, o que não é forma de método de instância de um `Invite` já carregado. As três conduzem o caso de uso chamando a camada de Dados mais de uma vez em ordem, e conduzir caso de uso não é trabalho da entidade, conforme a seção 3.3. E o diagrama do UC008 já as coloca em `DietaryService`. A divergência com o Diagrama de Classes está registrada na seção 11 com a correção exata.
 
-Os serviços do UC001, do UC002 e do UC003 seguem a mesma forma e ainda não têm diagrama de sequência que os aloque passo a passo. Eles estão na seção 11.
+Os serviços das rotas novas da 4.1 seguem a mesma forma e não têm diagrama de sequência que os aloque passo a passo. Os donos abaixo saem do Diagrama de Componentes, e as assinaturas são decisão nova, registrada na seção 11.
+
+| Serviço | Componente dono | O que faz | Caso de uso |
+|---|---|---|---|
+| `signUp(name, email, password)` | `HostService` | Cria a conta e devolve o anfitrião, ou recusa o email já cadastrado | UC001 A1 |
+| `signIn(email, password)` | `HostService` | Devolve o anfitrião, ou vazio, gastando o mesmo tempo nos dois casos | UC001 |
+| `getHostProfile(hostId)` | `HostService` | Devolve nome e email de quem está com a sessão | Entrada do painel |
+| `listInvites(hostId)` | `InviteService` | Devolve os convites do anfitrião | Entrada do painel |
+| `createInvite(hostId, inviteCommand)` | `InviteService` | Valida e salva o convite como rascunho | UC002 |
+| `getInvite(inviteId, hostId)` | `InviteService` | Devolve o convite com a personalização | UC003 |
+| `customizeInvite(inviteId, hostId, customizationCommand)` | `InviteService` | Valida template, cores e textos, e grava | UC003 |
+| `getGuestResponse(personalToken)` | `RsvpService` | Devolve a resposta, o convite e se ainda dá para alterar, ou vazio | UC005 RN3 |
+| `updateRsvp(personalToken, rsvpCommand)` | `RsvpService` | Valida e regrava a resposta, respeitando o teto | UC005 RN3 e RN4 |
+
+A sessão é emitida pela Apresentação, que recebe o anfitrião de `signIn` ou de `signUp` e escreve o cookie. O Domínio não conhece cookie, pela regra 2 do início desta seção.
 
 ### 4.3 Serviços da camada de Dados, oferecidos ao Domínio
 
@@ -375,7 +430,9 @@ O acoplamento entre o pacote público e o pacote autenticado é zero, e assim de
 
 A consequência que a seção 1.4 anunciou e que faltava escrever é esta:
 
-> **O pacote público chama apenas `getPublishedInvite` e `registerRsvp`. Nenhum outro serviço de Domínio.** Os outros cinco serviços da tabela 4.2 são exclusivos do pacote autenticado.
+> **O pacote público chama apenas `getPublishedInvite`, `registerRsvp`, `getGuestResponse` e `updateRsvp`. Nenhum outro serviço de Domínio.** Os três do UC001 são exclusivos do pacote `auth`, e todos os outros da tabela 4.2 são exclusivos do pacote autenticado.
+
+Os dois do link pessoal entraram depois, e a regra continua cobrindo o mesmo risco. Os dois devolvem a resposta de um convidado só, a de quem apresentou o token pessoal, e nunca a lista nem a contagem dos outros.
 
 Sem essa regra, a separação por superfície fica decorativa. Com ela, vira verificação de uma linha em revisão de código. O risco que ela cobre é concreto: o pacote público é a única escrita sem autenticação do sistema, e o dia em que alguém acrescentar ali uma rota que chame `consolidateDietaryNotes` para "mostrar as restrições na página do convite", a lista de restrições alimentares de todos os convidados fica pública. Nenhum erro seria levantado, nenhum teste falharia, e o texto exposto é informação de saúde de pessoa identificável.
 
@@ -631,8 +688,10 @@ Os valores de `rule` também formam conjunto fechado, e cada um aponta uma regra
 | `dateNotInPast` | Data anterior ao dia atual | UC002 RN1 |
 | `descriptionRequired` | Categoria marcada exige texto livre | UC006 RN2, recusado por `validateDietaryNote` |
 | `maxLength` | Texto acima do tamanho do campo | UC003 RN2 e medida 3 do [ADR-0008](../Sprints/Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) |
+| `minLength` | Texto abaixo do tamanho mínimo | UC001 RN1, a senha com menos de oito caracteres |
+| `alreadyRegistered` | Email que já tem conta | UC001 RN3 |
 
-São sete valores e eles cobrem as seis recusas da linha de validação da tabela 9.1 mais o piso da RN2 do UC005. Fechado aqui quer dizer fechado para as rotas que a tabela 4.1 já lista. As rotas do UC002 e do UC003, que a seção 11 registra como ausentes, acrescentam valores quando forem especificadas, e cada valor novo entra nesta tabela junto com a rota.
+São nove valores. Os sete primeiros cobrem as seis recusas da linha de validação da tabela 9.1 mais o piso da RN2 do UC005, e os dois últimos entraram com as rotas do UC001 na seção 4.1. Fechado aqui quer dizer fechado para as rotas que a tabela 4.1 já lista. As rotas do UC002 e do UC003, que a seção 11 registra como ausentes, acrescentam valores quando forem especificadas, e cada valor novo entra nesta tabela junto com a rota.
 
 O nome do `rule` não repete o nome do atributo do convite, e isso não é preciosismo. A terceira busca da seção 6.4 procura por `capacityLimit` e `maxCompanionsPerGuest` dentro do tier Front para pegar regra de negócio decidida no Next. Como `ApiError` mora em `contract/` e `contract/` é compilado para dentro dos dois lados, um `rule` chamado `maxCompanionsPerGuest` apareceria no bundle do front por desenho e a busca passaria a acusar violação onde não há. A busca é frágil e vale mais do que o nome, então quem cede é o nome. `companionLimit` nomeia a mesma recusa sem colidir.
 
@@ -669,7 +728,7 @@ Onde `details` entra e onde não entra, por categoria da tabela 9.1:
 | Categoria | `code` | `details` | Por quê |
 |---|---|---|---|
 | Forma da requisição | `MALFORMED_REQUEST` | Ausente | Duas origens, `parseRequest` e o framework, e só uma tem nome de campo |
-| Sessão ausente ou expirada | `UNAUTHENTICATED` | Ausente | Decidido pelo `SessionGuard` antes do Domínio, sem campo envolvido |
+| Sessão ausente ou expirada | `UNAUTHENTICATED` | Ausente | Decidido pelo `SessionGuard` antes do Domínio, ou pela entrada recusada na seção 4.1, sem campo envolvido |
 | Excesso de tráfego | `RATE_LIMITED` | Ausente | Decidido antes do Domínio, não há campo envolvido |
 | Validação e regra de negócio | `VALIDATION_FAILED` | Preenchido | `ValidationError(field, rule)`, uma entrada |
 | Convite incompleto para publicar | `INVITE_NOT_PUBLISHABLE` | Preenchido | `InvalidInviteForPublication(missingFields)`, uma entrada por campo, `rule` igual a `required` |
@@ -1066,6 +1125,13 @@ Por que três containers cabem num host só sem conflito de porta. O namespace d
 
 Como o endereço da API chega ao código que roda no navegador ficou decidido depois. Ele entra como argumento de construção da imagem do front, na variável `NEXT_PUBLIC_API_URL`, porque o Next.js congela essas variáveis na compilação. A consequência é que trocar o endereço exige reconstruir a imagem, e não basta mexer no `.env`. Está no `docker-compose.yml` e explicado na página [Configuração de Ambiente](../Começando/Configuração-de-Ambiente.md).
 
+**A sessão e a origem cruzada.** O painel roda no navegador e chama a API direto, então a página vem de uma origem e a API de outra. O [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) decidiu o cookie e não disse como ele atravessa essa diferença. Fica assim, como decisão nova:
+
+- O cookie se chama `invite_session` e vai com `HttpOnly`, `SameSite=Lax`, `Path=/` e validade de 30 minutos, renovada a cada requisição autenticada. Sem `Secure`, pelo motivo que o ADR-0010 registra.
+- Front e API ficam no mesmo endereço e mudam só a porta. Para o navegador isso é o mesmo site, porque porta não conta para o `SameSite`, e o cookie vai junto quando o `ApiClient` chama com `credentials: 'include'`. **O front precisa ser aberto pelo mesmo nome de máquina que está em `NEXT_PUBLIC_API_URL`.** Com o front em `localhost` e a API em `127.0.0.1`, os dois viram sites diferentes e o cookie não vai.
+- A API aceita origem cruzada só da origem do front, lida da variável `FRONT_ORIGIN`, com credenciais, nos métodos `GET`, `POST` e `PUT`, e com `Content-Type` como único cabeçalho aceito. O `X-Request-Id` fica de fora de propósito. O navegador não consegue enviá-lo, e a premissa do [ADR-0012](../Sprints/Sprint-2/Decisões-Arquiteturais/0012-Observabilidade-entre-os-tiers.md) de que só o tier Front envia o cabeçalho passa a ser garantida por configuração, e não só por costume.
+- Toda rota com corpo exige `Content-Type: application/json`. Com isso um formulário de outro site não consegue disparar escrita no painel sem passar pela checagem de origem, e o `SameSite=Lax` cobre o resto. O único pedido que outro site consegue forçar é o `sign-out`, que no pior caso tira o anfitrião da sessão.
+
 Segredo não entra em camada de imagem. O par previsto é `.env.example` versionado no repositório e `.env` local preenchido por quem sobe o ambiente, que é a forma registrada na última linha do inventário da seção 4.1 do Diagrama de Componentes. O motivo é mecânico e não de estilo: no sistema de arquivos em camadas, apagar um arquivo cria uma marcação na camada de cima e o arquivo continua legível na camada de baixo, então um `Dockerfile` que copia um `.env` e faz `RUN rm` na instrução seguinte entrega a imagem com o segredo dentro. O que entra na imagem é público e o que entra por variável de ambiente é de execução. Os dois segredos concretos deste projeto são a senha do banco e o segredo de sessão do anfitrião do UC001. Quais variáveis cada container recebe também não está escrito em artefato nenhum.
 
 Os quatro complementos de exposição do ADR-0008 recaem todos sobre o tier Front. São quatro e não três: `Cache-Control`, `robots.txt`, o redirecionamento do identificador inválido e as metatags Open Graph.
@@ -1167,6 +1233,14 @@ Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O pró
 | 18 | A quarta busca da revisão de código, de fronteira de container | 10.5 | Nenhum ADR trata de verificação, e as três buscas da 6.4 foram escritas antes de existir compose | Importação cruzada entre tiers, endereço de API errado no navegador e banco exposto ao host passam sem ninguém procurar |
 | 19 | Só o container do Banco tem volume nomeado | 10.6 | O ADR-0002 exige o volume do Banco e não diz nada sobre os outros dois | Os três ganham volume por precaução, e o estado passa a sobreviver em lugares onde ninguém o guarda de propósito |
 | 20 | Sessão ausente ou expirada responde 401 `UNAUTHENTICATED` | 9.1 | O ADR-0010 define como a sessão é validada e não diz o que a API responde quando ela falha | Cada rota do painel inventa a própria recusa, e o front não tem como reconhecer o caso para levar o anfitrião de volta à entrada |
+| 21 | As dez rotas novas, o que cada rota da tabela recebe e devolve, e os tipos em `contract/` | 4.1 | Nenhum ADR trata de rota, e os diagramas de sequência cobrem só o UC004, o UC005 e o UC008 | Cada parte inventa a própria rota e o próprio corpo, e o front com o mock diverge da API até a integração |
+| 22 | Os limites do convite se chamam `peopleLimit` e `companionLimit` no contrato | 4.1 | A terceira busca da 6.4 foi escrita antes de existir a rota do UC002 | O formulário do UC002 usa os nomes do modelo e a terceira busca acusa violação em todo PR do front |
+| 23 | Entrada recusada responde 401 `UNAUTHENTICATED`, igual para email e para senha | 4.1 | O ADR-0010 fixa o tempo igual nos dois casos e não fixa o status | O 422 com campo diria qual dos dois errou, contra o A2 do UC001 |
+| 24 | O link pessoal tem leitura e alteração no pacote público, e a regra da 5.3 passa a quatro serviços | 4.1 e 5.3 | O ADR-0011 decide o token e não a rota, e a seção 9.5 registrava que a rota não existia | O item 6 do MVP fica sem rota, e a H09 não tem como ser entregue |
+| 25 | As assinaturas dos nove serviços novos da 4.2 | 4.2 | Os serviços do UC001, do UC002 e do UC003 não têm diagrama de sequência | Cada implementação escolhe a própria assinatura, e o teste de coesão da 5.1 fica sem base |
+| 26 | O catálogo de templates e os tamanhos de texto em `contract/`, com os números iniciais | 4.1 | O ADR-0009 põe os templates no front e a RN2 do UC003 exige validar no Domínio, e nenhum dos dois diz onde fica o dado que as duas pontas usam | O limite de cada campo fica escrito em dois lugares e diverge, que é o risco que a seção 10.3 já registra |
+| 27 | Os valores `minLength` e `alreadyRegistered` de `rule` | 9.3 | A tabela da 9.3 fechou o conjunto para as rotas que existiam | O cadastro do UC001 fica sem forma de apontar senha curta e email repetido |
+| 28 | O nome e os atributos do cookie, a origem cruzada e os cabeçalhos aceitos pela API | 10.4 | O ADR-0010 decide o cookie e não diz como ele chega à API por outra porta | O painel não consegue chamar a API com sessão, e cada pessoa resolve a origem cruzada do próprio jeito |
 
 > **Nenhuma linha desta tabela vale contra um ADR.** Se um ADR futuro decidir o contrário de qualquer uma delas, o ADR é a fonte da decisão e a linha sai daqui, conforme a divisão de trabalho declarada na introdução.
 
@@ -1178,8 +1252,8 @@ O que esta lista não traz, de propósito. Alocação que já sai de um diagrama
 
 As pendências que a seção 10.2 do [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-de-Componentes.md) já lista não são repetidas aqui. O que segue é o que é do guia, ou o que aquela seção registra sem dizer o que o guia perde junto.
 
-- **Os serviços do UC001.** A tabela 4.2 tem sete linhas e nenhuma é do UC001. O Diagrama de Componentes nomeia `AuthController`, `HostService` e `HostRepository`, com as interfaces `AuthHttp`, `HostOperations` e `HostStore`, e as três ficaram sem assinatura fechada por falta de diagrama de sequência. O que é do guia são duas consequências. `AuthController` não cabe nos dois pacotes da seção 1.4, porque a regra da 5.3 fecha o pacote público em dois serviços e a rota de entrada é anterior à sessão, então falta decidir se entra um terceiro pacote. E a frase dos cinco serviços da 5.3 precisa ser reescrita no mesmo dia em que `HostOperations` ganhar assinatura. O ADR de autenticação existe e é o [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md). O diagrama de sequência do UC001 também, desenhado na task #123, só que em notação BCE, que reúne `AuthController` e `HostService` num objeto de controle só. Ele nomeia `signIn`, `signUp`, `findByEmail`, `hashPassword`, `verifyPassword` e `issueSession`, e não separa `HostOperations` de `AuthHttp`. **A assinatura de `HostOperations` continua aberta**, e com ela a frase dos cinco serviços da 5.3. Resolve: as linhas do UC001 na tabela 4.2. O #62 e o #63 estão encerrados.
-- **As rotas do UC002 e do UC003.** Não existem em artefato nenhum. A tabela 4.1 tem sete rotas e nenhuma cria convite nem grava personalização, e a tabela 4.2 não tem serviço para elas. O que é do guia é uma dívida mais concreta que a ausência: a tabela 9.1 já compromete duas regras desses casos de uso com o Domínio, a data no passado da RN1 do UC002 e o texto acima do limite do campo da RN2 do UC003, as duas como `ValidationError` e 422. O guia aloca regra a serviço que ele mesmo não lista. Enquanto isso não fecha, a responsabilidade fica em `InviteController` e `InviteService`, e o teste de coesão da 5.1 precisa ser refeito quando as rotas existirem, porque `InviteController` passa de três para cinco rotas e `InviteService` já reúne criação, personalização, publicação e despublicação. Resolve: diagramas de sequência do UC002 e do UC003, e a atualização das tabelas 4.1 e 4.2. O #62 está encerrado e não há item aberto para isso.
+- **Os serviços do UC001.** **Proposta nas seções 4.1 e 4.2, linhas 21, 23 e 25 da 11.1.** A tabela 4.2 tem sete linhas e nenhuma é do UC001. O Diagrama de Componentes nomeia `AuthController`, `HostService` e `HostRepository`, com as interfaces `AuthHttp`, `HostOperations` e `HostStore`, e as três ficaram sem assinatura fechada por falta de diagrama de sequência. O que é do guia são duas consequências. `AuthController` não cabe nos dois pacotes da seção 1.4, porque a regra da 5.3 fecha o pacote público em dois serviços e a rota de entrada é anterior à sessão, então falta decidir se entra um terceiro pacote. E a frase dos cinco serviços da 5.3 precisa ser reescrita no mesmo dia em que `HostOperations` ganhar assinatura. O ADR de autenticação existe e é o [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md). O diagrama de sequência do UC001 também, desenhado na task #123, só que em notação BCE, que reúne `AuthController` e `HostService` num objeto de controle só. Ele nomeia `signIn`, `signUp`, `findByEmail`, `hashPassword`, `verifyPassword` e `issueSession`, e não separa `HostOperations` de `AuthHttp`. **A assinatura de `HostOperations` continua aberta**, e com ela a frase dos cinco serviços da 5.3. Resolve: as linhas do UC001 na tabela 4.2. O #62 e o #63 estão encerrados.
+- **As rotas do UC002 e do UC003.** **Proposta nas seções 4.1 e 4.2, linhas 21 e 25 da 11.1.** Não existem em artefato nenhum. A tabela 4.1 tem sete rotas e nenhuma cria convite nem grava personalização, e a tabela 4.2 não tem serviço para elas. O que é do guia é uma dívida mais concreta que a ausência: a tabela 9.1 já compromete duas regras desses casos de uso com o Domínio, a data no passado da RN1 do UC002 e o texto acima do limite do campo da RN2 do UC003, as duas como `ValidationError` e 422. O guia aloca regra a serviço que ele mesmo não lista. Enquanto isso não fecha, a responsabilidade fica em `InviteController` e `InviteService`, e o teste de coesão da 5.1 precisa ser refeito quando as rotas existirem, porque `InviteController` passa de três para cinco rotas e `InviteService` já reúne criação, personalização, publicação e despublicação. Resolve: diagramas de sequência do UC002 e do UC003, e a atualização das tabelas 4.1 e 4.2. O #62 está encerrado e não há item aberto para isso.
 - **A projeção que `findAttendanceByStatus` devolve não tem nome.** É por isso que o quarto tipo de retorno da 5.2 não fecha. `CategoryCount`, `AllergyDescription` e `ExportRow` estão nomeados no `diagrama-sequencia-uc008.puml`, e a projeção da ED1 do UC007, com nome, status e número de acompanhantes, não está nomeada em lugar nenhum. Resolve: o diagrama de sequência do UC007, que não existe. O #62 está encerrado e não há item aberto para isso.
 - **O contador do limite de taxa cai se a API ganhar réplica.** O [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) fechou onde as duas guardas guardam estado, e o guia tinha registrado que a escolha não era livre. A leitura estrita da 6.2 proíbe a Apresentação de falar com o banco, então tabela de sessão ou tabela de contador no banco principal é violação direta da regra da seção 6, e a segunda busca da 6.4 a encontra em revisão. Contador em memória do processo não cria dependência nenhuma e deixa de valer se a API ganhar réplica. **Resolvido pelo [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md)**, que escolheu cookie assinado para a sessão e contador em memória para o limite de taxa, deixando as duas guardas sem interface requerida. Continua aberta a hipótese de réplica, que derruba o contador.
 - **A fronteira temporal do link pessoal continua indefinida.** O [ADR-0011](../Sprints/Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) decidiu o que o `personalToken` é, e deixou explícito que o "enquanto o evento não tiver ocorrido" da RN3 do UC005 depende da pendência de fuso horário e fim do evento. `generatePublicToken()` tem o ADR-0005 atrás de si. **Resolvido pelo [ADR-0011](../Sprints/Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md)**, que repete a geração do ADR-0005 e registra que não há revogação nesta fase. **A fronteira temporal foi fechada pelo [ADR-0013](../Sprints/Sprint-2/Decisões-Arquiteturais/0013-Tempo-do-evento.md)**, que põe a RN3 do UC005 até o fim do dia do evento, no fuso do projeto. Como é comparação na leitura e não expiração ativa, a condição de reabertura do ADR-0011 não é acionada.
