@@ -37,7 +37,7 @@
 
 O [Documento de Arquitetura de Software](Documento-de-Arquitetura-do-Sistema-%28DAS%29.md) descreve a estrutura do sistema. Este descreve o comportamento: como os objetos colaboram entre si para que cada caso de uso significativo aconteça.
 
-Ele serve a quem vai implementar. A pergunta que responde é qual objeto faz o quê, em que ordem, e o que cada um pode e não pode decidir sozinho.
+Ele serve a quem vai implementar. Ele mostra qual objeto faz o quê, em que ordem, e o que cada um pode e não pode decidir sozinho.
 
 ### 1.2 Escopo
 
@@ -76,7 +76,7 @@ Nos diagramas de sequência, **só as chamadas são numeradas**, com numeração
 
 A `LoginScreen` recebe as credenciais e não as julga. Ela entrega o par ao `AuthController`, que é quem sabe o que torna uma credencial válida. O controle pede ao `Host` a conta daquele email, compara a senha com o hash guardado e, quando confere, emite a sessão. A fronteira só exibe o resultado.
 
-A recusa é o ponto interessante da colaboração. O controle devolve `InvalidCredentials` sem dizer se o errado foi o email ou a senha, e a fronteira mostra a mesma mensagem nos dois casos. A decisão só funciona se os dois objetos concordarem, porque bastaria a tela distinguir os casos para o segredo vazar por outro caminho.
+O controle devolve `InvalidCredentials` sem dizer se o errado foi o email ou a senha, e a fronteira mostra a mesma mensagem nos dois casos. A decisão só funciona se os dois objetos concordarem, porque bastaria a tela distinguir os casos para o segredo vazar por outro caminho.
 
 No cadastro, a ordem importa. O controle consulta o `Host` por email antes de criar qualquer coisa, e só então gera o hash e cria a entidade. Inverter isso gravaria uma conta que a regra de email único recusaria logo depois, e deixaria um hash calculado à toa.
 
@@ -90,9 +90,9 @@ No cadastro, a ordem importa. O controle consulta o `Host` por email antes de cr
 
 O `HostPanelScreen` pede a publicação e recebe de volta o convite publicado. É ele quem monta o link a partir do token, e é só isso que ele faz com o token. O `InviteController` faz o trabalho de decidir: carrega o `Invite`, confere se ele pertence àquele anfitrião e se tem os quatro campos obrigatórios, gera o identificador público e manda a entidade publicar.
 
-**O identificador nasce no controle e nunca na fronteira.** É a mesma separação do UC001, vista por outro ângulo: quem exibe não cria identificador.
+O identificador nasce no controle e nunca na fronteira, que é a mesma separação do UC001: quem exibe não cria identificador.
 
-A operação `publish` da entidade devolve booleano em vez de nada, e isso não é detalhe. A transição de rascunho para publicado só vale se o convite ainda não estiver publicado, e se duas requisições chegarem juntas uma delas precisa receber falso. Na notação de camadas essa garantia aparecia como um `UPDATE` com predicado. Aqui ela aparece no valor de retorno, porque BCE não mostra transação.
+A operação `publish` da entidade devolve booleano em vez de nada. A transição de rascunho para publicado só vale se o convite ainda não estiver publicado, e se duas requisições chegarem juntas uma delas precisa receber falso. Na notação de camadas essa garantia aparecia como um `UPDATE` com predicado. Aqui ela aparece no valor de retorno, porque BCE não mostra transação.
 
 Despublicar é o mesmo desenho ao contrário, com a mesma conferência de dono e a mesma guarda no retorno. O que muda é que o token não é apagado, então o link pessoal de quem já respondeu continua abrindo.
 
@@ -110,7 +110,7 @@ Na abertura do convite, o `RsvpController` junta duas coisas de origens diferent
 
 Na resposta, o controle valida primeiro o que dá para decidir com o que já tem em mãos, que é o limite de acompanhantes e a coerência da nota alimentar. Só depois ele pede a vaga ao `Invite`.
 
-**`reserveSeats` é a mensagem que carrega o teto de capacidade.** Ela devolve booleano, e o ramo do diagrama guarda nesse retorno. Na notação de camadas o teto aparecia como uma verificação dentro de uma transação, com trava na linha do convite. BCE não tem onde mostrar isso, então a garantia foi para o retorno da mensagem. O `opt` acima dela registra que só a resposta sim ocupa vaga, porque não e talvez passam sem reservar nada.
+`reserveSeats` é a mensagem que carrega o teto de capacidade. Ela devolve booleano, e o ramo do diagrama guarda nesse retorno. Na notação de camadas o teto aparecia como uma verificação dentro de uma transação, com trava na linha do convite. BCE não tem onde mostrar isso, então a garantia foi para o retorno da mensagem. O `opt` acima dela registra que só a resposta sim ocupa vaga, porque não e talvez passam sem reservar nada.
 
 O `Guest` nasce com o token pessoal já gerado pelo controle, e a `DietaryNote` só nasce se o convidado tiver marcado categoria ou escrito texto livre. As duas levam `«create»` porque a identidade do convidado não existe antes da resposta: não há cadastro prévio, e é a resposta que cria o registro.
 
@@ -138,7 +138,7 @@ Na exportação, o controle pede as linhas ao `Invite` e depois faz duas coisas 
 
 ## 6. Anexo, classes participantes consolidadas
 
-As classes das quatro realizações, juntas numa figura. Não há classe nova aqui: é a união das quatro anteriores, e serve para mostrar onde elas se encostam.
+As classes das quatro realizações, juntas numa figura. É a união das quatro anteriores, sem classe nova, e mostra onde elas se encostam.
 
 Quatro fronteiras, quatro controles e cinco entidades. **Cada fronteira fala com um controle só**, e nenhum controle fala com outro controle. As entidades são o único ponto em que dois casos de uso se cruzam: `Invite` aparece em três realizações e `DietaryCategory` em duas.
 

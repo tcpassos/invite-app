@@ -56,7 +56,7 @@ O público é o time de desenvolvimento e o Product Owner. O time o usa como ref
 
 São oito seções. As de 1 a 3 situam o leitor e listam o que restringe a arquitetura. As de 4 a 8 são as visões, cada uma olhando o mesmo sistema por um ângulo diferente.
 
-**O documento se sustenta sozinho.** Nenhuma seção depende de o leitor abrir outro artefato para fazer sentido. Os links existem para quem quiser o texto longo de alguma decisão, e são opcionais.
+O documento se sustenta sozinho. Nenhuma seção depende de o leitor abrir outro artefato para fazer sentido. Os links existem para quem quiser o texto longo de alguma decisão, e são opcionais.
 
 ### 1.2 Escopo
 
@@ -170,10 +170,10 @@ Os oito casos de uso do sistema, com os arquiteturalmente significativos em dest
 |---|---|
 | UC001 | O [ADR-0010](../Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) inteiro. Argon2id, cookie assinado com `hostId` e instante de expiração, e a recusa que não diz se o errado foi o email ou a senha |
 | UC004 | A única transição de estado do modelo, de rascunho para publicado, e o único lugar onde nasce o `publicToken` do [ADR-0005](../Sprint-2/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) |
-| UC005, com a extensão do UC006 | A única escrita sem sessão do sistema. Carrega o [ADR-0006](../Sprint-2/Decisões-Arquiteturais/0006-Identidade-do-convidado.md), o [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) inteiro, o [ADR-0011](../Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) e a fronteira temporal do [ADR-0013](../Sprint-2/Decisões-Arquiteturais/0013-Tempo-do-evento.md). O teto de capacidade verificado dentro da transação é a demonstração concreta da regra de dependência do [ADR-0001](../Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) |
+| UC005, com a extensão do UC006 | A única escrita sem sessão do sistema. Carrega o [ADR-0006](../Sprint-2/Decisões-Arquiteturais/0006-Identidade-do-convidado.md), o [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) inteiro, o [ADR-0011](../Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) e a fronteira temporal do [ADR-0013](../Sprint-2/Decisões-Arquiteturais/0013-Tempo-do-evento.md). O teto de capacidade verificado dentro da transação demonstra a regra de dependência do [ADR-0001](../Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) |
 | UC008 | A única agregação com projeções nomeadas, a única exportação em CSV e o único serviço que consome dois repositórios, que é o que justifica separar `InviteRepository` de `DietaryCategoryRepository` |
 
-**Por que os outros três ficam de fora.** UC002 e UC003 são cadastro atrás de sessão e não têm rota em artefato nenhum, então não há o que desenhar sem inventar. UC007 é leitura de projeção com a mesma guarda e o mesmo repositório do UC008, e não prova nada que o UC008 já não prove.
+Por que os outros três ficam de fora. UC002 e UC003 são cadastro atrás de sessão e não têm rota em artefato nenhum, então não há o que desenhar sem inventar. UC007 é leitura de projeção com a mesma guarda e o mesmo repositório do UC008, e não prova nada que o UC008 já não prove.
 
 ### 4.1 Realizações de Casos de Uso
 
@@ -455,7 +455,7 @@ São seis nós, um dispositivo e cinco ambientes de execução aninhados dentro 
 | `api` | Container | `api.bundle`, com as três camadas |
 | `db` | Container | PostgreSQL, com o volume `pgdata` montado |
 
-**O navegador é nó e não é tier.** Ele não sobe pelo compose e não é unidade de implantação do [ADR-0002](../Sprint-2/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), mas o `front-client.bundle` sai do container `front` e executa dentro dele, o que a figura mostra com a relação `<<deploy>>`. O `db` é as duas coisas ao mesmo tempo.
+O navegador é nó e não é tier. Ele não sobe pelo compose e não é unidade de implantação do [ADR-0002](../Sprint-2/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), mas o `front-client.bundle` sai do container `front` e executa dentro dele, o que a figura mostra com a relação `<<deploy>>`. O `db` é as duas coisas ao mesmo tempo.
 
 Cinco caminhos de comunicação ligam os nós:
 
@@ -469,9 +469,9 @@ Cinco caminhos de comunicação ligam os nós:
 
 Os caminhos 1 e 3 formam o convite público em dois saltos. O caminho 2 atende o POST do UC005 e as rotas do painel, que chegam do navegador direto à API.
 
-**A API tem dois endereços, e trocá-los quebra o convite sem quebrar o build.** Dentro da rede do compose, o `front` chama `api:3000` pelo nome do serviço. O navegador está fora dessa rede e usa `127.0.0.1:3001`. O endereço que vai compilado no `front-client.bundle` é sempre o segundo, e por isso ele entra como argumento de build e não como variável de execução.
+A API tem dois endereços, e trocá-los quebra o convite sem quebrar o build. Dentro da rede do compose, o `front` chama `api:3000` pelo nome do serviço. O navegador está fora dessa rede e usa `127.0.0.1:3001`. O endereço que vai compilado no `front-client.bundle` é sempre o segundo, e por isso ele entra como argumento de build e não como variável de execução.
 
-**O `db` não publica porta.** Ninguém fora da rede do compose precisa alcançá-lo, e quem precisa inspecionar o banco entra por `docker compose exec`. A ordem de subida é `db`, `api` e `front`, garantida por `HEALTHCHECK` com `condition: service_healthy`.
+O `db` não publica porta. Ninguém fora da rede do compose precisa alcançá-lo, e quem precisa inspecionar o banco entra por `docker compose exec`. A ordem de subida é `db`, `api` e `front`, garantida por `HEALTHCHECK` com `condition: service_healthy`.
 
 ---
 
@@ -502,11 +502,11 @@ São três camadas lógicas dentro da API, mais o MVC no front.
 | Domínio | As regras, as validações e os cálculos. Gera os dois tokens públicos, compara o dono do convite, valida a nota alimentar e decide o que é resposta aceitável | Não conhece rota nem código de status |
 | Dados | O acesso ao PostgreSQL. As consultas, as projeções do painel e a escrita transacional do teto de capacidade | Não decide quem pode o quê, não gera token, não formata saída e não conduz o caso de uso |
 
-**A regra que determina a inclusão numa camada é uma só, e é a única obrigatória:**
+A regra que determina a inclusão numa camada é uma só, e é a única obrigatória:
 
 > O Domínio e a camada de Dados nunca dependem da Apresentação. As dependências apontam sempre para dentro.
 
-Dela saem as duas fronteiras que o projeto de fato cobra em revisão de código. **A Apresentação nunca chama a camada de Dados**, porque se ela pudesse ler o convite por conta própria alguém acabaria verificando o teto de capacidade ali. E **a verificação do teto é transacional, dentro da camada de Dados**, porque com duas respostas simultâneas num evento que está em 49 de 50 uma validação na Apresentação deixa as duas passarem e o evento fecha em 51. Essa é a demonstração concreta da regra, e está no [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md).
+Dela saem as duas fronteiras que o projeto cobra em revisão de código. **A Apresentação nunca chama a camada de Dados**, porque se ela pudesse ler o convite por conta própria alguém acabaria verificando o teto de capacidade ali. E **a verificação do teto é transacional, dentro da camada de Dados**, porque com duas respostas simultâneas num evento que está em 49 de 50 uma validação na Apresentação deixa as duas passarem e o evento fecha em 51. A decisão está no [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md).
 
 O projeto não adota inversão de dependência entre Domínio e Dados. O Domínio depende da interface da camada de Dados, que é dependência para baixo e é o que a arquitetura em três camadas prevê. A regra registrada é uma só, e é a de cima.
 
@@ -534,19 +534,19 @@ Esta seção existe porque a conversão do modelo de objetos para o modelo de da
 
 Sete decisões de mapeamento. As três primeiras são as que justificam esta seção existir.
 
-**1. As cores viram um documento, e `ColorSetting` não ganha tabela.** As sobrescritas de cor de um convite são o único conteúdo semiestruturado do modelo, e o [ADR-0004](../Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu PostgreSQL com JSONB por causa delas. `colorOverrides` vira uma coluna `jsonb` em `invite_customization`. A classe continua existindo no modelo de objetos e desaparece do modelo relacional.
+1. As cores viram um documento, e `ColorSetting` não ganha tabela. As sobrescritas de cor de um convite são o único conteúdo semiestruturado do modelo, e o [ADR-0004](../Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu PostgreSQL com JSONB por causa delas. `colorOverrides` vira uma coluna `jsonb` em `invite_customization`. A classe continua existindo no modelo de objetos e desaparece do modelo relacional.
 
-**2. A associação alimentar vira uma tabela que não é classe.** `DietaryNote` e `DietaryCategory` se associam muitos para muitos, e isso não tem representação direta em tabela. Entra `dietary_note_category`, com chave primária composta pelas duas chaves estrangeiras. É o único caso em que o modelo relacional tem uma tabela sem origem em classe, e a seção 8.3 a marca como tal.
+2. A associação alimentar vira uma tabela que não é classe. `DietaryNote` e `DietaryCategory` se associam muitos para muitos, e isso não tem representação direta em tabela. Entra `dietary_note_category`, com chave primária composta pelas duas chaves estrangeiras. É o único caso em que o modelo relacional tem uma tabela sem origem em classe, e a seção 8.3 a marca como tal.
 
-**3. Dois campos de formulário viram uma coluna.** O passo 3 do UC002 pede data e hora separadas, e o [ADR-0013](../Sprint-2/Decisões-Arquiteturais/0013-Tempo-do-evento.md) guarda um instante único. A coluna é `event_starts_at timestamptz`, em UTC, e a junção dos dois campos acontece na camada de Apresentação, no fuso do projeto. Quem lê o banco vê um valor, quem preenche a tela vê dois campos.
+3. Dois campos de formulário viram uma coluna. O passo 3 do UC002 pede data e hora separadas, e o [ADR-0013](../Sprint-2/Decisões-Arquiteturais/0013-Tempo-do-evento.md) guarda um instante único. A coluna é `event_starts_at timestamptz`, em UTC, e a junção dos dois campos acontece na camada de Apresentação, no fuso do projeto. Quem lê o banco vê um valor, quem preenche a tela vê dois campos.
 
-**4. O template é referência sem chave estrangeira.** `template_code` aponta para um catálogo que mora no código, não em tabela, então não existe `REFERENCES` para ele. A consequência é que o banco não impede um código inválido, e quem impede é `TemplateCatalog`, no Domínio, com `listTemplateCodes()`.
+4. O template é referência sem chave estrangeira. `template_code` aponta para um catálogo que mora no código, não em tabela, então não existe `REFERENCES` para ele. A consequência é que o banco não impede um código inválido, e quem impede é `TemplateCatalog`, no Domínio, com `listTemplateCodes()`.
 
-**5. Os enums viram texto com restrição, e não tipo do banco.** `InviteStatus` e `RsvpStatus` viram `text` com `CHECK`. Tipo enumerado nativo do PostgreSQL obriga a `ALTER TYPE` para acrescentar valor e praticamente não permite remover, o que transforma uma mudança de vocabulário em migração delicada. Com `CHECK`, a lista de valores fica declarada em dois lugares que o build já mantém juntos, o módulo `contract` e a migração.
+5. Os enums viram texto com restrição, e não tipo do banco. `InviteStatus` e `RsvpStatus` viram `text` com `CHECK`. Tipo enumerado nativo do PostgreSQL obriga a `ALTER TYPE` para acrescentar valor e praticamente não permite remover, o que transforma uma mudança de vocabulário em migração delicada. Com `CHECK`, a lista de valores fica declarada em dois lugares que o build já mantém juntos, o módulo `contract` e a migração.
 
-**6. A chave primária nunca é o token.** Cada tabela tem `id bigint` gerado pelo banco, e os dois tokens públicos moram em colunas próprias com índice único, conforme o [ADR-0005](../Sprint-2/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) e o [ADR-0011](../Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md). Chave primária sequencial exposta em link permitiria adivinhar o convite seguinte.
+6. A chave primária nunca é o token. Cada tabela tem `id bigint` gerado pelo banco, e os dois tokens públicos moram em colunas próprias com índice único, conforme o [ADR-0005](../Sprint-2/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) e o [ADR-0011](../Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md). Chave primária sequencial exposta em link permitiria adivinhar o convite seguinte.
 
-**7. O teto de capacidade não é restrição de tabela.** A invariante soma linhas de `guest` e compara com uma coluna de `invite`, então ela atravessa registros e não cabe num `CHECK`. Ela é garantida por transação, com `SELECT ... FOR UPDATE` na linha do convite antes da contagem, conforme o [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md). **Isso é decisão de arquitetura e não detalhe de implementação**, porque é o que impede duas respostas simultâneas de estourarem o limite.
+7. O teto de capacidade não é restrição de tabela. A invariante soma linhas de `guest` e compara com uma coluna de `invite`, então ela atravessa registros e não cabe num `CHECK`. Ela é garantida por transação, com `SELECT ... FOR UPDATE` na linha do convite antes da contagem, conforme o [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md). **Isso é decisão de arquitetura e não detalhe de implementação**, porque é o que impede duas respostas simultâneas de estourarem o limite.
 
 Sobre a grafia: tabela e coluna em `snake_case`, classe e atributo em `camelCase`. A tradução é do mapeamento, e nome de coluna nunca aparece em corpo de resposta da API.
 
@@ -622,7 +622,7 @@ A chave primária aqui é o próprio `code`, e não um `id` gerado, porque é da
 
 #### `dietary_note_category`
 
-**Tabela de associação. Não tem classe correspondente na seção 8.1**, e isso é esperado, conforme a estratégia 2.
+Tabela de associação, sem classe correspondente na seção 8.1, como prevê a estratégia 2.
 
 | Coluna | Tipo | Restrição |
 |---|---|---|
