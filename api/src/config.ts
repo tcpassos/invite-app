@@ -4,10 +4,11 @@ export interface AppConfig {
   port: number;
   databaseUrl: string;
   frontOrigin: string;
+  sessionSecret: string;
 }
 
 export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
-  const missing = ['DATABASE_URL', 'FRONT_ORIGIN'].filter((name) => !env[name]);
+  const missing = ['DATABASE_URL', 'FRONT_ORIGIN', 'SESSION_SECRET'].filter((name) => !env[name]);
   if (missing.length > 0) {
     throw new Error(`Variáveis de ambiente obrigatórias ausentes: ${missing.join(', ')}`);
   }
@@ -19,5 +20,6 @@ export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
     port,
     databaseUrl: env.DATABASE_URL as string,
     frontOrigin: env.FRONT_ORIGIN as string,
+    sessionSecret: env.SESSION_SECRET as string,
   };
 }
