@@ -34,3 +34,21 @@ docker compose up db api
 ## Como responder um erro
 
 O Domínio levanta um dos erros de `src/domain/errors.ts`, e o filtro em `presentation/common` traduz no formato único da seção 9.3 do Guia da Arquitetura. Controller nenhum monta corpo de erro à mão, e nada que vem de dentro de uma exceção vai para a resposta.
+
+## Testes de integração do banco
+
+`src/data/schema.spec.ts` confere o esquema contra um PostgreSQL de verdade e só roda com `TEST_DATABASE_URL` definida. Sem ela, os testes aparecem como pulados e o resto roda normalmente.
+
+Para rodar na sua máquina, suba um banco descartável com as migrações aplicadas, numa porta separada para não mexer no banco do compose:
+
+```bash
+docker run --rm -d --name invite-teste-db -e POSTGRES_USER=teste -e POSTGRES_PASSWORD=teste -e POSTGRES_DB=teste -p 55432:5432 -v "$(pwd)/migrations:/docker-entrypoint-initdb.d:ro" postgres:17-alpine
+```
+
+E rode os testes apontando para ele:
+
+```bash
+TEST_DATABASE_URL=postgres://teste:teste@127.0.0.1:55432/teste npm test --workspace api
+```
+
+Para apagar o banco descartável: `docker rm -f invite-teste-db`.
