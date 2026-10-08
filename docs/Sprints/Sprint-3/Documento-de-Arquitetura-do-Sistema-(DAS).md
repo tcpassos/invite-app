@@ -1,7 +1,7 @@
 # Documento de Arquitetura de Software
 
 **Projeto:** invite-app, aplicação web de convites com confirmação de presença
-**Versão:** 1.0
+**Versão:** 1.1
 **Data:** 20 de setembro de 2026
 **Autores:** Tiago Passos, Guilherme Toebe dos Santos, Andreas Grings, Gabriel Tomasi de Melo
 **Product Owner:** Kleinner Farias
@@ -16,6 +16,7 @@
 | 20/09/2026 | 0.4 | Seções 1 a 3, introdução, representação arquitetural e restrições | Tiago Passos |
 | 20/09/2026 | 0.5 | Seção 5.2, descrição das 29 classes por pacote | Tiago Passos |
 | 20/09/2026 | 1.0 | Seção 8, visão de dados, e revisão final do documento | Tiago Passos |
+| 07/10/2026 | 1.1 | Acesso a dados (ADR-0014) nas restrições e nas referências | Tiago Passos |
 
 ---
 
@@ -95,7 +96,7 @@ Todos versionados em `docs/` no repositório GitHub do projeto e publicados na w
 | [Diagrama de Classes](../Sprint-2/Diagrama-de-Classes.md) | 2 |
 | [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) | 2 |
 | [Diagrama de Implantação](../Sprint-2/Diagrama-de-Implantação.md) | 2 |
-| [Decisões Arquiteturais](../Sprint-2/Decisões-Arquiteturais.md), treze ADRs | 2 e 3 |
+| [Decisões Arquiteturais](../Sprint-2/Decisões-Arquiteturais.md), catorze ADRs | 2, 3 e 4 |
 | [Documento de Realização de Casos de Uso](Documento-de-Realização-de-Casos-de-Uso.md) | 3 |
 | [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), documento de trabalho do time | 2 |
 
@@ -138,7 +139,7 @@ Cada visão descreve o mesmo sistema, e o que muda é o tipo de elemento. O mesm
 |---|---|
 | **A execução é local.** `docker compose up` no computador de quem desenvolve, sem alvo de publicação, sem ambiente compartilhado e sem TLS | ADR-0003 |
 | **São três containers**, um por serviço, o que parte a camada de Apresentação entre dois processos e faz um erro passar a ter dois lados | ADR-0002 |
-| **A pilha está fechada** em Next.js no front, NestJS na API e PostgreSQL no banco | ADR-0004 |
+| **A pilha está fechada** em Next.js no front, NestJS na API e PostgreSQL no banco, com Kysely no acesso a dados | ADR-0004 e ADR-0014 |
 | **O convidado não tem cadastro.** A identidade nasce na resposta, e por isso o sistema não sabe quem ainda não respondeu | ADR-0006 |
 | **Não há envio de e-mail.** Nenhum caso de uso o pede, então não existe recuperação de senha nem lembrete automático | Especificação de Casos de Uso |
 | **Não há observabilidade além do log em saída padrão.** Sem coletor de métricas, sem painel e sem rastreamento distribuído | ADR-0012 |

@@ -27,6 +27,7 @@ Status possíveis: **Proposta**, **Aceita**, **Substituída** e **Descartada**.
 | [0011](Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) | Token pessoal com a mesma geração do token do convite, sem revogação | Aceita |
 | [0012](Decisões-Arquiteturais/0012-Observabilidade-entre-os-tiers.md) | Log em saída padrão e correlação por cabeçalho entre os dois saltos | Aceita |
 | [0013](Decisões-Arquiteturais/0013-Tempo-do-evento.md) | Instante único, fuso do projeto e fim do dia como fronteira da alteração | Aceita |
+| [0014](Decisões-Arquiteturais/0014-Acesso-a-dados.md) | Kysely sobre o driver `pg`, com o tipo do banco preso na camada de Dados | Aceita |
 
 As decisões de 0004 a 0008 foram confrontadas com um levantamento de 19 plataformas equivalentes de convite e RSVP. O relatório fica em `pesquisa-stack-benchmark.md`, no repositório do GitHub.
 
