@@ -68,6 +68,7 @@ Sobem os três serviços, na ordem `db`, `api`, `front`. A primeira vez demora a
 |---|---|---|
 | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | `db` e `api` | Credencial do banco. A `api` monta a `DATABASE_URL` a partir delas |
 | `SESSION_SECRET` | `api` | Assina o cookie de sessão do anfitrião (ADR-0010) |
+| `FRONT_ORIGIN` | `api` | Endereço do front como o navegador o abre. É a única origem de onde a API aceita chamada do navegador. Padrão `http://127.0.0.1:3000` |
 | `NEXT_PUBLIC_API_URL` | `front`, na **construção** da imagem | Endereço da API como o navegador a alcança |
 | `NODE_ENV` | `api` e `front` | Modo de execução |
 | `IMAGE_TAG` | `api` e `front` | Etiqueta das imagens construídas. Padrão `dev` |

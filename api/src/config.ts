@@ -3,10 +3,11 @@
 export interface AppConfig {
   port: number;
   databaseUrl: string;
+  frontOrigin: string;
 }
 
 export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
-  const missing = ['DATABASE_URL'].filter((name) => !env[name]);
+  const missing = ['DATABASE_URL', 'FRONT_ORIGIN'].filter((name) => !env[name]);
   if (missing.length > 0) {
     throw new Error(`Variáveis de ambiente obrigatórias ausentes: ${missing.join(', ')}`);
   }
@@ -14,5 +15,9 @@ export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
   if (!Number.isInteger(port) || port <= 0) {
     throw new Error('PORT precisa ser um número inteiro positivo');
   }
-  return { port, databaseUrl: env.DATABASE_URL as string };
+  return {
+    port,
+    databaseUrl: env.DATABASE_URL as string,
+    frontOrigin: env.FRONT_ORIGIN as string,
+  };
 }

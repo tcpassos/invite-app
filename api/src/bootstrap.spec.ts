@@ -33,6 +33,8 @@ class ProbeController {
 @Module({ controllers: [ProbeController] })
 class ProbeModule {}
 
+const FRONT = 'http://127.0.0.1:3000';
+
 describe('base da API', () => {
   let app: INestApplication;
   const requestLog: string[] = [];
@@ -42,6 +44,7 @@ describe('base da API', () => {
     const ref = await Test.createTestingModule({ imports: [ProbeModule] }).compile();
     app = ref.createNestApplication({ logger: false });
     configureApp(app, {
+      frontOrigin: FRONT,
       requestLog: (line) => requestLog.push(line),
       errorLog: (line) => errorLog.push(line),
     });
@@ -117,5 +120,36 @@ describe('base da API', () => {
     expect(JSON.stringify(res.body)).not.toContain('segredo');
     expect(errorLog.join('\n')).not.toContain('segredo');
     expect(lastLog().level).toBe('error');
+  });
+
+  it('aceita chamada do navegador vinda do front, com credenciais', async () => {
+    const res = await request(app.getHttpServer())
+      .options('/probe/echo')
+      .set('origin', FRONT)
+      .set('access-control-request-method', 'POST')
+      .set('access-control-request-headers', 'content-type');
+    expect(res.headers['access-control-allow-origin']).toBe(FRONT);
+    expect(res.headers['access-control-allow-credentials']).toBe('true');
+    expect(res.headers['access-control-allow-headers']).not.toMatch(/x-request-id/i);
+  });
+
+  it('não libera origem cruzada para outro site', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/probe/ok')
+      .set('origin', 'http://outro-site.example');
+    expect(res.headers['access-control-allow-origin']).toBeUndefined();
+  });
+
+  it('recusa corpo que não é JSON com 400 MALFORMED_REQUEST', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/probe/echo')
+      .set('content-type', 'text/plain')
+      .send('{"name":"forjado"}');
+    expect(res.status).toBe(400);
+    expect(res.body.code).toBe('MALFORMED_REQUEST');
+  });
+
+  it('aceita POST sem corpo, como o de publicar', async () => {
+    await request(app.getHttpServer()).post('/probe/echo').expect(201);
   });
 });

@@ -25,7 +25,7 @@ npm test --workspace api
 npm run dev --workspace api
 ```
 
-O `dev` precisa de `DATABASE_URL`. O jeito mais simples de ter tudo é subir pelo compose, na raiz:
+O `dev` precisa de `DATABASE_URL` e de `FRONT_ORIGIN`, o endereço do front de onde o navegador chama a API. O jeito mais simples de ter tudo é subir pelo compose, na raiz:
 
 ```bash
 docker compose up db api

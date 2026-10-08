@@ -23,7 +23,7 @@ npm test --workspace front
 npm run dev --workspace front
 ```
 
-O `dev` sobe em `http://localhost:3000`. Para falar com a API, ele precisa de `API_URL_INTERNAL` no lado do servidor e de `NEXT_PUBLIC_API_URL` no navegador. Rodando fora do compose, os dois apontam para `http://127.0.0.1:3001`.
+O `dev` sobe na porta 3000. Abra pelo endereço `http://127.0.0.1:3000`, e não por `localhost`, porque é o nome que a API aceita e o cookie de sessão depende disso (Guia da Arquitetura, 10.4). Para falar com a API, ele precisa de `API_URL_INTERNAL` no lado do servidor e de `NEXT_PUBLIC_API_URL` no navegador. Rodando fora do compose, os dois apontam para `http://127.0.0.1:3001`.
 
 ## Como chamar a API
 
