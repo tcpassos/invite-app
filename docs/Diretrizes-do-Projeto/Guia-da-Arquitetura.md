@@ -6,7 +6,7 @@ A divisão de trabalho entre os documentos do projeto é esta. Os [ADRs](../Spri
 
 Onde nenhum ADR decidiu e o código precisa de uma regra assim mesmo, o guia decide e marca a decisão como nova na seção 11. Decisão nova deste guia não tem o mesmo peso de um ADR aceito e precisa de aval do time.
 
-O guia segue o método de projeto de arquitetura em camadas apresentado na Aula 03 da disciplina, apoiado em [Fowler06]. São seis macro-passos e cada um tem lugar aqui.
+O guia segue o método de projeto de arquitetura em camadas apoiado em [Fowler06]. São seis macro-passos e cada um tem lugar aqui.
 
 | Macro-passo | Onde está neste guia |
 |---|---|
@@ -17,7 +17,7 @@ O guia segue o método de projeto de arquitetura em camadas apresentado na Aula 
 | 5. Definir os componentes que implementarão cada camada | Seção 8 |
 | 6. Definir uma estratégia para tratamento de erros | Seção 9 |
 
-As seções 5, 6, 7, 10 e 11 não estão nessa lista, e cada uma tem motivo próprio. A seção 5 existe porque a Aula 03 abre dizendo que a arquitetura "usa camadas coesas e com fraco acoplamento entre elas", e nenhum dos seis passos manda verificar se isso aconteceu. A seção 6 existe porque a regra de dependência é a única obrigação que o ADR-0001 impõe. A seção 7 existe porque há MVC no front. A seção 10 existe porque há três containers. A seção 11 existe porque o que não está escrito vira interpretação individual na hora de implementar.
+As seções 5, 6, 7, 10 e 11 não estão nessa lista, e cada uma tem motivo próprio. A seção 5 existe porque o método parte de camadas coesas e com fraco acoplamento entre elas, e nenhum dos seis passos manda verificar se isso aconteceu. A seção 6 existe porque a regra de dependência é a única obrigação que o ADR-0001 impõe. A seção 7 existe porque há MVC no front. A seção 10 existe porque há três containers. A seção 11 existe porque o que não está escrito vira interpretação individual na hora de implementar.
 
 ## Vocabulário deste documento
 
@@ -29,7 +29,7 @@ Três palavras se repetem e precisam significar sempre a mesma coisa.
 
 **Camada de Apresentação**, neste guia, é sempre a camada de controllers HTTP que roda no tier API. O código de interface que roda no navegador e no tier Front é chamado de **View** e **Controller do MVC**, nunca de camada de Apresentação. Os dois são código de apresentação no sentido amplo de [Fowler06], mas misturar os nomes torna a seção 10 ilegível.
 
-Vale registrar desde já uma quarta peça que não é nem camada nem tier. **O navegador não é tier.** Ele não é unidade de implantação do sistema, não sobe no `docker compose` e não está no ADR-0002. Mesmo assim é onde a View roda e é de onde parte o POST do UC005. O diagrama da seção 2 o desenha fora dos três tiers por isso.
+Há ainda uma quarta peça que não é nem camada nem tier. **O navegador não é tier.** Ele não é unidade de implantação do sistema, não sobe no `docker compose` e não está no ADR-0002. Mesmo assim é onde a View roda e é de onde parte o POST do UC005. O diagrama da seção 2 o desenha fora dos três tiers por isso.
 
 ---
 
@@ -47,39 +47,39 @@ Aplicado ao produto, os três motivos de mudança são estes.
 - **Muda porque a regra do evento mudou.** Quem pode publicar, quantos acompanhantes cada resposta aceita, quando a observação alimentar exige descrição, quanto vale uma resposta em vagas. Esta é a camada de **Domínio**.
 - **Muda porque a forma de guardar ou a garantia sobre a escrita mudou.** Consulta, junção, agregação, transação, bloqueio. Esta é a camada de **Dados**.
 
-O critério tem um teste prático, e o teste é a pergunta que a Aula 03 usa para narrar o defeito histórico das aplicações em duas camadas: **alguma regra de negócio vazou para a tela ou para o banco?** Se a resposta for sim, a abstração falhou, independentemente de quantas pastas existam.
+O critério tem um teste prático, e o teste é a pergunta que resume o defeito histórico das aplicações em duas camadas: **alguma regra de negócio vazou para a tela ou para o banco?** Se a resposta for sim, a abstração falhou, independentemente de quantas pastas existam.
 
 ### 1.2 Número de níveis de abstração
 
 **São três.** Não dois e não quatro.
 
-Não são dois porque a alternativa de duas camadas é justamente o antipadrão descrito na Aula 03, em que a lógica de domínio mora dentro da tela e produz duplicação e código não modularizado. O produto tem duas interfaces sobre o mesmo modelo, então esse defeito não seria teórico aqui. A mesma regra de acompanhantes existiria escrita duas vezes.
+Não são dois porque a alternativa de duas camadas é o antipadrão clássico, em que a lógica de domínio mora dentro da tela e produz duplicação e código não modularizado. O produto tem duas interfaces sobre o mesmo modelo, então esse defeito não seria teórico aqui. A mesma regra de acompanhantes existiria escrita duas vezes.
 
-Não são quatro porque não existe um quarto motivo de mudança com vida própria. O sistema não integra outro sistema, não troca mensagem com terceiro e não tem processo de aplicação separado das regras do evento. Acrescentar uma camada sem motivo próprio cobra o preço sem entregar a separação, e a própria Aula 03 registra que camadas extras prejudicam o desempenho e aumentam a propagação de alterações.
+Não são quatro porque não existe um quarto motivo de mudança com vida própria. O sistema não integra outro sistema, não troca mensagem com terceiro e não tem processo de aplicação separado das regras do evento. Acrescentar uma camada sem motivo próprio cobra o preço sem entregar a separação, porque camada extra prejudica o desempenho e aumenta a propagação de alterações.
 
 ### 1.3 Princípio de projeto
 
-O enunciado é o da Aula 03: **camadas coesas e com fraco acoplamento entre elas**.
+O enunciado é o do método: **camadas coesas e com fraco acoplamento entre elas**.
 
 As duas palavras têm definição operacional e medida neste guia, e a medida está na seção 5. Aqui fica só o enunciado, porque afirmar coesão e acoplamento sem contar nada é elogio, e elogio não reprova código em revisão.
 
 ### 1.4 Por que MVC no front
 
-A Aula 03 lista quatro sintomas do acoplamento entre regras de negócio e interface: **alto grau de instabilidade, baixa coesão, reuso comprometido e dificuldade de alocar equipes**. Os quatro se aplicariam a este projeto sem MVC, e o quarto é o mais concreto.
+São quatro os sintomas do acoplamento entre regras de negócio e interface: **alto grau de instabilidade, baixa coesão, reuso comprometido e dificuldade de alocar equipes**. Os quatro se aplicariam a este projeto sem MVC, e o quarto é o mais concreto.
 
 O Team Charter descreve quatro integrantes com experiência desigual e duas sprints de implementação. Sem separação entre View, Controller e Model, não existe recorte de tarefa que duas pessoas possam pegar sem se atropelar. A separação dá nome ao que cada um leva, que é a mesma justificativa de divisão de tarefas que o ADR-0001 já registra.
 
-O motivo principal, porém, é a forma do produto. O invite-app tem **duas Views sobre o mesmo Model**, o convite público aberto por link sem login e o painel do anfitrião autenticado. É o problema que o padrão foi criado para resolver, e a Aula 03 nomeia essa vantagem de forma direta, suporte a múltiplas interfaces de usuário sobre o mesmo model.
+O motivo principal, porém, é a forma do produto. O invite-app tem **duas Views sobre o mesmo Model**, o convite público aberto por link sem login e o painel do anfitrião autenticado. É o problema que o padrão foi criado para resolver, e é a vantagem mais conhecida do MVC: suporte a várias interfaces de usuário sobre o mesmo model.
 
-A camada de Apresentação, por consequência, tem **dois pacotes**, um por superfície. A Aula 03 registra que uma única aplicação pode ter múltiplos pacotes de cada uma das três camadas, e usa o exemplo de uma aplicação com linha de comando e interface gráfica. Aqui é a mesma estrutura com outras duas interfaces, uma anônima e uma autenticada. A divisão não é decorativa: ela aparece marcada rota por rota na tabela 4.1, desenhada no diagrama da seção 2, e vira regra de código na seção 5.3, que diz quais serviços de Domínio o pacote público pode chamar.
+A camada de Apresentação, por consequência, tem **dois pacotes**, um por superfície. Uma única aplicação pode ter vários pacotes em cada uma das três camadas, como a que oferece linha de comando e interface gráfica. Aqui é a mesma estrutura com outras duas interfaces, uma anônima e uma autenticada. A divisão não é decorativa: ela aparece marcada rota por rota na tabela 4.1, desenhada no diagrama da seção 2, e vira regra de código na seção 5.3, que diz quais serviços de Domínio o pacote público pode chamar.
 
 ### 1.5 Os quatro critérios de qualidade
 
-A Aula 03 avalia uma arquitetura em camadas por quatro critérios. A seguir, o que cada um significa neste projeto.
+Uma arquitetura em camadas é avaliada por quatro critérios. A seguir, o que cada um significa neste projeto.
 
 **Reusabilidade.** A camada de Domínio é reutilizada por duas superfícies diferentes sem uma linha duplicada. A validação da observação alimentar do UC006 é a mesma para o convidado anônimo e para qualquer tela futura do anfitrião, porque mora num serviço e não no formulário.
 
-**Modularidade.** A separação é estrutural e não convencional. O [ADR-0004](../Sprints/Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu NestJS exatamente por isso, porque módulos e injeção de dependência tornam a fronteira visível em revisão de código, e não apenas em diagrama.
+**Modularidade.** A separação é estrutural e não convencional. O [ADR-0004](../Sprints/Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu NestJS por isso, porque módulos e injeção de dependência tornam a fronteira visível em revisão de código, e não apenas em diagrama.
 
 **Compreensibilidade.** Um integrante que abre um arquivo de repository sabe que ali só existe consulta e transação, sem precisar ler os outros dois.
 
@@ -87,7 +87,7 @@ A Aula 03 avalia uma arquitetura em camadas por quatro critérios. A seguir, o q
 
 ### 1.6 Como saber se uma camada está bem desenhada
 
-A Aula 03 deriva do modelo OSI cinco propriedades de uma boa camada. Elas funcionam como lista de verificação e são usadas aqui nesse papel. Cada linha cita a evidência que a sustenta, porque marcar o próprio trabalho como atendido sem apontar onde não verifica nada.
+Do modelo OSI saem cinco propriedades de uma boa camada. Elas funcionam como lista de verificação e são usadas aqui nesse papel. Cada linha cita a evidência que a sustenta, porque marcar o próprio trabalho como atendido sem apontar onde não verifica nada.
 
 | Propriedade | Situação | Evidência |
 |---|---|---|
@@ -97,19 +97,19 @@ A Aula 03 deriva do modelo OSI cinco propriedades de uma boa camada. Elas funcio
 | Camadas são bons lugares para padronização | Atendida | O filtro de exceção único da seção 9.2 e o formato único de erro da seção 9.3, os dois na Apresentação. Nenhum controller escreve corpo de erro por conta própria |
 | Uma vez projetada, a camada pode ser usada por vários serviços de nível mais alto | Atendida | `listDietaryCategories()`, em `DietaryCategoryRepository`, é consumida por `RsvpService` no UC005 e por `DietaryService` no UC008. `findById`, em `InviteRepository`, é consumida por `InviteService` no UC004 e por `DietaryService` no UC008 |
 
-Sobre a segunda linha, vale dizer o que ela não significa. A camada de Dados não ser substituível não a torna incompreensível de forma isolada, que é a primeira linha. São propriedades diferentes. O que o teto de capacidade tira da camada de Dados é a liberdade de trocar de implementação sem reler a regra, não a possibilidade de entender o que ela faz lendo só ela.
+A segunda linha pede um cuidado. A camada de Dados não ser substituível não a torna incompreensível de forma isolada, que é a primeira linha. São propriedades diferentes. O que o teto de capacidade tira da camada de Dados é a liberdade de trocar de implementação sem reler a regra, não a possibilidade de entender o que ela faz lendo só ela.
 
 ### 1.7 Desvantagens assumidas
 
-A Aula 03 fecha lembrando que usar um estilo exige entender benefícios e desvantagens. As deste desenho são quatro e estão aceitas.
+Usar um estilo exige conhecer as desvantagens dele. As deste desenho são quatro e estão aceitas.
 
 **Propagação de alterações.** Acrescentar um campo ao convite toca as três camadas e o front. É o preço da separação e ele é cobrado toda vez.
 
 **Custo de desempenho.** Cada requisição atravessa três camadas e um mapeamento em cada fronteira. Na escala deste projeto, algumas respostas por hora no pico do disparo do convite, o custo é irrelevante.
 
-**Estrutura acima do necessário para o tamanho do CRUD.** O ADR-0001 já registra isso e nomeia o risco de excesso de projeto que o Team Charter atribui ao time. A mitigação é a mesma que ele adota: a regra de dependência da seção 6 é a única obrigatória, o resto se resolve caso a caso.
+Estrutura acima do necessário para o tamanho do CRUD. O ADR-0001 já registra isso e nomeia o risco de excesso de projeto que o Team Charter atribui ao time. A mitigação é a mesma que ele adota: a regra de dependência da seção 6 é a única obrigatória, o resto se resolve caso a caso.
 
-**A ida e a volta ao servidor.** A Aula 03 marca esse ponto como crítico de desempenho, e no caminho do convite público ele acontece duas vezes, não uma, por causa do [ADR-0002](../Sprints/Sprint-2/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md). A seção 10 trata do assunto e a seção 9.4 trata do que fazer quando um dos dois saltos falha.
+A ida e a volta ao servidor. É o ponto crítico de desempenho de uma arquitetura em camadas, e no caminho do convite público ele acontece duas vezes, não uma, por causa do [ADR-0002](../Sprints/Sprint-2/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md). A seção 10 trata do assunto e a seção 9.4 trata do que fazer quando um dos dois saltos falha.
 
 ---
 
@@ -119,21 +119,21 @@ A Aula 03 fecha lembrando que usar um estilo exige entender benefícios e desvan
 
 ### Como ler
 
-**O diagrama usa quatro tipos de ligação, e eles não são a mesma coisa.** Linha cheia com ponta é dependência em tempo de compilação, ou seja, quem está na origem conhece o tipo ou a interface do destino e não compila sem ele. Linha tracejada com ponta é chamada em tempo de execução que cruza a rede. Linha pontilhada com ponta é evento do usuário, que não cria dependência de código nenhuma. Linha sem ponta liga um interesse transversal à camada que ele atravessa. Confundir os quatro num símbolo só torna a direção da dependência ilegível na figura, e a direção da dependência é o assunto do documento.
+O diagrama usa quatro tipos de ligação, e eles não são a mesma coisa. Linha cheia com ponta é dependência em tempo de compilação, ou seja, quem está na origem conhece o tipo ou a interface do destino e não compila sem ele. Linha tracejada com ponta é chamada em tempo de execução que cruza a rede. Linha pontilhada com ponta é evento do usuário, que não cria dependência de código nenhuma. Linha sem ponta liga um interesse transversal à camada que ele atravessa. Confundir os quatro num símbolo só torna a direção da dependência ilegível na figura, e a direção da dependência é o assunto do documento.
 
-**A dependência só desce, e só a linha cheia responde por ela.** A Apresentação conhece o Domínio, o Domínio conhece os Dados, e o Model do front conhece os tipos que a API publica. Não existe linha cheia subindo. O que sobe é retorno, e retorno não é dependência.
+A dependência só desce, e só a linha cheia responde por ela. A Apresentação conhece o Domínio, o Domínio conhece os Dados, e o Model do front conhece os tipos que a API publica. Não existe linha cheia subindo. O que sobe é retorno, e retorno não é dependência.
 
-**O navegador está fora dos três tiers.** Ele não é unidade de implantação do sistema. A View roda ali, e o Controller de escrita também, que é o que torna visível a assimetria da seção 10.2.
+O navegador está fora dos três tiers. Ele não é unidade de implantação do sistema. A View roda ali, e o Controller de escrita também, que é o que torna visível a assimetria da seção 10.2.
 
-**São dois caminhos até a camada de Apresentação, não um.** O caminho de leitura sai do tier Front, que renderiza no servidor e chama a API. O caminho de escrita sai do navegador direto para a API, sem tocar o tier Front. Os dois são tracejados porque os dois cruzam a rede. Desenhar um só esconderia o POST do UC005, que é o fluxo mais importante do sistema.
+São dois caminhos até a camada de Apresentação, não um. O caminho de leitura sai do tier Front, que renderiza no servidor e chama a API. O caminho de escrita sai do navegador direto para a API, sem tocar o tier Front. Os dois são tracejados porque os dois cruzam a rede. Desenhar um só esconderia o POST do UC005, que é o fluxo mais importante do sistema.
 
 **Não há atalho.** Não existe linha do navegador nem do tier Front para o Domínio ou para os Dados. A camada de Apresentação é a única porta de entrada do back-end, e é isso que torna verificável a frase do ADR-0001 de que trocar ou reescrever o front não afeta o Domínio.
 
-**A camada de Apresentação aparece dividida em dois pacotes.** O público, com o `PublicRsvpController`, e o autenticado, com o `InviteController` e o `DietaryController`, conforme a seção 1.4. A autenticação de sessão pertence ao pacote autenticado e não aos interesses transversais, porque autenticação é responsabilidade da Apresentação e o Domínio nunca vê sessão. As seções 3.1 e 3.2 dizem o mesmo.
+A camada de Apresentação aparece dividida em dois pacotes. O público, com o `PublicRsvpController`, e o autenticado, com o `InviteController` e o `DietaryController`, conforme a seção 1.4. A autenticação de sessão pertence ao pacote autenticado e não aos interesses transversais, porque autenticação é responsabilidade da Apresentação e o Domínio nunca vê sessão. As seções 3.1 e 3.2 dizem o mesmo.
 
-**Os interesses transversais são dois, não três.** Tratamento de erros e registro de log atravessam as três camadas e por isso aparecem ligados às três por linha sem ponta. Eles não são uma quarta camada. A Aula 03 traz um exemplo de diagrama em camadas com interesses transversais, e é essa a forma usada aqui.
+Os interesses transversais são dois, não três. Tratamento de erros e registro de log atravessam as três camadas e por isso aparecem ligados às três por linha sem ponta. Eles não são uma quarta camada.
 
-**As caixas externas são os tiers.** Elas marcam fronteira de container, não fronteira de camada. As três camadas lógicas moram no mesmo container, que é o que a seção 10 detalha.
+As caixas externas são os tiers. Elas marcam fronteira de container, não fronteira de camada. As três camadas lógicas moram no mesmo container, que é o que a seção 10 detalha.
 
 ### Fonte do diagrama
 
@@ -201,7 +201,7 @@ Também chamada de lógica de negócio. Possui as regras, as validações e os c
 
 Depende da camada de Dados, e só dela. Toda leitura e toda escrita passam por ali, inclusive o dado de referência. Depende dele somente a camada de Apresentação.
 
-Vale registrar com honestidade: o Domínio depende da interface da camada de Dados, o que é dependência para baixo e é o que a arquitetura em três camadas prevê. **O projeto não adota inversão de dependência entre Domínio e Dados**, e o ADR-0001 não pede uma. A regra registrada é uma só, Domínio e Dados não dependem da Apresentação, e é essa que os diagramas provam.
+O Domínio depende da interface da camada de Dados, o que é dependência para baixo e é o que a arquitetura em três camadas prevê. **O projeto não adota inversão de dependência entre Domínio e Dados**, e o ADR-0001 não pede uma. A regra registrada é uma só, Domínio e Dados não dependem da Apresentação, e é essa que os diagramas provam.
 
 ### 3.3 Camada de Dados
 
@@ -266,7 +266,7 @@ O caso 2 é o que mais se parece com abuso, então ele tem teste próprio:
 
 ## 4. Os serviços de cada camada
 
-Esta seção cumpre o macro-passo 4 da Aula 03, especificar os serviços que cada camada oferece à camada acima. Ela existe porque é a superfície que as seções 5 e 6 governam. Sem lista de serviços, "fraco acoplamento" é elogio e não medida.
+Esta seção cumpre o macro-passo 4 do método, especificar os serviços que cada camada oferece à camada acima. Ela existe porque é a superfície que as seções 5 e 6 governam. Sem lista de serviços, "fraco acoplamento" é elogio e não medida.
 
 As assinaturas abaixo são as dos três `.puml` da Sprint 2, copiadas sem simplificar, porque parâmetro omitido em tabela vira parâmetro ausente em código e o efeito disso aparece na tabela 4.3.
 
@@ -290,7 +290,7 @@ Três regras valem para todos eles.
 
 As seis primeiras saem dos diagramas de sequência. A última é derivada do ADR-0007 e do UC007, que não têm diagrama de sequência.
 
-**Por que a leitura pública também entra no limite de taxa.** A medida 2 do ADR-0008 não restringe o limite à escrita. Ela diz "por token de convite e por endereço de origem" e justifica por repasse abusivo do link, que é comportamento de leitura: um link colado num grupo grande gera GET em massa, não POST em massa. Restringir o limite ao POST seria estreitar o ADR, e o guia não faz isso em silêncio.
+Por que a leitura pública também entra no limite de taxa. A medida 2 do ADR-0008 não restringe o limite à escrita. Ela diz "por token de convite e por endereço de origem" e justifica por repasse abusivo do link, que é comportamento de leitura: um link colado num grupo grande gera GET em massa, não POST em massa. Restringir o limite ao POST seria estreitar o ADR, e o guia não faz isso em silêncio.
 
 Essa escolha traz uma consequência que nenhum artefato do projeto tinha notado. **No caminho de leitura, o endereço de origem que a API enxerga é o do container do tier Front, não o do convidado**, porque quem chama a API ali é a renderização no servidor. Contar por endereço de origem nesse caminho contaria todos os convidados como um só e derrubaria a página do convite para todo mundo ao mesmo tempo. Então, até o time decidir se o tier Front repassa o endereço original, **o limite da rota de leitura conta por token de convite apenas**. O da rota de escrita conta pelos dois, porque ali o POST chega direto do navegador. Está registrado na seção 11.
 
@@ -310,7 +310,7 @@ A coluna de dono vem do [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-d
 
 As seis primeiras saem dos diagramas de sequência. `listAttendance` é derivada do UC007 e do ADR-0007 e existe aqui porque a rota correspondente já estava na tabela 4.1 sem serviço por trás.
 
-**Estes são serviços, não métodos da entidade.** O [Diagrama de Classes](../Sprints/Sprint-2/Diagrama-de-Classes.md) coloca `listAttendance()`, `consolidateDietaryNotes()` e `exportDietaryNotes()` como operações de `Invite`. Este guia adota a outra leitura, por três razões. A assinatura recebe `inviteId` e `hostId`, o que não é forma de método de instância de um `Invite` já carregado. As três conduzem o caso de uso chamando a camada de Dados mais de uma vez em ordem, e conduzir caso de uso não é trabalho da entidade, conforme a seção 3.3. E o diagrama do UC008 já as coloca em `DietaryService`. A divergência com o Diagrama de Classes está registrada na seção 11 com a correção exata.
+Estes são serviços, não métodos da entidade. O [Diagrama de Classes](../Sprints/Sprint-2/Diagrama-de-Classes.md) coloca `listAttendance()`, `consolidateDietaryNotes()` e `exportDietaryNotes()` como operações de `Invite`. Este guia adota a outra leitura, por três razões. A assinatura recebe `inviteId` e `hostId`, o que não é forma de método de instância de um `Invite` já carregado. As três conduzem o caso de uso chamando a camada de Dados mais de uma vez em ordem, e conduzir caso de uso não é trabalho da entidade, conforme a seção 3.3. E o diagrama do UC008 já as coloca em `DietaryService`. A divergência com o Diagrama de Classes está registrada na seção 11 com a correção exata.
 
 Os serviços do UC001, do UC002 e do UC003 seguem a mesma forma e ainda não têm diagrama de sequência que os aloque passo a passo. Eles estão na seção 11.
 
@@ -331,13 +331,13 @@ Os serviços do UC001, do UC002 e do UC003 seguem a mesma forma e ainda não tê
 
 São dez operações em dois repositórios. A separação segue a regra da seção 5.2 e `findAttendanceByStatus` é a única das dez sem diagrama de sequência que a sustente, porque o UC007 não tem. As duas entradas estão na seção 11.
 
-**O parâmetro `statuses` não é detalhe de assinatura.** A RN2 do UC008 manda exportar e consolidar apenas quem respondeu sim ou talvez. Se o filtro `[ACCEPTED, MAYBE]` não vier do Domínio como parâmetro, ele acaba escrito dentro do SQL do repositório, e aí uma regra de negócio passa a morar na camada de Dados sem nenhum dos dois casos da seção 3.5 a justificar. As três operações do painel recebem os status de fora por isso.
+O parâmetro `statuses` não é detalhe de assinatura. A RN2 do UC008 manda exportar e consolidar apenas quem respondeu sim ou talvez. Se o filtro `[ACCEPTED, MAYBE]` não vier do Domínio como parâmetro, ele acaba escrito dentro do SQL do repositório, e aí uma regra de negócio passa a morar na camada de Dados sem nenhum dos dois casos da seção 3.5 a justificar. As três operações do painel recebem os status de fora por isso.
 
 ---
 
 ## 5. Coesão e acoplamento, com número
 
-A Aula 03 abre dizendo que a arquitetura em camadas "usa camadas coesas e com fraco acoplamento entre elas", e o deck de MVC lista "baixa coesão" entre os quatro sintomas do acoplamento entre regra e interface. Nenhum dos seis macro-passos manda verificar se isso de fato aconteceu. Esta seção verifica.
+O método parte de camadas coesas e com fraco acoplamento entre elas, e "baixa coesão" está entre os quatro sintomas do acoplamento entre regra e interface. Nenhum dos seis macro-passos manda verificar se isso aconteceu. Esta seção verifica.
 
 ### 5.1 O que se mede
 
@@ -356,7 +356,7 @@ Oito dessas operações saem dos três diagramas de sequência. A nona, `findAtt
 Aplicando a definição de coesão da 5.1, há três motivos de mudança dentro do mesmo arquivo.
 
 1. **O caminho de escrita do convite e suas invariantes.** `findById`, `findPublishedByPublicToken`, `publishIfPublishable`, `unpublishIfPublished` e `saveRsvpWithinCapacity`. Muda quando a regra de publicação ou a invariante do teto muda.
-2. **As projeções de leitura do painel.** `countGuestsByCategory`, `findDescriptionsByCategories`, `findGuestsForExport` e `findAttendanceByStatus`. Muda quando uma coluna ou um filtro do painel muda. A pendência 2 dos Diagramas de Sequência, acrescentar a coluna de acompanhantes à exportação da ED2 do UC008, é exatamente esse tipo de mudança, e hoje ela tocaria o mesmo arquivo que guarda a transação do teto.
+2. **As projeções de leitura do painel.** `countGuestsByCategory`, `findDescriptionsByCategories`, `findGuestsForExport` e `findAttendanceByStatus`. Muda quando uma coluna ou um filtro do painel muda. A pendência 2 dos Diagramas de Sequência, acrescentar a coluna de acompanhantes à exportação da ED2 do UC008, é esse tipo de mudança, e hoje ela tocaria o mesmo arquivo que guarda a transação do teto.
 3. **O dado de referência.** `listDietaryCategories`. Muda quando o catálogo de categorias muda, que não tem nada a ver com os outros dois.
 
 A regra que o projeto adota para resolver isso:
@@ -365,7 +365,7 @@ A regra que o projeto adota para resolver isso:
 
 Pelo critério, os motivos 1 e 2 ficam juntos. As três projeções do painel filtram por `inviteId`, dependem da mesma fronteira de consistência do agregado, e separá-las num repositório de consulta próprio compraria um conceito novo para três consultas. O motivo 3 sai: `listDietaryCategories()` não recebe `inviteId`, `DietaryCategory` é dado de referência marcado como tal no Diagrama de Classes, e o lugar dela é um `DietaryCategoryRepository` próprio.
 
-**Esta regra é decisão nova deste guia, não algo que outro artefato já tenha registrado.** O Diagrama de Classes registra que `Invite` é a raiz do modelo e que `DietaryCategory` é dado de referência, e não fala em repositório em ponto nenhum. A regra segue daquilo, mas não está escrita lá. Está na seção 11 junto com as outras decisões novas.
+Esta regra é decisão nova deste guia, não algo que outro artefato já tenha registrado. O Diagrama de Classes registra que `Invite` é a raiz do modelo e que `DietaryCategory` é dado de referência, e não fala em repositório em ponto nenhum. A regra segue daquilo, mas não está escrita lá. Está na seção 11 junto com as outras decisões novas.
 
 Os diagramas de sequência do UC005 e do UC008 mostravam `listDietaryCategories()` em `InviteRepository`, em três chamadas ao todo, duas no UC005 e uma no UC008. Os dois ganharam a linha de vida de `DietaryCategoryRepository` quando o Diagrama de Componentes separou os dois repositórios. O diagrama do UC004 não usa a operação e não mudou.
 
@@ -389,21 +389,21 @@ O [ADR-0001](../Sprints/Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetura
 
 > **O Domínio e a camada de Dados nunca dependem da Apresentação. As dependências apontam sempre para dentro.**
 
-A Aula 03 enuncia a mesma ideia de mais duas formas, e as três importam porque cada uma pega um tipo diferente de violação.
+A mesma ideia pode ser enunciada de mais duas formas, e as três importam porque cada uma pega um tipo diferente de violação.
 
-**Forma 1, a da camada inferior.** A camada inferior ignora a existência da camada superior. Pega o caso do repository que importa um tipo de requisição HTTP para "facilitar".
+Forma 1, a da camada inferior. A camada inferior ignora a existência da camada superior. Pega o caso do repository que importa um tipo de requisição HTTP para "facilitar".
 
-**Forma 2, a do escondimento.** A camada de Domínio esconde a camada de Dados da camada de Apresentação. Pega o caso do controller que chama o repository direto para pular uma chamada.
+Forma 2, a do escondimento. A camada de Domínio esconde a camada de Dados da camada de Apresentação. Pega o caso do controller que chama o repository direto para pular uma chamada.
 
-**Forma 3, a da direção.** As camadas de Domínio e de Dados não devem depender da camada de Apresentação. Pega o caso do service que lança um erro já com código de status dentro.
+Forma 3, a da direção. As camadas de Domínio e de Dados não devem depender da camada de Apresentação. Pega o caso do service que lança um erro já com código de status dentro.
 
 O benefício declarado é o mesmo das três: **flexibiliza a arquitetura ao permitir a troca da camada de Apresentação sem provocar impacto nas camadas inferiores**. Neste projeto isso não é hipótese de futuro, é o que faz duas Views funcionarem sobre um Model só hoje.
 
 ### 6.2 Leitura adotada sobre o acesso da Apresentação aos Dados
 
-O material da Aula 03 admite duas leituras em pontos diferentes. Em um deles, a Apresentação traduz comandos em ações sobre a camada de Domínio **e** a camada de Dados. Em outro, o Domínio esconde a camada de Dados da Apresentação.
+O método admite duas leituras em pontos diferentes. Em um deles, a Apresentação traduz comandos em ações sobre a camada de Domínio **e** a camada de Dados. Em outro, o Domínio esconde a camada de Dados da Apresentação.
 
-**Este projeto adota a leitura estrita: a Apresentação nunca chama a camada de Dados.** É a leitura que o ADR-0001 já assumiu e é a que o teto de capacidade obriga. Se a Apresentação pudesse ler o convite por conta própria, alguém acabaria checando o teto ali, e a seção 3.4 explica o que acontece então.
+Este projeto adota a leitura estrita: a Apresentação nunca chama a camada de Dados. É a leitura que o ADR-0001 já assumiu e é a que o teto de capacidade obriga. Se a Apresentação pudesse ler o convite por conta própria, alguém acabaria checando o teto ali, e a seção 3.4 explica o que acontece então.
 
 ### 6.3 O que violaria a regra na prática
 
@@ -426,11 +426,11 @@ Lista concreta, para revisão de código e não para discussão de princípio.
 
 São três buscas, e as três juntas levam menos de um minuto. O ADR-0001 registra que a regra exige disciplina de time, e disciplina que depende de boa vontade não sobrevive a uma sprint. Esta é a forma de checar sem depender disso.
 
-**No tier API, procurar por `404`, `409`, `422` e `HttpException`.** Se algum resultado sair de fora da pasta da Apresentação, a regra foi quebrada.
+No tier API, procurar por `404`, `409`, `422` e `HttpException`. Se algum resultado sair de fora da pasta da Apresentação, a regra foi quebrada.
 
-**No tier API, procurar por `SELECT`, `INSERT` e `UPDATE`.** Se algum sair de fora da pasta de Dados, a regra foi quebrada.
+No tier API, procurar por `SELECT`, `INSERT` e `UPDATE`. Se algum sair de fora da pasta de Dados, a regra foi quebrada.
 
-**No tier Front, procurar por `use server`, pela pasta `app/api`, e por `capacityLimit` e `maxCompanionsPerGuest`.** Se algum aparecer, a regra foi quebrada. Esta terceira busca cobre a violação mais provável do projeto, que é a regra de negócio decidida no Next, e as duas primeiras não pegam nada dela. É o atalho que aparece quando a sprint aperta e o Next já está ali, e a seção 8 o proíbe em texto.
+No tier Front, procurar por `use server`, pela pasta `app/api`, e por `capacityLimit` e `maxCompanionsPerGuest`. Se algum aparecer, a regra foi quebrada. Esta terceira busca cobre a violação mais provável do projeto, que é a regra de negócio decidida no Next, e as duas primeiras não pegam nada dela. É o atalho que aparece quando a sprint aperta e o Next já está ali, e a seção 8 o proíbe em texto.
 
 ---
 
@@ -438,7 +438,7 @@ São três buscas, e as três juntas levam menos de um minuto. O ADR-0001 regist
 
 ### 7.1 A equivalência, e onde ela não é exata
 
-A Aula 03 define as três peças do MVC assim: **View** é a interface do usuário, **Controller** é o controle de fluxo da aplicação, e **Model** é a lógica de negócios **e o acesso a dados**. Essa última definição é o ponto que exige cuidado neste projeto.
+As três peças do MVC são definidas assim: **View** é a interface do usuário, **Controller** é o controle de fluxo da aplicação, e **Model** é a lógica de negócios **e o acesso a dados**. Essa última definição é o ponto que exige cuidado neste projeto.
 
 A tabela abaixo usa a expressão "camada de apresentação no sentido amplo de [Fowler06]", e não "camada de Apresentação", que o Vocabulário reservou para os controllers HTTP do tier API. São coisas diferentes com nome parecido, e a coluna de tier existe para não deixar dúvida.
 
@@ -454,9 +454,9 @@ A separação em três camadas do back-end é, portanto, **um refinamento do Mod
 
 ### 7.2 O Model do front não é o Model do padrão
 
-Esta é a confusão mais provável de todo o documento, e ela precisa ficar resolvida em voz alta.
+Esta é a confusão mais provável de todo o documento, e ela precisa ficar resolvida por escrito.
 
-O ADR-0001 diz "MVC no front-end" e o [ADR-0004](../Sprints/Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) diz que Next.js é front-end apenas. Se alguém chamar de "Model" alguma coisa dentro do tier Front sem qualificar, lê-se como regra de negócio dentro da tela, que é exatamente o antipadrão que a Aula 03 narra como defeito histórico.
+O ADR-0001 diz "MVC no front-end" e o [ADR-0004](../Sprints/Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) diz que Next.js é front-end apenas. Se alguém chamar de "Model" alguma coisa dentro do tier Front sem qualificar, lê-se como regra de negócio dentro da tela, que é o antipadrão das aplicações em duas camadas.
 
 > **O Model do MVC deste sistema mora no tier API, distribuído entre Domínio e Dados. O que existe no navegador é a projeção desse Model recebida na resposta HTTP, mais o estado do formulário que o usuário está preenchendo.**
 
@@ -470,9 +470,9 @@ A prova está no UC005. As categorias alimentares chegam junto com a página vin
 | View | Navegador, com o HTML do convite público montado no tier Front | Template do [ADR-0009](../Sprints/Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md), formulário do convite, telas do painel, montagem do link a partir do token | Nenhuma, só exibe |
 | Controller | Tier Front no caminho de leitura, navegador no caminho de escrita | Resolução de rota e escolha da View no Next.js, tradução de evento do usuário em chamada HTTP, e a consulta periódica do ADR-0007 | Apresentação, e só ela |
 
-**A View faz trabalho de exibição e nada além.** Ela monta o link a partir de um token que o Domínio gerou. Ela esconde e mostra campo, por exemplo ocultando acompanhantes e restrição alimentar quando a resposta é "não", ou cobrando o texto livre depois que uma categoria que exige descrição foi marcada. Ela esconde campo, não decide validade.
+A View faz trabalho de exibição e nada além. Ela monta o link a partir de um token que o Domínio gerou. Ela esconde e mostra campo, por exemplo ocultando acompanhantes e restrição alimentar quando a resposta é "não", ou cobrando o texto livre depois que uma categoria que exige descrição foi marcada. Ela esconde campo, não decide validade.
 
-**O Controller do front não decide nada.** Todos os passos do UC005 entre o 3 e o 6 acontecem entre o convidado e o navegador, sem uma única seta de rede, e nada disso é confiado. Depois do POST, `checkCompanionLimit` e `validateDietaryNote` rodam de novo no Domínio. **A checagem do front é conforto, a do servidor é verdade.** O motivo está no ADR-0008: a fronteira pública é a única escrita sem autenticação, o POST sai direto do navegador, e qualquer um envia qualquer corpo.
+O Controller do front não decide nada. Todos os passos do UC005 entre o 3 e o 6 acontecem entre o convidado e o navegador, sem uma única seta de rede, e nada disso é confiado. Depois do POST, `checkCompanionLimit` e `validateDietaryNote` rodam de novo no Domínio. **A checagem do front é conforto, a do servidor é verdade.** O motivo está no ADR-0008: a fronteira pública é a única escrita sem autenticação, o POST sai direto do navegador, e qualquer um envia qualquer corpo.
 
 ### 7.4 O Controller está partido entre dois lugares
 
@@ -482,22 +482,22 @@ Isso não é inconsistência. É o efeito combinado do ADR-0002, que separou os 
 
 ### 7.5 O que do MVC não foi adotado, e por quê
 
-O MVC original é baseado em notificação. O Model registra as views e os controllers interessados e notifica os registrados quando o estado muda, e o diagrama da Aula 03 separa na legenda a invocação de método do evento.
+O MVC original é baseado em notificação. O Model registra as views e os controllers interessados e notifica os registrados quando o estado muda, e o diagrama clássico do padrão separa a invocação de método do evento.
 
-**Nada disso existe sobre HTTP sem estado.** O servidor não tem lista de views registradas e não tem como avisar ninguém. Então:
+Nada disso existe sobre HTTP sem estado. O servidor não tem lista de views registradas e não tem como avisar ninguém. Então:
 
 - **Adotado:** a separação de responsabilidades entre View, Controller e Model, e a ideia central de múltiplas Views sobre um Model só, que é a razão da escolha no ADR-0001.
 - **Não adotado:** o registro de observadores e a notificação de mudança.
 
 O substituto do projeto para a notificação é a **consulta periódica do [ADR-0007](../Sprints/Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md)**, com intervalo entre 15 e 30 segundos enquanto o painel estiver aberto. A escolha está justificada lá, e a consequência aqui é que a View do painel pergunta em vez de ser avisada.
 
-**A consequência maior, dita em voz alta.** O diagrama do slide 9 da Aula 03 define a tríade por três relações: a View requisita atualizações ao Model, o Controller mapeia ações do usuário para atualizações do modelo, e o Model notifica a View sobre mudanças. Com o Model fora do navegador, conforme a seção 7.2, **nenhuma das três acontece localmente neste sistema**. As três viram uma chamada HTTP. O que roda no navegador é a metade View e Controller do padrão operando sobre um Model remoto, e essa é a comparação honesta com o diagrama da aula. Dizer isso é mais forte do que deixar implícito, porque quem conhece aquele diagrama vai perguntar onde está a seta de notificação.
+**A consequência maior.** O diagrama clássico do MVC define a tríade por três relações: a View requisita atualizações ao Model, o Controller mapeia ações do usuário para atualizações do modelo, e o Model notifica a View sobre mudanças. Com o Model fora do navegador, conforme a seção 7.2, **nenhuma das três acontece localmente neste sistema**. As três viram uma chamada HTTP. O que roda no navegador é a metade View e Controller do padrão operando sobre um Model remoto, e essa é a comparação correta com o diagrama do padrão. Dizer isso é mais forte do que deixar implícito, porque quem conhece aquele diagrama vai perguntar onde está a seta de notificação.
 
 ---
 
 ## 8. Stack por camada
 
-A escolha e a justificativa estão no [ADR-0004](../Sprints/Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md). Esta seção só registra o que implementa cada camada, cumprindo o macro-passo 5 da Aula 03.
+A escolha e a justificativa estão no [ADR-0004](../Sprints/Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md). Esta seção só registra o que implementa cada camada, cumprindo o macro-passo 5 do método.
 
 A primeira coluna mistura camada com peça do MVC de propósito, e diz qual é qual, porque a View e o Controller do MVC não são camadas do ADR-0001 e não podem aparecer como se fossem.
 
@@ -513,9 +513,9 @@ Três limites vêm do ADR-0004 e valem como regra de código.
 
 **Next.js é front-end apenas.** Nada de API routes nem de server actions com regra de negócio. Se a lógica migrar para o Next, o tier da API perde a razão de existir e o ADR-0002 vira ficção. A terceira busca da seção 6.4 é o que verifica isso.
 
-**O Domínio não importa NestJS além da anotação de injeção.** Ele precisa ser testável sem subir a API nem o banco, que é uma consequência positiva declarada no ADR-0001.
+O Domínio não importa NestJS além da anotação de injeção. Ele precisa ser testável sem subir a API nem o banco, que é uma consequência positiva declarada no ADR-0001.
 
-**O `JSONB` guarda apenas as cores e os ajustes livres da personalização.** O template escolhido fica em coluna tipada, e os textos do convite ficam em colunas próprias, porque são dado consultado.
+O `JSONB` guarda apenas as cores e os ajustes livres da personalização. O template escolhido fica em coluna tipada, e os textos do convite ficam em colunas próprias, porque são dado consultado.
 
 **Sobre os componentes.** As classes que a camada de Dados devolve estão no [Diagrama de Classes](../Sprints/Sprint-2/Diagrama-de-Classes.md) da Sprint 2. A sessão do anfitrião e o contador de limite de taxa do ADR-0008 são infraestrutura, ficaram fora do diagrama de classes de propósito e serão nomeados no diagrama de componentes.
 
@@ -523,7 +523,7 @@ Três limites vêm do ADR-0004 e valem como regra de código.
 
 ## 9. Estratégia de tratamento de erros
 
-Último macro-passo do projeto em camadas, conforme a Aula 03. Sem ele, cada integrante inventa o próprio jeito de sinalizar falha e a regra da seção 6 vaza pela porta dos fundos.
+Último macro-passo do projeto em camadas. Sem ele, cada integrante inventa o próprio jeito de sinalizar falha e a regra da seção 6 vaza pela porta dos fundos.
 
 ### 9.1 Oito categorias, cada uma com um dono
 
@@ -542,7 +542,7 @@ O dono é a camada que **detecta** o erro. Nenhuma outra decide aquilo por ela. 
 
 Falha de infraestrutura não tem dono de propósito. Ninguém a converte em conceito de negócio, porque não existe conceito de negócio para o banco não ter respondido. Ela sobe crua até a borda e morre lá.
 
-**O duplo clique em publicar não está nesta tabela, e isso é intencional.** Ele não é erro. Quando duas requisições de publicação chegam juntas, a segunda encontra zero linhas afetadas no `UPDATE` de `publishIfPublishable`, o Domínio relê o convite com `findById` e devolve 200 com o `publicToken` que já existia. A operação é idempotente, é o que o `opt` de zero linhas do diagrama do UC004 mostra, e é coerente com a seção 3.2, que registra que republicar reaproveita o link em vez de recusá-lo.
+O duplo clique em publicar não está nesta tabela, e isso é intencional. Ele não é erro. Quando duas requisições de publicação chegam juntas, a segunda encontra zero linhas afetadas no `UPDATE` de `publishIfPublishable`, o Domínio relê o convite com `findById` e devolve 200 com o `publicToken` que já existia. A operação é idempotente, é o que o `opt` de zero linhas do diagrama do UC004 mostra, e é coerente com a seção 3.2, que registra que republicar reaproveita o link em vez de recusá-lo.
 
 Lido em conjunto, o critério de código de status é este:
 
@@ -554,15 +554,15 @@ O critério classifica os oito códigos sem sobra. `INVITE_NOT_PUBLISHABLE` é 4
 
 Este é o ponto arquitetural da seção. Um erro atravessa as três camadas mudando de forma três vezes, e em nenhum momento uma camada de baixo aprende o vocabulário de uma camada de cima.
 
-**Dados para Domínio: valor de retorno, nunca exceção de negócio.** `saveRsvpWithinCapacity` devolve o convidado gravado ou uma recusa com um dos dois motivos, `CAPACITY_EXCEEDED` ou `INVITE_NOT_OPEN`. É dado simples, decidido dentro da mesma transação que fez o `SELECT ... FOR UPDATE`. A camada de Dados descobriu a condição porque só ela pode, mas quem dá nome de negócio a ela é o Domínio.
+Dados para Domínio: valor de retorno, nunca exceção de negócio. `saveRsvpWithinCapacity` devolve o convidado gravado ou uma recusa com um dos dois motivos, `CAPACITY_EXCEEDED` ou `INVITE_NOT_OPEN`. É dado simples, decidido dentro da mesma transação que fez o `SELECT ... FOR UPDATE`. A camada de Dados descobriu a condição porque só ela pode, mas quem dá nome de negócio a ela é o Domínio.
 
-**Domínio para Apresentação: exceção tipada do catálogo do Domínio, ou ausência de valor.** São cinco tipos e não mais que isso: `ValidationError`, `InvalidInviteForPublication`, `NotInviteOwner`, `CapacityExceededError` e `InviteNotOpenError`. Nenhum deles carrega número de status, nome de cabeçalho nem texto de tela. O Domínio afirma o que aconteceu e cala sobre como isso é exposto.
+Domínio para Apresentação: exceção tipada do catálogo do Domínio, ou ausência de valor. São cinco tipos e não mais que isso: `ValidationError`, `InvalidInviteForPublication`, `NotInviteOwner`, `CapacityExceededError` e `InviteNotOpenError`. Nenhum deles carrega número de status, nome de cabeçalho nem texto de tela. O Domínio afirma o que aconteceu e cala sobre como isso é exposto.
 
-**Não existe um `NotFoundError` neste catálogo, e a ausência é deliberada.** Ausência de recurso não é exceção, é valor vazio. `getPublishedInvite(publicToken)` devolve o convite ou vazio, que é o que a tabela 4.2 diz e o que o diagrama do UC005 mostra, com o Domínio devolvendo "vazio" e a Apresentação escolhendo 404. Um tipo chamado "não encontrado" no Domínio colapsaria quatro situações que o Domínio distingue perfeitamente, token inexistente, convite em rascunho, convite despublicado e convite de outro anfitrião. Um convite em rascunho existe, e o Domínio sabe disso. Fingir o contrário dentro do Domínio é escrever lá a política de exposição da seção 9.5, que é decisão de fronteira.
+Não existe um `NotFoundError` neste catálogo, e a ausência é deliberada. Ausência de recurso não é exceção, é valor vazio. `getPublishedInvite(publicToken)` devolve o convite ou vazio, que é o que a tabela 4.2 diz e o que o diagrama do UC005 mostra, com o Domínio devolvendo "vazio" e a Apresentação escolhendo 404. Um tipo chamado "não encontrado" no Domínio colapsaria quatro situações que o Domínio distingue perfeitamente, token inexistente, convite em rascunho, convite despublicado e convite de outro anfitrião. Um convite em rascunho existe, e o Domínio sabe disso. Fingir o contrário dentro do Domínio é escrever lá a política de exposição da seção 9.5, que é decisão de fronteira.
 
-**Apresentação para cliente: um único filtro traduz tipo em status e em código.** Um filtro de exceção do NestJS, num arquivo só, com a tabela da seção 9.1 dentro. Ele precisa capturar também as exceções que o próprio framework levanta e reescrevê-las no formato da seção 9.3, senão a API passa a devolver dois formatos diferentes de erro sem ninguém perceber.
+Apresentação para cliente: um único filtro traduz tipo em status e em código. Um filtro de exceção do NestJS, num arquivo só, com a tabela da seção 9.1 dentro. Ele precisa capturar também as exceções que o próprio framework levanta e reescrevê-las no formato da seção 9.3, senão a API passa a devolver dois formatos diferentes de erro sem ninguém perceber.
 
-**Por que isso não é burocracia.** `NotInviteOwner` vira 404 e não 403, para não confirmar que o convite existe. Essa é uma decisão de exposição da fronteira, não de negócio. Se o Domínio lançasse 403, ele teria decidido sozinho uma política que é da Apresentação, e mudar a política obrigaria a mexer no Domínio. O Domínio diz que aquele convite não é daquele anfitrião. A Apresentação escolhe o que o mundo lê. O mesmo argumento vale, palavra por palavra, para o colapso das quatro situações num 404 só: quem colapsa é a Apresentação, e o Domínio nunca perde a informação. É a demonstração mais barata da regra da seção 6 fora do caso do teto, e custa duas linhas de tabela.
+Por que isso não é burocracia. `NotInviteOwner` vira 404 e não 403, para não confirmar que o convite existe. Essa é uma decisão de exposição da fronteira, não de negócio. Se o Domínio lançasse 403, ele teria decidido sozinho uma política que é da Apresentação, e mudar a política obrigaria a mexer no Domínio. O Domínio diz que aquele convite não é daquele anfitrião. A Apresentação escolhe o que o mundo lê. O mesmo argumento vale, palavra por palavra, para o colapso das quatro situações num 404 só: quem colapsa é a Apresentação, e o Domínio nunca perde a informação. É a demonstração mais barata da regra da seção 6 fora do caso do teto, e custa duas linhas de tabela.
 
 ### 9.3 Formato único de resposta de erro
 
@@ -593,15 +593,15 @@ E esta é a falha de banco, o extremo mais pobre:
 }
 ```
 
-**`code`, `message` e `traceId` são obrigatórios em toda resposta de erro, e `details` é o único opcional.** Campo que não se aplica fica **ausente**, nunca nulo e nunca lista vazia. Lista vazia diz "procurei e não achei nada", que é afirmação diferente de "esta categoria não tem detalhe", e um consumidor que percorre `details` direto quebra com nulo. Com a regra assim, o `ApiClient` testa presença uma vez e a tela nunca precisa distinguir três estados onde existem dois.
+`code`, `message` e `traceId` são obrigatórios em toda resposta de erro, e `details` é o único opcional. Campo que não se aplica fica **ausente**, nunca nulo e nunca lista vazia. Lista vazia diz "procurei e não achei nada", que é afirmação diferente de "esta categoria não tem detalhe", e um consumidor que percorre `details` direto quebra com nulo. Com a regra assim, o `ApiClient` testa presença uma vez e a tela nunca precisa distinguir três estados onde existem dois.
 
-**`code` é o contrato e não muda.** O conjunto de valores é fechado e é o da tabela 9.1: `MALFORMED_REQUEST`, `RATE_LIMITED`, `VALIDATION_FAILED`, `INVITE_NOT_PUBLISHABLE`, `NOT_FOUND`, `CAPACITY_EXCEEDED`, `INVITE_NOT_OPEN` e `INTERNAL_ERROR`. São oito e código novo exige linha nova naquela tabela, porque o `HttpExceptionFilter` traduz por ela.
+`code` é o contrato e não muda. O conjunto de valores é fechado e é o da tabela 9.1: `MALFORMED_REQUEST`, `RATE_LIMITED`, `VALIDATION_FAILED`, `INVITE_NOT_PUBLISHABLE`, `NOT_FOUND`, `CAPACITY_EXCEEDED`, `INVITE_NOT_OPEN` e `INTERNAL_ERROR`. São oito e código novo exige linha nova naquela tabela, porque o `HttpExceptionFilter` traduz por ela.
 
-**`message` é para gente e pode mudar a qualquer momento.** O filtro a escolhe a partir do `code` e, quando `details` existe, do `rule` da primeira entrada. O par é necessário porque `VALIDATION_FAILED` cobre seis recusas diferentes na tabela 9.1, e uma mensagem por `code` sairia genérica nas seis. Como `rule` também é vocabulário fechado do filtro, a mensagem continua sendo escolha dele e não texto vindo de fora. Trocar o texto de uma mensagem não quebra consumidor nenhum, e por isso ela não é contrato.
+`message` é para gente e pode mudar a qualquer momento. O filtro a escolhe a partir do `code` e, quando `details` existe, do `rule` da primeira entrada. O par é necessário porque `VALIDATION_FAILED` cobre seis recusas diferentes na tabela 9.1, e uma mensagem por `code` sairia genérica nas seis. Como `rule` também é vocabulário fechado do filtro, a mensagem continua sendo escolha dele e não texto vindo de fora. Trocar o texto de uma mensagem não quebra consumidor nenhum, e por isso ela não é contrato.
 
 > **O front decide comportamento por `code` e pelo status, nunca por `message`.** Comparação de texto de mensagem em qualquer lugar do tier Front é a regra quebrada, e o sintoma aparece no dia em que alguém corrige uma vírgula na mensagem e uma tela para de reagir.
 
-**`details` carrega o que a tela precisa apontar.** É uma lista de entradas `{ field, rule }`, e existe porque dois dos cinco tipos do catálogo da seção 9.2 carregam detalhe estruturado e os outros três não. `ValidationError(field, rule)` vira **uma entrada**, com o campo que a regra recusou e o nome da regra. `InvalidInviteForPublication(missingFields)` vira **uma entrada por campo faltando**, todas com `rule` igual a `required`. Um convite sem nome e sem hora sai assim:
+`details` carrega o que a tela precisa apontar. É uma lista de entradas `{ field, rule }`, e existe porque dois dos cinco tipos do catálogo da seção 9.2 carregam detalhe estruturado e os outros três não. `ValidationError(field, rule)` vira **uma entrada**, com o campo que a regra recusou e o nome da regra. `InvalidInviteForPublication(missingFields)` vira **uma entrada por campo faltando**, todas com `rule` igual a `required`. Um convite sem nome e sem hora sai assim:
 
 ```json
 {
@@ -617,7 +617,7 @@ E esta é a falha de banco, o extremo mais pobre:
 
 A forma é a mesma nos dois porque quem lê é a mesma tela. O ramo A2 do diagrama do UC005 manda apontar o campo com problema e manter o que já foi preenchido, e a tela do UC004 precisa apontar os quatro campos obrigatórios da RN1 de uma vez, e não um por vez a cada tentativa de publicar. Uma lista atende os dois, um objeto com um campo só atenderia um.
 
-**O valor de `field` é o nome do campo no contrato, nunca o nome da coluna.** É `companionCount` e jamais `companion_count`. A razão é dupla: esse é o nome que a View usa no formulário, então a tela acha o campo sem tabela de conversão, e nome de coluna no corpo de erro é vazamento de esquema, tratado logo abaixo.
+O valor de `field` é o nome do campo no contrato, nunca o nome da coluna. É `companionCount` e jamais `companion_count`. A razão é dupla: esse é o nome que a View usa no formulário, então a tela acha o campo sem tabela de conversão, e nome de coluna no corpo de erro é vazamento de esquema, tratado logo abaixo.
 
 Os valores de `rule` também formam conjunto fechado, e cada um aponta uma regra que a tabela 9.1 nomeia na linha de validação.
 
@@ -633,13 +633,13 @@ Os valores de `rule` também formam conjunto fechado, e cada um aponta uma regra
 
 São sete valores e eles cobrem as seis recusas da linha de validação da tabela 9.1 mais o piso da RN2 do UC005. Fechado aqui quer dizer fechado para as rotas que a tabela 4.1 já lista. As rotas do UC002 e do UC003, que a seção 11 registra como ausentes, acrescentam valores quando forem especificadas, e cada valor novo entra nesta tabela junto com a rota.
 
-**O nome do `rule` não repete o nome do atributo do convite, e isso não é preciosismo.** A terceira busca da seção 6.4 procura por `capacityLimit` e `maxCompanionsPerGuest` dentro do tier Front para pegar regra de negócio decidida no Next. Como `ApiError` mora em `contract/` e `contract/` é compilado para dentro dos dois lados, um `rule` chamado `maxCompanionsPerGuest` apareceria no bundle do front por desenho e a busca passaria a acusar violação onde não há. A busca é frágil e vale mais do que o nome, então quem cede é o nome. `companionLimit` nomeia a mesma recusa sem colidir.
+O nome do `rule` não repete o nome do atributo do convite, e isso não é preciosismo. A terceira busca da seção 6.4 procura por `capacityLimit` e `maxCompanionsPerGuest` dentro do tier Front para pegar regra de negócio decidida no Next. Como `ApiError` mora em `contract/` e `contract/` é compilado para dentro dos dois lados, um `rule` chamado `maxCompanionsPerGuest` apareceria no bundle do front por desenho e a busca passaria a acusar violação onde não há. A busca é frágil e vale mais do que o nome, então quem cede é o nome. `companionLimit` nomeia a mesma recusa sem colidir.
 
 O diagrama do UC005 escreve `ValidationError(field)` no ramo A2 e a tabela 9.1 escreve `ValidationError(field, rule)`. O corpo precisa dos dois, porque só com `field` a tela sabe onde apontar e não sabe o que dizer. Quem recebe a correção é o diagrama, e ela está na seção 11.
 
-**Os outros três tipos do catálogo saem sem `details`.** `NotInviteOwner` sai sem porque qualquer detalhe ali desfaz o colapso das quatro situações num 404 só, que é a política da seção 9.5. `CapacityExceededError` e `InviteNotOpenError` saem sem porque o que recusou não é campo do pedido, é a situação do convite, e não há nada no formulário para apontar.
+Os outros três tipos do catálogo saem sem `details`. `NotInviteOwner` sai sem porque qualquer detalhe ali desfaz o colapso das quatro situações num 404 só, que é a política da seção 9.5. `CapacityExceededError` e `InviteNotOpenError` saem sem porque o que recusou não é campo do pedido, é a situação do convite, e não há nada no formulário para apontar.
 
-**Do interior de uma exceção, o corpo carrega apenas vocabulário fechado.** Esta é a regra que a revisão de código verifica:
+Do interior de uma exceção, o corpo carrega apenas vocabulário fechado. Esta é a regra que a revisão de código verifica:
 
 > **O filtro copia da exceção somente `field`, `rule` e os itens de `missingFields`, que são valores de conjunto fechado declarados na tabela 9.1. Nenhum texto livre é copiado.** Procurar por `.message`, `.stack`, `.detail` e `.query` no arquivo do filtro. Se algum aparecer dentro da montagem do `ApiError`, a regra foi quebrada. Na linha de log eles são bem-vindos, no corpo não.
 
@@ -649,19 +649,19 @@ A distinção é entre nome e conteúdo. `companionCount` é nome de campo do co
 - **SQL, nome de tabela e nome de coluna.** A seção 6.4 já procura por `SELECT`, `INSERT` e `UPDATE` fora da pasta de Dados. O corpo de erro é o lugar onde eles entram sem disparar aquela busca, porque entram como texto vindo de outro lugar.
 - **Rota e método que falharam.** A rota pública carrega o `publicToken` dentro dela, e o token é o que separa um estranho dos dados do evento pelo [ADR-0005](../Sprints/Sprint-2/Decisões-Arquiteturais/0005-Identificador-público-do-convite.md). Devolver a rota no corpo é devolver a credencial junto com o erro.
 - **O valor que o cliente mandou.** O corpo diz o nome do campo e a regra, nunca o conteúdo. Na fronteira pública esse conteúdo foi escrito por anônimo, e ecoá-lo transforma o corpo de erro no mesmo problema que a medida 4 do ADR-0008 trata no painel.
-- **O número de status.** Ele já está na linha de resposta. Repetir dentro do corpo cria duas fontes de verdade que podem discordar, e o NestJS discorda sozinho quando alguém devolve um `HttpException` com status diferente do que escreveu no objeto.
+- **O número de status.** Ele já está na linha de resposta. Repetir dentro do corpo cria dois lugares que podem discordar, e o NestJS discorda sozinho quando alguém devolve um `HttpException` com status diferente do que escreveu no objeto.
 
-**O `traceId` liga o 500 ao log sem contar nada ao cliente.** São 64 bits em hexadecimal, 16 caracteres, escritos no corpo e na linha de log da mesma resposta. Quem o sorteia depende do caminho, conforme o [ADR-0012](../Sprints/Sprint-2/Decisões-Arquiteturais/0012-Observabilidade-entre-os-tiers.md): na leitura do convite público ele nasce no tier Front e chega no cabeçalho `X-Request-Id`, e o filtro reaproveita o valor recebido. Nas outras seis rotas não há cabeçalho e o filtro sorteia. O log fica com a exceção, a pilha e a rota. O cliente fica só com o identificador, que não significa nada fora do log. Quem abre um chamado dizendo "deu erro, `0d41b9e2775a63f8`" leva quem for investigar direto na linha certa, e sem isso um 500 só é investigável se o corpo revelar o que a lista acima proíbe. Não são os 128 bits do ADR-0005 porque `traceId` não protege recurso nenhum, não é credencial e só precisa não repetir dentro do log de uma execução. O valor é por requisição e não por causa, então duas requisições com a mesma causa recebem valores diferentes e duas causas diferentes continuam indistinguíveis por ele, conforme a seção 9.5 exige do 404 de quatro origens. O `traceId` e o formato `ApiError` inteiro são decisões novas deste guia e estão na seção 11. O que pode e o que não pode entrar na linha de log está na seção 9.5, porque é política de exposição e não formato de corpo.
+O `traceId` liga o 500 ao log sem contar nada ao cliente. São 64 bits em hexadecimal, 16 caracteres, escritos no corpo e na linha de log da mesma resposta. Quem o sorteia depende do caminho, conforme o [ADR-0012](../Sprints/Sprint-2/Decisões-Arquiteturais/0012-Observabilidade-entre-os-tiers.md): na leitura do convite público ele nasce no tier Front e chega no cabeçalho `X-Request-Id`, e o filtro reaproveita o valor recebido. Nas outras seis rotas não há cabeçalho e o filtro sorteia. O log fica com a exceção, a pilha e a rota. O cliente fica só com o identificador, que não significa nada fora do log. Quem abre um chamado dizendo "deu erro, `0d41b9e2775a63f8`" leva quem for investigar direto na linha certa, e sem isso um 500 só é investigável se o corpo revelar o que a lista acima proíbe. Não são os 128 bits do ADR-0005 porque `traceId` não protege recurso nenhum, não é credencial e só precisa não repetir dentro do log de uma execução. O valor é por requisição e não por causa, então duas requisições com a mesma causa recebem valores diferentes e duas causas diferentes continuam indistinguíveis por ele, conforme a seção 9.5 exige do 404 de quatro origens. O `traceId` e o formato `ApiError` inteiro são decisões novas deste guia e estão na seção 11. O que pode e o que não pode entrar na linha de log está na seção 9.5, porque é política de exposição e não formato de corpo.
 
-**Só o filtro escreve corpo de erro.** Nenhum controller escreve o seu, o que sustenta a linha "Camadas são bons lugares para padronização" da tabela da seção 1.6. No Diagrama de Componentes a mesma afirmação aparece como os quatro soquetes de `ErrorTranslation`, um por controller, que é a forma contável dela. A primeira busca da seção 6.4, por `404`, `409`, `422` e `HttpException` fora da pasta da Apresentação, verifica a metade de baixo. A metade de cima se verifica procurando por `response.status(` e `res.json(` nos controllers.
+Só o filtro escreve corpo de erro. Nenhum controller escreve o seu, o que sustenta a linha "Camadas são bons lugares para padronização" da tabela da seção 1.6. No Diagrama de Componentes a mesma afirmação aparece como os quatro soquetes de `ErrorTranslation`, um por controller, que é a forma contável dela. A primeira busca da seção 6.4, por `404`, `409`, `422` e `HttpException` fora da pasta da Apresentação, verifica a metade de baixo. A metade de cima se verifica procurando por `response.status(` e `res.json(` nos controllers.
 
-**Hoje, sem filtro, uma exceção do framework sai com outro formato.** O NestJS responde a `HttpException` com um objeto de três campos, `statusCode`, `message` e `error`, que não é o `ApiError` e não tem `code` nem `traceId`. Pior que a forma é o conteúdo: a rota inexistente sai com uma mensagem no formato "Cannot POST /public/invites/0123456789ABCDEFGHJKMNPQRS", ou seja, devolve o token do convite dentro do texto. São dois formatos na mesma API, e um deles ecoa exatamente o que a lista acima proíbe. Por isso o filtro captura tudo, e não apenas os cinco tipos do Domínio. A regra de tradução do que não é do catálogo:
+Hoje, sem filtro, uma exceção do framework sai com outro formato. O NestJS responde a `HttpException` com um objeto de três campos, `statusCode`, `message` e `error`, que não é o `ApiError` e não tem `code` nem `traceId`. Pior que a forma é o conteúdo: a rota inexistente sai com uma mensagem no formato "Cannot POST /public/invites/0123456789ABCDEFGHJKMNPQRS", ou seja, devolve o token do convite dentro do texto. São dois formatos na mesma API, e um deles ecoa o que a lista acima proíbe. Por isso o filtro captura tudo, e não apenas os cinco tipos do Domínio. A regra de tradução do que não é do catálogo:
 
 > **Exceção do catálogo dos cinco tipos da seção 9.2, traduz pela tabela 9.1.** Corpo ilegível, campo em tipo errado, método não permitido e tipo de conteúdo não suportado viram 400 `MALFORMED_REQUEST`. Rota inexistente vira 404 `NOT_FOUND`, com o mesmo corpo do 404 de convite. **Qualquer outra coisa vira 500 `INTERNAL_ERROR`.**
 
-Nenhuma dessas linhas inventa código novo, e por isso elas cabem nos oito da tabela 9.1 sem abrir a nona. O 400 de forma cobre tanto o que `parseRequest(dto)` recusa quanto o que o framework recusa antes do controller, e as duas origens saem iguais porque uma tem nome de campo em mãos e a outra não, e o mesmo `code` não pode ter duas formas. O 404 de rota inexistente é uma quinta origem do mesmo corpo, além das quatro da seção 9.5, e isso não atrapalha o colapso de lá. Reforça, porque mais uma origem indistinguível é exatamente o efeito procurado.
+Nenhuma dessas linhas inventa código novo, e por isso elas cabem nos oito da tabela 9.1 sem abrir a nona. O 400 de forma cobre tanto o que `parseRequest(dto)` recusa quanto o que o framework recusa antes do controller, e as duas origens saem iguais porque uma tem nome de campo em mãos e a outra não, e o mesmo `code` não pode ter duas formas. O 404 de rota inexistente é uma quinta origem do mesmo corpo, além das quatro da seção 9.5, e isso não atrapalha o colapso de lá. Reforça, porque mais uma origem indistinguível é o efeito procurado.
 
-**O formato governa o corpo e mais nada.** Cabeçalho é outro assunto, e o `Retry-After` do 429 e o `Cache-Control` das respostas de erro estão na seção 9.5. E ele só vale onde o filtro roda, que é dentro do `api.bundle`. Quando o pedido nem chega à API, não existe filtro para escrever `ApiError` nenhum, e o que a tela mostra nesse caso é a seção 9.4.
+O formato governa o corpo e mais nada. Cabeçalho é outro assunto, e o `Retry-After` do 429 e o `Cache-Control` das respostas de erro estão na seção 9.5. E ele só vale onde o filtro roda, que é dentro do `api.bundle`. Quando o pedido nem chega à API, não existe filtro para escrever `ApiError` nenhum, e o que a tela mostra nesse caso é a seção 9.4.
 
 Onde `details` entra e onde não entra, por categoria da tabela 9.1:
 
@@ -696,9 +696,9 @@ Os dois saltos que a seção 1.7 nomeia são o 1 e o 2, porque aquele parágrafo
 
 A contagem importa porque cada salto falha de um jeito diferente e o usuário vê coisa diferente. O que muda de um para o outro não é a gravidade, é quem ainda tem código rodando para escrever a mensagem.
 
-**Toda falha de salto tem dois casos, e a diferença entre eles é o que decide a repetição.** Ou o pedido não chegou ao outro lado, e nada foi feito, ou ele chegou, foi executado e a resposta se perdeu na volta. Quem ficou esperando enxerga a mesma coisa nos dois, que é o tempo esgotado. **Nenhum salto do sistema distingue os dois casos**, e é dessa indistinção que sai a regra de repetição adiante. O mesmo raciocínio aparece no salto 5, no `COMMIT` cuja confirmação não volta.
+Toda falha de salto tem dois casos, e a diferença entre eles é o que decide a repetição. Ou o pedido não chegou ao outro lado, e nada foi feito, ou ele chegou, foi executado e a resposta se perdeu na volta. Quem ficou esperando enxerga a mesma coisa nos dois, que é o tempo esgotado. **Nenhum salto do sistema distingue os dois casos**, e é dessa indistinção que sai a regra de repetição adiante. O mesmo raciocínio aparece no salto 5, no `COMMIT` cuja confirmação não volta.
 
-**O filtro único da seção 9.2 escreve corpo em um caso só.** O `HttpExceptionFilter` mora em `api.bundle`, conforme a seção 4.2 do [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-de-Componentes.md). Ele roda quando a requisição chegou na API, ou seja, sempre no salto 5 e nos saltos 3 e 4 apenas quando a falha foi na volta. Quando o pedido nem chegou, não há filtro rodando e o `ApiError` da seção 9.3 não chega a ser escrito. Isso não contraria o ponto único de tradução, delimita o alcance dele: o filtro governa o que sai da API, e nem toda falha de salto chega a ter saída da API.
+O filtro único da seção 9.2 escreve corpo em um caso só. O `HttpExceptionFilter` mora em `api.bundle`, conforme a seção 4.2 do [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-de-Componentes.md). Ele roda quando a requisição chegou na API, ou seja, sempre no salto 5 e nos saltos 3 e 4 apenas quando a falha foi na volta. Quando o pedido nem chegou, não há filtro rodando e o `ApiError` da seção 9.3 não chega a ser escrito. Isso não contraria o ponto único de tradução, delimita o alcance dele: o filtro governa o que sai da API, e nem toda falha de salto chega a ter saída da API.
 
 | Salto | Rotas da tabela 4.1 | O que o usuário vê | Quem escreve isso | Repetição automática |
 |---|---|---|---|---|
@@ -718,11 +718,11 @@ A tabela 4.1 tem quatro leituras e três escritas, e a diferença entre elas nã
 
 **Esta regra é decisão nova deste guia**, como são a página de convite indisponível, o recuo da consulta periódica e o comportamento do formulário depois de uma falha. Nenhum ADR trata de falha de rede. As cinco estão listadas na seção 11 e precisam de aval do time.
 
-**As quatro leituras passam nos dois testes porque não escrevem.** O UC007 e o UC008 não declaram pós-condição, e nos diagramas de sequência dos passos 1 a 3 e 4 do UC008 não há uma única seta de escrita. O único efeito de repetir `GET /invites/{inviteId}/dietary-notes.csv` é dois arquivos baixados, que é do lado do cliente e não é erro.
+As quatro leituras passam nos dois testes porque não escrevem. O UC007 e o UC008 não declaram pós-condição, e nos diagramas de sequência dos passos 1 a 3 e 4 do UC008 não há uma única seta de escrita. O único efeito de repetir `GET /invites/{inviteId}/dietary-notes.csv` é dois arquivos baixados, que é do lado do cliente e não é erro.
 
-**`publish` já está declarada idempotente na seção 9.1, e o mecanismo dela é o molde.** A segunda requisição encontra zero linhas afetadas no `UPDATE`, o Domínio relê com `findById` e devolve 200 com o `publicToken` que já existia. Duas coisas dão essa propriedade: o predicado no `WHERE` do próprio `UPDATE`, que cuida do banco, e o ramo de releitura quando o `UPDATE` afeta zero linhas, que é o `opt` do diagrama do UC004 e cuida da resposta. **Escrita que não tem as duas não ganha permissão de repetir.**
+`publish` já está declarada idempotente na seção 9.1, e o mecanismo dela é o molde. A segunda requisição encontra zero linhas afetadas no `UPDATE`, o Domínio relê com `findById` e devolve 200 com o `publicToken` que já existia. Duas coisas dão essa propriedade: o predicado no `WHERE` do próprio `UPDATE`, que cuida do banco, e o ramo de releitura quando o `UPDATE` afeta zero linhas, que é o `opt` do diagrama do UC004 e cuida da resposta. **Escrita que não tem as duas não ganha permissão de repetir.**
 
-**`unpublish` passa no primeiro teste e reprova no segundo, e é por isso que o segundo teste existe.** No diagrama do UC004 o ramo A2 decide dentro de um `alt` que exige o convite publicado, então numa segunda execução o `findById` devolve `UNPUBLISHED`, o `alt` cai no ramo contrário e o `UPDATE` nem chega a ser enviado. O banco fica idêntico. O que muda é o que o anfitrião lê: a primeira execução devolve 200 e a segunda devolve `InviteNotOpenError`, que a tabela 9.1 mapeia para 409 `INVITE_NOT_OPEN`. Repetir depois de um tempo esgotado mostra falha numa operação que deu certo, e o anfitrião despublica de novo um convite já despublicado ou vai procurar defeito onde não há. Com um teste só, olhando o banco, `unpublish` entraria na lista dos repetíveis. Igualar as duas escritas, dando a `unpublish` a mesma releitura de `publish`, é mudança no diagrama do UC004 e não é decisão desta seção.
+`unpublish` passa no primeiro teste e reprova no segundo, e é por isso que o segundo teste existe. No diagrama do UC004 o ramo A2 decide dentro de um `alt` que exige o convite publicado, então numa segunda execução o `findById` devolve `UNPUBLISHED`, o `alt` cai no ramo contrário e o `UPDATE` nem chega a ser enviado. O banco fica idêntico. O que muda é o que o anfitrião lê: a primeira execução devolve 200 e a segunda devolve `InviteNotOpenError`, que a tabela 9.1 mapeia para 409 `INVITE_NOT_OPEN`. Repetir depois de um tempo esgotado mostra falha numa operação que deu certo, e o anfitrião despublica de novo um convite já despublicado ou vai procurar defeito onde não há. Com um teste só, olhando o banco, `unpublish` entraria na lista dos repetíveis. Igualar as duas escritas, dando a `unpublish` a mesma releitura de `publish`, é mudança no diagrama do UC004 e não é decisão desta seção.
 
 **O POST de confirmação de presença reprova nos dois testes, por quatro motivos somados, e nenhum deles tem conserto barato.**
 
@@ -733,7 +733,7 @@ A tabela 4.1 tem quatro leituras e três escritas, e a diferença entre elas nã
 
 O quarto merece precisão, porque é fácil descrevê-lo errado. **A invariante do teto não fica falsa.** O diagrama do UC005 confere `bookedSeats + seatsRequested <= capacityLimit` dentro da transação em toda gravação, inclusive na segunda, e recusa com `CapacityExceeded` se estourar. A segunda linha entra contada e o banco continua coerente consigo mesmo. O que se perde é a correspondência entre vaga ocupada e pessoa que vai comparecer, e a consequência é concreta: **um convite com teto fecha antes da hora e um convidado real recebe o A4, evento lotado, por causa de vagas que ninguém vai usar.** Num convite sem teto, que o ADR-0008 permite, não há invariante nenhuma envolvida e a duplicata aparece só na lista do UC007 e na contagem que vai para o buffet.
 
-Isso desfaz uma leitura confortável. **O teto transacional protege contra dois convidados diferentes disputando a última vaga, que é o caso da seção 3.4, e não protege contra o mesmo convidado chegando duas vezes.** São problemas diferentes e só um está resolvido. `saveRsvpWithinCapacity` faz exatamente o que prometeu, e o que prometeu não cobre isto.
+Isso desfaz uma leitura confortável. **O teto transacional protege contra dois convidados diferentes disputando a última vaga, que é o caso da seção 3.4, e não protege contra o mesmo convidado chegando duas vezes.** São problemas diferentes e só um está resolvido. `saveRsvpWithinCapacity` faz o que prometeu, e o que prometeu não cobre isto.
 
 > **Em revisão de código, procure toda chamada que repete uma requisição e olhe o verbo e a rota. Se for `POST /public/invites/{publicToken}/rsvp`, a repetição grava o convidado duas vezes e ocupa a vaga duas vezes. Nenhuma checagem no servidor recusa a segunda.**
 
@@ -753,7 +753,7 @@ Depois que o 201 chega, o convidado tem `/r/{personalToken}` e passa a ter camin
 
 É a consequência negativa que o ADR-0002 registrou e que nenhum artefato tratou. Ela cai inteira no salto 2.
 
-**A página não renderiza pela metade, porque não existe metade.** Nome do evento, data, hora, local, personalização e categorias alimentares chegam todos na resposta da API, conforme os passos 1 e 2 do diagrama do UC005. O template é ativo estático do tier Front pelo [ADR-0009](../Sprints/Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md), e template é a forma, não o conteúdo. Renderizar o template sem os dados entrega um convite sem nome e sem data, que não é meio convite, é uma página que engana.
+A página não renderiza pela metade, porque não existe metade. Nome do evento, data, hora, local, personalização e categorias alimentares chegam todos na resposta da API, conforme os passos 1 e 2 do diagrama do UC005. O template é ativo estático do tier Front pelo [ADR-0009](../Sprints/Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md), e template é a forma, não o conteúdo. Renderizar o template sem os dados entrega um convite sem nome e sem data, que não é meio convite, é uma página que engana.
 
 > **Quando a API não responde, ou responde 500, o tier Front serve uma página própria de convite indisponível, e ela não é a rota de não encontrado do ADR-0008.**
 
@@ -765,7 +765,7 @@ Três motivos sustentam a separação das duas páginas.
 - **Distinguir as duas não entrega sinal a quem sonda.** O complemento do ADR-0008 existe para não confirmar a existência de um token a quem tenta adivinhar. A página de indisponível aparece igual para token válido e para token inventado, porque o tier Front não chegou a perguntar. Ele não sabe o que não poderia contar.
 - **Ela carrega o mesmo `Cache-Control: private, no-cache, no-store` da página do convite**, conforme o ADR-0008. Uma falha de alguns segundos guardada em cache seria lida como convite fora do ar por muito mais tempo do que a falha durou.
 
-**Essa página é HTML e não passa pelo formato da seção 9.3**, porque quem a pediu é o navegador e não o `ApiClient`. Fica dito em voz alta para não ser lido como exceção ao ponto único da 9.2.
+**Essa página é HTML e não passa pelo formato da seção 9.3**, porque quem a pediu é o navegador e não o `ApiClient`. Isso fica escrito para não ser lido como exceção ao ponto único da 9.2.
 
 **O painel aberto com a API caída**
 
@@ -779,9 +779,9 @@ Com essa regra os quarenta pedidos da mesma janela de dez minutos viram oito. **
 
 > **A tela nunca apresenta falha de consulta como lista vazia.** O A1 do UC007 manda informar que nenhum convidado respondeu até o momento, e esse texto só pode aparecer quando a API respondeu com lista vazia.
 
-Ausência de dado e ausência de resposta são coisas diferentes, e a dor declarada da persona é justamente não saber quantos vão comparecer. Mostrar "ninguém respondeu" quando a verdade é "não consegui perguntar" é um erro que não parece erro, e por isso ninguém o reporta.
+Ausência de dado e ausência de resposta são coisas diferentes, e a dor declarada da persona é não saber quantos vão comparecer. Mostrar "ninguém respondeu" quando a verdade é "não consegui perguntar" é um erro que não parece erro, e por isso ninguém o reporta.
 
-**A tentativa repetida consome o limite de taxa como qualquer outra.** O contador do `RateLimitGuard` está na API e não distingue repetição de primeira tentativa sem um campo que ninguém definiu. Na rota pública de leitura o limite conta por token de convite apenas, conforme a seção 4.1, o que põe todos os convidados daquele convite no mesmo balde. Daí o teto de **uma** repetição em vez de tentar até dar certo: insistir transforma uma falha passageira do salto 2 em 429 `RATE_LIMITED` para todos os convidados ao mesmo tempo, que é exatamente o efeito que a seção 4.1 quis evitar.
+A tentativa repetida consome o limite de taxa como qualquer outra. O contador do `RateLimitGuard` está na API e não distingue repetição de primeira tentativa sem um campo que ninguém definiu. Na rota pública de leitura o limite conta por token de convite apenas, conforme a seção 4.1, o que põe todos os convidados daquele convite no mesmo balde. Daí o teto de **uma** repetição em vez de tentar até dar certo: insistir transforma uma falha passageira do salto 2 em 429 `RATE_LIMITED` para todos os convidados ao mesmo tempo, que é o efeito que a seção 4.1 quis evitar.
 
 **A falha do salto da API para o Banco**
 
@@ -791,7 +791,7 @@ O destino já está na tabela 9.1. Banco fora e tempo esgotado são falha de inf
 - **Transação interrompida nunca vira `CapacityExceeded` nem `InviteNotOpen`.** Os dois são resultado decidido dentro da transação, conforme a seção 9.2, e transação que não terminou não tem resultado a relatar. Confundir as duas coisas faria o convidado ler "evento lotado" num evento com vaga sobrando.
 - **O caso sem saída é o `COMMIT` enviado cuja confirmação não volta.** A camada de Dados não sabe se gravou. A resposta ao cliente continua sendo 500, porque o critério da 9.1 é o que o cliente pode corrigir e aqui não há nada a corrigir no pedido. **A distinção entre falha sem efeito e falha sem resposta não cabe no código de status**, e por isso ela mora na regra de repetição e não na tabela 9.1.
 
-Vale registrar de passagem que o critério de código de status da seção 9.1 nomeia cinco códigos e não tem frase para o 500. A frase que falta é esta, e a correção é lá: **500 é a máquina não respondeu, e não há nada que você possa corrigir no pedido.**
+O critério de código de status da seção 9.1 nomeia cinco códigos e não tem frase para o 500. A frase que falta é esta, e a correção é lá: **500 é a máquina não respondeu, e não há nada que você possa corrigir no pedido.**
 
 **Onde a política mora**
 
@@ -801,18 +801,18 @@ No salto 2 quem chama é o `ApiClient` na cópia que roda no servidor do tier Fr
 
 A alocação não cria componente novo. O `ApiClient` já encapsula a chamada HTTP tipada e a leitura do corpo de erro, e o `HostPanelPage` já encapsula a consulta periódica, conforme a seção 1.2 do Diagrama de Componentes. O que muda é que os dois ganham responsabilidade que aquela página ainda não descreve.
 
-**Esta alocação é decisão nova, porque o critério da seção 3.4 não a produz.** Repetir depois de um tempo esgotado não é regra que se decide com o que está em memória, e não é invariante que exija o estado do banco no instante da escrita. Não é Domínio e não é Dados, porque não é regra do evento, é regra da fronteira. A lista da seção 6.3 ganha uma linha por causa disso:
+Esta alocação é decisão nova, porque o critério da seção 3.4 não a produz. Repetir depois de um tempo esgotado não é regra que se decide com o que está em memória, e não é invariante que exija o estado do banco no instante da escrita. Não é Domínio e não é Dados, porque não é regra do evento, é regra da fronteira. A lista da seção 6.3 ganha uma linha por causa disso:
 
 > **Uma chamada que repete requisição dentro de um `service` ou de um `repository`.**
 
 **O que esta seção proíbe**
 
 - **Repetir para sempre.** Quarenta pedidos em dez minutos na consulta periódica, e na leitura pública cada tentativa somando no mesmo balde do limite de taxa. Insistir não recupera nada e derruba a página do convite para todo mundo.
-- **Repetir a escrita só uma vez, porque uma não faria mal.** Uma repetição é exatamente uma duplicata e uma vaga a mais ocupada. Não existe repetição pequena de escrita não idempotente.
+- **Repetir a escrita só uma vez, porque uma não faria mal.** Uma repetição é uma duplicata e uma vaga a mais ocupada. Não existe repetição pequena de escrita não idempotente.
 - **Repetir diante de um 500.** A API respondeu. Quem insiste contra um banco caído aumenta a carga do que já está falhando.
 - **Esconder a falha e mostrar tela vazia.** Lista vazia é resposta da API, não é ausência de resposta, e o A1 do UC007 já ocupa aquele texto.
 - **Mandar falha de infraestrutura para a rota de não encontrado.** Ela diz ao convidado que o convite não existe, faz o anfitrião procurar defeito num link íntegro e apaga a única pista de que a API caiu.
-- **Deixar o Domínio saber que houve tempo esgotado.** Não existe um sexto tipo no catálogo da seção 9.2 chamado `NetworkError` nem parecido, e não existe repetição dentro de service. Rede é fronteira, e a seção 3.2 já registra que o Domínio não vê sessão e não controla tráfego, pelo mesmo motivo. Um Domínio que trata tempo esgotado tira o "ninguém" da coluna de quem detecta na última linha da tabela 9.1, e aquela linha é justamente a que diz que não há conceito de negócio para o banco não ter respondido.
+- **Deixar o Domínio saber que houve tempo esgotado.** Não existe um sexto tipo no catálogo da seção 9.2 chamado `NetworkError` nem parecido, e não existe repetição dentro de service. Rede é fronteira, e a seção 3.2 já registra que o Domínio não vê sessão e não controla tráfego, pelo mesmo motivo. Um Domínio que trata tempo esgotado tira o "ninguém" da coluna de quem detecta na última linha da tabela 9.1, e aquela linha é a que diz que não há conceito de negócio para o banco não ter respondido.
 
 **O que fica em aberto**
 
@@ -827,15 +827,15 @@ As seções 9.1 a 9.3 decidem o que a API responde. Esta decide o que ela deixa 
 
 > **Quem está do lado de fora aprende o que precisa para agir, e nunca aprende que existe recurso que não é dele.** Erro sobre recurso que o solicitante não provou possuir tem uma resposta só, igual para todos os motivos. Erro sobre o que o próprio solicitante enviou pode ser específico, porque ele já conhece o que enviou.
 
-**O alcance, antes das medidas.** O [ADR-0003](../Sprints/Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) decide execução apenas local, via `docker compose up`, sem alvo de publicação nesta fase. Parte do que o ADR-0008 chama de complemento de exposição pressupõe aplicação alcançável pela internet, com rastreador de busca e prévia gerada por terceiro. A política tem por isso duas metades, e elas não valem igual.
+O alcance, antes das medidas. O [ADR-0003](../Sprints/Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) decide execução apenas local, via `docker compose up`, sem alvo de publicação nesta fase. Parte do que o ADR-0008 chama de complemento de exposição pressupõe aplicação alcançável pela internet, com rastreador de busca e prévia gerada por terceiro. A política tem por isso duas metades, e elas não valem igual.
 
 - **Vale na Sprint 3 e é conferível sem endereço público.** O colapso das cinco situações, o corpo do 404, a ordem das etapas na rota pública, os cabeçalhos de cache, o escape no painel, o tratamento do CSV e a proibição de token em log.
 - **Fica como intenção registrada até existir alvo de publicação.** O `robots.txt`, o cabeçalho de não indexação, o comportamento do rastreador que monta a prévia do link e qualquer medida contra medição de tempo. Sem endereço alcançável não há rastreador, não há índice e não há quem meça.
 - **Não é feito, por decisão já tomada.** Captcha está fora de escopo no ADR-0008, porque o que o mercado usa é borda gerenciada e este projeto não tem nem terá uma, conforme o ADR-0003.
 
-**A superfície pública é lista fechada, e tem três portas.** A rota de leitura devolve `PublishedInvite(invite, customization, categories)`, que é o retorno desenhado no `.puml` do UC005, e nada além. A rota de escrita devolve `RsvpResult(guest, personalToken)`, que é a resposta do próprio solicitante. A terceira porta é `/r/{personalToken}`, o link pessoal da ED2 do UC005, que exibe e permite alterar apenas a resposta daquele convidado, conforme a RN3 do UC005. O que não está nessas três listas ou responde 404 ou não existe como rota.
+A superfície pública é lista fechada, e tem três portas. A rota de leitura devolve `PublishedInvite(invite, customization, categories)`, que é o retorno desenhado no `.puml` do UC005, e nada além. A rota de escrita devolve `RsvpResult(guest, personalToken)`, que é a resposta do próprio solicitante. A terceira porta é `/r/{personalToken}`, o link pessoal da ED2 do UC005, que exibe e permite alterar apenas a resposta daquele convidado, conforme a RN3 do UC005. O que não está nessas três listas ou responde 404 ou não existe como rota.
 
-**A página pública não exibe lista nem contagem de confirmados, e isso é decisão nova deste guia, registrada na seção 11.** O passo 2 do UC005 exibe os dados do evento e o formulário, o UC007 coloca a lista de presença no painel autenticado, e a regra da seção 5.3 já impede a rota pública de chamar `listAttendance`. Vale dizer em voz alta que o ADR-0005 e o ADR-0008 descrevem o risco do convite exposto incluindo a lista de quem confirmou. O produto não a expõe, então o risco real é menor do que os dois textos descrevem. Nenhum dos dois precisa ser reaberto, porque a medida que eles pedem continua valendo pelo nome do evento, pela data e pelo endereço.
+A página pública não exibe lista nem contagem de confirmados, e isso é decisão nova deste guia, registrada na seção 11. O passo 2 do UC005 exibe os dados do evento e o formulário, o UC007 coloca a lista de presença no painel autenticado, e a regra da seção 5.3 já impede a rota pública de chamar `listAttendance`. O ADR-0005 e o ADR-0008 descrevem o risco do convite exposto incluindo a lista de quem confirmou. O produto não a expõe, então o risco real é menor do que os dois textos descrevem. Nenhum dos dois precisa ser reaberto, porque a medida que eles pedem continua valendo pelo nome do evento, pela data e pelo endereço.
 
 **As cinco situações que viram a mesma resposta.**
 
@@ -849,13 +849,13 @@ As seções 9.1 a 9.3 decidem o que a API responde. Esta decide o que ela deixa 
 
 > **As cinco produzem a mesma resposta, com o mesmo status, o mesmo código, o mesmo corpo e os mesmos cabeçalhos.** Duas respostas de não encontrado que diferem em qualquer campo, inclusive no tamanho do corpo, deixaram de ser a mesma resposta. Para isso valer também na rota autenticada, **toda resposta 404 do sistema sai com `Cache-Control: no-store` e nada que a distinga de outra 404**, e não com o `private, no-store` que as respostas de sucesso daquela rota carregam. É decisão nova, e é o que impede o cabeçalho de desfazer o que o corpo colapsou.
 
-Três dessas linhas chegam à Apresentação como ausência de valor, sem tipo de erro, e são exatamente as que a seção 3.1 nomeia: token que nunca existiu, convite em rascunho e convite despublicado. A quinta linha, convite de outro anfitrião, chega como exceção tipada do catálogo da 9.2. Por isso a 3.1 conta três e a 9.2 conta quatro, e nenhuma das duas está errada: uma fala do caminho e a outra fala do conjunto. A segunda linha, o token mal formado, é acrescentada aqui porque o token é ditado por voz e digitado à mão, conforme o contexto do ADR-0005, e o erro de digitação é o caso mais frequente de todos. **Na rota pública, o 400 `MALFORMED_REQUEST` é reservado ao corpo da requisição, e essa é decisão nova deste guia.** O ADR-0005 tira I, L, O e U do alfabeto justamente para reduzir o erro de digitação, e o que ele não corrige cai aqui.
+Três dessas linhas chegam à Apresentação como ausência de valor, sem tipo de erro, e são as que a seção 3.1 nomeia: token que nunca existiu, convite em rascunho e convite despublicado. A quinta linha, convite de outro anfitrião, chega como exceção tipada do catálogo da 9.2. Por isso a 3.1 conta três e a 9.2 conta quatro, e nenhuma das duas está errada: uma fala do caminho e a outra fala do conjunto. A segunda linha, o token mal formado, é acrescentada aqui porque o token é ditado por voz e digitado à mão, conforme o contexto do ADR-0005, e o erro de digitação é o caso mais frequente de todos. **Na rota pública, o 400 `MALFORMED_REQUEST` é reservado ao corpo da requisição, e essa é decisão nova deste guia.** O ADR-0005 tira I, L, O e U do alfabeto para reduzir o erro de digitação, e o que ele não corrige cai aqui.
 
 O rascunho merece uma nota de honestidade. Pelo Diagrama de Classes, `publicToken` nasce na transição para publicado, então hoje nenhum token resolve para um convite em rascunho. A linha existe porque o filtro da consulta o exclui de qualquer forma, e para a regra continuar valendo se o token passar a nascer antes da publicação.
 
-**O 404 é da API, o redirecionamento é do navegador.** O ADR-0008 manda o identificador inválido redirecionar para uma rota de não encontrado em vez de devolver 404, e a tabela 9.1 manda responder 404. Não são medidas em conflito, são fronteiras diferentes, e o `.puml` do UC005 desenha as duas no mesmo ramo: a API responde 404 ao tier Front, e o tier Front redireciona o navegador. Duas decisões novas caem aqui. **A rota de não encontrado do tier Front responde 200**, porque ela é uma página que existe, e o sinal já foi reduzido pelo redirecionamento, que tira o token da barra de endereço. **E o redirecionamento é temporário, nunca permanente**, porque um redirecionamento permanente fica guardado no navegador e sobrevive à republicação do convite, derrubando o link para quem já o tinha. Quando o salto falha antes de existir resposta, o assunto é a seção 9.4.
+O 404 é da API, o redirecionamento é do navegador. O ADR-0008 manda o identificador inválido redirecionar para uma rota de não encontrado em vez de devolver 404, e a tabela 9.1 manda responder 404. Não são medidas em conflito, são fronteiras diferentes, e o `.puml` do UC005 desenha as duas no mesmo ramo: a API responde 404 ao tier Front, e o tier Front redireciona o navegador. Duas decisões novas caem aqui. **A rota de não encontrado do tier Front responde 200**, porque ela é uma página que existe, e o sinal já foi reduzido pelo redirecionamento, que tira o token da barra de endereço. **E o redirecionamento é temporário, nunca permanente**, porque um redirecionamento permanente fica guardado no navegador e sobrevive à republicação do convite, derrubando o link para quem já o tinha. Quando o salto falha antes de existir resposta, o assunto é a seção 9.4.
 
-**Por que 404 e não 403, e o que isso custa ao anfitrião legítimo.** O argumento está na 9.2 e não se repete aqui. O que falta registrar é a conta que a política cobra de quem não é atacante. Um anfitrião autenticado que erra o identificador na barra de endereço, ou que está na conta errada por ter duas, recebe "convite não encontrado" e não recebe "você não tem permissão". A tela dele não pode dizer qual dos dois aconteceu, porque o texto da tela é a mesma resposta que o sondador recebe. A mitigação é de produto e é barata: a entrada do painel é a lista de convites do anfitrião, e o link de cada convite é montado a partir dela, então o anfitrião não digita identificador em uso normal. A tela de não encontrado do painel oferece a volta para a lista e pode sugerir conferir a conta usada, porque esse texto é o mesmo com convite existente ou não e não confirma nada.
+Por que 404 e não 403, e o que isso custa ao anfitrião legítimo. O argumento está na 9.2 e não se repete aqui. O que falta registrar é a conta que a política cobra de quem não é atacante. Um anfitrião autenticado que erra o identificador na barra de endereço, ou que está na conta errada por ter duas, recebe "convite não encontrado" e não recebe "você não tem permissão". A tela dele não pode dizer qual dos dois aconteceu, porque o texto da tela é a mesma resposta que o sondador recebe. A mitigação é de produto e é barata: a entrada do painel é a lista de convites do anfitrião, e o link de cada convite é montado a partir dela, então o anfitrião não digita identificador em uso normal. A tela de não encontrado do painel oferece a volta para a lista e pode sugerir conferir a conta usada, porque esse texto é o mesmo com convite existente ou não e não confirma nada.
 
 **O que o corpo de erro pode dizer, na fronteira pública e na autenticada.**
 
@@ -863,9 +863,9 @@ O rascunho merece uma nota de honestidade. Pelo Diagrama de Classes, `publicToke
 
 Pela regra, o convidado anônimo recebe mais detalhe do que se esperaria de uma fronteira pública. O 422 `VALIDATION_FAILED` aponta o campo e a regra, porque o campo é dele. O 409 `CAPACITY_EXCEEDED` confirma que aquele convite existe, está publicado e está cheio, e isso é aceitável porque quem pede já apresentou o token e já recebeu 200 na leitura da mesma página. Nada novo é confirmado. **A mensagem de lotação informa que lotou e não informa o valor do teto, o total já confirmado nem quantas vagas faltam**, e isso é decisão nova. Os três números descrevem as respostas dos outros convidados, e ter o link não prova nada sobre elas.
 
-O anfitrião autenticado recebe mais detalhe do que o convidado em tudo que é convite dele, e exatamente o mesmo nada em tudo que não é. Sessão válida é justamente a condição do atacante no caso `NotInviteOwner`, que é um anfitrião legítimo enumerando convite alheio, então autenticar não pode comprar informação sobre existência. O corpo do 404 da rota autenticada é idêntico ao da rota pública. **E o 404 sai sem campo de detalhe**, no formato da seção 9.3. Se ele carregasse `field`, `rule` ou `missingFields`, como os tipos do catálogo da 9.1 carregam, o detalhe reintroduziria a distinção que o colapso apagou.
+O anfitrião autenticado recebe mais detalhe do que o convidado em tudo que é convite dele, e o mesmo nada em tudo que não é. Sessão válida é a condição do atacante no caso `NotInviteOwner`, que é um anfitrião legítimo enumerando convite alheio, então autenticar não pode comprar informação sobre existência. O corpo do 404 da rota autenticada é idêntico ao da rota pública. **E o 404 sai sem campo de detalhe**, no formato da seção 9.3. Se ele carregasse `field`, `rule` ou `missingFields`, como os tipos do catálogo da 9.1 carregam, o detalhe reintroduziria a distinção que o colapso apagou.
 
-**O 409 na rota pública, e por que ele não fura o colapso.** A tabela 9.1 tem o convite despublicado em duas linhas, como ausência de recurso com 404 e como conflito de situação com 409 `INVITE_NOT_OPEN`. As duas convivem, e a regra que as separa é nova deste guia.
+O 409 na rota pública, e por que ele não fura o colapso. A tabela 9.1 tem o convite despublicado em duas linhas, como ausência de recurso com 404 e como conflito de situação com 409 `INVITE_NOT_OPEN`. As duas convivem, e a regra que as separa é nova deste guia.
 
 > **Na rota pública, o 409 `INVITE_NOT_OPEN` só existe quando a situação mudou dentro da mesma requisição.** Convite já despublicado quando o POST chega devolve 404, porque `findPublishedByPublicToken` devolve vazio no início de `registerRsvp`, antes de qualquer transação. O 409 é relato de corrida, e a janela dele é o tempo entre aquele `SELECT` e o `SELECT ... FOR UPDATE` de `saveRsvpWithinCapacity`.
 
@@ -879,7 +879,7 @@ Na prática isso divide a guarda em duas decisões. A metade por endereço de or
 
 A janela compartilhada tem um segundo efeito, e ele atinge quem tem direito ao convite. Um único cliente abusivo com o link em mãos enche a janela daquele token e os outros convidados recebem 429 na página. **O tier Front traduz esse 429 numa mensagem de tentar de novo em instantes, e não na rota de não encontrado**, o que é decisão nova. Sem isso a política de exposição passaria a esconder de um convidado legítimo um convite que existe.
 
-**O tempo de resposta vaza a mesma informação sem status nenhum, e o projeto não promete tempo constante.** As quatro situações do caminho público precisam terminar no mesmo `SELECT` com filtro de situação devolvendo zero linhas, e para o token mal formado isso não é automático. **Um token recusado por formato antes da consulta responde mais rápido que os outros três, e vira o caso distinguível por tempo.** Daí a decisão nova: na rota pública o token não é validado por formato antes da consulta, ele vai para o mesmo `SELECT` e recebe o mesmo 404 pelo mesmo caminho. O custo é uma consulta indexada que já se sabia inútil, e ele compra a indistinguibilidade das quatro. O resíduo está na rota autenticada: `findById` devolve o convite e a recusa vem depois, em `validateOwnership`, enquanto um `inviteId` inexistente termina no próprio `SELECT`. Existe ali uma diferença de trabalho mensurável entre "não é seu" e "não existe". Ela é aceita porque alcançar aquelas rotas exige sessão válida de anfitrião, e porque medir alguns milissegundos exige muitas amostras sobre latência estável, o que não existe num sistema que roda em `docker compose` na máquina de um integrante, conforme o ADR-0003. Comparação em tempo constante e atraso artificial ficam registrados para o dia em que publicar for assunto. O que vale desde já é a regra barata que impede piorar o quadro:
+O tempo de resposta vaza a mesma informação sem status nenhum, e o projeto não promete tempo constante. As quatro situações do caminho público precisam terminar no mesmo `SELECT` com filtro de situação devolvendo zero linhas, e para o token mal formado isso não é automático. **Um token recusado por formato antes da consulta responde mais rápido que os outros três, e vira o caso distinguível por tempo.** Daí a decisão nova: na rota pública o token não é validado por formato antes da consulta, ele vai para o mesmo `SELECT` e recebe o mesmo 404 pelo mesmo caminho. O custo é uma consulta indexada que já se sabia inútil, e ele compra a indistinguibilidade das quatro. O resíduo está na rota autenticada: `findById` devolve o convite e a recusa vem depois, em `validateOwnership`, enquanto um `inviteId` inexistente termina no próprio `SELECT`. Existe ali uma diferença de trabalho mensurável entre "não é seu" e "não existe". Ela é aceita porque alcançar aquelas rotas exige sessão válida de anfitrião, e porque medir alguns milissegundos exige muitas amostras sobre latência estável, o que não existe num sistema que roda em `docker compose` na máquina de um integrante, conforme o ADR-0003. Comparação em tempo constante e atraso artificial ficam registrados para o dia em que publicar for assunto. O que vale desde já é a regra barata que impede piorar o quadro:
 
 > **Os ramos que terminam em 404 não ganham trabalho extra em um deles.** Nem consulta a mais, nem chamada de rede adicional, nem registro de log mais caro em um caminho do que no outro.
 
@@ -897,19 +897,19 @@ A janela compartilhada tem um segundo efeito, e ele atinge quem tem direito ao c
 | `GET /invites/{inviteId}/attendance` | `private, no-store` | Não se aplica, exige sessão | É consultada a cada 15 a 30 segundos pelo ADR-0007, e resposta guardada devolveria lista velha sem ninguém perceber |
 | Respostas 404 e 429 da fronteira pública | `no-store` | Não se aplica | O 404 do convite despublicado é temporário e reversível, porque republicar reaproveita o mesmo token. Um 404 guardado sobrevive à republicação e derruba o link para quem já o tinha |
 
-Três observações fecham o assunto. **Quem serve o `robots.txt` é o tier Front**, que é onde mora a rota `/i/{publicToken}`, e ele é ativo estático versionado, da mesma natureza de `templates/`. Nenhum componente do Diagrama de Componentes é dono dele e ele não está no inventário de artefatos daquela página, que precisa da linha. **O `robots.txt` bloqueia por prefixo de rota e nunca lista token**, porque listar token ali publica exatamente o que o token protege. **E o bloqueio não pode derrubar a prévia do link**, que é requisito de produto pela H05 e pela jornada da anfitriã, e que o ADR-0009 sustenta com a imagem de Open Graph embarcada em cada template. As metatags levam nome do evento, data e imagem do template, e o endereço exato do evento fica fora, conforme o ADR-0008. O rastreador que monta a prévia é um terceiro fazendo `GET` na rota pública, então ele conta na janela do limite de taxa daquele token como qualquer outro cliente, e essa contagem é intencional, porque uma prévia gerada mil vezes é repasse do link. Se um rastreador de prévia respeitar o bloqueio e a prévia parar de aparecer, a medida que cede é a linha do `robots.txt` para o prefixo `/i/`, e não o `X-Robots-Tag`, que é o que cobre o risco descrito no ADR-0008.
+Três observações fecham o assunto. **Quem serve o `robots.txt` é o tier Front**, que é onde mora a rota `/i/{publicToken}`, e ele é ativo estático versionado, da mesma natureza de `templates/`. Nenhum componente do Diagrama de Componentes é dono dele e ele não está no inventário de artefatos daquela página, que precisa da linha. **O `robots.txt` bloqueia por prefixo de rota e nunca lista token**, porque listar token ali publica o que o token protege. **E o bloqueio não pode derrubar a prévia do link**, que é requisito de produto pela H05 e pela jornada da anfitriã, e que o ADR-0009 sustenta com a imagem de Open Graph embarcada em cada template. As metatags levam nome do evento, data e imagem do template, e o endereço exato do evento fica fora, conforme o ADR-0008. O rastreador que monta a prévia é um terceiro fazendo `GET` na rota pública, então ele conta na janela do limite de taxa daquele token como qualquer outro cliente, e essa contagem é intencional, porque uma prévia gerada mil vezes é repasse do link. Se um rastreador de prévia respeitar o bloqueio e a prévia parar de aparecer, a medida que cede é a linha do `robots.txt` para o prefixo `/i/`, e não o `X-Robots-Tag`, que é o que cobre o risco descrito no ADR-0008.
 
-**O link pessoal herda metade da política e não a outra metade.** Token pessoal que não resolve responde o mesmo 404, com o mesmo corpo e os mesmos cabeçalhos, porque ali vale o princípio inteiro: quem não provou posse não aprende nada.
+O link pessoal herda metade da política e não a outra metade. Token pessoal que não resolve responde o mesmo 404, com o mesmo corpo e os mesmos cabeçalhos, porque ali vale o princípio inteiro: quem não provou posse não aprende nada.
 
 **Mas o link pessoal continua abrindo com o convite despublicado**, e essa é decisão nova. A tentação é colapsar esse caso também, para manter a uniformidade, e seria erro por duas razões. A primeira é de especificação. A RN3 do UC004 diz que convite despublicado não aceita **novas respostas**, e alterar resposta existente não é resposta nova. Quem trata de alteração é a RN3 do UC005, que a permite enquanto o evento não tiver ocorrido, e a H09, cujo critério de aceitação é reabrir o link pessoal e mudar a resposta. Fechar a rota revogaria um direito que dois artefatos concedem. A segunda razão é de exposição, e é a que decide. **Quem apresenta um `personalToken` válido já respondeu àquele convite, então já sabe que ele existe.** O colapso protege contra quem não provou posse, e esse solicitante provou. Não há o que esconder dele. O que a rota continua não fazendo é aceitar resposta nova, conforme a RN3 do UC004.
 
 Esta política supõe que o `personalToken` tenha pelo menos a entropia do `publicToken`, e a suposição virou decisão. O [ADR-0011](../Sprints/Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) dá a ele os mesmos 128 bits em base32 Crockford do ADR-0005, pelo mesmo gerador. Sem aquela decisão, o colapso naquela rota não se sustentaria.
 
-**A exposição na direção contrária.** Duas das cinco medidas do ADR-0008 não tratam do que o mundo lê e sim do que o anfitrião lê, e as duas pertencem a esta política porque são fronteira. A medida 4, o escape na renderização do painel, existe porque o texto da observação alimentar é escrito por um anônimo e exibido na tela de um usuário autenticado, o que sem escape é XSS armazenado com o anfitrião como alvo. **Nenhum artefato diz hoje quem aplica esse escape, e aqui ele fica nomeado: é a View do `HostPanelPage`, no tier Front, e não o filtro de exceção da Apresentação.** A regra de código é que nenhum dado vindo de convidado é inserido como HTML. A medida 5, o prefixo de aspa simples no CSV, fica na Apresentação em `neutralizeFormulaPrefix(field)` porque é forma de saída e não verdade do dado, conforme o primeiro critério auxiliar da seção 3.4. Nos dois casos o que está no banco continua íntegro, pelo mesmo argumento da seção 3.3. O CSV merece uma linha própria: **ele é a única saída do sistema que deixa o domínio de confiança da aplicação e é interpretada por outro programa**, a planilha aberta na cozinha do buffet, e por isso a política de exposição alcança arquivo e cabeçalho, e não só corpo de resposta.
+A exposição na direção contrária. Duas das cinco medidas do ADR-0008 não tratam do que o mundo lê e sim do que o anfitrião lê, e as duas pertencem a esta política porque são fronteira. A medida 4, o escape na renderização do painel, existe porque o texto da observação alimentar é escrito por um anônimo e exibido na tela de um usuário autenticado, o que sem escape é XSS armazenado com o anfitrião como alvo. **Nenhum artefato diz hoje quem aplica esse escape, e aqui ele fica nomeado: é a View do `HostPanelPage`, no tier Front, e não o filtro de exceção da Apresentação.** A regra de código é que nenhum dado vindo de convidado é inserido como HTML. A medida 5, o prefixo de aspa simples no CSV, fica na Apresentação em `neutralizeFormulaPrefix(field)` porque é forma de saída e não verdade do dado, conforme o primeiro critério auxiliar da seção 3.4. Nos dois casos o que está no banco continua íntegro, pelo mesmo argumento da seção 3.3. O CSV merece uma linha própria: **ele é a única saída do sistema que deixa o domínio de confiança da aplicação e é interpretada por outro programa**, a planilha aberta na cozinha do buffet, e por isso a política de exposição alcança arquivo e cabeçalho, e não só corpo de resposta.
 
-**A observação alimentar é o dado mais sensível do sistema e nunca atravessa a fronteira pública.** Nem em rota própria, nem agregada, nem em contagem. O texto livre é informação de saúde de pessoa identificável, e o risco concreto está escrito na seção 5.3: o dia em que alguém acrescentar ao pacote público uma rota que chame `consolidateDietaryNotes` para mostrar as restrições na página do convite, nenhum erro é levantado e nenhum teste falha. A regra dos dois serviços da seção 5.3 é a forma verificável desta política.
+A observação alimentar é o dado mais sensível do sistema e nunca atravessa a fronteira pública. Nem em rota própria, nem agregada, nem em contagem. O texto livre é informação de saúde de pessoa identificável, e o risco concreto está escrito na seção 5.3: o dia em que alguém acrescentar ao pacote público uma rota que chame `consolidateDietaryNotes` para mostrar as restrições na página do convite, nenhum erro é levantado e nenhum teste falha. A regra dos dois serviços da seção 5.3 é a forma verificável desta política.
 
-**O que o sistema guarda sobre quem sondou.** O registro de log atravessa as três camadas como interesse transversal, conforme a seção 2, e nenhum artefato diz o que entra nele. Pela fronteira pública passam o token do convite, que é credencial de acesso, e o texto livre da observação alimentar. **O `publicToken`, o `personalToken` e o texto livre da observação alimentar não entram em log**, e essa é decisão nova. Sem ela, a informação que a política esconde do mundo fica escrita em claro no arquivo de log do container, e o 404 colapsado convive com um log que distingue as cinco situações. O log da fronteira pública registra rota, status e duração. Como correlacionar os dois lados de um erro que atravessa dois saltos é assunto da seção 9.4.
+O que o sistema guarda sobre quem sondou. O registro de log atravessa as três camadas como interesse transversal, conforme a seção 2, e nenhum artefato diz o que entra nele. Pela fronteira pública passam o token do convite, que é credencial de acesso, e o texto livre da observação alimentar. **O `publicToken`, o `personalToken` e o texto livre da observação alimentar não entram em log**, e essa é decisão nova. Sem ela, a informação que a política esconde do mundo fica escrita em claro no arquivo de log do container, e o 404 colapsado convive com um log que distingue as cinco situações. O log da fronteira pública registra rota, status e duração. Como correlacionar os dois lados de um erro que atravessa dois saltos é assunto da seção 9.4.
 
 **O que esta política não protege.**
 
@@ -919,22 +919,22 @@ Esta política supõe que o `personalToken` tenha pelo menos a entropia do `publ
 - **Não protege o convidado do anfitrião.** O anfitrião vê nome, status, acompanhantes e observação alimentar de quem respondeu, e é para isso que o produto existe.
 - **Não trata do que sai do sistema.** Depois do CSV baixado, o arquivo está com o anfitrião e com o buffet, e nenhuma decisão de arquitetura alcança aquela planilha.
 
-**Como a revisão de código verifica.** Política de exposição sem forma de conferir é recomendação. São quatro conferências, no mesmo espírito das três buscas da seção 6.4.
+Como a revisão de código verifica. Política de exposição sem forma de conferir é recomendação. São quatro conferências, no mesmo espírito das três buscas da seção 6.4.
 
 - **Contar os soquetes do `PublicRsvpController` na figura de componentes.** São três, `RateLimit`, `ErrorTranslation` e `RsvpOperations`. Um quarto soquete é serviço de Domínio a mais no pacote público, e isso quebra a seção 5.3.
 - **Procurar por `403` no tier API.** Nenhum resultado, em lugar nenhum. A busca é uma linha a mais na primeira busca da seção 6.4.
 - **Procurar pelo nome do campo de texto livre e pelos nomes dos dois tokens nas chamadas de registro de log.** Nenhum resultado.
 - **Comparar as respostas de não encontrado duas a duas.** Token inexistente, convite em rascunho, convite despublicado, token malformado e convite de outro anfitrião precisam devolver a mesma resposta. É um teste de integração e não uma leitura de código, porque a diferença costuma nascer em cabeçalho, não em `return`.
 
-**O que esta seção obriga a corrigir em outro artefato.** A tabela 9.1 recebe a nota que separa o 404 do 409 na rota pública. A seção 3.1 recebe a correção da ordem do limite de taxa, junto com a da assinatura dupla que o Diagrama de Componentes já tinha pedido. A seção 3.2 daquela página recebe a mesma nota sobre a ordem das três etapas, e o inventário de artefatos dela recebe a linha do `robots.txt`. O `diagrama-sequencia-uc005.puml` ganha o ramo do POST em token que não resolve. E a rota do link pessoal, `/r/{personalToken}`, sobre a qual esta seção legisla, **não existe em artefato nenhum**: não está na tabela 4.1, não tem serviço na 4.2, não tem consulta na 4.3 e não aparece no Diagrama de Componentes. Ela precisa ser especificada junto com o fluxo de alteração da resposta, que é a pendência 3 dos Diagramas de Sequência. As decisões novas desta seção estão listadas na seção 11 e precisam de aval do time.
+O que esta seção obriga a corrigir em outro artefato. A tabela 9.1 recebe a nota que separa o 404 do 409 na rota pública. A seção 3.1 recebe a correção da ordem do limite de taxa, junto com a da assinatura dupla que o Diagrama de Componentes já tinha pedido. A seção 3.2 daquela página recebe a mesma nota sobre a ordem das três etapas, e o inventário de artefatos dela recebe a linha do `robots.txt`. O `diagrama-sequencia-uc005.puml` ganha o ramo do POST em token que não resolve. E a rota do link pessoal, `/r/{personalToken}`, sobre a qual esta seção legisla, **não existe em artefato nenhum**: não está na tabela 4.1, não tem serviço na 4.2, não tem consulta na 4.3 e não aparece no Diagrama de Componentes. Ela precisa ser especificada junto com o fluxo de alteração da resposta, que é a pendência 3 dos Diagramas de Sequência. As decisões novas desta seção estão listadas na seção 11 e precisam de aval do time.
 
 ---
 
 ## 10. Os três containers
 
-Esta seção existe porque o [ADR-0002](../Sprints/Sprint-2/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) decidiu três containers, e nenhum dos seis macro-passos da Aula 03 pergunta em quantos processos separados o sistema roda. Ela não cumpre passo do método. Ela responde três perguntas que o resto do guia deixou abertas: qual camada mora em qual container, por que o caminho do convite público tem dois saltos de rede e não um, e o que entra em cada imagem.
+Esta seção existe porque o [ADR-0002](../Sprints/Sprint-2/Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) decidiu três containers, e nenhum dos seis macro-passos do método pergunta em quantos processos separados o sistema roda. Ela não cumpre passo do método. Ela responde três perguntas que o resto do guia deixou abertas: qual camada mora em qual container, por que o caminho do convite público tem dois saltos de rede e não um, e o que entra em cada imagem.
 
-Uma advertência de tempo verbal vale para a seção inteira. **Nada do que está descrito aqui existe hoje no repositório.** A implementação começa na Sprint 3, o `docker-compose.yml` é entrega ainda não concluída da Sprint 2, e a seção 4.1 do [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-de-Componentes.md) lista os onze artefatos com a coluna de situação preenchida como prevista, exatamente para não apresentar plano como fato. O que segue é o desenho que o compose vai materializar, não a leitura de um arquivo que já está lá.
+Uma advertência de tempo verbal vale para a seção inteira. **Nada do que está descrito aqui existe hoje no repositório.** A implementação começa na Sprint 3, o `docker-compose.yml` é entrega ainda não concluída da Sprint 2, e a seção 4.1 do [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-de-Componentes.md) lista os onze artefatos com a coluna de situação preenchida como prevista, para não apresentar plano como fato. O que segue é o desenho que o compose vai materializar, não a leitura de um arquivo que já está lá.
 
 ### 10.1 Camada não é tier
 
@@ -961,11 +961,11 @@ A quarta linha está na tabela com o rótulo que o Vocabulário já deu a ela. E
 
 As duas metades dessa regra falham por motivos diferentes. Chamar o tier Front de camada de Apresentação leva a esperar que ele receba comando e traduza em ação sobre o Domínio, que é a responsabilidade descrita na seção 3.1 e que ele não tem, porque o ADR-0004 o mantém como front-end apenas. Chamar o tier Banco de camada de Dados leva a esperar que o `SELECT ... FOR UPDATE` de `saveRsvpWithinCapacity` seja escrito no banco, quando ele é escrito no repository, que está em `api.bundle`. A tabela da seção 8 já registra a mesma coisa em uma linha, "Nenhuma, é tier".
 
-**A consequência prática de as três camadas estarem juntas.** A fronteira entre elas é de código e de módulo, não de processo nem de rede. Nada no compose impede um controller de importar um repository, porque os dois estão dentro do mesmo executável. A regra da seção 6 não é sustentada pela topologia, ela é sustentada pela estrutura de módulos do NestJS, que o [ADR-0004](../Sprints/Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu por esse motivo, e pelas três buscas da seção 6.4.
+A consequência prática de as três camadas estarem juntas. A fronteira entre elas é de código e de módulo, não de processo nem de rede. Nada no compose impede um controller de importar um repository, porque os dois estão dentro do mesmo executável. A regra da seção 6 não é sustentada pela topologia, ela é sustentada pela estrutura de módulos do NestJS, que o [ADR-0004](../Sprints/Sprint-2/Decisões-Arquiteturais/0004-Stack-de-implementação.md) escolheu por esse motivo, e pelas três buscas da seção 6.4.
 
 **Isto não é microsserviço.** Microsserviço implica autonomia de dados e de ciclo de vida por serviço. Aqui os três repositórios falam com o mesmo banco pela mesma interface `PostgresWire`, e as três camadas sobem e caem juntas dentro da mesma imagem. Conteinerizar um sistema de três camadas muda o empacotamento e não muda o estilo, que continua sendo o do ADR-0001.
 
-**Quantas dependências cruzam fronteira de container.** O Diagrama de Componentes conta 31 dependências e não diz quantas atravessam a rede, porque naquela página os pacotes de tier marcam origem de entrega e não lugar de execução. Contadas por onde a chamada de fato nasce, sete pagam rede, e elas não saem todas do mesmo lugar.
+Quantas dependências cruzam fronteira de container. O Diagrama de Componentes conta 31 dependências e não diz quantas atravessam a rede, porque naquela página os pacotes de tier marcam origem de entrega e não lugar de execução. Contadas por onde a chamada nasce, sete pagam rede, e elas não saem todas do mesmo lugar.
 
 | Dependência | De onde a chamada parte | Para que container | Quantas |
 |---|---|---|---|
@@ -987,17 +987,17 @@ A seção 2 registra dois caminhos até a camada de Apresentação e a seção 7
 
 A terceira linha merece leitura cuidadosa, porque ela contraria o par de nomes fácil. Não é leitura que paga dois saltos e escrita que paga um. É o convite público que paga dois na leitura, e só ele. As telas do painel são entregues pelo tier Front como qualquer página, e nenhuma chamada de dado do painel passa por lá.
 
-**Por que a assimetria existe.** Ela é efeito combinado de duas decisões e não de uma. O ADR-0002 separou os tiers. O ADR-0004 manteve o Next.js como front-end apenas e escolheu renderização no servidor para o convite público, porque o convite precisa de HTML pronto na primeira resposta para a prévia do link e para o carregamento no celular. Atribuir o custo a uma decisão só está errado, e os dois ADRs o assumem juntos, cada um na última linha das próprias consequências negativas.
+Por que a assimetria existe. Ela é efeito combinado de duas decisões e não de uma. O ADR-0002 separou os tiers. O ADR-0004 manteve o Next.js como front-end apenas e escolheu renderização no servidor para o convite público, porque o convite precisa de HTML pronto na primeira resposta para a prévia do link e para o carregamento no celular. Atribuir o custo a uma decisão só está errado, e os dois ADRs o assumem juntos, cada um na última linha das próprias consequências negativas.
 
-**Onde ela aparece no empacotamento.** O container do Front produz duas saídas de build, uma que ele mesmo executa e outra que ele entrega ao navegador para executar fora dele. É por isso que `PublicInvitePage` aparece em dois artefatos, `front-server.bundle` e `front-client.bundle`, e a seção 4.2 do Diagrama de Componentes registra que isso não é erro de tabela. As quatro dependências que `ApiClient` tem sobre as interfaces `Http` da API são as mesmas quatro nos dois bundles, e mudam de lugar de execução conforme o bundle. No caminho de leitura elas partem do processo do container. No caminho de escrita elas partem do navegador. É a mesma dependência de código saindo de dois lugares diferentes, e é isso que a figura de componentes não podia dizer, porque pacote de tier ali significa de onde veio e não onde roda.
+Onde ela aparece no empacotamento. O container do Front produz duas saídas de build, uma que ele mesmo executa e outra que ele entrega ao navegador para executar fora dele. É por isso que `PublicInvitePage` aparece em dois artefatos, `front-server.bundle` e `front-client.bundle`, e a seção 4.2 do Diagrama de Componentes registra que isso não é erro de tabela. As quatro dependências que `ApiClient` tem sobre as interfaces `Http` da API são as mesmas quatro nos dois bundles, e mudam de lugar de execução conforme o bundle. No caminho de leitura elas partem do processo do container. No caminho de escrita elas partem do navegador. É a mesma dependência de código saindo de dois lugares diferentes, e é isso que a figura de componentes não podia dizer, porque pacote de tier ali significa de onde veio e não onde roda.
 
 **O preço dela.** O caminho de leitura paga dois saltos e uma renderização no servidor antes de o convidado ver qualquer coisa, que é o ponto que a seção 1.7 registra como crítico de desempenho. O custo mais concreto, porém, não é tempo, é comportamento. A seção 4.1 já o descreve: no caminho de leitura o endereço de origem que a API enxerga é o do container do tier Front e não o do convidado, porque quem chama a API ali é a renderização no servidor. Por isso o limite da rota de leitura conta por token de convite apenas e o da rota de escrita conta pelos dois. **A mesma medida 2 do [ADR-0008](../Sprints/Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) conta coisas diferentes em duas rotas do mesmo convite, e a diferença é a topologia.** O Diagrama de Componentes já levou isso adiante e publicou `enforceReadLimit(publicToken)` separada de `enforceWriteLimit(publicToken, clientIp)`.
 
-**O que o desenho evita ao não repassar o POST.** Se o tier Front repassasse o POST, ele passaria a receber comando, lê-lo e encaminhá-lo, que é a responsabilidade descrita na seção 3.1. O sistema teria então duas camadas de Apresentação, uma nomeada e uma disfarçada, e o Vocabulário que reserva o termo para os controllers HTTP do tier API deixaria de descrever o sistema. Duas consequências concretas vêm junto com o nome. O ADR-0004 proíbe API routes e server actions com regra de negócio, e uma rota de repasse é uma API route, que a terceira busca da seção 6.4 pega. E a rota de escrita passaria a ver o endereço do container em vez do endereço do convidado, o que apagaria a metade da decisão da seção 4.1 que ainda funciona hoje.
+O que o desenho evita ao não repassar o POST. Se o tier Front repassasse o POST, ele passaria a receber comando, lê-lo e encaminhá-lo, que é a responsabilidade descrita na seção 3.1. O sistema teria então duas camadas de Apresentação, uma nomeada e uma disfarçada, e o Vocabulário que reserva o termo para os controllers HTTP do tier API deixaria de descrever o sistema. Duas consequências concretas vêm junto com o nome. O ADR-0004 proíbe API routes e server actions com regra de negócio, e uma rota de repasse é uma API route, que a terceira busca da seção 6.4 pega. E a rota de escrita passaria a ver o endereço do container em vez do endereço do convidado, o que apagaria a metade da decisão da seção 4.1 que ainda funciona hoje.
 
-**O salto da camada de Dados ao tier Banco não entra nesta conta.** Os dois saltos do ADR-0002 são os do caminho até a camada de Apresentação. A chamada da camada de Dados ao banco é tracejada com o rótulo `SQL` no fonte do diagrama de camadas, então também cruza a rede do compose, e ela está presente nos dois caminhos. O POST do passo 7 do UC005 a atravessa oito vezes no ramo mais longo do diagrama, fora do laço, mais uma por categoria alimentar marcada. Isso fica dito e não recontado, porque reescrever os dois saltos como três contradiria a frase que o ADR-0002 e o ADR-0004 já fixaram com esse recorte.
+O salto da camada de Dados ao tier Banco não entra nesta conta. Os dois saltos do ADR-0002 são os do caminho até a camada de Apresentação. A chamada da camada de Dados ao banco é tracejada com o rótulo `SQL` no fonte do diagrama de camadas, então também cruza a rede do compose, e ela está presente nos dois caminhos. O POST do passo 7 do UC005 a atravessa oito vezes no ramo mais longo do diagrama, fora do laço, mais uma por categoria alimentar marcada. Isso fica dito e não recontado, porque reescrever os dois saltos como três contradiria a frase que o ADR-0002 e o ADR-0004 já fixaram com esse recorte.
 
-**Falha de salto não é assunto desta seção.** Aqui fica a topologia, ou seja, quem chama quem e por quê. O que fazer quando um dos saltos falha está na seção 9.4, e o erro ter dois lados sem nada que correlacione os dois sozinho é consequência que o ADR-0002 registra por escrito.
+Falha de salto não é assunto desta seção. Aqui fica a topologia, ou seja, quem chama quem e por quê. O que fazer quando um dos saltos falha está na seção 9.4, e o erro ter dois lados sem nada que correlacione os dois sozinho é consequência que o ADR-0002 registra por escrito.
 
 ### 10.3 O conteúdo de cada imagem
 
@@ -1032,16 +1032,16 @@ O que não entra: nenhum arquivo de `templates/` e nenhum artefato do tier Front
 
 O que não entra: nenhuma linha de código do sistema, nenhum arquivo de mídia e nenhum `Dockerfile`.
 
-**Por que os templates ficam na imagem do front, e o efeito prático disso.** O ADR-0009 os chamou de ativo versionado e disse que acrescentar um template é mudança de código revisada. Alocá-los no container do Front torna essa frase verificável com um build. Acrescentar um template muda `templates/`, reconstrói a imagem do front e não toca `api.bundle`. `TemplateSet` é o único componente com artefato próprio fora de um bundle, e é o caso em que a fronteira de container tem efeito observável em vez de descritivo.
+Por que os templates ficam na imagem do front, e o efeito prático disso. O ADR-0009 os chamou de ativo versionado e disse que acrescentar um template é mudança de código revisada. Alocá-los no container do Front torna essa frase verificável com um build. Acrescentar um template muda `templates/`, reconstrói a imagem do front e não toca `api.bundle`. `TemplateSet` é o único componente com artefato próprio fora de um bundle, e é o caso em que a fronteira de container tem efeito observável em vez de descritivo.
 
-**Por que o `contract/` é compilado para dentro dos dois.** O catálogo de templates tem dois consumidores em dois containers. `TemplateSet` carrega HTML, CSS e imagem, e mora no tier Front. `TemplateCatalog` carrega código, nome de exibição, cores padrão e limites de texto por campo, e mora no tier API porque a RN2 do UC003 é validação e a tabela 9.1 aloca validação no Domínio. Os dois precisam concordar, e o único lugar que os dois builds podem ler sem que a API importe do tier Front é o módulo compartilhado. É também o que torna o contrato de tipos do ADR-0004 um tipo e não uma convenção documentada.
+Por que o `contract/` é compilado para dentro dos dois. O catálogo de templates tem dois consumidores em dois containers. `TemplateSet` carrega HTML, CSS e imagem, e mora no tier Front. `TemplateCatalog` carrega código, nome de exibição, cores padrão e limites de texto por campo, e mora no tier API porque a RN2 do UC003 é validação e a tabela 9.1 aloca validação no Domínio. Os dois precisam concordar, e o único lugar que os dois builds podem ler sem que a API importe do tier Front é o módulo compartilhado. É também o que torna o contrato de tipos do ADR-0004 um tipo e não uma convenção documentada.
 
 Duas ressalvas vêm junto e nenhuma das duas é defeito.
 
 - **O contrato não é artefato de implantação.** Tipo de TypeScript é apagado na compilação, então ele não aparece no diagrama de implantação. O único vestígio em tempo de execução é o trecho que carrega valor, como o enum `RsvpStatus`, que é compilado para dentro dos dois bundles e passa a existir em duas cópias. Isso é o efeito de empacotar dois tiers a partir de uma fonte só.
 - **Nada verifica que `templates/` e `contract/` continuem coerentes.** Enquanto não houver verificação no build, acrescentar um template exige mexer nos dois lugares na mão, e um limite de texto divergente entre eles aparece apenas como recusa estranha na tela do UC003. Está registrado como pendência 9 da seção 10.2 do Diagrama de Componentes.
 
-**Os `Dockerfile` não entram em container nenhum.** Eles produzem as imagens, e a imagem é que é implantada. Duas são construídas pelo time e uma vem pronta do registry.
+Os `Dockerfile` não entram em container nenhum. Eles produzem as imagens, e a imagem é que é implantada. Duas são construídas pelo time e uma vem pronta do registry.
 
 ### 10.4 A rede e a configuração
 
@@ -1056,17 +1056,17 @@ São três conversas legítimas e não mais que isso: navegador para Front, nave
 | Tier Front, no processo Node | Tier API | Nome de serviço na rede do compose | Não se aplica, a chamada nasce dentro da rede |
 | Camada de Dados, dentro da API | Tier Banco | Nome de serviço na rede do compose | Não |
 
-**A armadilha, e ela vale registrar porque a tabela parece simétrica e não é.** O navegador não resolve o nome de serviço do compose. A resolução por nome funciona dentro da rede nomeada, entre containers, e o navegador não é container, não sobe no compose e não está no ADR-0002. Então o endereço da API que vai no código entregue ao navegador não é o mesmo endereço que o tier Front usa no servidor. São duas configurações para o mesmo destino, e elas diferem porque a origem está em lados diferentes da fronteira de rede.
+A armadilha: a tabela parece simétrica e não é. O navegador não resolve o nome de serviço do compose. A resolução por nome funciona dentro da rede nomeada, entre containers, e o navegador não é container, não sobe no compose e não está no ADR-0002. Então o endereço da API que vai no código entregue ao navegador não é o mesmo endereço que o tier Front usa no servidor. São duas configurações para o mesmo destino, e elas diferem porque a origem está em lados diferentes da fronteira de rede.
 
-Isso não seria problema se o navegador nunca chamasse a API. Ele chama, e no fluxo que a seção 2 chama de mais importante do sistema. A consequência é que **dois dos três containers precisam ser alcançáveis do host e o terceiro não.** O material do T1 enuncia a regra na forma "só o serviço de fronteira publica porta, com o banco na rede interna sem mapeamento". No invite-app os serviços de fronteira são dois e não um, porque o POST do UC005 chega do navegador direto à API. Que o tier Banco não publique porta é decisão nova deste guia, e está na seção 11.
+Isso não seria problema se o navegador nunca chamasse a API. Ele chama, e no fluxo que a seção 2 chama de mais importante do sistema. A consequência é que **dois dos três containers precisam ser alcançáveis do host e o terceiro não.** A regra usual é que só o serviço de fronteira publica porta, com o banco na rede interna sem mapeamento. No invite-app os serviços de fronteira são dois e não um, porque o POST do UC005 chega do navegador direto à API. Que o tier Banco não publique porta é decisão nova deste guia, e está na seção 11.
 
-**Por que três containers cabem num host só sem conflito de porta.** O namespace de rede dá a cada container uma pilha própria, com interfaces e portas próprias, que é o mecanismo apresentado no T1. Porta interna do container e porta publicada no host são coisas diferentes, e os números das duas são do item #60.
+Por que três containers cabem num host só sem conflito de porta. O namespace de rede dá a cada container uma pilha própria, com interfaces e portas próprias, que é o mecanismo apresentado no T1. Porta interna do container e porta publicada no host são coisas diferentes, e os números das duas são do item #60.
 
-**Como o endereço da API chega ao código que roda no navegador ficou decidido depois.** Ele entra como argumento de construção da imagem do front, na variável `NEXT_PUBLIC_API_URL`, porque o Next.js congela essas variáveis na compilação. A consequência é que trocar o endereço exige reconstruir a imagem, e não basta mexer no `.env`. Está no `docker-compose.yml` e explicado na página [Configuração de Ambiente](../Começando/Configuração-de-Ambiente.md).
+Como o endereço da API chega ao código que roda no navegador ficou decidido depois. Ele entra como argumento de construção da imagem do front, na variável `NEXT_PUBLIC_API_URL`, porque o Next.js congela essas variáveis na compilação. A consequência é que trocar o endereço exige reconstruir a imagem, e não basta mexer no `.env`. Está no `docker-compose.yml` e explicado na página [Configuração de Ambiente](../Começando/Configuração-de-Ambiente.md).
 
-**Segredo não entra em camada de imagem.** O par previsto é `.env.example` versionado no repositório e `.env` local preenchido por quem sobe o ambiente, que é a forma registrada na última linha do inventário da seção 4.1 do Diagrama de Componentes. O motivo é mecânico e não de estilo: no sistema de arquivos em camadas, apagar um arquivo cria uma marcação na camada de cima e o arquivo continua legível na camada de baixo, então um `Dockerfile` que copia um `.env` e faz `RUN rm` na instrução seguinte entrega a imagem com o segredo dentro. O que entra na imagem é público e o que entra por variável de ambiente é de execução. Os dois segredos concretos deste projeto são a senha do banco e o segredo de sessão do anfitrião do UC001. Quais variáveis cada container recebe também não está escrito em artefato nenhum.
+Segredo não entra em camada de imagem. O par previsto é `.env.example` versionado no repositório e `.env` local preenchido por quem sobe o ambiente, que é a forma registrada na última linha do inventário da seção 4.1 do Diagrama de Componentes. O motivo é mecânico e não de estilo: no sistema de arquivos em camadas, apagar um arquivo cria uma marcação na camada de cima e o arquivo continua legível na camada de baixo, então um `Dockerfile` que copia um `.env` e faz `RUN rm` na instrução seguinte entrega a imagem com o segredo dentro. O que entra na imagem é público e o que entra por variável de ambiente é de execução. Os dois segredos concretos deste projeto são a senha do banco e o segredo de sessão do anfitrião do UC001. Quais variáveis cada container recebe também não está escrito em artefato nenhum.
 
-**Os quatro complementos de exposição do ADR-0008 recaem todos sobre o tier Front.** São quatro e não três: `Cache-Control`, `robots.txt`, o redirecionamento do identificador inválido e as metatags Open Graph.
+Os quatro complementos de exposição do ADR-0008 recaem todos sobre o tier Front. São quatro e não três: `Cache-Control`, `robots.txt`, o redirecionamento do identificador inválido e as metatags Open Graph.
 
 O `Cache-Control: private, no-cache, no-store` da página do convite e o `robots.txt` que bloqueia as rotas de convite são respostas a requisições do navegador pela página, e a página é servida pelo container do Front. A rota que o convidado recebe é `/i/{publicToken}`, e é o endereço dela que um rastreador seguiria. O redirecionamento do identificador inválido para a rota de não encontrado já está alocado no tier Front pela seção 7.4. **As metatags Open Graph também são do tier Front**, porque elas são renderizadas na página do convite e a imagem de prévia é ativo de template, que o ADR-0009 coloca naquele container. Esse quarto complemento não tinha dono em artefato nenhum, e a restrição que o ADR-0008 escreve sobre ele, de que o endereço exato do evento não entra na prévia, vira regra de quem monta as metatags. Alocar os três que faltavam é decisão nova deste guia, e está na seção 11. A política de cache e de indexação rota por rota está na seção 9.5.
 
@@ -1074,9 +1074,9 @@ O `Cache-Control: private, no-cache, no-store` da página do convite e o `robots
 
 Este é o ponto em que é mais fácil afirmar demais, então o limite fica escrito antes do ganho.
 
-**A fronteira de container não torna estrutural a regra do ADR-0001.** As três camadas ficam na mesma imagem e no mesmo processo, então nada no compose impede um controller de importar um repository nem um service de importar um tipo de requisição HTTP. Essa regra continua sustentada por revisão de código e pela estrutura de módulos do NestJS, e as três buscas da seção 6.4 são o instrumento.
+A fronteira de container não torna estrutural a regra do ADR-0001. As três camadas ficam na mesma imagem e no mesmo processo, então nada no compose impede um controller de importar um repository nem um service de importar um tipo de requisição HTTP. Essa regra continua sustentada por revisão de código e pela estrutura de módulos do NestJS, e as três buscas da seção 6.4 são o instrumento.
 
-**Ela torna estrutural uma outra coisa, e meia.** A inteira: o código do tier Front não está dentro da imagem da API, então a API não consegue depender dele nem por acidente, nem quando a sprint aperta e o atalho parece barato. Esse é um dos casos que a seção 6.3 lista e que nenhuma das três buscas da 6.4 pega com certeza.
+Ela torna estrutural uma outra coisa, e meia. A inteira: o código do tier Front não está dentro da imagem da API, então a API não consegue depender dele nem por acidente, nem quando a sprint aperta e o atalho parece barato. Esse é um dos casos que a seção 6.3 lista e que nenhuma das três buscas da 6.4 pega com certeza.
 
 A metade merece precisão, porque é fácil afirmar demais aqui. **A rede do compose não impede o tier Front de abrir conexão com o banco.** Os três containers estão na mesma rede nomeada, com resolução por nome de serviço, conforme o ADR-0002, então o processo Node do Front resolve o nome do serviço do banco e conecta sem obstáculo. O que a topologia impede é o acesso de quem está fora daquela rede, ou seja, do host e do navegador, e quem impede é a ausência de porta publicada no serviço do banco. A regra da seção 6.3 que proíbe o tier Front de falar com o banco continua sendo regra de revisão de código, não garantia de infraestrutura. Escrever o contrário daria ao time uma confiança que o compose não sustenta.
 
@@ -1100,9 +1100,9 @@ O ADR-0002 assumiu cinco consequências negativas por escrito. Apresentar três 
 
 Duas decisões posteriores aliviaram parte do quadro, e as duas registram isso por escrito, então não é otimismo deste guia. O [ADR-0007](../Sprints/Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) registra que a consulta periódica não cria nenhuma conexão de longa duração, o que simplifica o container da API e a ordem de subida. O ADR-0009 registra que os três tiers continuam de pé sem alteração, porque sem upload de mídia nenhum dos três precisou virar quatro para guardar bytes.
 
-**O volume nomeado, e uma justificativa que caducou.** O volume existe pelo motivo que o ADR-0009 enuncia no próprio Contexto ao descartar o upload: disco de container some no próximo `docker compose down`. O que o volume do tier Banco guarda é o estado do banco, ou seja, convites, convidados, observações alimentares e a carga inicial de categorias. A narração da demonstração do T1 justificou esse volume com a imagem de fundo que a anfitriã envia e com o CSV que ela exporta, e as duas justificativas não valem mais. O ADR-0009, de 15/09/2026, tirou o upload do sistema, e o UC008 declara "Pós-condições: nenhuma", porque o CSV é gerado na resposta da requisição. Os outros dois containers não têm volume, porque não guardam estado. Isso é decisão nova deste guia e está na seção 11.
+O volume nomeado, e uma justificativa que caducou. O volume existe pelo motivo que o ADR-0009 enuncia no próprio Contexto ao descartar o upload: disco de container some no próximo `docker compose down`. O que o volume do tier Banco guarda é o estado do banco, ou seja, convites, convidados, observações alimentares e a carga inicial de categorias. A narração da demonstração do T1 justificou esse volume com a imagem de fundo que a anfitriã envia e com o CSV que ela exporta, e as duas justificativas não valem mais. O ADR-0009, de 15/09/2026, tirou o upload do sistema, e o UC008 declara "Pós-condições: nenhuma", porque o CSV é gerado na resposta da requisição. Os outros dois containers não têm volume, porque não guardam estado. Isso é decisão nova deste guia e está na seção 11.
 
-**O que o ADR-0003 cobra e o que ele proíbe prometer.** Os três containers rodam num host só, via `docker compose up`, na máquina de cada integrante. O nó do diagrama de implantação é o host de desenvolvimento, contendo o engine de containers, que contém os três ambientes de execução. Não há alvo de publicação nesta fase, então este guia não fala de ambiente de produção, de nuvem, de domínio nem de TLS. Três negativas vêm declaradas.
+O que o ADR-0003 cobra e o que ele proíbe prometer. Os três containers rodam num host só, via `docker compose up`, na máquina de cada integrante. O nó do diagrama de implantação é o host de desenvolvimento, contendo o engine de containers, que contém os três ambientes de execução. Não há alvo de publicação nesta fase, então este guia não fala de ambiente de produção, de nuvem, de domínio nem de TLS. Três negativas vêm declaradas.
 
 - A demonstração final depende da máquina de quem apresenta, com ensaio prévio e capturas de tela como contingência.
 - O projeto não exercita deploy, lacuna que o próprio time reconhece nos Pontos de Melhoria do Team Charter.
@@ -1113,7 +1113,7 @@ Duas decisões posteriores aliviaram parte do quadro, e as duas registram isso p
 
 O ADR-0002 registra que o arquivo de compose vira a forma executável do diagrama de implantação, e que os dois passam a ser a mesma informação em notações diferentes. Como nenhum dos dois existe ainda, essa é a relação prevista entre os dois artefatos e não algo conferível hoje.
 
-Esta seção descreve topologia e para no ponto em que a decisão vira número ou nome. **Nada da tabela abaixo estava decidido quando ela foi escrita, e escrever valor aqui transformaria exemplo de slide em decisão de projeto.** O item #60 decidiu depois, e o `docker-compose.yml` materializou. As linhas riscadas estão fechadas e ficam como registro de onde cada decisão foi tomada. A porta 3000 e o nome `db` aparecem no material do T1, e o próprio slide que os mostra diz que as imagens do arquivo são exemplo e que a stack é decisão do documento de decisões arquiteturais. O mesmo material chama o serviço do front de `front` num slide e de `front-end` em outro, então nem a origem é consistente.
+Esta seção descreve topologia e para no ponto em que a decisão vira número ou nome. Portas, nomes de serviço e imagens foram decididos no item #60 e estão no `docker-compose.yml`. As linhas riscadas da tabela abaixo estão fechadas.
 
 | O que falta decidir | Por que não está decidido aqui | Dono |
 |---|---|---|
@@ -1153,7 +1153,7 @@ Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O pró
 | 6 | O filtro `[ACCEPTED, MAYBE]` chega à camada de Dados como parâmetro `statuses`, vindo do Domínio | 4.3 | A RN2 do UC008 diz o que filtrar e não diz onde o filtro mora | O filtro vira SQL escrito dentro do repositório, e uma regra de negócio passa a morar na camada de Dados sem nenhum dos dois casos da 3.5 a justificar |
 | 7 | Operação que não filtra por `inviteId` não pertence ao repositório da raiz de agregação | 5.2 | O Diagrama de Classes registra `Invite` como raiz e `DietaryCategory` como dado de referência, e não fala em repositório em ponto nenhum | `listDietaryCategories()` volta para o `InviteRepository`, e os diagramas de sequência do UC005 e do UC008 e o Diagrama de Componentes precisam desfazer a separação |
 | 8 | O pacote público chama apenas `getPublishedInvite` e `registerRsvp` | 5.3 | O ADR-0001 separa camadas e não separa pacotes dentro da Apresentação | A separação por superfície fica decorativa, e volta o risco que a 5.3 nomeia, que é a lista de restrição alimentar de todos os convidados numa rota sem autenticação |
-| 9 | A Apresentação nunca chama a camada de Dados, que é a leitura estrita | 6.2 | O material da Aula 03 admite as duas leituras, e o ADR-0001 registra apenas que Domínio e Dados não dependem da Apresentação | Vale a leitura ampla, e o teto de capacidade passa a poder ser checado na Apresentação, com o efeito que a 3.4 descreve em número |
+| 9 | A Apresentação nunca chama a camada de Dados, que é a leitura estrita | 6.2 | O método admite as duas leituras, e o ADR-0001 registra apenas que Domínio e Dados não dependem da Apresentação | Vale a leitura ampla, e o teto de capacidade passa a poder ser checado na Apresentação, com o efeito que a 3.4 descreve em número |
 | 10 | As três buscas que a revisão de código roda | 6.4 | Nenhum ADR trata de verificação | A regra da seção 6 passa a depender de boa vontade, e o próprio ADR-0001 registra que disciplina de time não sobrevive a uma sprint |
 | 11 | Os oito códigos de erro da tabela 9.1 e o critério que separa 400, 404, 409, 422 e 429 | 9.1 | Nenhum ADR trata de protocolo de erro | Cada rota escolhe o próprio status, e o `ApiClient` do tier Front perde o ponto único de leitura de erro que o Diagrama de Componentes desenhou |
 | 12 | O catálogo fechado de cinco exceções do Domínio, sem um `NotFoundError` | 9.2 | Nenhum ADR trata de tipo de erro | O Domínio ganha um tipo "não encontrado" e passa a decidir política de exposição, que é da fronteira |
@@ -1167,9 +1167,9 @@ Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O pró
 
 > **Nenhuma linha desta tabela vale contra um ADR.** Se um ADR futuro decidir o contrário de qualquer uma delas, o ADR é a fonte da decisão e a linha sai daqui, conforme a divisão de trabalho declarada na introdução.
 
-**Três destas o Diagrama de Componentes também assumiu como decisão nova dele.** A 4 é o item 4 da seção 10.1 daquela página, nas duas operações de `RateLimit`. A 5 é o item 2, `AttendanceService` como dono de `listAttendance`. A 13 é o item 5, `toErrorResponse(error)`. Decisão contada em dois lugares precisa de um aval só, e o aval é o desta seção, porque foi aqui que ela foi tomada.
+Três destas o Diagrama de Componentes também assumiu como decisão nova dele. A 4 é o item 4 da seção 10.1 daquela página, nas duas operações de `RateLimit`. A 5 é o item 2, `AttendanceService` como dono de `listAttendance`. A 13 é o item 5, `toErrorResponse(error)`. Decisão contada em dois lugares precisa de um aval só, e o aval é o desta seção, porque foi aqui que ela foi tomada.
 
-**O que esta lista não traz, de propósito.** Alocação que já sai de um diagrama de sequência não é decisão nova, porque já está registrada em artefato, e é o caso dos donos de seis dos sete serviços da tabela 4.2, que a 11.2 nomeia. Regra que vem direto de um ADR também não entra, mesmo quando este guia é o primeiro a escrevê-la em forma de verificação, e é o caso do prefixo de aspa no CSV, que é a medida 5 do ADR-0008.
+O que esta lista não traz, de propósito. Alocação que já sai de um diagrama de sequência não é decisão nova, porque já está registrada em artefato, e é o caso dos donos de seis dos sete serviços da tabela 4.2, que a 11.2 nomeia. Regra que vem direto de um ADR também não entra, mesmo quando este guia é o primeiro a escrevê-la em forma de verificação, e é o caso do prefixo de aspa no CSV, que é a medida 5 do ADR-0008.
 
 ### 11.2 O que ainda não tem dono
 
