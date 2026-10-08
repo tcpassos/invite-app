@@ -1,8 +1,8 @@
 # Documento de Arquitetura de Software
 
 **Projeto:** invite-app, aplicação web de convites com confirmação de presença
-**Versão:** 1.2
-**Data:** 7 de outubro de 2026
+**Versão:** 1.3
+**Data:** 8 de outubro de 2026
 **Autores:** Tiago Passos, Guilherme Toebe dos Santos, Andreas Grings, Gabriel Tomasi de Melo
 **Product Owner:** Kleinner Farias
 
@@ -18,6 +18,7 @@
 | 20/09/2026 | 1.0 | Seção 8, visão de dados, e revisão final do documento | Tiago Passos |
 | 07/10/2026 | 1.1 | Acesso a dados (ADR-0014) nas restrições e nas referências | Tiago Passos |
 | 07/10/2026 | 1.2 | Rotas e serviços do UC001, do UC002, do UC003 e do link pessoal, pacote `auth` confirmado e limite de tentativas na entrada, conforme as decisões 21 a 33 do Guia da Arquitetura | Tiago Passos |
+| 08/10/2026 | 1.3 | Operações do `RateLimitGuard` separadas em antes e depois da resolução do token, conforme a seção 9.5 do Guia da Arquitetura | Tiago Passos |
 
 ---
 
@@ -297,10 +298,10 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 | Classe | Descrição | Operações |
 |---|---|---|
 | `SessionGuard` | Autentica a sessão do anfitrião validando a assinatura do cookie do [ADR-0010](../Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) | `authenticateSession(session)`, que devolve `hostId` |
-| `RateLimitGuard` | Controla tráfego na fronteira pública, pela medida 2 do [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md), e as tentativas de entrada e de cadastro, pela RN4 do UC001 | `enforceReadLimit(publicToken)`, `enforceWriteLimit(publicToken, clientIp)`, `enforceSignInLimit(email, clientIp)`, `enforceSignUpLimit(clientIp)` |
+| `RateLimitGuard` | Controla tráfego na fronteira pública, pela medida 2 do [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md), e as tentativas de entrada e de cadastro, pela RN4 do UC001 | `enforceOriginLimit(clientIp)`, `enforceReadLimit(token)`, `enforceWriteLimit(token)`, `enforceSignInLimit(email, clientIp)`, `recordSignInFailure(email, clientIp)`, `enforceSignUpLimit(clientIp)` |
 | `HttpExceptionFilter` | Traduz erro do Domínio em protocolo, num ponto só, e monta o corpo único de erro | `toErrorResponse(error)` |
 
-As duas primeiras valem também para o link pessoal, contando pelo token pessoal no lugar do token do convite. A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura pública quem chama a API é o container do tier Front, então o endereço de origem visível é sempre o mesmo e contá-lo bloquearia a página para todos os convidados de uma vez.
+A primeira roda antes de resolver o token, e a segunda e a terceira depois, pela seção 9.5 do Guia da Arquitetura. As duas que recebem token valem também para o link pessoal, contando pelo token pessoal. A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura pública quem chama a API é o container do tier Front, então o endereço de origem visível é sempre o mesmo e contá-lo bloquearia a página para todos os convidados de uma vez.
 
 #### `api.domain`
 

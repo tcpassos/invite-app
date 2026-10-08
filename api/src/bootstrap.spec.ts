@@ -6,6 +6,7 @@ import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { configureApp } from './bootstrap.js';
 import { ValidationError } from './domain/errors.js';
+import { RateLimitedException } from './presentation/common/rate-limit.js';
 
 @Controller('probe')
 class ProbeController {
@@ -22,6 +23,11 @@ class ProbeController {
   @Post('echo')
   echo(@Body() body: unknown): unknown {
     return body;
+  }
+
+  @Get('busy')
+  busy(): never {
+    throw new RateLimitedException(30);
   }
 
   @Get('crash')
@@ -120,6 +126,18 @@ describe('base da API', () => {
     expect(JSON.stringify(res.body)).not.toContain('segredo');
     expect(errorLog.join('\n')).not.toContain('segredo');
     expect(lastLog().level).toBe('error');
+  });
+
+  it('responde todo 404 sem cache', async () => {
+    const res = await request(app.getHttpServer()).get('/nada/aqui').expect(404);
+    expect(res.headers['cache-control']).toBe('no-store');
+  });
+
+  it('responde 429 RATE_LIMITED sem cache e com Retry-After', async () => {
+    const res = await request(app.getHttpServer()).get('/probe/busy').expect(429);
+    expect(res.body.code).toBe('RATE_LIMITED');
+    expect(res.headers['cache-control']).toBe('no-store');
+    expect(res.headers['retry-after']).toBe('30');
   });
 
   it('aceita chamada do navegador vinda do front, com credenciais', async () => {
