@@ -7,6 +7,8 @@
     "node": ">=24 <25"
   },
   "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -21,5 +23,8 @@
     "prettier": "^3.9.9",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.1"
-  }
+  },
+  "workspaces": [
+    "contract"
+  ]
 }

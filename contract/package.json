@@ -1,0 +1,15 @@
+{
+  "name": "@invite-app/contract",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tipos e valores compartilhados entre a API e o front",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

@@ -525,13 +525,14 @@ O `JSONB` guarda apenas as cores e os ajustes livres da personalização. O temp
 
 Último macro-passo do projeto em camadas. Sem ele, cada integrante inventa o próprio jeito de sinalizar falha e a regra da seção 6 vaza pela porta dos fundos.
 
-### 9.1 Oito categorias, cada uma com um dono
+### 9.1 Nove categorias, cada uma com um dono
 
 O dono é a camada que **detecta** o erro. Nenhuma outra decide aquilo por ela. A coluna "o que atravessa" separa o que a camada de baixo devolve do tipo que a de cima cria, porque as duas coisas são diferentes e a seção 9.2 depende disso.
 
 | Categoria | Quem detecta | Exemplos no projeto | O que atravessa | Resposta |
 |---|---|---|---|---|
 | Forma da requisição | Apresentação | corpo não é JSON, `companionCount` veio como texto onde a rota declara inteiro | não sobe ao Domínio | 400 `MALFORMED_REQUEST` |
+| Sessão ausente ou expirada | Apresentação | rota do painel chamada sem cookie de sessão, ou com cookie de assinatura inválida ou vencido (ADR-0010) | não sobe ao Domínio | 401 `UNAUTHENTICATED` |
 | Excesso de tráfego | Apresentação | o limite de taxa da medida 2 do ADR-0008 disparou numa das duas rotas públicas | não sobe ao Domínio | 429 `RATE_LIMITED` |
 | Validação e regra de negócio | Domínio | `status` fora de sim, não ou talvez (UC005 RN1), acompanhantes acima do limite (UC005 RN2), alergia sem descrição (UC006 RN2), texto livre da observação alimentar acima do tamanho máximo (ADR-0008 medida 3), data no passado (UC002 RN1), texto do convite acima do limite do campo (UC003 RN2) | `ValidationError(field, rule)` | 422 `VALIDATION_FAILED` |
 | Convite incompleto para publicar | Domínio | falta nome, data, hora ou local (UC004 RN1) | `InvalidInviteForPublication(missingFields)` | 422 `INVITE_NOT_PUBLISHABLE` |
@@ -668,6 +669,7 @@ Onde `details` entra e onde não entra, por categoria da tabela 9.1:
 | Categoria | `code` | `details` | Por quê |
 |---|---|---|---|
 | Forma da requisição | `MALFORMED_REQUEST` | Ausente | Duas origens, `parseRequest` e o framework, e só uma tem nome de campo |
+| Sessão ausente ou expirada | `UNAUTHENTICATED` | Ausente | Decidido pelo `SessionGuard` antes do Domínio, sem campo envolvido |
 | Excesso de tráfego | `RATE_LIMITED` | Ausente | Decidido antes do Domínio, não há campo envolvido |
 | Validação e regra de negócio | `VALIDATION_FAILED` | Preenchido | `ValidationError(field, rule)`, uma entrada |
 | Convite incompleto para publicar | `INVITE_NOT_PUBLISHABLE` | Preenchido | `InvalidInviteForPublication(missingFields)`, uma entrada por campo, `rule` igual a `required` |
@@ -1164,6 +1166,7 @@ Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O pró
 | 17 | Os quatro complementos de exposição do ADR-0008 ficam no tier Front | 10.4 | O ADR-0008 lista os quatro e não aloca nenhum a componente nem a container | Cabeçalho de cache, `robots.txt` e metatags ficam sem dono, e a proteção do token do ADR-0005 passa a depender de quem lembrar |
 | 18 | A quarta busca da revisão de código, de fronteira de container | 10.5 | Nenhum ADR trata de verificação, e as três buscas da 6.4 foram escritas antes de existir compose | Importação cruzada entre tiers, endereço de API errado no navegador e banco exposto ao host passam sem ninguém procurar |
 | 19 | Só o container do Banco tem volume nomeado | 10.6 | O ADR-0002 exige o volume do Banco e não diz nada sobre os outros dois | Os três ganham volume por precaução, e o estado passa a sobreviver em lugares onde ninguém o guarda de propósito |
+| 20 | Sessão ausente ou expirada responde 401 `UNAUTHENTICATED` | 9.1 | O ADR-0010 define como a sessão é validada e não diz o que a API responde quando ela falha | Cada rota do painel inventa a própria recusa, e o front não tem como reconhecer o caso para levar o anfitrião de volta à entrada |
 
 > **Nenhuma linha desta tabela vale contra um ADR.** Se um ADR futuro decidir o contrário de qualquer uma delas, o ADR é a fonte da decisão e a linha sai daqui, conforme a divisão de trabalho declarada na introdução.
 
