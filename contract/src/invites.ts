@@ -21,6 +21,12 @@ export interface CreateInviteRequest {
   companionLimit?: number | null;
 }
 
+/**
+ * Correção do rascunho (UC002 A2), com os mesmos campos e regras da criação. Fora do
+ * rascunho a API responde 409 INVITE_NOT_OPEN (UC002 RN3).
+ */
+export type UpdateInviteRequest = CreateInviteRequest;
+
 /** O que o anfitrião salva no editor do UC003: template, cores e os dois textos do convite. */
 export interface CustomizeInviteRequest {
   templateCode: string;

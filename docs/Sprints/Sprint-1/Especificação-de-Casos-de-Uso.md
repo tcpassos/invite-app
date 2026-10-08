@@ -48,6 +48,9 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 (A2) Fluxo Alternativo ao Passo 5, credenciais inválidas:
 2.1. O sistema informa que email ou senha estão incorretos, sem dizer qual.
 2.2. O sistema retorna ao Passo 3.
+(A3) Fluxo Alternativo aos Passos 1.3 e 5, tentativas demais em pouco tempo (RN4):
+3.1. O sistema recusa a tentativa e pede para aguardar alguns minutos, sem dizer se o email tem conta.
+3.2. O sistema encerra o caso de uso.
 
 **Estruturas de Dados:**
 (ED1) Conta do anfitrião: nome, email e senha armazenada de forma segura.
@@ -56,6 +59,7 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 (RN1) Email e senha são obrigatórios. A senha tem no mínimo 8 caracteres.
 (RN2) A sessão expira após um período de inatividade.
 (RN3) Não pode haver dois cadastros com o mesmo email.
+(RN4) O sistema limita as tentativas em 15 minutos: até 5 entradas recusadas para o mesmo email, até 20 entradas recusadas e até 10 cadastros vindos do mesmo endereço. O limite por email vale para qualquer email digitado, tenha conta ou não. Ver o Guia da Arquitetura, seção 4.1.
 
 ### UC002 - Criar convite
 
@@ -80,6 +84,9 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 (A1) Fluxo Alternativo ao Passo 5, dados obrigatórios ausentes ou data no passado:
 1.1. O sistema indica os campos com problema e mantém o que já foi preenchido.
 1.2. O sistema retorna ao Passo 3.
+(A2) Extensão depois do Passo 5, o anfitrião quer corrigir os dados do rascunho:
+2.1. O anfitrião abre o convite em rascunho e altera nome, data, hora, local ou limites.
+2.2. O sistema valida os dados pelas mesmas regras da criação (RN1, RN2) e salva (RN3).
 
 **Estruturas de Dados:**
 (ED1) Convite: nome do evento, data, hora, local, situação (rascunho ou publicado), teto de pessoas (opcional), limite de acompanhantes por convidado (opcional) e anfitrião responsável.
@@ -88,6 +95,8 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 (RN1) Nome, data, hora e local são obrigatórios. A data deve ser igual ou posterior ao dia atual, contado no fuso do projeto (ADR-0013). A data e a hora informadas formam um instante único no convite salvo.
 
 (RN2) O convite tem dois limites, ambos opcionais e independentes. O **teto de pessoas** é um inteiro maior que zero e representa o total aceito no evento, somando os convidados confirmados e os acompanhantes deles. O **limite de acompanhantes por convidado** é um inteiro maior ou igual a zero e restringe cada resposta individualmente.
+
+(RN3) Data, hora e os dois limites só podem ser alterados enquanto o convite está em rascunho. Depois de publicado, mudar a data alteraria o prazo de alteração das respostas (UC005 RN3), e baixar o teto poderia deixar respostas já aceitas acima do limite. Nome do evento e local continuam ajustáveis na personalização (UC003).
 
 ### UC003 - Personalizar visual do convite
 
@@ -265,7 +274,7 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 
 **Atores:** Anfitrião
 
-**Pré-condições:** o anfitrião está autenticado e há convidados que informaram restrição.
+**Pré-condições:** o anfitrião está autenticado e o convite existe.
 
 **Pós-condições:** nenhuma. É uma consulta com exportação e não altera dados.
 
@@ -279,11 +288,15 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 
 **Fluxos Alternativos:**
 (A1) Fluxo Alternativo ao Passo 2, nenhum convidado informou restrição:
-1.1. O sistema informa que não há restrições registradas e não oferece a exportação.
+1.1. O sistema informa que não há restrições registradas.
+1.2. O sistema segue para o Passo 4, porque a exportação continua útil ao buffet como lista de presença.
+(A2) Fluxo Alternativo ao Passo 4, nenhum convidado respondeu sim ou talvez:
+2.1. O sistema não oferece a exportação.
+2.2. O caso de uso é encerrado.
 
 **Estruturas de Dados:**
 (ED1) Consolidação: por categoria, a contagem de convidados.
-(ED2) Arquivo de exportação: uma linha por convidado, com nome, status, categorias e observação.
+(ED2) Arquivo de exportação: uma linha por convidado, com nome, status, número de acompanhantes, categorias e observação. Quem não informou restrição aparece com as categorias e a observação em branco.
 
 **Regras de Negócio:**
 (RN1) Um convidado com mais de uma categoria conta em cada categoria que marcou.
