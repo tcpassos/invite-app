@@ -1,8 +1,8 @@
 # Documento de Arquitetura de Software
 
 **Projeto:** invite-app, aplicação web de convites com confirmação de presença
-**Versão:** 1.1
-**Data:** 20 de setembro de 2026
+**Versão:** 1.2
+**Data:** 7 de outubro de 2026
 **Autores:** Tiago Passos, Guilherme Toebe dos Santos, Andreas Grings, Gabriel Tomasi de Melo
 **Product Owner:** Kleinner Farias
 
@@ -17,6 +17,7 @@
 | 20/09/2026 | 0.5 | Seção 5.2, descrição das 29 classes por pacote | Tiago Passos |
 | 20/09/2026 | 1.0 | Seção 8, visão de dados, e revisão final do documento | Tiago Passos |
 | 07/10/2026 | 1.1 | Acesso a dados (ADR-0014) nas restrições e nas referências | Tiago Passos |
+| 07/10/2026 | 1.2 | Rotas e serviços do UC001, do UC002, do UC003 e do link pessoal, pacote `auth` confirmado e limite de tentativas na entrada, conforme as decisões 21 a 33 do Guia da Arquitetura | Tiago Passos |
 
 ---
 
@@ -174,7 +175,7 @@ Os oito casos de uso do sistema, com os arquiteturalmente significativos em dest
 | UC005, com a extensão do UC006 | A única escrita sem sessão do sistema. Carrega o [ADR-0006](../Sprint-2/Decisões-Arquiteturais/0006-Identidade-do-convidado.md), o [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) inteiro, o [ADR-0011](../Sprint-2/Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) e a fronteira temporal do [ADR-0013](../Sprint-2/Decisões-Arquiteturais/0013-Tempo-do-evento.md). O teto de capacidade verificado dentro da transação demonstra a regra de dependência do [ADR-0001](../Sprint-2/Decisões-Arquiteturais/0001-Estilo-arquitetural.md) |
 | UC008 | A única agregação com projeções nomeadas, a única exportação em CSV e o único serviço que consome dois repositórios, que é o que justifica separar `InviteRepository` de `DietaryCategoryRepository` |
 
-Por que os outros três ficam de fora. UC002 e UC003 são cadastro atrás de sessão e não têm rota em artefato nenhum, então não há o que desenhar sem inventar. UC007 é leitura de projeção com a mesma guarda e o mesmo repositório do UC008, e não prova nada que o UC008 já não prove.
+Por que os outros três ficam de fora. UC002 e UC003 são cadastro atrás de sessão. As rotas e os serviços deles estão na seção 4.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), e nenhuma decisão é exercitada só por eles. UC007 é leitura de projeção com a mesma guarda e o mesmo repositório do UC008, e não prova nada que o UC008 já não prove.
 
 ### 4.1 Realizações de Casos de Uso
 
@@ -200,9 +201,9 @@ A divisão parte das três camadas do [ADR-0001](../Sprint-2/Decisões-Arquitetu
 | `front.controller` | Apresentação no sentido amplo, partida entre o tier Front e o navegador | Resolução de rota, chamada à API e a consulta periódica do [ADR-0007](../Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) |
 | `front.templates` | Nenhuma, é ativo estático | Os templates em HTML e CSS do [ADR-0009](../Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) |
 | `contract` | Nenhuma, é módulo compartilhado | Os tipos que as duas pontas usam, compilados para dentro dos dois builds |
-| `api.presentation.public` | Apresentação | `PublicRsvpController`, a única escrita sem autenticação do sistema |
+| `api.presentation.public` | Apresentação | `PublicRsvpController`, o único controller com escrita sem autenticação |
 | `api.presentation.authenticated` | Apresentação | `InviteController` e `DietaryController` |
-| `api.presentation.auth` | Apresentação | `AuthController`, ver a ressalva abaixo |
+| `api.presentation.auth` | Apresentação | `AuthController`, ver a nota abaixo |
 | `api.presentation.common` | Apresentação | `SessionGuard`, `RateLimitGuard` e `HttpExceptionFilter` |
 | `api.domain` | Domínio | Os seis serviços, de `RsvpService` a `TemplateCatalog` |
 | `api.data` | Dados | `InviteRepository`, `DietaryCategoryRepository` e `HostRepository` |
@@ -220,11 +221,11 @@ Se `Invite`, `Guest` e as outras morarem dentro do pacote de Domínio, o resulta
 
 Isso não contraria o ADR-0001. A regra de lá é que Domínio e Dados não dependem da Apresentação, e ela continua valendo. `model` não é uma quarta camada, é onde vivem os classificadores que duas camadas trocam entre si.
 
-### Uma ressalva sobre `auth`
+### Por que existe o pacote `auth`
 
 O pacote existe porque `AuthController` precisa morar em algum lugar, e **ele não cabe em nenhum dos dois pacotes que o guia define**. Não é do público, porque aquele pacote atende só as rotas que o convidado alcança. Não é do autenticado, porque a rota de entrada é anterior à sessão.
 
-A pendência 2 da seção 10.2 do [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) registra essa lacuna e diz que falta decidir se entra um terceiro pacote. **Este diagrama adota o terceiro pacote de forma provisória**, porque um diagrama precisa colocar a classe em algum lugar. A decisão continua com o time, e se ela for outra, a figura muda.
+A pendência 2 da seção 10.2 do [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) registrava que faltava decidir se entrava um terceiro pacote. **O time confirmou o terceiro pacote** junto com as rotas do UC001, na linha 24 da seção 11.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). A regra da seção 5.3 do Guia fecha o pacote nos três serviços do UC001, do mesmo jeito que fecha o pacote público nos quatro serviços dele.
 
 ### Formato da descrição de classe
 
@@ -276,40 +277,40 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 
 | Classe | Descrição | Operações |
 |---|---|---|
-| `PublicRsvpController` | Expõe a superfície pública do convite. É a única escrita sem sessão do sistema | `GET /public/invites/{publicToken}`, `POST /public/invites/{publicToken}/rsvp`, `parseRequest(dto)` |
+| `PublicRsvpController` | Expõe a superfície pública do convite e do link pessoal. É o único controller com escrita sem sessão | `GET /public/invites/{publicToken}`, `POST /public/invites/{publicToken}/rsvp`, `GET /public/responses/{personalToken}`, `PUT /public/responses/{personalToken}`, `parseRequest(dto)` |
 
 #### `api.presentation.authenticated`
 
 | Classe | Descrição | Operações |
 |---|---|---|
-| `InviteController` | Expõe o recurso convite ao anfitrião. Publicação, despublicação e lista de presença | `POST /invites/{inviteId}/publish`, `POST /invites/{inviteId}/unpublish`, `GET /invites/{inviteId}/attendance` |
+| `InviteController` | Expõe o recurso convite ao anfitrião. Lista, criação, correção do rascunho, personalização, publicação, despublicação e lista de presença | `GET /invites`, `POST /invites`, `GET /invites/{inviteId}`, `PUT /invites/{inviteId}`, `PUT /invites/{inviteId}/customization`, `POST /invites/{inviteId}/publish`, `POST /invites/{inviteId}/unpublish`, `GET /invites/{inviteId}/attendance` |
 | `DietaryController` | Expõe a consolidação alimentar ao anfitrião, incluindo a exportação | `GET /invites/{inviteId}/dietary-summary`, `GET /invites/{inviteId}/dietary-notes.csv`, `renderCsv(rows)`, `neutralizeFormulaPrefix(field)` |
 
 #### `api.presentation.auth`
 
 | Classe | Descrição | Operações |
 |---|---|---|
-| `AuthController` | Expõe a entrada e o cadastro do anfitrião, fluxo básico e A1 do UC001 | `signIn(email, password)` e `signUp(name, email, password)`. A rota de cada uma ainda não está fechada |
+| `AuthController` | Expõe a entrada, o cadastro e a saída do anfitrião, fluxo básico e A1 do UC001. Recebe o anfitrião do Domínio e emite o cookie de sessão | `POST /auth/sign-up`, `POST /auth/sign-in`, `POST /auth/sign-out`, `GET /auth/session` |
 
 #### `api.presentation.common`
 
 | Classe | Descrição | Operações |
 |---|---|---|
 | `SessionGuard` | Autentica a sessão do anfitrião validando a assinatura do cookie do [ADR-0010](../Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) | `authenticateSession(session)`, que devolve `hostId` |
-| `RateLimitGuard` | Controla tráfego na fronteira pública, pela medida 2 do [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md) | `enforceReadLimit(publicToken)`, `enforceWriteLimit(publicToken, clientIp)` |
+| `RateLimitGuard` | Controla tráfego na fronteira pública, pela medida 2 do [ADR-0008](../Sprint-2/Decisões-Arquiteturais/0008-Confiança-na-fronteira-pública.md), e as tentativas de entrada e de cadastro, pela RN4 do UC001 | `enforceReadLimit(publicToken)`, `enforceWriteLimit(publicToken, clientIp)`, `enforceSignInLimit(email, clientIp)`, `enforceSignUpLimit(clientIp)` |
 | `HttpExceptionFilter` | Traduz erro do Domínio em protocolo, num ponto só, e monta o corpo único de erro | `toErrorResponse(error)` |
 
-A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura pública quem chama a API é o container do tier Front, então o endereço de origem visível é sempre o mesmo e contá-lo bloquearia a página para todos os convidados de uma vez.
+As duas primeiras valem também para o link pessoal, contando pelo token pessoal no lugar do token do convite. A leitura e a escrita têm assinaturas diferentes de propósito. Na leitura pública quem chama a API é o container do tier Front, então o endereço de origem visível é sempre o mesmo e contá-lo bloquearia a página para todos os convidados de uma vez.
 
 #### `api.domain`
 
 | Classe | Descrição | Operações |
 |---|---|---|
-| `RsvpService` | Atende o convite público. Devolve o convite publicado e registra a resposta, validando o limite de acompanhantes e derivando as vagas pedidas | `getPublishedInvite(publicToken)`, `registerRsvp(publicToken, rsvpCommand)` |
-| `InviteService` | Conduz a transição de estado do convite, gerando o token público quando ele ainda não existe | `publishInvite(inviteId, hostId)`, `unpublishInvite(inviteId, hostId)` |
+| `RsvpService` | Atende o convite público e o link pessoal. Devolve o convite publicado, registra a resposta e a regrava pelo token pessoal, validando o limite de acompanhantes e derivando as vagas pedidas | `getPublishedInvite(publicToken)`, `registerRsvp(publicToken, rsvpCommand)`, `getGuestResponse(personalToken)`, `updateRsvp(personalToken, rsvpCommand)` |
+| `InviteService` | Conduz o convite do anfitrião, da criação às duas transições de estado, e gera o token público quando ele ainda não existe | `listInvites(hostId)`, `createInvite(hostId, inviteCommand)`, `getInvite(inviteId, hostId)`, `updateInvite(inviteId, hostId, inviteCommand)`, `customizeInvite(inviteId, hostId, customizationCommand)`, `publishInvite(inviteId, hostId)`, `unpublishInvite(inviteId, hostId)` |
 | `AttendanceService` | Monta a lista de presença do painel e o total de pessoas da RN1 do UC007 | `listAttendance(inviteId, hostId)` |
 | `DietaryService` | Monta a contagem por categoria e as descrições do UC008, e devolve as linhas da exportação sem formatá-las | `consolidateDietaryNotes(inviteId, hostId)`, `exportDietaryNotes(inviteId, hostId)` |
-| `HostService` | Cadastro e autenticação do anfitrião | Sem assinatura fechada. A realização do UC001 nomeia `hashPassword`, `verifyPassword` e `issueSession` dentro de um objeto de controle, sem separar o que é deste serviço do que é do controller |
+| `HostService` | Cadastro e autenticação do anfitrião. Devolve o anfitrião, e quem emite a sessão é a Apresentação | `signUp(name, email, password)`, `signIn(email, password)`, `getHostProfile(hostId)` |
 | `TemplateCatalog` | Carrega o catálogo de templates e sustenta a RN2 do UC003 dentro do Domínio | `listTemplateCodes()`, `textFieldLimits(templateCode)` |
 
 #### `api.data`
@@ -433,7 +434,7 @@ A lista é fechada em cinco entradas, pela RN3 do UC006: `VEGETARIAN`, `VEGAN`, 
 
 ### 5.3 O que esta seção deixa em aberto
 
-Três assinaturas ficam sem fechar, e as três são do mesmo fluxo. `AuthController`, `HostService` e `HostRepository` têm operação nomeada mas não têm assinatura com tipo de parâmetro e de retorno, porque a realização do UC001 usa notação de análise, que reúne controller e serviço num objeto só. Elas fecham quando o UC001 ganhar rota especificada.
+As operações da camada de Dados que atendem os serviços novos da seção 4.2 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) não estão nomeadas aqui. São a gravação da conta em `HostRepository` e, em `InviteRepository`, a lista de convites do anfitrião, a criação, a correção do rascunho, a gravação da personalização e a leitura e a regravação da resposta pelo token pessoal. Elas fecham na implementação, junto com a seção 4.3 do Guia, seguindo as regras de nome da seção 4 dele.
 
 E `front.view` não tem classe nomeada, conforme registrado acima.
 
