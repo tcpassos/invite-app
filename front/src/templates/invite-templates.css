@@ -1,0 +1,139 @@
+/*
+ * Templates do convite (ADR-0009). São ativos estáticos: este arquivo não importa código e
+ * nenhum código decide nada aqui. Cada template é uma classe `invite-template--{code}`, com
+ * o code do catálogo em contract/src/templates.ts. Acrescentar um template muda os dois
+ * lugares no mesmo PR (Guia, 10.3).
+ *
+ * As duas cores que o anfitrião ajusta chegam em --invite-primary e --invite-accent. O fundo
+ * e a cor do texto são do template, para o convite continuar legível com qualquer escolha.
+ */
+
+.invite-template {
+  --invite-paper: oklch(0.993 0.006 90);
+  --invite-ink: oklch(0.243 0.019 63);
+  --invite-muted: oklch(0.52 0.02 63);
+  --invite-rule: oklch(0.243 0.019 63 / 12%);
+
+  position: relative;
+  border-radius: 28px;
+  padding: 1.5rem;
+  background: var(--invite-paper);
+  color: var(--invite-ink);
+  box-shadow:
+    0 1px 2px oklch(0.243 0.019 63 / 6%),
+    0 12px 32px -18px oklch(0.243 0.019 63 / 22%);
+  outline: 1px solid oklch(0 0 0 / 5%);
+}
+
+@media (min-width: 640px) {
+  .invite-template {
+    padding: 1.75rem;
+  }
+}
+
+.invite-template__seal {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  width: 2rem;
+  height: 2rem;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  background: var(--invite-primary);
+  box-shadow: 0 0 0 4px var(--invite-paper);
+}
+
+.invite-template__greeting {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-family: var(--font-handwritten);
+  font-size: 1.875rem;
+  color: var(--invite-primary);
+}
+
+.invite-template__title {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  line-height: 1.15;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 640px) {
+  .invite-template__title {
+    font-size: 3rem;
+  }
+}
+
+.invite-template__facts {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  border-block: 1px solid var(--invite-rule);
+  padding-block: 1.25rem;
+  font-size: 0.875rem;
+}
+
+.invite-template__fact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.invite-template__fact dt {
+  color: var(--invite-muted);
+}
+
+.invite-template__fact dd {
+  margin-left: auto;
+  text-align: right;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.invite-template__icon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: color-mix(in oklab, var(--invite-accent) 30%, transparent);
+}
+
+/* Clássico: papel liso e tipografia serifada. */
+.invite-template--classic {
+  --invite-paper: oklch(0.993 0.006 90);
+}
+
+/* Jardim: verdes suaves, festa ao ar livre. */
+.invite-template--garden {
+  --invite-paper: oklch(0.975 0.02 135);
+  --invite-rule: oklch(0.45 0.05 135 / 18%);
+  background-image:
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in oklab, var(--invite-accent) 22%, transparent) 0 6rem,
+      transparent 6rem
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      color-mix(in oklab, var(--invite-primary) 18%, transparent) 0 7rem,
+      transparent 7rem
+    );
+}
+
+/* Noite: fundo escuro e tons quentes para festas à noite. */
+.invite-template--night {
+  --invite-paper: oklch(0.25 0.03 260);
+  --invite-ink: oklch(0.96 0.015 87);
+  --invite-muted: oklch(0.78 0.02 87);
+  --invite-rule: oklch(0.96 0.015 87 / 16%);
+  background-image: radial-gradient(
+    circle at 50% -20%,
+    color-mix(in oklab, var(--invite-primary) 35%, transparent),
+    transparent 60%
+  );
+}

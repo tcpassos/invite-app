@@ -129,7 +129,7 @@ Um convidado com mais de uma categoria conta em cada uma na consolidação do UC
 
 A modelagem encontrou pontos que dependem de decisão do time. Cada item traz o estado de hoje:
 
-1. **Textos da personalização.** Se o UC003 prevê campos além do nome e do local do evento, é preciso definir seus nomes, passos e colunas. Até lá, `InviteCustomization` fica sem atributos de texto.
+1. **Textos da personalização.** Fechada para o MVP nos [Ajustes de Arquitetura da Sprint 5](../Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md). O UC003 não prevê texto além do nome e do local do evento, a saudação do convite é texto fixo de cada template, e `InviteCustomization` continua sem atributos de texto.
 2. **Validade do `personalToken`.** O [ADR-0011](Decisões-Arquiteturais/0011-Identificador-pessoal-do-convidado.md) define a geração com 128 bits em base32 Crockford, sem revogação nesta fase, e mantém o link pessoal válido quando o convite é despublicado. Ainda falta definir até quando a RN3 do UC005 permite alterações, o que depende do item 4.
 3. **Lista de categorias alimentares.** Fechada pela RN3 do UC006. São cinco entradas com carga inicial, e só `ALLERGY` exige descrição.
 4. **Fuso horário e fim do evento.** Fechada pelo [ADR-0013](Decisões-Arquiteturais/0013-Tempo-do-evento.md). `Invite` passa a ter um instante só, o fuso do projeto é `America/Sao_Paulo` e a RN3 do UC005 vale até o fim do dia do evento.

@@ -32,7 +32,8 @@ export interface AllergyDescription {
 
 /**
  * Consolidação do UC008. Só entram categorias com contagem maior que zero, então
- * `counts` vazio é o A1, nenhuma restrição registrada, e a tela não oferece o CSV.
+ * `counts` vazio é o A1, nenhuma restrição registrada. O CSV continua oferecido enquanto
+ * houver resposta sim ou talvez, porque ele é a lista que o buffet usa (UC008 A1 e A2, Guia 4.1).
  */
 export interface DietarySummary {
   counts: CategoryCount[];

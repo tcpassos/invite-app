@@ -78,6 +78,26 @@ export class ApiClient {
   }
 
   async request<T>(method: HttpMethod, path: string, options: RequestOptions = {}): Promise<T> {
+    return this.send(method, path, options, async (response) => {
+      if (response.status === 204) return undefined as T;
+      return (await response.json().catch(() => undefined)) as T;
+    });
+  }
+
+  /**
+   * Para as rotas que devolvem arquivo, como o CSV do UC008. O erro chega no mesmo
+   * formato de `request`, porque a API responde JSON quando recusa.
+   */
+  async download(path: string, options: Omit<RequestOptions, 'body'> = {}): Promise<Blob> {
+    return this.send('GET', path, options, (response) => response.blob());
+  }
+
+  private async send<T>(
+    method: HttpMethod,
+    path: string,
+    options: RequestOptions,
+    parse: (response: Response) => Promise<T>,
+  ): Promise<T> {
     const attempts = options.retry === 'once' ? 2 : 1;
     let lastFailure: ApiUnavailableError | undefined;
     for (let attempt = 0; attempt < attempts; attempt++) {
@@ -95,7 +115,12 @@ export class ApiClient {
         lastFailure = new ApiUnavailableError(requestId, { cause });
         continue;
       }
-      return this.read<T>(response, requestId);
+      if (response.ok) {
+        return parse(response).catch((cause: unknown) => {
+          throw new ApiUnavailableError(requestId, { cause });
+        });
+      }
+      throw await this.failure(response, requestId);
     }
     throw lastFailure;
   }
@@ -107,11 +132,9 @@ export class ApiClient {
     return headers;
   }
 
-  private async read<T>(response: Response, requestId: string | undefined): Promise<T> {
-    if (response.status === 204) return undefined as T;
+  private async failure(response: Response, requestId: string | undefined): Promise<Error> {
     const body: unknown = await response.json().catch(() => undefined);
-    if (response.ok) return body as T;
-    if (isApiError(body)) throw new ApiRequestError(response.status, body);
-    throw new ApiUnavailableError(requestId);
+    if (isApiError(body)) return new ApiRequestError(response.status, body);
+    return new ApiUnavailableError(requestId);
   }
 }

@@ -66,11 +66,11 @@ Use `http://127.0.0.1:3000`, com o número, e não `localhost`. É o mesmo ender
 
 ### O que dá para testar hoje
 
-O app está na fase de fundação. A estrutura dos três serviços está pronta e as telas do convite e do painel ainda vão ser construídas. Por enquanto, dá para conferir que cada peça está de pé:
+As telas do convite e do painel já estão no front, mas as rotas da API que elas chamam ainda estão sendo construídas. Com o compose, dá para conferir que cada peça está de pé. Para navegar pelas telas antes da API ficar pronta, use o mock descrito no [README do front](front/README.md#o-mock-da-api).
 
 | O que conferir | Como | O que deve aparecer |
 |---|---|---|
-| O front | Abrir `http://127.0.0.1:3000` | A página com "invite-app" e "O front está de pé." |
+| O front | Abrir `http://127.0.0.1:3000` | A página inicial, com o botão "Criar meu convite" |
 | A API | Abrir `http://127.0.0.1:3001/qualquer` | Um JSON com `"code":"NOT_FOUND"` e um `traceId` |
 | O banco | Rodar o comando logo abaixo da tabela | As cinco categorias alimentares, de `ALLERGY` a `VEGETARIAN` |
 | O log da API | `docker compose logs api` | Uma linha em JSON por requisição, com o mesmo `requestId` do `traceId` acima |

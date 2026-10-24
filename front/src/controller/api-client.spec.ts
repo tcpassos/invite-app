@@ -88,3 +88,22 @@ describe('ApiClient', () => {
     expect(quinhentos).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('ApiClient.download', () => {
+  it('devolve o arquivo e trata a recusa como no request', async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response('nome;situacao\n', { status: 200, headers: { 'content-type': 'text/csv' } }),
+      )
+      .mockResolvedValueOnce(json(404, apiError));
+    const arquivo = await client(fetch).download('/invites/1/dietary-notes.csv');
+    expect(await arquivo.text()).toBe('nome;situacao\n');
+
+    const erro = await client(fetch)
+      .download('/invites/1/dietary-notes.csv')
+      .catch((e: unknown) => e);
+    expect(erro).toBeInstanceOf(ApiRequestError);
+    expect((erro as ApiRequestError).code).toBe('NOT_FOUND');
+  });
+});
