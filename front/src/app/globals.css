@@ -1,0 +1,125 @@
+@import 'tailwindcss';
+
+/*
+ * Identidade visual do protótipo do front: papel artesanal, tinta quente e acentos coral,
+ * marigold e sage. Vale para o painel e para a moldura do convite. As cores do convite em
+ * si vêm do template escolhido pelo anfitrião, em src/templates (ADR-0009).
+ */
+
+@theme inline {
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 12px);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+  --font-hand: var(--font-handwritten);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-paper: var(--paper);
+  --color-sage: var(--sage);
+}
+
+:root {
+  --radius: 1rem;
+
+  --cream: oklch(0.966 0.023 87.5);
+  --paper: oklch(0.993 0.006 90);
+  --ink: oklch(0.243 0.019 63);
+  --coral: oklch(0.643 0.166 33.5);
+  --marigold: oklch(0.775 0.145 68);
+  --sage: oklch(0.639 0.062 135);
+
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --primary: var(--coral);
+  --primary-foreground: oklch(0.993 0.006 90);
+  --secondary: oklch(0.94 0.024 87.5);
+  --muted-foreground: oklch(0.52 0.02 63);
+  --accent: var(--marigold);
+  --destructive: oklch(0.577 0.21 27.3);
+  --border: oklch(0.243 0.019 63 / 12%);
+  --input: oklch(0.243 0.019 63 / 15%);
+  --ring: var(--coral);
+
+  --shadow-paper:
+    0 1px 2px oklch(0.243 0.019 63 / 6%), 0 12px 32px -18px oklch(0.243 0.019 63 / 22%);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+}
+
+@utility paper-card {
+  background-color: var(--paper);
+  border-radius: 28px;
+  box-shadow: var(--shadow-paper);
+  outline: 1px solid oklch(0 0 0 / 5%);
+}
+
+@utility font-hand {
+  font-family: var(--font-handwritten);
+}
+
+@utility field {
+  width: 100%;
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid var(--input);
+  background-color: oklch(0.966 0.023 87.5 / 40%);
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: var(--destructive);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility fade-up {
+  animation: fade-up 0.6s ease both;
+}
