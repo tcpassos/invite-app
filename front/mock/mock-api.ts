@@ -36,6 +36,8 @@ import {
 } from '@invite-app/contract';
 
 const PORT = Number(process.env.MOCK_PORT ?? 3001);
+// No container o mock precisa ouvir em todas as interfaces, para o compose alcançá-lo.
+const HOST = process.env.MOCK_HOST ?? '127.0.0.1';
 const FRONT_ORIGIN = process.env.FRONT_ORIGIN ?? 'http://127.0.0.1:3000';
 const SESSION_COOKIE = 'mock_session';
 // ADR-0013: o projeto inteiro em America/Sao_Paulo, que hoje não tem horário de verão.
@@ -674,8 +676,8 @@ function seed() {
 }
 
 const demo = seed();
-server.listen(PORT, '127.0.0.1', () => {
-  console.log(`Mock da API em http://127.0.0.1:${PORT}`);
+server.listen(PORT, HOST, () => {
+  console.log(`Mock da API em http://${HOST}:${PORT}`);
   console.log(`Painel: entre com demo@convite.dev e senha1234`);
   console.log(`Convite publicado: ${FRONT_ORIGIN}/i/${demo.publicToken}`);
 });

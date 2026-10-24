@@ -44,7 +44,13 @@ O `dev` sobe na porta 3000. Abra pelo endereço `http://127.0.0.1:3000`, e não 
 
 Enquanto as rotas da API não ficam prontas, `mock/mock-api.ts` responde as rotas da tabela 4.1 do Guia com os tipos de `contract/` e com o formato de erro da seção 9.3, inclusive as recusas, para as telas de erro também existirem antes da integração. Os dados ficam na memória e somem quando ele para. Ele não é referência das regras: quem decide de verdade é a API.
 
-Em dois terminais, na raiz do repositório:
+Com Docker, na raiz do repositório, o mock entra no compose no lugar do serviço `api`, com o mesmo nome e a mesma porta, e o front não muda nada:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d --build
+```
+
+Sem Docker, em dois terminais, na raiz do repositório:
 
 ```bash
 npm run mock --workspace front
@@ -54,7 +60,7 @@ npm run mock --workspace front
 API_URL_INTERNAL=http://127.0.0.1:3001 npm run dev --workspace front
 ```
 
-O mock usa a porta 3001, então o `api` do compose não pode estar de pé ao mesmo tempo. Ele já sobe com o anfitrião `demo@convite.dev`, senha `senha1234`, e com um convite publicado em `http://127.0.0.1:3000/i/DEMO0000000000000000000000`.
+Fora do compose, o mock usa a porta 3001, então o `api` do compose não pode estar de pé ao mesmo tempo. Ele já sobe com o anfitrião `demo@convite.dev`, senha `senha1234`, e com um convite publicado em `http://127.0.0.1:3000/i/DEMO0000000000000000000000`.
 
 ## Como chamar a API
 

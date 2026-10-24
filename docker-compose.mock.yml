@@ -1,0 +1,17 @@
+# Troca a API pelo mock dela, para ver as telas antes das rotas das partes 3 e 4 ficarem
+# prontas. Vai por cima do docker-compose.yml:
+#   docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d --build
+#
+# O mock assume o nome de serviço e a porta da API, então o front não muda nada: o
+# servidor dele continua chamando api:3000 e o navegador continua chamando a porta 3001.
+# Os dados ficam na memória e somem quando o container para.
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: front/mock/Dockerfile
+    # Nome próprio, para não sobrescrever a imagem da API de verdade.
+    image: invite-app-mock:${IMAGE_TAG:-dev}
+    environment:
+      FRONT_ORIGIN: ${FRONT_ORIGIN:-http://127.0.0.1:3000}

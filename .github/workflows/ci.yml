@@ -63,3 +63,5 @@ jobs:
       # O compose lê o .env para montar o argumento de build do front.
       - run: cp .env.example .env
       - run: docker compose build api front
+      # A imagem do mock, que entra no lugar da API para ver as telas (README do front).
+      - run: docker compose -f docker-compose.yml -f docker-compose.mock.yml build api
