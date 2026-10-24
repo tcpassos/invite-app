@@ -19,13 +19,26 @@ export interface TemplateDefinition {
 /** Template usado enquanto o anfitrião não personalizou o convite (UC003 passo 1). */
 export const DEFAULT_TEMPLATE_CODE = 'classic';
 
-// Template inicial, para a API e o front terem com o que trabalhar. Quem fizer os
-// templates de verdade ajusta os papéis, as cores e os limites.
+// Os três templates vieram do protótipo do front. Cada um tem dois papéis de cor: `primary`,
+// a cor da saudação e do selo, e `accent`, o fundo dos ícones. O fundo e o texto ficam no
+// CSS do template, para o convite continuar legível com qualquer escolha do anfitrião.
 export const TEMPLATES: readonly TemplateDefinition[] = [
   {
     code: 'classic',
     displayName: 'Clássico',
-    defaultColors: { primary: '#7a2e3a', background: '#fdf8f3', text: '#2b2b2b' },
-    textLimits: { eventName: 60, location: 120 },
+    defaultColors: { primary: '#e8593c', accent: '#f4a231' },
+    textLimits: { eventName: 80, location: 120 },
+  },
+  {
+    code: 'garden',
+    displayName: 'Jardim',
+    defaultColors: { primary: '#7c9b6b', accent: '#a9c48f' },
+    textLimits: { eventName: 80, location: 120 },
+  },
+  {
+    code: 'night',
+    displayName: 'Noite',
+    defaultColors: { primary: '#5b93b8', accent: '#e8593c' },
+    textLimits: { eventName: 80, location: 120 },
   },
 ];
