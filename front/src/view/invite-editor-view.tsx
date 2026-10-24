@@ -3,7 +3,6 @@
 // prévia ao vivo (UC003), publicação e link (UC004) e as respostas (UC007 e UC008).
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Check, Copy, Loader2, X } from 'lucide-react';
 import {
   ErrorCode,
   InviteStatus,
@@ -21,6 +20,7 @@ import {
   updateInvite,
 } from '../controller/host-panel';
 import { FieldError } from './brand';
+import { BackIcon, CheckIcon, CloseIcon, CopyIcon, Spinner } from './icons';
 import { formatDateInput, formatTimeInput, toDateAndTime } from './format';
 import { useSession } from './host-shell';
 import { InviteCard, templateFor } from './invite-card';
@@ -107,9 +107,7 @@ export function InviteEditorView({ inviteId }: { inviteId: string }) {
   if (!invite || !draft) {
     if (load.kind === 'notFound') return <InviteNotFound />;
     return (
-      <p className="grid min-h-[50vh] place-items-center text-sm text-muted-foreground">
-        {load.kind === 'failed' ? UNAVAILABLE_MESSAGE : 'Carregando…'}
-      </p>
+      <p className="loading">{load.kind === 'failed' ? UNAVAILABLE_MESSAGE : 'Carregando…'}</p>
     );
   }
 
@@ -158,111 +156,104 @@ export function InviteEditorView({ inviteId }: { inviteId: string }) {
 
   return (
     <div>
-      <div className="border-b border-border">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3">
-          <Link href="/invites" className="flex items-center gap-2 text-sm hover:underline">
-            <ArrowLeft className="size-4" /> Meus convites
+      <div className="topbar topbar--sub">
+        <div className="topbar__inner">
+          <Link href="/invites" className="back-link">
+            <BackIcon /> Meus convites
           </Link>
           <StatusBadge status={invite.status} />
         </div>
       </div>
 
-      <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-[minmax(0,1fr)_380px]">
-        <div className="min-w-0 space-y-6">
-          <section className="paper-card p-6">
-            <h2 className="font-display text-2xl">Dados da festa</h2>
-            {!isDraft && (
-              <p className="mt-1 text-sm text-muted-foreground">
-                Depois de publicado, só o nome e o local mudam.
-              </p>
-            )}
-            <div className="mt-4">
-              <InviteDataFields
-                values={draft.data}
-                onChange={setData}
-                errors={errors}
-                textLimits={template.textLimits}
-                scheduleLocked={!isDraft}
-              />
+      <main className="page-wide editor">
+        <div className="editor__main">
+          <section className="card form">
+            <div>
+              <h2 className="title-md">Dados da festa</h2>
+              {!isDraft && (
+                <p className="small muted">Depois de publicado, só o nome e o local mudam.</p>
+              )}
             </div>
+            <InviteDataFields
+              values={draft.data}
+              onChange={setData}
+              errors={errors}
+              textLimits={template.textLimits}
+              scheduleLocked={!isDraft}
+            />
 
-            <h3 className="mt-6 font-display text-xl">Modelo e cores</h3>
-            <div className="mt-3 grid gap-3 sm:grid-cols-3">
-              {TEMPLATES.map((option) => (
-                <button
-                  key={option.code}
-                  type="button"
-                  aria-pressed={draft.templateCode === option.code}
-                  onClick={() =>
-                    setDraft({
-                      ...draft,
-                      templateCode: option.code,
-                      colors: { ...option.defaultColors },
-                    })
-                  }
-                  className={`rounded-2xl border p-3 text-left transition ${
-                    draft.templateCode === option.code
-                      ? 'border-primary ring-2 ring-primary'
-                      : 'border-input'
-                  }`}
-                >
-                  <span className="flex gap-1.5">
-                    {Object.entries(option.defaultColors).map(([role, color]) => (
-                      <span
-                        key={role}
-                        className="size-5 rounded-full"
-                        style={{ backgroundColor: color }}
+            <div>
+              <h3 className="title-sm">Modelo e cores</h3>
+              <div className="template-options">
+                {TEMPLATES.map((option) => (
+                  <button
+                    key={option.code}
+                    type="button"
+                    aria-pressed={draft.templateCode === option.code}
+                    onClick={() =>
+                      setDraft({
+                        ...draft,
+                        templateCode: option.code,
+                        colors: { ...option.defaultColors },
+                      })
+                    }
+                    className="template-option"
+                  >
+                    <span className="swatches">
+                      {Object.entries(option.defaultColors).map(([role, color]) => (
+                        <span key={role} className="swatch" style={{ backgroundColor: color }} />
+                      ))}
+                    </span>
+                    {option.displayName}
+                  </button>
+                ))}
+              </div>
+              <FieldError id="template-error" message={ruleMessage(errors.templateCode)} />
+              <div className="color-fields">
+                {Object.keys(template.defaultColors).map((role) => (
+                  <div key={role}>
+                    <label className="color-field">
+                      <input
+                        type="color"
+                        value={draft.colors[role] ?? template.defaultColors[role]}
+                        onChange={(event) =>
+                          setDraft({
+                            ...draft,
+                            colors: { ...draft.colors, [role]: event.target.value },
+                          })
+                        }
                       />
-                    ))}
-                  </span>
-                  <span className="mt-2 block font-semibold">{option.displayName}</span>
-                </button>
-              ))}
-            </div>
-            <FieldError id="template-error" message={ruleMessage(errors.templateCode)} />
-            <div className="mt-4 flex flex-wrap gap-4">
-              {Object.keys(template.defaultColors).map((role) => (
-                <div key={role}>
-                  <label className="flex items-center gap-2 text-sm">
-                    <input
-                      type="color"
-                      value={draft.colors[role] ?? template.defaultColors[role]}
-                      onChange={(event) =>
-                        setDraft({
-                          ...draft,
-                          colors: { ...draft.colors, [role]: event.target.value },
-                        })
-                      }
-                      className="size-9 cursor-pointer rounded-lg border border-input bg-transparent"
+                      {COLOR_ROLE_LABEL[role] ?? role}
+                    </label>
+                    <FieldError
+                      id={`color-${role}-error`}
+                      message={ruleMessage(errors[`colorOverrides.${role}`])}
                     />
-                    {COLOR_ROLE_LABEL[role] ?? role}
-                  </label>
-                  <FieldError
-                    id={`color-${role}-error`}
-                    message={ruleMessage(errors[`colorOverrides.${role}`])}
-                  />
-                </div>
-              ))}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {saveFailure !== undefined && (
-              <p role="alert" className="mt-4 text-sm font-medium text-destructive">
+              <p role="alert" className="error-text">
                 {panelFailureText(errorCode(saveFailure))}
               </p>
             )}
             {savedOnce && !dirty && (
-              <p role="status" className="mt-4 text-sm text-muted-foreground">
+              <p role="status" className="small muted">
                 Alterações salvas.
               </p>
             )}
-            <button
-              type="button"
-              onClick={() => void save()}
-              disabled={saving || !dirty}
-              className="mt-5 flex items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 text-sm font-semibold text-background disabled:opacity-60"
-            >
-              {saving && <Loader2 className="size-4 animate-spin" />} Salvar alterações
-            </button>
+            <div>
+              <button
+                type="button"
+                onClick={() => void save()}
+                disabled={saving || !dirty}
+                className="button button--dark"
+              >
+                {saving && <Spinner />} Salvar alterações
+              </button>
+            </div>
           </section>
 
           <PublishSection invite={invite} dirty={dirty} onChange={reload} />
@@ -272,8 +263,8 @@ export function InviteEditorView({ inviteId }: { inviteId: string }) {
           )}
         </div>
 
-        <aside className="lg:sticky lg:top-8 lg:h-fit">
-          <p className="mb-3 text-sm text-muted-foreground">Prévia ao vivo</p>
+        <aside className="editor__aside">
+          <p className="small muted card-title">Prévia ao vivo</p>
           <InviteCard
             invite={{
               eventName: draft.data.eventName,
@@ -325,33 +316,23 @@ function PublishSection({
   }
 
   return (
-    <section className="paper-card p-6">
-      <div className="flex flex-wrap items-center gap-3">
-        <h2 className="font-display text-2xl">Link do convite</h2>
+    <section className="card">
+      <div className="section-head">
+        <h2 className="title-md">Link do convite</h2>
         <button
           type="button"
           disabled={busy || (!published && dirty)}
           onClick={() =>
             void run(() => (published ? unpublishInvite(invite.id) : publishInvite(invite.id)))
           }
-          className={`ml-auto flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold disabled:opacity-60 ${
-            published
-              ? 'border border-input hover:bg-secondary'
-              : 'bg-primary text-primary-foreground'
-          }`}
+          className={published ? 'button button--outline' : 'button button--primary'}
         >
-          {busy ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : published ? (
-            <X className="size-4" />
-          ) : (
-            <Check className="size-4" />
-          )}
+          {busy ? <Spinner /> : published ? <CloseIcon /> : <CheckIcon />}
           {published ? 'Despublicar' : 'Publicar'}
         </button>
       </div>
 
-      <p className="mt-1 text-sm text-muted-foreground">
+      <p className="small muted">
         {published
           ? 'Envie pelo WhatsApp. Abre sem login e sem instalar nada.'
           : invite.status === InviteStatus.Unpublished
@@ -361,7 +342,7 @@ function PublishSection({
       </p>
 
       {failure !== undefined && (
-        <p role="alert" className="mt-3 text-sm font-medium text-destructive">
+        <p role="alert" className="error-text">
           {errorCode(failure) === ErrorCode.InviteNotPublishable
             ? `Falta preencher: ${missing.join(', ')}.`
             : panelFailureText(errorCode(failure))}
@@ -369,25 +350,20 @@ function PublishSection({
       )}
 
       {published && url && (
-        <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-input p-2">
-          <input
-            readOnly
-            value={url}
-            aria-label="Link do convite"
-            className="min-w-0 flex-1 bg-transparent px-2 text-xs outline-none"
-          />
+        <div className="copy-box">
+          <input readOnly value={url} aria-label="Link do convite" />
           <button
             type="button"
             onClick={() => void navigator.clipboard.writeText(url).then(() => setCopied(true))}
-            className="flex items-center gap-1 rounded-lg bg-foreground px-3 py-2 text-xs font-semibold text-background"
+            className="button button--dark button--small"
           >
-            <Copy className="size-3.5" /> {copied ? 'Copiado' : 'Copiar'}
+            <CopyIcon /> {copied ? 'Copiado' : 'Copiar'}
           </button>
           <a
             href={`https://wa.me/?text=${encodeURIComponent(`${invite.eventName}: confirme sua presença em ${url}`)}`}
             target="_blank"
             rel="noreferrer"
-            className="rounded-lg bg-sage/30 px-3 py-2 text-xs font-semibold"
+            className="button button--soft button--small"
           >
             Enviar no WhatsApp
           </a>
@@ -400,14 +376,14 @@ function PublishSection({
 function InviteNotFound() {
   // Guia, 9.5: o mesmo texto para convite inexistente e de outra conta, com a volta à lista.
   return (
-    <div className="mx-auto max-w-md px-4 py-16 text-center">
-      <h1 className="font-display text-2xl">Convite não encontrado</h1>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Confira se você entrou com a conta certa.
+    <main className="page-narrow center">
+      <h1 className="title-md">Convite não encontrado</h1>
+      <p className="small muted">Confira se você entrou com a conta certa.</p>
+      <p>
+        <Link href="/invites" className="link">
+          Voltar para meus convites
+        </Link>
       </p>
-      <Link href="/invites" className="mt-4 inline-block text-sm underline underline-offset-4">
-        Voltar para meus convites
-      </Link>
-    </div>
+    </main>
   );
 }

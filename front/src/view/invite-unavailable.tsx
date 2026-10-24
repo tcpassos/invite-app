@@ -6,7 +6,7 @@ import { Notice } from './brand';
 export function InviteUnavailable() {
   return (
     <Notice title="Convite indisponível no momento">
-      Não conseguimos carregar o convite agora. Tente de novo em alguns minutos.
+      <p>Não conseguimos carregar o convite agora. Tente de novo em alguns minutos.</p>
     </Notice>
   );
 }
@@ -15,7 +15,7 @@ export function InviteUnavailable() {
 export function InviteBusy() {
   return (
     <Notice title="Muita gente abrindo o convite">
-      Espere alguns instantes e recarregue a página.
+      <p>Espere alguns instantes e recarregue a página.</p>
     </Notice>
   );
 }

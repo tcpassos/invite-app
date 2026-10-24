@@ -2,9 +2,9 @@
 // view na página pública, no link pessoal e na prévia do editor. Todo texto entra como
 // texto, nunca como HTML (ADR-0008, medida 4).
 import type { CSSProperties } from 'react';
-import { Calendar, Clock, MapPin } from 'lucide-react';
 import { DEFAULT_TEMPLATE_CODE, TEMPLATES, type HexColor } from '@invite-app/contract';
 import { formatEventDate, formatEventTime } from './format';
+import { CalendarIcon, ClockIcon, PinIcon } from './icons';
 
 export interface InviteCardContent {
   eventName: string;
@@ -56,21 +56,21 @@ export function InviteCard({ invite }: { invite: InviteCardContent }) {
       <dl className="invite-template__facts">
         <div className="invite-template__fact">
           <span className="invite-template__icon" aria-hidden>
-            <Calendar className="size-4" />
+            <CalendarIcon />
           </span>
           <dt>Data</dt>
           <dd>{invite.dateLabel || 'A definir'}</dd>
         </div>
         <div className="invite-template__fact">
           <span className="invite-template__icon" aria-hidden>
-            <Clock className="size-4" />
+            <ClockIcon />
           </span>
           <dt>Hora</dt>
           <dd>{invite.timeLabel || 'A definir'}</dd>
         </div>
         <div className="invite-template__fact">
           <span className="invite-template__icon" aria-hidden>
-            <MapPin className="size-4" />
+            <PinIcon />
           </span>
           <dt>Local</dt>
           <dd>{invite.location || 'A definir'}</dd>

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function InviteNotFoundPage() {
   return (
     <Notice title="Convite não encontrado">
-      O link não abre um convite. Confira o endereço com quem te convidou.
+      <p>O link não abre um convite. Confira o endereço com quem te convidou.</p>
     </Notice>
   );
 }

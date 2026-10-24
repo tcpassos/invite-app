@@ -20,18 +20,16 @@ export function GuestResponsePageView({
   const [saved, setSaved] = useState(0);
 
   return (
-    <main className="mx-auto max-w-lg space-y-6 px-4 py-10">
+    <main className="page-narrow">
       <InviteCard invite={cardContent(page.invite)} />
 
-      <section className="paper-card p-6 sm:p-7">
-        <h2 className="mb-1 font-display text-2xl">Sua resposta</h2>
+      <section className="card form">
+        <h2 className="title-md">Sua resposta</h2>
         {page.editable ? (
           <>
-            <p className="mb-4 text-sm text-muted-foreground">
-              Você pode mudar até o fim do dia do evento.
-            </p>
+            <p className="small muted">Você pode mudar até o fim do dia do evento.</p>
             {saved > 0 && (
-              <p role="status" className="mb-4 rounded-xl bg-sage/15 px-3 py-2 text-sm">
+              <p role="status" className="alert alert--success">
                 Resposta atualizada.
               </p>
             )}
@@ -49,12 +47,12 @@ export function GuestResponsePageView({
           </>
         ) : (
           <>
-            <p className="mt-2 text-sm">
+            <p className="small">
               {page.response.name}: <strong>{RSVP_STATUS_LABEL[page.response.status]}</strong>
               {page.response.companionCount > 0 &&
                 `, com ${page.response.companionCount} acompanhante(s)`}
             </p>
-            <p className="mt-4 rounded-xl bg-secondary px-4 py-3 text-center text-sm text-muted-foreground">
+            <p className="alert alert--neutral">
               O dia do evento já passou, então a resposta não pode mais ser alterada.
             </p>
           </>

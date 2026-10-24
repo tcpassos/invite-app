@@ -3,7 +3,6 @@
 // link pessoal. Ele esconde e mostra campo e não decide validade: os atributos dos campos
 // são conforto, e quem recusa é a API (Guia, 7.3). As categorias vêm da API (Guia, 7.2).
 import { useState, type FormEvent } from 'react';
-import { Check, Loader2 } from 'lucide-react';
 import {
   ErrorCode,
   RsvpStatus,
@@ -17,6 +16,7 @@ import {
 import { errorCode, fieldErrors, isUncertainFailure } from '../controller/api-errors';
 import { FieldError } from './brand';
 import { RSVP_STATUS_LABEL } from './format';
+import { CheckIcon, Spinner } from './icons';
 import { RATE_LIMITED_MESSAGE, ruleMessage } from './messages';
 
 export type RsvpFormMode = 'create' | 'update';
@@ -80,19 +80,12 @@ export function RsvpForm({ invite, mode, initial, onSubmit }: RsvpFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="form">
       <fieldset>
-        <legend className="mb-2 text-sm font-medium">Você vai?</legend>
-        <div className="grid grid-cols-3 gap-2">
+        <legend className="label">Você vai?</legend>
+        <div className="choices">
           {STATUS_OPTIONS.map((value) => (
-            <label
-              key={value}
-              className={`cursor-pointer rounded-xl border py-2.5 text-center text-sm font-semibold transition has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring ${
-                status === value
-                  ? 'border-foreground bg-foreground text-background'
-                  : 'border-input text-muted-foreground hover:bg-secondary'
-              }`}
-            >
+            <label key={value} className={status === value ? 'choice choice--selected' : 'choice'}>
               <input
                 type="radio"
                 name="status"
@@ -100,7 +93,7 @@ export function RsvpForm({ invite, mode, initial, onSubmit }: RsvpFormProps) {
                 checked={status === value}
                 onChange={() => setStatus(value)}
                 required
-                className="sr-only"
+                className="visually-hidden"
               />
               {RSVP_STATUS_LABEL[value]}
             </label>
@@ -110,7 +103,7 @@ export function RsvpForm({ invite, mode, initial, onSubmit }: RsvpFormProps) {
       </fieldset>
 
       <div>
-        <label htmlFor="rsvp-name" className="mb-1.5 block text-sm font-medium">
+        <label htmlFor="rsvp-name" className="label">
           Seu nome
         </label>
         <input
@@ -132,10 +125,10 @@ export function RsvpForm({ invite, mode, initial, onSubmit }: RsvpFormProps) {
       {status && !declined && (
         <>
           <div>
-            <label htmlFor="rsvp-companions" className="mb-1 block text-sm font-medium">
+            <label htmlFor="rsvp-companions" className="label">
               Acompanhantes
             </label>
-            <p className="mb-2 text-xs text-muted-foreground">
+            <p className="hint">
               {invite.companionLimit === null
                 ? 'Quantas pessoas vão com você.'
                 : `Até ${invite.companionLimit} por convidado.`}
@@ -152,39 +145,30 @@ export function RsvpForm({ invite, mode, initial, onSubmit }: RsvpFormProps) {
               onChange={(event) => setCompanionCount(event.target.value)}
               aria-invalid={errors.companionCount ? true : undefined}
               aria-describedby="rsvp-companions-error"
-              className="field max-w-32"
+              className="field field--short"
             />
             <FieldError id="rsvp-companions-error" message={ruleMessage(errors.companionCount)} />
           </div>
 
           <fieldset>
-            <legend className="mb-2 text-sm font-medium">Restrições alimentares</legend>
-            <div className="flex flex-wrap gap-2">
+            <legend className="label">Restrições alimentares</legend>
+            <div className="chips">
               {invite.dietaryCategories.map((category) => {
                 const active = categories.includes(category.code);
                 return (
-                  <label
-                    key={category.code}
-                    className={`cursor-pointer rounded-full border px-3 py-1.5 text-sm transition has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring ${
-                      active
-                        ? 'border-sage/40 bg-sage/15 ring-2 ring-sage'
-                        : 'border-input hover:bg-secondary'
-                    }`}
-                  >
+                  <label key={category.code} className={active ? 'chip chip--selected' : 'chip'}>
                     <input
                       type="checkbox"
                       checked={active}
                       onChange={() => toggle(category.code)}
-                      className="sr-only"
+                      className="visually-hidden"
                     />
                     {category.displayName}
                   </label>
                 );
               })}
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Deixe em branco se não tiver restrição.
-            </p>
+            <p className="hint hint--after">Deixe em branco se não tiver restrição.</p>
             <FieldError
               id="rsvp-categories-error"
               message={ruleMessage(errors['dietaryNote.categories'])}
@@ -194,7 +178,7 @@ export function RsvpForm({ invite, mode, initial, onSubmit }: RsvpFormProps) {
           {/* UC006 RN2: a categoria que exige descrição pede o texto livre. */}
           {needsDescription && (
             <div className="fade-up">
-              <label htmlFor="rsvp-free-text" className="mb-1 block text-sm font-medium">
+              <label htmlFor="rsvp-free-text" className="label">
                 Descreva a restrição
               </label>
               <textarea
@@ -220,16 +204,12 @@ export function RsvpForm({ invite, mode, initial, onSubmit }: RsvpFormProps) {
 
       {failure !== undefined && <FailureMessage failure={failure} mode={mode} />}
 
-      <button
-        type="submit"
-        disabled={sending}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3 text-sm font-semibold text-background disabled:opacity-60"
-      >
-        {sending ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
+      <button type="submit" disabled={sending} className="button button--dark button--block">
+        {sending ? <Spinner /> : <CheckIcon />}
         {submitLabel(mode, uncertain)}
       </button>
       {mode === 'create' && (
-        <p className="text-center text-xs text-muted-foreground">
+        <p className="tiny muted center">
           Sem cadastro. Você recebe um link pessoal para alterar depois.
         </p>
       )}
@@ -246,7 +226,7 @@ function FailureMessage({ failure, mode }: { failure: unknown; mode: RsvpFormMod
   // Guia, 9.4: sem saber se a escrita entrou, a decisão de reenviar fica com a pessoa.
   if (isUncertainFailure(failure)) {
     return (
-      <p role="alert" className="rounded-xl bg-accent/20 px-3 py-2 text-sm">
+      <p role="alert" className="alert alert--warning">
         {mode === 'create'
           ? 'Não conseguimos confirmar se sua resposta foi registrada. Se você reenviar, o anfitrião pode ver seu nome duas vezes na lista.'
           : 'Não conseguimos confirmar se a alteração foi salva. Você pode salvar de novo.'}
@@ -254,10 +234,7 @@ function FailureMessage({ failure, mode }: { failure: unknown; mode: RsvpFormMod
     );
   }
   return (
-    <p
-      role="alert"
-      className="rounded-xl bg-primary/10 px-3 py-2 text-sm font-medium text-destructive"
-    >
+    <p role="alert" className="alert alert--error">
       {failureText(errorCode(failure), mode)}
     </p>
   );

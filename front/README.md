@@ -25,7 +25,7 @@ A view pode usar o controller, e o controller não conhece a view. `templates` n
 | `/r/{personalToken}` | O link pessoal, para ver e alterar a resposta | UC005 ED2 e RN3 |
 | `/invite-not-found` | A rota de não encontrado do ADR-0008, para onde o token que não resolve é redirecionado | Nenhum |
 
-As cores e os textos do painel vêm de `src/app/globals.css`, com Tailwind. As cores do convite vêm do template escolhido, em `src/templates`, e o catálogo dos templates fica em `contract/src/templates.ts`, porque a API valida a escolha. Acrescentar um template muda os dois no mesmo PR.
+As cores e os textos do painel vêm de `src/app/globals.css`, em CSS puro, e os ícones são SVG em `src/view/icons.tsx`. O front usa só Next.js, React e CSS, sem biblioteca de estilo, de componente ou de ícone (Guia da Arquitetura, 8). As cores do convite vêm do template escolhido, em `src/templates`, e o catálogo dos templates fica em `contract/src/templates.ts`, porque a API valida a escolha. Acrescentar um template muda os dois no mesmo PR.
 
 ## Comandos
 

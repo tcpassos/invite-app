@@ -3,9 +3,9 @@
 // saída. A sessão chega às telas por contexto, para um 401 em qualquer chamada levar de
 // volta à entrada (Guia, 4.1).
 import { createContext, useContext, type ReactNode } from 'react';
-import { LogOut } from 'lucide-react';
 import { useHostSession, type HostSession } from '../controller/host-session';
 import { Brand, Notice } from './brand';
+import { LeaveIcon } from './icons';
 import { UNAVAILABLE_MESSAGE } from './messages';
 
 const SessionContext = createContext<HostSession | undefined>(undefined);
@@ -23,39 +23,29 @@ export function HostShell({ children }: { children: ReactNode }) {
     return (
       <Notice title="Painel indisponível">
         <p>{UNAVAILABLE_MESSAGE}</p>
-        <button
-          type="button"
-          onClick={session.retry}
-          className="mt-4 rounded-xl border border-input px-3 py-2 text-sm hover:bg-secondary"
-        >
-          Tentar de novo
-        </button>
+        <p>
+          <button type="button" onClick={session.retry} className="button button--outline">
+            Tentar de novo
+          </button>
+        </p>
       </Notice>
     );
   }
 
-  if (!session.profile) {
-    return (
-      <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">
-        Verificando sua sessão…
-      </div>
-    );
-  }
+  if (!session.profile) return <p className="loading">Verificando sua sessão…</p>;
 
   return (
     <SessionContext.Provider value={session}>
-      <header className="border-b border-border">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-4">
+      <header className="topbar">
+        <div className="topbar__inner">
           <Brand compact />
-          <span className="ml-auto hidden text-sm text-muted-foreground sm:inline">
-            {session.profile.name}
-          </span>
+          <span className="small muted">{session.profile.name}</span>
           <button
             type="button"
             onClick={() => void session.leave()}
-            className="ml-auto flex items-center gap-2 rounded-xl border border-input px-3 py-2 text-sm hover:bg-secondary sm:ml-0"
+            className="button button--outline"
           >
-            <LogOut className="size-4" /> Sair
+            <LeaveIcon /> Sair
           </button>
         </div>
       </header>
