@@ -75,6 +75,9 @@ services:
       # Endereço que o processo do servidor usa. Não é o mesmo de cima, e a
       # razão está na seção 5.2 do Diagrama de Implantação.
       API_URL_INTERNAL: http://api:3000
+      # Endereço do front como o navegador o abre, para a prévia do link montar o endereço
+      # da imagem do template (ADR-0009).
+      FRONT_ORIGIN: ${FRONT_ORIGIN:-http://127.0.0.1:3000}
     ports:
       - '3000:3000'
     depends_on:
