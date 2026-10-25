@@ -393,6 +393,20 @@ A sessão é emitida pela Apresentação, que recebe o anfitrião de `signIn` ou
 
 São dez operações em dois repositórios. A separação segue a regra da seção 5.2 e `findAttendanceByStatus` é a única das dez sem diagrama de sequência que a sustente, porque o UC007 não tem. As duas entradas estão na seção 11.
 
+As rotas novas da 4.1 pediram operações que nenhum diagrama de sequência desenhou. Elas seguem as mesmas regras, e as assinaturas estão na linha 39 da seção 11.1.
+
+| Serviço | Repositório | O que garante | Caso de uso |
+|---|---|---|---|
+| `findByEmail(email)`, `findById(hostId)` | `HostRepository` | Leitura da conta, com o email comparado sem maiúsculas | UC001 |
+| `createIfEmailFree(name, email, passwordHash)` | `HostRepository` | Unicidade pelo índice do banco, e não por consulta prévia. Email repetido volta como vazio | UC001 RN3 |
+| `findByHost(hostId)` | `InviteRepository` | A lista do painel. É filtro de consulta, não decisão de permissão | Entrada do painel |
+| `findWithCustomization(inviteId)` | `InviteRepository` | O convite e a personalização, sem filtro de dono | UC003 |
+| `createDraft(hostId, fields)` | `InviteRepository` | Gravação como rascunho | UC002 |
+| `updateIfDraft(inviteId, fields)` | `InviteRepository` | Transição protegida pelo predicado do `WHERE`, caso 2 da seção 3.5 | UC002 A2 |
+| `saveCustomization(inviteId, fields)` | `InviteRepository` | Personalização e os dois textos na mesma transação | UC003 |
+| `findGuestByPersonalToken(personalToken)` | `InviteRepository` | A resposta e a observação de um convidado só | UC005 ED2 |
+| `updateRsvpWithinCapacity(guestId, inviteId, guest, dietaryNote, seatsRequested)` | `InviteRepository` | O mesmo teto de `saveRsvpWithinCapacity`, sem contar as vagas do próprio convidado | UC005 RN3 e RN4 |
+
 O parâmetro `statuses` não é detalhe de assinatura. A RN2 do UC008 manda exportar e consolidar apenas quem respondeu sim ou talvez. Se o filtro `[ACCEPTED, MAYBE]` não vier do Domínio como parâmetro, ele acaba escrito dentro do SQL do repositório, e aí uma regra de negócio passa a morar na camada de Dados sem nenhum dos dois casos da seção 3.5 a justificar. As três operações do painel recebem os status de fora por isso.
 
 ---
@@ -1260,8 +1274,10 @@ Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O pró
 | 35 | Os templates têm dois papéis de cor, `primary` e `accent`, e o fundo e a cor do texto são fixos de cada template | 4.1 | O ADR-0009 diz que o anfitrião ajusta cores e não diz quais | O anfitrião passa a escolher fundo e texto e consegue fazer um convite ilegível, e impedir isso pede regra de contraste que não tem caso de uso |
 | 36 | As rotas de tela do front, `/sign-in`, `/invites` e `/invites/{inviteId}`, e a rota de não encontrado `/invite-not-found` | 9.5 | O ADR-0008 manda redirecionar para uma rota de não encontrado e não a nomeia, e nenhum artefato lista as telas do painel | As rotas mudam de nome, o que custa só a troca nos links e no redirecionamento |
 | 37 | O front usa só Next.js, React e CSS, sem biblioteca de estilo, de componente, de ícone ou de busca de dados | 8 | O ADR-0004 escolhe o framework de cada tier e não fala das bibliotecas que vão junto | Cada parte acrescenta a biblioteca que conhece, e o front volta a carregar dependências que o time precisa manter sem que a arquitetura peça |
+| 38 | Inteiro fora da faixa de uma coluna `integer` e data ou hora fora de AAAA-MM-DD e HH:mm, ou fora do calendário, são forma e respondem 400. Data ou hora ausente é regra e responde 422 `required` | 3.1 | O ADR-0013 manda a Apresentação juntar data e hora e não diz o que acontece quando a junção não é possível, e a 3.1 não fala de faixa numérica | A faixa vira regra do Domínio, e o contrato precisa de um valor novo de `rule` para o máximo, fora do conjunto fechado da 9.3 |
+| 39 | As operações da camada de Dados das rotas novas da 4.1, com as assinaturas da segunda tabela da 4.3 | 4.3 | Os diagramas de sequência cobrem só o UC004, o UC005 e o UC008 | Cada parte escolhe nome e assinatura, e a revisão perde a tabela que diz o que cada repositório pode fazer |
 
-As linhas 20 a 33 receberam o aval do time em 07/10/2026, e a linha 34 em 08/10/2026. As linhas 35 a 37 vieram dos [Ajustes de Arquitetura da Sprint 5](../Sprints/Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md) e aguardam o aval do time.
+As linhas 20 a 33 receberam o aval do time em 07/10/2026, e a linha 34 em 08/10/2026. As linhas 35 a 39 vieram dos [Ajustes de Arquitetura da Sprint 5](../Sprints/Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md) e aguardam o aval do time.
 
 > **Nenhuma linha desta tabela vale contra um ADR.** Se um ADR futuro decidir o contrário de qualquer uma delas, o ADR é a fonte da decisão e a linha sai daqui, conforme a divisão de trabalho declarada na introdução.
 

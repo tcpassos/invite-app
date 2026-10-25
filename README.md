@@ -66,9 +66,9 @@ Use `http://127.0.0.1:3000`, com o número, e não `localhost`. É o mesmo ender
 
 ### O que dá para testar hoje
 
-As telas do convite e do painel já estão no front, mas as rotas da API que elas chamam ainda estão sendo construídas. Com a API de verdade, o painel mostra "Painel indisponível" e o convite não abre.
+O fluxo inteiro funciona com o compose do passo 3: abra `http://127.0.0.1:3000`, crie uma conta, crie e publique um convite, abra o link numa janela anônima para responder como convidado, e volte ao painel para ver a lista de presença e baixar o CSV.
 
-Para navegar pelas telas agora, suba o compose com o mock da API no lugar dela. É o mesmo passo 3, com um arquivo a mais:
+Para ver as telas já com dados de exemplo, sem criar nada, suba o compose com o mock da API no lugar dela. É o mesmo passo 3, com um arquivo a mais:
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d --build

@@ -42,7 +42,7 @@ O `dev` sobe na porta 3000. Abra pelo endereço `http://127.0.0.1:3000`, e não 
 
 ## O mock da API
 
-Enquanto as rotas da API não ficam prontas, `mock/mock-api.ts` responde as rotas da tabela 4.1 do Guia com os tipos de `contract/` e com o formato de erro da seção 9.3, inclusive as recusas, para as telas de erro também existirem antes da integração. Os dados ficam na memória e somem quando ele para. Ele não é referência das regras: quem decide de verdade é a API.
+Para desenvolver as telas sem banco e sem a API, `mock/mock-api.ts` responde as rotas da tabela 4.1 do Guia com os tipos de `contract/` e com o formato de erro da seção 9.3, inclusive as recusas, para as telas de erro também existirem antes da integração. Os dados ficam na memória e somem quando ele para. Ele não é referência das regras: quem decide de verdade é a API.
 
 Com Docker, na raiz do repositório, o mock entra no compose no lugar do serviço `api`, com o mesmo nome e a mesma porta, e o front não muda nada:
 

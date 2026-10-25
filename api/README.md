@@ -7,12 +7,30 @@ Tier API do invite-app, em NestJS. As três camadas do ADR-0001 moram aqui, cada
 | `src/presentation/public` | Controllers das rotas que o convidado alcança sem sessão |
 | `src/presentation/authenticated` | Controllers das rotas do painel do anfitrião |
 | `src/presentation/auth` | Entrada e cadastro do anfitrião |
-| `src/presentation/common` | Filtro de erro, identificador de correlação, log, sessão e limite de taxa. Tudo já existe |
-| `src/domain` | Serviços e regras de negócio. Já existem os erros, o gerador de token e a conferência de dono |
-| `src/data` | Repositórios e o acesso ao banco com Kysely (ADR-0014). Já existe a parte compartilhada do `InviteRepository` |
-| `src/model` | As classes do Diagrama de Classes, todas já escritas |
+| `src/presentation/common` | Filtro de erro, identificador de correlação, log, sessão, limite de taxa e leitura da forma do corpo |
+| `src/domain` | Os serviços da tabela 4.2 do Guia, as regras da resposta, o catálogo de templates, o tempo do projeto, os erros, o gerador de token e a conferência de dono |
+| `src/data` | Os três repositórios, com as operações da tabela 4.3 do Guia, e o acesso ao banco com Kysely (ADR-0014) |
+| `src/model` | As classes do Diagrama de Classes e as projeções que atravessam as camadas, como as linhas do painel |
 
 A regra de dependência entre essas pastas é verificada pelo lint. Se o Domínio importar da Apresentação, ou a Apresentação importar dos Dados, o `npm run lint` falha.
+
+## Rotas, serviços e repositórios
+
+Todas as rotas da tabela 4.1 do Guia da Arquitetura estão implementadas. Cada controller lê a forma do corpo, chama um serviço do Domínio e traduz o modelo devolvido para o tipo de `contract/`.
+
+| Pacote | Controller | Serviço do Domínio | Rotas |
+|---|---|---|---|
+| `auth` | `AuthController` | `HostService` | `/auth/sign-up`, `sign-in`, `sign-out` e `session` |
+| `authenticated` | `InviteController` | `InviteService` e `AttendanceService` | `/invites`, `/invites/{inviteId}`, `customization`, `publish`, `unpublish` e `attendance` |
+| `authenticated` | `DietaryController` | `DietaryService` | `dietary-summary` e `dietary-notes.csv` |
+| `public` | `PublicRsvpController` | `RsvpService`, e só os quatro serviços da seção 5.3 | `/public/invites/{publicToken}`, `rsvp` e `/public/responses/{personalToken}` |
+
+O que mora onde, nos pontos em que é fácil errar:
+
+- **As vagas de uma resposta** são calculadas no Domínio, em `seatsRequested`, e chegam prontas a `saveRsvpWithinCapacity`. A camada de Dados compara com o teto dentro da transação e não sabe que o talvez não ocupa vaga (Guia, 3.4).
+- **Quem conta no painel**, sim e talvez, sai do Domínio como parâmetro `statuses`, e as categorias que exigem descrição saem do catálogo do banco. Nenhum dos dois está escrito em SQL (Guia, 4.3 e 6.3).
+- **A data e a hora** chegam separadas e viram um instante no fuso do projeto na Apresentação, em `authenticated/invite-command.ts`. O Domínio compara por dia nesse fuso, em `domain/project-time.ts` (ADR-0013).
+- **O CSV** é montado na Apresentação, em `authenticated/render-csv.ts`, com ponto e vírgula, BOM e o prefixo contra fórmula da medida 5 do ADR-0008.
 
 ## Comandos
 
@@ -51,13 +69,13 @@ Estas peças são usadas por mais de uma parte e já estão prontas. Use em vez 
 
 Rodando no Docker Desktop, todas as requisições do navegador chegam à API com o mesmo endereço, o do gateway da rede do Docker. Então, na sua máquina, os limites por endereço contam você e qualquer outra aba como uma pessoa só.
 
-**Forma do corpo**, em `presentation/common/parse-request.ts`. O controller lê o corpo com `asObject` e os campos com `optionalString`, `optionalInteger` e as outras. Campo no tipo errado vira 400. Campo ausente passa como `undefined`, porque ausência é a regra `required`, e quem recusa é o Domínio com 422. Faixa, conjunto de valores e tamanho também são do Domínio.
+**Forma do corpo**, em `presentation/common/parse-request.ts`. O controller lê o corpo com `asObject` e os campos com `optionalString`, `optionalInteger` e as outras. Campo no tipo errado vira 400, e inteiro que não cabe numa coluna `integer` do banco também. Campo ausente passa como `undefined`, porque ausência é a regra `required`, e quem recusa é o Domínio com 422. Faixa, conjunto de valores e tamanho também são do Domínio.
 
 **Tokens**, em `domain/tokens.ts`. `generatePublicToken()` na publicação e `generatePersonalToken()` no registro da resposta. É o mesmo gerador, como o ADR-0011 pede.
 
 **Conferência de dono**, em `domain/ownership.ts`. Todo serviço do painel faz `validateOwnership(await repo.findById(inviteId), hostId)`. Convite que não existe e convite de outro anfitrião saem pelo mesmo `NotInviteOwner`, que vira o mesmo 404.
 
-**`InviteRepository`**, em `data/invite.repository.ts`. `findById` e `findPublishedByPublicToken` já existem. Cada parte acrescenta as próprias operações no bloco marcado com o número dela, no fim da classe, para os PRs não disputarem as mesmas linhas.
+**`InviteRepository`**, em `data/invite.repository.ts`. As operações seguem os nomes da tabela 4.3 do Guia, e as que vieram depois estão na mesma seção. Nenhuma decide regra de negócio: status, categorias e vagas chegam por parâmetro, e a recusa da escrita dentro do teto volta como valor, `CapacityExceeded` ou `InviteNotOpen`, para o Domínio dar nome a ela (Guia, 9.2).
 
 ## Como responder um erro
 
@@ -65,7 +83,11 @@ O Domínio levanta um dos erros de `src/domain/errors.ts`, e o filtro em `presen
 
 ## Testes de integração do banco
 
-`src/data/schema.spec.ts` confere o esquema contra um PostgreSQL de verdade e só roda com `TEST_DATABASE_URL` definida. Sem ela, os testes aparecem como pulados e o resto roda normalmente.
+Três arquivos de teste precisam de um PostgreSQL de verdade e só rodam com `TEST_DATABASE_URL` definida. Sem ela, aparecem como pulados e o resto roda normalmente.
+
+- `src/data/schema.spec.ts` confere o esquema.
+- `src/data/invite.repository*.spec.ts` confere as consultas, inclusive o teto com respostas simultâneas.
+- `src/presentation/routes.e2e.spec.ts` sobe a API inteira e percorre as rotas da tabela 4.1, inclusive o 404 igual para as situações de ausência da seção 9.5.
 
 Para rodar na sua máquina, suba um banco descartável com as migrações aplicadas, numa porta separada para não mexer no banco do compose:
 
