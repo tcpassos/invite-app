@@ -71,9 +71,13 @@ Sempre pelo `ApiClient`, nunca com `fetch` direto. As operações de cada rota j
 
 Erro da API chega como `ApiRequestError`, e a tela decide pelo `code`, com `fieldErrors` para apontar o campo recusado. API fora do ar chega como `ApiUnavailableError`, que na leitura do convite vira a página de convite indisponível da seção 9.4 do Guia da Arquitetura. O `readPublic`, em `api-errors.ts`, faz essa escolha para as duas páginas de token.
 
+Cada tentativa tem tempo limite: 4 segundos na cópia do servidor e 15 na do navegador (Guia da Arquitetura, 9.4, linha 40 da 11.1). A desistência chega como `ApiUnavailableError`, igual à rede caída.
+
 A repetição automática é desligada por padrão. Só as quatro leituras e o `publish` podem pedir `retry: 'once'`, e o POST de resposta do convidado nunca pode, pela regra da mesma seção 9.4. Quando a resposta falha sem a API dizer o que aconteceu, o formulário continua preenchido e avisa que reenviar pode duplicar o nome na lista.
 
 ## As rotas de convite
+
+A prévia do link do convite leva o nome do evento, a data e a imagem do template, de `public/templates/{code}.png` (ADR-0009). O endereço do evento fica fora da prévia (ADR-0008). As imagens são geradas pelo `npm run og-images --workspace front` a partir do CSS dos templates, e o comentário no topo de `scripts/render-og-images.mjs` explica o que instalar antes. Para o endereço da imagem sair absoluto, o servidor do front lê `FRONT_ORIGIN`, que o compose já passa.
 
 `/i/{publicToken}` e `/r/{personalToken}` já saem com `X-Robots-Tag: noindex`, configurado em `next.config.mjs`, e o `robots.txt` bloqueia as duas.
 

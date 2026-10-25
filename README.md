@@ -64,7 +64,7 @@ Na coluna `STATUS`, os três serviços, `db`, `api` e `front`, devem aparecer co
 
 Use `http://127.0.0.1:3000`, com o número, e não `localhost`. É o mesmo endereço que está no `.env`, e misturar os dois atrapalha a sessão do anfitrião quando ela existir.
 
-### O que dá para testar hoje
+### O que dá para testar
 
 O fluxo inteiro funciona com o compose do passo 3: abra `http://127.0.0.1:3000`, crie uma conta, crie e publique um convite, abra o link numa janela anônima para responder como convidado, e volte ao painel para ver a lista de presença e baixar o CSV.
 
@@ -91,7 +91,6 @@ Comando para ver as categorias no banco:
 docker compose exec db psql -U invite_app -d invite_app -c "select * from dietary_category"
 ```
 
-Esta tabela cresce conforme as telas forem entrando.
 
 ### Parar, atualizar e recomeçar
 
