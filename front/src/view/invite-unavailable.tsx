@@ -1,6 +1,6 @@
 // As duas páginas que o tier Front serve no lugar do convite quando a leitura não deu certo.
 // Nenhuma das duas é a rota de não encontrado (Guia, 9.4 e 9.5).
-import { Notice } from './brand';
+import { Notice } from './notice';
 
 /** API fora do ar ou 500. Aparece igual para token válido e inventado (Guia, 9.4). */
 export function InviteUnavailable() {

@@ -268,7 +268,7 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 
 | Classe | Descrição | Operações |
 |---|---|---|
-| `TemplateSet` | Guarda o HTML, o CSS e a imagem de Open Graph de cada template do [ADR-0009](../Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) | `templateAssets(templateCode)` |
+| `TemplateSet` | Guarda o HTML, o CSS e a imagem de Open Graph de cada template do [ADR-0009](../Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) | A classe `invite-template--{code}` em `src/templates/invite-templates.css` e a imagem de prévia em `public/templates/{code}.png`, escolhidas pelo `templateCode` do convite |
 
 #### `contract`
 
@@ -312,15 +312,15 @@ A primeira roda antes de resolver o token, e a segunda e a terceira depois, pela
 | `AttendanceService` | Monta a lista de presença do painel e o total de pessoas da RN1 do UC007 | `listAttendance(inviteId, hostId)` |
 | `DietaryService` | Monta a contagem por categoria e as descrições do UC008, e devolve as linhas da exportação sem formatá-las | `consolidateDietaryNotes(inviteId, hostId)`, `exportDietaryNotes(inviteId, hostId)` |
 | `HostService` | Cadastro e autenticação do anfitrião. Devolve o anfitrião, e quem emite a sessão é a Apresentação | `signUp(name, email, password)`, `signIn(email, password)`, `getHostProfile(hostId)` |
-| `TemplateCatalog` | Carrega o catálogo de templates e sustenta a RN2 do UC003 dentro do Domínio | `listTemplateCodes()`, `textFieldLimits(templateCode)` |
+| `TemplateCatalog` | Carrega o catálogo de templates e sustenta a RN2 do UC003 dentro do Domínio | `findTemplate(templateCode)`, `textFieldLimits(templateCode)`, `defaultTemplate()` |
 
 #### `api.data`
 
 | Classe | Descrição | Operações |
 |---|---|---|
-| `InviteRepository` | Guarda o agregado do convite. Concentra as leituras, as duas transições atômicas e a escrita transacional do teto de capacidade | `findById(inviteId)`, `findPublishedByPublicToken(publicToken)`, `publishIfPublishable(inviteId, publicToken)`, `unpublishIfPublished(inviteId)`, `saveRsvpWithinCapacity(invite, guest, dietaryNote, seatsRequested)`, `countGuestsByCategory(inviteId, statuses)`, `findDescriptionsByCategories(inviteId, statuses, categoryCodes)`, `findGuestsForExport(inviteId, statuses)`, `findAttendanceByStatus(inviteId, statuses)` |
+| `InviteRepository` | Guarda o agregado do convite. Concentra as leituras, as duas transições atômicas e a escrita transacional do teto de capacidade | `findById(inviteId)`, `findPublishedByPublicToken(publicToken)`, `publishIfPublishable(inviteId, publicToken)`, `unpublishIfPublished(inviteId)`, `saveRsvpWithinCapacity(invite, guest, dietaryNote, seatsRequested)`, `countGuestsByCategory(inviteId, statuses)`, `findDescriptionsByCategories(inviteId, statuses, categoryCodes)`, `findGuestsForExport(inviteId, statuses)`, `findAttendanceByStatus(inviteId, statuses)`, e as operações das rotas novas da segunda tabela da seção 4.3 do Guia da Arquitetura |
 | `DietaryCategoryRepository` | Serve o dado de referência das cinco categorias alimentares. Fica separado do repositório do convite porque a operação dele não recebe `inviteId` | `listDietaryCategories()` |
-| `HostRepository` | Guarda a conta do anfitrião | `findByEmail(email)`, mais a gravação da conta, sem assinatura fechada |
+| `HostRepository` | Guarda a conta do anfitrião | `findByEmail(email)`, `findById(hostId)`, `createIfEmailFree(name, email, passwordHash)` |
 
 #### `api.model`
 

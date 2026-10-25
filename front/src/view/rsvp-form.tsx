@@ -14,7 +14,7 @@ import {
   type ValidationRule,
 } from '@invite-app/contract';
 import { errorCode, fieldErrors, isUncertainFailure } from '../controller/api-errors';
-import { FieldError } from './brand';
+import { FieldError } from './field-error';
 import { RSVP_STATUS_LABEL } from './format';
 import { CheckIcon, Spinner } from './icons';
 import { RATE_LIMITED_MESSAGE, ruleMessage } from './messages';

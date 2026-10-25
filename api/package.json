@@ -19,13 +19,14 @@
     "@types/pg": "^8.23.1",
     "@types/supertest": "^7.2.1",
     "supertest": "^7.3.1",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   },
   "dependencies": {
     "@invite-app/contract": "*",
     "@nestjs/common": "^12.1.2",
     "@nestjs/core": "^12.1.2",
     "@nestjs/platform-express": "^12.1.2",
+    "argon2": "^0.44.0",
     "kysely": "^0.29.6",
     "pg": "^8.23.1",
     "reflect-metadata": "^0.2.2",

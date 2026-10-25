@@ -42,9 +42,15 @@ O `dev` sobe na porta 3000. Abra pelo endereço `http://127.0.0.1:3000`, e não 
 
 ## O mock da API
 
-Enquanto as rotas da API não ficam prontas, `mock/mock-api.ts` responde as rotas da tabela 4.1 do Guia com os tipos de `contract/` e com o formato de erro da seção 9.3, inclusive as recusas, para as telas de erro também existirem antes da integração. Os dados ficam na memória e somem quando ele para. Ele não é referência das regras: quem decide de verdade é a API.
+Para desenvolver as telas sem banco e sem a API, `mock/mock-api.ts` responde as rotas da tabela 4.1 do Guia com os tipos de `contract/` e com o formato de erro da seção 9.3, inclusive as recusas, para as telas de erro também existirem antes da integração. Os dados ficam na memória e somem quando ele para. Ele não é referência das regras: quem decide de verdade é a API.
 
-Em dois terminais, na raiz do repositório:
+Com Docker, na raiz do repositório, o mock entra no compose no lugar do serviço `api`, com o mesmo nome e a mesma porta, e o front não muda nada:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d --build
+```
+
+Sem Docker, em dois terminais, na raiz do repositório:
 
 ```bash
 npm run mock --workspace front
@@ -54,7 +60,7 @@ npm run mock --workspace front
 API_URL_INTERNAL=http://127.0.0.1:3001 npm run dev --workspace front
 ```
 
-O mock usa a porta 3001, então o `api` do compose não pode estar de pé ao mesmo tempo. Ele já sobe com o anfitrião `demo@convite.dev`, senha `senha1234`, e com um convite publicado em `http://127.0.0.1:3000/i/DEMO0000000000000000000000`.
+Fora do compose, o mock usa a porta 3001, então o `api` do compose não pode estar de pé ao mesmo tempo. Ele já sobe com o anfitrião `demo@convite.dev`, senha `senha1234`, e com um convite publicado em `http://127.0.0.1:3000/i/DEMO0000000000000000000000`.
 
 ## Como chamar a API
 
@@ -65,9 +71,13 @@ Sempre pelo `ApiClient`, nunca com `fetch` direto. As operações de cada rota j
 
 Erro da API chega como `ApiRequestError`, e a tela decide pelo `code`, com `fieldErrors` para apontar o campo recusado. API fora do ar chega como `ApiUnavailableError`, que na leitura do convite vira a página de convite indisponível da seção 9.4 do Guia da Arquitetura. O `readPublic`, em `api-errors.ts`, faz essa escolha para as duas páginas de token.
 
+Cada tentativa tem tempo limite: 4 segundos na cópia do servidor e 15 na do navegador (Guia da Arquitetura, 9.4, linha 40 da 11.1). A desistência chega como `ApiUnavailableError`, igual à rede caída.
+
 A repetição automática é desligada por padrão. Só as quatro leituras e o `publish` podem pedir `retry: 'once'`, e o POST de resposta do convidado nunca pode, pela regra da mesma seção 9.4. Quando a resposta falha sem a API dizer o que aconteceu, o formulário continua preenchido e avisa que reenviar pode duplicar o nome na lista.
 
 ## As rotas de convite
+
+A prévia do link do convite leva o nome do evento, a data e a imagem do template, de `public/templates/{code}.png` (ADR-0009). O endereço do evento fica fora da prévia (ADR-0008). As imagens são geradas pelo `npm run og-images --workspace front` a partir do CSS dos templates, e o comentário no topo de `scripts/render-og-images.mjs` explica o que instalar antes. Para o endereço da imagem sair absoluto, o servidor do front lê `FRONT_ORIGIN`, que o compose já passa.
 
 `/i/{publicToken}` e `/r/{personalToken}` já saem com `X-Robots-Tag: noindex`, configurado em `next.config.mjs`, e o `robots.txt` bloqueia as duas.
 

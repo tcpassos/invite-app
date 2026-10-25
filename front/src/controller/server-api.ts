@@ -1,5 +1,5 @@
-// A cópia do ApiClient que roda no processo do tier Front, no caminho de leitura do
-// convite público. Usa o nome de serviço do compose, que o navegador não resolve,
+// A cópia do ApiClient que roda no processo do tier Front, no caminho de leitura do convite
+// público e do link pessoal. Usa o nome de serviço do compose, que o navegador não resolve,
 // e por isso este arquivo não pode ir para o bundle do navegador (Guia, 10.5).
 import 'server-only';
 import { randomBytes } from 'node:crypto';
@@ -11,5 +11,7 @@ const newRequestId = () => randomBytes(8).toString('hex');
 export function serverApi(): ApiClient {
   const baseUrl = process.env.API_URL_INTERNAL;
   if (!baseUrl) throw new Error('API_URL_INTERNAL não está definida');
-  return new ApiClient({ baseUrl, requestId: newRequestId });
+  // Salto 2 do Guia, 9.4: o tier Front desiste antes do convidado, para servir a página de
+  // convite indisponível em vez do erro do navegador. Com a repetição, são até 8 segundos.
+  return new ApiClient({ baseUrl, requestId: newRequestId, timeoutMs: 4_000 });
 }

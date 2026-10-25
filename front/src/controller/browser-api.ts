@@ -6,4 +6,6 @@ import { ApiClient } from './api-client';
 export const browserApi = new ApiClient({
   baseUrl: process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001',
   credentials: 'include',
+  // Saltos 3 e 4 do Guia, 9.4: a pessoa está olhando a tela e recebe a falha declarada.
+  timeoutMs: 15_000,
 });

@@ -8,6 +8,9 @@ import { BadRequestException } from '@nestjs/common';
 
 export type Body = Record<string, unknown>;
 
+const INT32_MIN = -2_147_483_648;
+const INT32_MAX = 2_147_483_647;
+
 /** O corpo precisa ser um objeto JSON. Lista, texto e número são forma errada. */
 export function asObject(body: unknown): Body {
   if (typeof body !== 'object' || body === null || Array.isArray(body)) {
@@ -39,6 +42,9 @@ export function optionalInteger(
   if (value === undefined) return undefined;
   if (value === null && options?.nullable) return null;
   if (typeof value !== 'number' || !Number.isInteger(value)) throw new BadRequestException();
+  // Os inteiros do contrato cabem numa coluna integer do banco. Fora disso não é número
+  // que a rota declare, e é forma, como texto no lugar de número.
+  if (value < INT32_MIN || value > INT32_MAX) throw new BadRequestException();
   return value;
 }
 

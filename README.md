@@ -64,9 +64,19 @@ Na coluna `STATUS`, os três serviços, `db`, `api` e `front`, devem aparecer co
 
 Use `http://127.0.0.1:3000`, com o número, e não `localhost`. É o mesmo endereço que está no `.env`, e misturar os dois atrapalha a sessão do anfitrião quando ela existir.
 
-### O que dá para testar hoje
+### O que dá para testar
 
-As telas do convite e do painel já estão no front, mas as rotas da API que elas chamam ainda estão sendo construídas. Com o compose, dá para conferir que cada peça está de pé. Para navegar pelas telas antes da API ficar pronta, use o mock descrito no [README do front](front/README.md#o-mock-da-api).
+O fluxo inteiro funciona com o compose do passo 3: abra `http://127.0.0.1:3000`, crie uma conta, crie e publique um convite, abra o link numa janela anônima para responder como convidado, e volte ao painel para ver a lista de presença e baixar o CSV.
+
+Para ver as telas já com dados de exemplo, sem criar nada, suba o compose com o mock da API no lugar dela. É o mesmo passo 3, com um arquivo a mais:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d --build
+```
+
+Abra `http://127.0.0.1:3000`. O painel entra com `demo@convite.dev` e a senha `senha1234`, e o convite de exemplo está em `http://127.0.0.1:3000/i/DEMO0000000000000000000000`. Os dados do mock ficam na memória e somem quando o container para. Para voltar à API de verdade, rode o passo 3 de novo, sem o segundo arquivo.
+
+Sem o mock, dá para conferir que cada peça está de pé:
 
 | O que conferir | Como | O que deve aparecer |
 |---|---|---|
@@ -81,7 +91,6 @@ Comando para ver as categorias no banco:
 docker compose exec db psql -U invite_app -d invite_app -c "select * from dietary_category"
 ```
 
-Esta tabela cresce conforme as telas forem entrando.
 
 ### Parar, atualizar e recomeçar
 

@@ -19,19 +19,15 @@ import {
   unpublishInvite,
   updateInvite,
 } from '../controller/host-panel';
-import { FieldError } from './brand';
+import { FieldError } from './field-error';
 import { BackIcon, CheckIcon, CloseIcon, CopyIcon, Spinner } from './icons';
 import { formatDateInput, formatTimeInput, toDateAndTime } from './format';
 import { useSession } from './host-shell';
 import { InviteCard, templateFor } from './invite-card';
-import {
-  InviteDataFields,
-  StatusBadge,
-  optionalNumber,
-  type InviteDataValues,
-} from './invite-list-view';
+import { InviteDataFields, optionalNumber, type InviteDataValues } from './invite-fields';
 import { InviteResponsesPanel } from './invite-responses-panel';
 import { UNAVAILABLE_MESSAGE, panelFailureText, ruleMessage } from './messages';
+import { StatusBadge } from './status-badge';
 
 /** Nome de cada papel de cor dos templates do contract, para o editor. */
 const COLOR_ROLE_LABEL: Record<string, string> = {
@@ -310,7 +306,8 @@ function PublishSection({
       setFailure(error);
     } finally {
       setBusy(false);
-      // 409 no despublicar quer dizer que outra aba chegou primeiro: relê o convite.
+      // Relê o convite depois de toda ação: com sucesso, para mostrar a situação nova, e com
+      // 409, porque outra aba chegou primeiro.
       onChange();
     }
   }

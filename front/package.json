@@ -10,7 +10,8 @@
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
-    "mock": "node mock/mock-api.ts"
+    "mock": "node mock/mock-api.ts",
+    "og-images": "node scripts/render-og-images.mjs"
   },
   "dependencies": {
     "@invite-app/contract": "*",
@@ -24,6 +25,6 @@
     "@types/node": "^24.19.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   }
 }

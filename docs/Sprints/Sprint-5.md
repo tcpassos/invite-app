@@ -25,6 +25,12 @@ Work items no Azure Boards da org `GUITOEBE`, projeto `invite-people`, iteration
 - **H11** Acompanhar a lista de presença
 - **H12** Reunir as restrições alimentares para o buffet
 
+## Resultado
+
+O MVP está completo e integrado. O anfitrião cria a conta, cria, corrige, personaliza e publica o convite, e acompanha no painel a lista de presença e as restrições alimentares, com exportação em CSV para o buffet. O convidado abre o link sem conta, responde com acompanhantes e restrição alimentar, e altera a resposta pelo link pessoal até o fim do dia do evento. Tudo roda pelo `docker compose`, como o ADR-0003 decidiu.
+
+O que precisou ser repensado no caminho, e o que continua em aberto, está nos [Ajustes de Arquitetura para o MVP](Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md).
+
 ## Principais Artefatos
 
 - [Ajustes de Arquitetura para o MVP](Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md)

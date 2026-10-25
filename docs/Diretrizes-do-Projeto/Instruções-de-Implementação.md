@@ -11,7 +11,9 @@ O que cada parte implementa, o que ler antes e como escrever uma rota ou uma tel
 | 3. Convite do anfitrião | As rotas de entrada, de criação, de correção, de personalização e de publicação | UC001 a UC004 |
 | 4. Respostas e painel | As rotas da página do convite, da resposta, do link pessoal, da lista de presença e da consolidação alimentar | UC005 a UC008 |
 
-As partes 2, 3 e 4 trabalham em paralelo. O que as liga são os tipos de `contract/` e a tabela de rotas da seção 4.1 do Guia, que já estão prontos.
+As partes 2, 3 e 4 trabalham em paralelo. O que as liga são os tipos de `contract/` e a tabela de rotas da seção 4.1 do Guia.
+
+**Situação na Sprint 5: as quatro partes estão entregues e integradas.** O front fala com as rotas reais da API, e o fluxo inteiro roda pelo `docker compose`. Os quadros abaixo ficam como mapa de onde cada peça mora, e o que mudou ao juntar as partes está nos [Ajustes de Arquitetura da Sprint 5](../Sprints/Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md).
 
 ### Parte 2, front
 
@@ -20,6 +22,7 @@ As partes 2, 3 e 4 trabalham em paralelo. O que as liga são os tipos de `contra
 | Rotas de tela | `/i/{publicToken}`, `/r/{personalToken}` e as telas do painel: entrada, cadastro, lista de convites, criação, correção, personalização, publicação, lista de presença e consolidação |
 | Ler antes | Guia 7, sobre o MVC no front. Guia 9.4, sobre a página de convite indisponível, o formulário depois de uma falha e o recuo da consulta periódica. Guia 9.5, sobre cache, `robots.txt`, metatags, o redirecionamento temporário do 404 e o escape no painel. ADR-0007, ADR-0009 e ADR-0013. O README do front |
 | Já pronto | O `ApiClient` nas duas cópias, a do servidor e a do navegador, o `robots.txt`, o `noindex` nas rotas de token e os tipos de todas as rotas |
+| Entregue | As telas em `front/src/view`, as rotas em `front/src/app` (`/sign-in`, `/invites`, `/invites/{inviteId}`, `/i`, `/r` e `/invite-not-found`), os três templates com a imagem de prévia do link e o mock em `front/mock` |
 | Cuidados | Nenhuma regra de negócio no front. A tela decide pelo `code` do erro, nunca pela mensagem. Dado escrito pelo convidado nunca entra como HTML |
 
 O jeito de fazer o mock é decisão da parte 2. O que ele precisa cumprir é responder com os tipos de `contract/` e com o formato de erro, incluindo os casos de recusa da tabela da seção 4.1, para as telas de erro também existirem antes da integração.
@@ -31,7 +34,7 @@ O jeito de fazer o mock é decisão da parte 2. O que ele precisa cumprir é res
 | Rotas | `/auth/sign-up`, `/auth/sign-in`, `/auth/sign-out`, `/auth/session`, `GET` e `POST /invites`, `GET` e `PUT /invites/{inviteId}`, `PUT /invites/{inviteId}/customization`, `publish` e `unpublish` |
 | Ler antes | UC001 a UC004. Guia 4.1 e 4.2. ADR-0005, ADR-0009, ADR-0010 e ADR-0013. O diagrama de sequência do UC004 e as realizações do UC001 e do UC004 |
 | Já pronto | A sessão e o `SessionGuard`, o limite de tentativas, o gerador de token, a conferência de dono, o `parseRequest` e a leitura do convite por identificador |
-| A criar | O `HostRepository`, o `TemplateCatalog` a partir do catálogo de `contract/`, e as operações da parte 3 no `InviteRepository` |
+| Entregue | O `HostRepository`, o `TemplateCatalog` a partir do catálogo de `contract/`, e as operações da parte 3 no `InviteRepository`, listadas na segunda tabela da seção 4.3 do Guia |
 
 ### Parte 4, respostas e painel
 
@@ -40,7 +43,7 @@ O jeito de fazer o mock é decisão da parte 2. O que ele precisa cumprir é res
 | Rotas | `GET /public/invites/{publicToken}`, `POST /public/invites/{publicToken}/rsvp`, `GET` e `PUT /public/responses/{personalToken}`, `attendance`, `dietary-summary` e `dietary-notes.csv` |
 | Ler antes | UC005 a UC008. Guia 3.4, sobre o teto verificado na transação. Guia 9.5 inteira, porque a rota pública é a fronteira mais exposta do sistema. ADR-0006, ADR-0008, ADR-0011 e ADR-0013. Os diagramas de sequência do UC005 e do UC008 e as realizações dos dois |
 | Já pronto | O limite de taxa da fronteira pública, o gerador de token, a conferência de dono, o `parseRequest`, a leitura do convite publicado pelo token e o `SessionGuard` |
-| A criar | O `DietaryCategoryRepository`, a escrita da resposta dentro do teto e as operações da parte 4 no `InviteRepository` |
+| Entregue | O `DietaryCategoryRepository`, a escrita da resposta dentro do teto e as operações da parte 4 no `InviteRepository` |
 
 A parte 4 não depende da entrada do anfitrião para testar o painel. Nos testes, a sessão é aberta direto pelo `SessionCookie`, como faz o `session.spec.ts` da API, e o convite publicado é inserido direto no banco, como faz o `invite.repository.spec.ts`.
 

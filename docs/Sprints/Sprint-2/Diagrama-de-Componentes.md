@@ -109,7 +109,7 @@ Como convenção, o nome da interface usa o substantivo do serviço em inglês, 
 | `PublicInvitePageHttp` | `PublicInvitePage` | `GET /i/{publicToken}` | Navegador do convidado, fora da figura |
 | `HostPanelPageHttp` | `HostPanelPage` | Rotas de tela do painel | Navegador do anfitrião, fora da figura |
 | `InviteApi` | `ApiClient` | Uma operação por rota da tabela 4.1 do guia, tipada pelo contrato do ADR-0004 | `PublicInvitePage` e `HostPanelPage` |
-| `TemplateAssets` | `TemplateSet` | `templateAssets(templateCode)`, que devolve o HTML, o CSS e a imagem de Open Graph do template | `PublicInvitePage` e `HostPanelPage` |
+| `TemplateAssets` | `TemplateSet` | A classe `invite-template--{code}` do CSS do template e a imagem de Open Graph em `public/templates/{code}.png`, escolhidas pelo `templateCode`. Na implementação são arquivos, sem operação de código | `PublicInvitePage` e `HostPanelPage` |
 
 A operação de `TemplateAssets` é decisão nova. Ela existe para que a interface especifique um serviço em vez de apontar uma pasta, que é o que [Ian04] pede de uma interface provida.
 
@@ -138,7 +138,7 @@ As duas operações de `RateLimit` foram separadas durante esta modelagem. A se�
 | `AttendanceOperations` | `AttendanceService` | `listAttendance(inviteId, hostId)` | `InviteController` |
 | `DietaryOperations` | `DietaryService` | `consolidateDietaryNotes(inviteId, hostId)`, `exportDietaryNotes(inviteId, hostId)` | `DietaryController` |
 | `HostOperations` | `HostService` | Cadastro e autenticação do anfitrião, sem assinatura fechada ainda | `AuthController` |
-| `TemplateRules` | `TemplateCatalog` | `listTemplateCodes()`, `textFieldLimits(templateCode)` | `InviteService` |
+| `TemplateRules` | `TemplateCatalog` | `findTemplate(templateCode)`, `textFieldLimits(templateCode)`, `defaultTemplate()` | `InviteService` |
 
 As duas operações de `TemplateRules` são decisão nova desta página, porque nenhum artefato as nomeia. Elas existem para que a RN2 do UC003 seja verificável no Domínio.
 
@@ -458,11 +458,11 @@ Os quatro componentes do tier Front, os quatro controllers, `SessionGuard`, `Rat
 
 1. A convenção de nome de interface da seção 2.
 2. `AttendanceService` como dono de `listAttendance`.
-3. A operação `templateAssets(templateCode)` de `TemplateAssets`.
+3. A operação `templateAssets(templateCode)` de `TemplateAssets`. Na Sprint 5 virou dois arquivos por template, sem operação de código, conforme os [Ajustes de Arquitetura da Sprint 5](../Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md).
 4. As duas operações de `RateLimit`, `enforceReadLimit` e `enforceWriteLimit`, que tornam visível a decisão da seção 4.1 do guia.
 5. A operação `toErrorResponse(error)` de `ErrorTranslation`.
 6. A operação `findAttendanceByStatus(inviteId, statuses)` de `InviteStore`.
-7. As duas operações de `TemplateRules`.
+7. As duas operações de `TemplateRules`. Na Sprint 5 `listTemplateCodes()` deu lugar a `findTemplate(templateCode)`, que também traz as cores padrão que a validação das cores precisa, e entrou `defaultTemplate()` para a criação, conforme os [Ajustes de Arquitetura da Sprint 5](../Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md).
 8. Os artefatos `contract/` e `migrations/`.
 
 ### 10.2 Pendências abertas

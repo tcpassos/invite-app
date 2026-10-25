@@ -1,6 +1,6 @@
-// ApiClient do DAS, seção 5.2: o ponto único por onde o front fala com a API.
-// Cada parte acrescenta aqui, ou num arquivo ao lado, as operações das rotas que
-// implementa, tipadas pelo contract. Tela nenhuma chama fetch direto.
+// ApiClient do DAS, seção 5.2: o ponto único por onde o front fala com a API. As operações
+// de cada rota, tipadas pelo contract, ficam ao lado, em public-invite.ts e host-panel.ts.
+// Tela nenhuma chama fetch direto.
 import { ErrorCode, REQUEST_ID_HEADER, type ApiError } from '@invite-app/contract';
 
 /**
@@ -55,6 +55,11 @@ export interface ApiClientOptions {
   /** 'include' no navegador, para o cookie de sessão do anfitrião ir junto (ADR-0010). */
   credentials?: RequestCredentials;
   fetch?: typeof fetch;
+  /**
+   * Quanto esperar por cada tentativa antes de desistir, em milissegundos. A desistência
+   * vira ApiUnavailableError, como a rede caída (Guia, 9.4).
+   */
+  timeoutMs?: number;
 }
 
 const ERROR_CODES = new Set<string>(Object.values(ErrorCode));
@@ -109,6 +114,7 @@ export class ApiClient {
           headers: this.headers(requestId, options.body !== undefined),
           body: options.body === undefined ? undefined : JSON.stringify(options.body),
           credentials: this.options.credentials,
+          signal: this.options.timeoutMs ? AbortSignal.timeout(this.options.timeoutMs) : undefined,
           cache: 'no-store',
         });
       } catch (cause) {

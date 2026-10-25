@@ -1,10 +1,10 @@
 # Ajustes de Arquitetura para o MVP
 
-A Sprint 5 começou com o front da parte 2 entrando no repositório. As telas foram prototipadas fora dele e, ao encaixá-las na arquitetura das Sprints 2 e 3, alguns pontos precisaram ser repensados. Esta página registra cada um: o que o protótipo pedia, o que a arquitetura dizia, o que foi decidido e o que acontece se o time decidir diferente.
+A Sprint 5 começou com o front da parte 2 entrando no repositório, e logo depois o backend das partes 3 e 4. Os dois foram escritos fora da arquitetura das Sprints 2 e 3 e, ao encaixá-los nela, alguns pontos precisaram ser repensados. Esta página registra cada um: o que o código pedia, o que a arquitetura dizia, o que foi decidido e o que acontece se o time decidir diferente.
 
-São três partes. A seção 1 trata do que mudou em artefato da arquitetura, ou foi decidido onde nenhum artefato decidia. A seção 2 trata do contrário, o que o protótipo fazia e a arquitetura não permite, e por isso foi o front que mudou. A seção 3 lista o que continua em aberto para fechar o MVP.
+São cinco partes. A seção 1 trata do que mudou em artefato da arquitetura, ou foi decidido onde nenhum artefato decidia, por causa do front. A seção 2 trata do contrário, o que o protótipo do front fazia e a arquitetura não permite. A seção 3 faz o mesmo para o backend. A seção 4 registra as pendências fechadas para o MVP ficar pronto, e a seção 5 o que continua em aberto.
 
-A regra de precedência é a de sempre. Se um ponto daqui divergir de um ADR, o ADR vale. As decisões que nenhum documento cobria entraram como linhas 35 a 37 da seção 11.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) e precisam do aval do time.
+A regra de precedência é a de sempre. Se um ponto daqui divergir de um ADR, o ADR vale. As decisões que nenhum documento cobria entraram como linhas 35 a 40 da seção 11.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) e precisam do aval do time.
 
 ## 1. O que a arquitetura precisou ajustar
 
@@ -98,7 +98,7 @@ A maior parte não era usada por tela nenhuma.
 
 As Instruções de Implementação deixam o jeito de fazer o mock com a parte 2, e pedem só que ele responda com os tipos de `contract/` e com o formato de erro. O protótipo fazia o mock com rotas de API dentro do próprio Next.js, em `app/auth/*/route.ts`, devolvendo um token JWT fora do contrato. Rota de API no Next.js é exatamente o que o ADR-0004 proíbe e o que a terceira busca da seção 6.4 procura.
 
-O mock passou a ser um processo Node separado, em `front/mock/mock-api.ts`, fora do `src` e fora da imagem. Ele sobe na porta 3001, a mesma da API, e responde as 18 rotas da tabela 4.1 com os tipos do contrato e com as recusas, para as telas de erro existirem antes da integração. Quando a API ficar pronta, basta não subir o mock. O README do front explica como usar.
+O mock passou a ser um processo Node separado, em `front/mock/mock-api.ts`, fora do `src` e fora da imagem. Ele sobe na porta 3001, a mesma da API, e responde as 18 rotas da tabela 4.1 com os tipos do contrato e com as recusas, para as telas de erro existirem antes da integração. Com a API pronta, ele continua servindo para desenvolver as telas sem banco, e também sobe pelo compose, no lugar da API, com o `docker-compose.mock.yml`. O README do front explica como usar.
 
 ### 1.8 O CSV do UC008 sem restrição registrada
 
@@ -124,11 +124,62 @@ Nestes pontos a arquitetura ficou como estava e foi o front que mudou. Ficam reg
 | Cadastrava sem nome e aceitava senha de 6 caracteres | UC001 RN1 e `SignUpRequest` | O cadastro pede o nome e usa os limites de `TEXT_LIMITS` |
 | Não tratava a API fora do ar na página do convite | Guia 9.4: página de convite indisponível, diferente da de não encontrado | `/i` e `/r` mostram a página de indisponível, e o token que não resolve vai para `/invite-not-found` |
 
-## 3. O que continua em aberto
+## 3. A adequação do backend
 
-- **A integração com a API.** As rotas das partes 3 e 4 ainda estão sendo construídas, e as telas foram conferidas só contra o mock. A integração é o critério de pronto desta sprint.
-- **O catálogo de templates na API.** O `TemplateCatalog` da parte 3 precisa ler o catálogo novo da seção 1.2.
-- **A imagem de Open Graph de cada template.** O ADR-0009 manda cada template embarcar a própria imagem para a prévia do link. As metatags já saem com o nome e a data do evento, e falta a imagem.
-- **O tempo limite de cada salto.** A seção 9.4 do Guia deixou os valores em aberto, e o `ApiClient` ainda não desiste sozinho de uma API lenta. O tier Front precisa desistir antes que o convidado desista da página.
+O backend chegou na branch `gabriel`, com as rotas da tabela 4.1 escritas e funcionando. A estrutura em pacotes, o limite de taxa na ordem da seção 9.5 e o uso das peças compartilhadas estavam certos. O que precisou mudar foi o lugar de algumas regras e o formato do que cada camada recebe e devolve. O commit original entrou com a autoria do Gabriel e os ajustes vieram em cima dele, para a revisão enxergar a diferença.
+
+### 3.1 O que mudou
+
+| O código fazia | A regra | Como ficou |
+|---|---|---|
+| A camada de Dados decidia que só a confirmação ocupa vaga e somava `1 + acompanhantes` da resposta nova | Guia 1.6 e 3.4: os Dados recebem `seatsRequested` calculado e não sabem que o talvez vale zero | O Domínio calcula em `seatsRequested(status, companionCount)` e entrega o número. Os Dados só conferem o teto, com a soma do diagrama do UC005 |
+| A camada de Dados zerava os acompanhantes e apagava a observação de quem respondeu não | Guia 4.1: o A1 do UC005 é aplicado no Domínio | O Domínio monta a resposta já com zero acompanhantes e sem observação, e os Dados gravam o que recebem |
+| O filtro "sim ou talvez" e a categoria `ALLERGY` estavam escritos no SQL | Guia 4.3 e 6.3: os status chegam por parâmetro, e a categoria que exige descrição vem do catálogo do banco | O `DietaryService` passa `[ACCEPTED, MAYBE]` e os códigos com `requiresDescription` |
+| A validação da observação usava as cinco categorias escritas no código | Guia 3.2 e 7.2: `validateDietaryNote` confere contra as categorias do banco | `validateDietaryNote(dietaryNote, categories)` recebe a lista de `listDietaryCategories` |
+| A exportação fazia uma consulta por convidado | Guia 3.3: uma linha por convidado, com a agregação no banco | Uma consulta só, com junção à esquerda e `array_agg` das categorias |
+| O Domínio recebia e devolvia os tipos HTTP do `contract`, com a data já em texto ISO | Guia 4, regra 2: o Domínio recebe comando e devolve modelo | O Domínio recebe `InviteCommand`, `CustomizationCommand` e `RsvpCommand`, devolve modelo, e a Apresentação traduz para o contrato |
+| A data e a hora eram juntas com o fuso `-03:00` fixo, e a data no passado era comparada com o instante atual | ADR-0013: fuso `America/Sao_Paulo` por nome, junção na Apresentação e comparação por dia | `projectInstant` junta na Apresentação, e `projectDate` compara por dia no Domínio. Convite para hoje passa mesmo com a hora já vencida |
+| O tamanho do nome e do local estava fixo em 80 e 120 | Guia 4.1: os limites são de cada template | O Domínio usa os limites do template do convite, e o do template padrão na criação |
+| Um catálogo de templates "legado" convivia com o do `contract` | Guia 10.3: o catálogo mora num lugar só | O `TemplateCatalog` lê só o `contract`, que já tinha os três templates do front |
+| O email repetido virava exceção lançada pela camada de Dados | Guia 9.2: os Dados devolvem valor, e o Domínio dá nome ao erro | `createIfEmailFree` devolve vazio, e o Domínio recusa com `alreadyRegistered` |
+| As respostas não traziam os cabeçalhos de cache e de não indexação | Guia 9.5, a tabela por rota | A leitura pública sai com `private, no-cache, no-store` e `X-Robots-Tag: noindex`, a resposta do convidado com `no-store`, e o painel com `private, no-store` |
+| Os nomes eram próprios, como `resolveGuestResponse`, `attendance` e `PanelService` | Guia 4.2 e 4.3 e o Diagrama de Componentes | Os nomes das tabelas, como `getGuestResponse`, `findAttendanceByStatus`, `AttendanceService` e `DietaryService` |
+
+### 3.2 O que foi decidido junto
+
+- **Faixa numérica e formato de data são forma.** O Gabriel tinha criado a regra `maxValue` para inteiros grandes demais, o que mudaria o conjunto fechado de regras da seção 9.3. Um inteiro que não cabe na coluna do banco, ou uma data fora de AAAA-MM-DD, passou a ser lido como pedido malformado, com 400. Data ausente continua sendo regra, com 422. É a linha 38 da seção 11.1 do Guia.
+- **As operações novas da camada de Dados** ganharam uma segunda tabela na seção 4.3 do Guia, como a 4.2 já tinha para os serviços. É a linha 39.
+- **As projeções que atravessam as camadas**, como o convite com a personalização e as linhas do painel, foram para `model/`. A Apresentação precisa lê-las e não pode importar da camada de Dados pela seção 6.2.
+- **O total de pessoas do UC007** é somado no Domínio, com `seatsRequested`, sobre as linhas que a lista já traz. Pedir a soma ao banco obrigaria a escrever a regra do talvez no SQL. A seção 6.3 proíbe percorrer uma lista para contar o que um `GROUP BY` resolveria, e aqui o `GROUP BY` só resolveria levando a regra junto.
+- **O `TemplateCatalog` ganhou `findTemplate` e `defaultTemplate`** no lugar de `listTemplateCodes`, que nada usava. A validação das cores precisa das cores padrão do template, e a criação precisa dos limites do template padrão. O `TemplateSet` do front virou dois arquivos por template, o CSS e a imagem de prévia, sem operação de código. O DAS e o Diagrama de Componentes foram atualizados.
+- **O CSV usa ponto e vírgula**, que é o separador que a planilha em português abre sem perguntar, com BOM para os acentos.
+
+### 3.3 O que não entrou
+
+O commit do Gabriel também trazia um segundo front, com a página `/dashboard`, outro formulário de resposta e os templates Botânico e Moderno. Ele conflitava com o front que já estava na `main` e ficou de fora, assim como os dois documentos que vieram junto: um relatório do processo e um prompt para ferramenta de IA, que não são documentação do projeto. Os testes dele foram reescritos, porque testavam o catálogo legado e as assinaturas antigas.
+
+### 3.4 Como foi conferido
+
+- **Testes unitários do Domínio:** a regra das vagas, o A1, a descrição exigida pelo catálogo, o fuso por dia e a publicação idempotente.
+- **Testes de integração contra PostgreSQL:** inclusive quatro respostas simultâneas num teto de cinco vagas, das quais só duas passam.
+- **Teste de ponta a ponta das rotas da tabela 4.1:** inclusive o 404 igual, no corpo e no cabeçalho, para token inexistente, token malformado, convite despublicado e convite de outro anfitrião.
+- **O front da `main` contra a API de verdade:** cadastro, criação, correção, personalização, publicação, resposta, lotação recusada, link pessoal, painel, CSV e despublicação, num navegador.
+
+## 4. O fechamento do MVP
+
+Com o front e o backend juntos, quatro pendências que impediam chamar o MVP de pronto foram fechadas.
+
+| Pendência | O que foi feito | Registro |
+|---|---|---|
+| O tempo limite de cada salto, que a seção 9.4 do Guia deixou sem número | O `ApiClient` desiste em 4 segundos por tentativa no servidor do tier Front e em 15 no navegador. A desistência vira `ApiUnavailableError`, que na página do convite já leva à página de convite indisponível | Guia 11.1, linha 40 |
+| A imagem de prévia do link de cada template, pedida pelo ADR-0009 | Uma imagem por template em `front/public/templates`, gerada a partir do próprio CSS do template por `npm run og-images`. A página do convite a coloca nas metatags, com o nome e a data, e sem o endereço do evento | ADR-0009, sem decisão nova |
+| Os alertas de segurança do `npm audit` | O Next.js já tinha subido para 16.4.3. Os pacotes indiretos `multer`, `body-parser` e `fast-uri` ganharam versão corrigida pelo campo `overrides` do `package.json` da raiz, e o `vitest` subiu de correção. O `npm audit` fecha sem nenhum alerta | Esta página |
+| O projeto inteiro pelo `docker compose` | Banco, API e front sobem pelo compose do ADR-0003, e o roteiro do navegador passou contra eles: cadastro, criação, correção, personalização, publicação, resposta, lotação, link pessoal, painel, CSV e despublicação | Esta página |
+
+## 5. O que continua em aberto
+
 - **O Protótipo de Baixa Fidelidade da Sprint 3** segue a preencher. As telas que agora existem podem servir de base.
-- **Os alertas do `npm audit`** em dependências da API e do `vitest`. São de outras partes e não foram mexidos aqui.
+- **A hipótese de réplica da API.** O contador do limite de taxa fica na memória do processo, pelo ADR-0010, e deixa de valer se a API ganhar uma segunda instância. Não há réplica no ADR-0003, então não é defeito hoje.
+- **A assimetria entre `publish` e `unpublish`**, registrada na seção 9.4 do Guia. O `unpublish` continua sem repetição automática.
+- **O diagrama de sequência do UC007**, que nunca existiu. A projeção dele já tem nome no código.
+- **O aval do time às linhas 35 a 40 da seção 11.1 do Guia.**
