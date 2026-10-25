@@ -1,32 +1,21 @@
-import { TEMPLATES, type TemplateDefinition } from '@invite-app/contract';
+// TemplateCatalog do DAS, seção 5.2: o catálogo do ADR-0009 lido por dentro do Domínio, para
+// sustentar a RN2 do UC003. Os dados moram em contract/src/templates.ts, compartilhados com
+// o front, e não existe catálogo paralelo aqui.
+import { DEFAULT_TEMPLATE_CODE, TEMPLATES, type TemplateDefinition } from '@invite-app/contract';
 
-const LEGACY_TEMPLATES: readonly TemplateDefinition[] = [
-  {
-    code: 'garden',
-    displayName: 'Jardim',
-    defaultColors: { primary: '#7c9b6b', accent: '#a9c48f' },
-    textLimits: { eventName: 80, location: 120 },
-  },
-  {
-    code: 'night',
-    displayName: 'Noite',
-    defaultColors: { primary: '#5b93b8', accent: '#e8593c' },
-    textLimits: { eventName: 80, location: 120 },
-  },
-];
+export function findTemplate(templateCode: string): TemplateDefinition | undefined {
+  return TEMPLATES.find((template) => template.code === templateCode);
+}
 
-/**
- * Aceita também o catálogo que o front da versão anterior de main ainda consome.
- * `classic` existe nos dois catálogos, então seus papéis de cor são a união dos dois.
- */
-export function findTemplateDefinition(code: string): TemplateDefinition | undefined {
-  const current = TEMPLATES.find((template) => template.code === code);
-  if (code === 'classic' && current) {
-    return {
-      ...current,
-      defaultColors: { ...current.defaultColors, accent: '#f4a231' },
-      textLimits: { ...current.textLimits, eventName: 80 },
-    };
-  }
-  return current ?? LEGACY_TEMPLATES.find((template) => template.code === code);
+export function listTemplateCodes(): string[] {
+  return TEMPLATES.map((template) => template.code);
+}
+
+/** O tamanho máximo do nome do evento e do local no template (UC003 RN2). */
+export function textFieldLimits(templateCode: string): TemplateDefinition['textLimits'] {
+  return (findTemplate(templateCode) ?? defaultTemplate()).textLimits;
+}
+
+export function defaultTemplate(): TemplateDefinition {
+  return findTemplate(DEFAULT_TEMPLATE_CODE)!;
 }

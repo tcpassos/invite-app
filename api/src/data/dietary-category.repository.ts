@@ -1,6 +1,8 @@
+// DietaryCategoryRepository do DAS, seção 5.2: o dado de referência das categorias
+// alimentares (UC006 RN3). Fica fora do InviteRepository pela seção 5.2 do Guia.
 import { Inject, Injectable } from '@nestjs/common';
 import type { Kysely } from 'kysely';
-import type { DietaryCategory } from '../model/guest.js';
+import type { DietaryCategory } from '../model/index.js';
 import { DATABASE } from './database.module.js';
 import type { Database } from './schema.js';
 
@@ -8,7 +10,7 @@ import type { Database } from './schema.js';
 export class DietaryCategoryRepository {
   constructor(@Inject(DATABASE) private readonly db: Kysely<Database>) {}
 
-  async list(): Promise<DietaryCategory[]> {
+  async listDietaryCategories(): Promise<DietaryCategory[]> {
     return this.db
       .selectFrom('dietary_category')
       .select([
@@ -16,7 +18,7 @@ export class DietaryCategoryRepository {
         'display_name as displayName',
         'requires_description as requiresDescription',
       ])
-      .orderBy('code')
+      .orderBy('display_name')
       .execute();
   }
 }

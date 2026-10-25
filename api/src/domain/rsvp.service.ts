@@ -1,190 +1,109 @@
+// RsvpService do Diagrama de Componentes: a superfície pública (UC005 e UC006). São os
+// quatro serviços que o pacote público pode chamar, e nenhum devolve dado de outro
+// convidado (Guia, 5.3).
 import { Injectable } from '@nestjs/common';
-import {
-  DietaryCategoryCode,
-  RsvpStatus,
-  TEXT_LIMITS,
-  type DietaryNoteInput,
-  type DietaryCategoryCode as DietaryCategoryCodeType,
-  type GuestResponsePage,
-  type PublishedInvite,
-} from '@invite-app/contract';
-import type { Invite, InviteCustomization } from '../model/index.js';
-import { InviteRepository, type GuestResponseRecord } from '../data/invite.repository.js';
 import { DietaryCategoryRepository } from '../data/dietary-category.repository.js';
-import { ValidationError, InviteNotOpenError, CapacityExceededError } from './errors.js';
+import { InviteRepository, type RsvpWriteResult } from '../data/invite.repository.js';
+import type {
+  DietaryCategory,
+  Guest,
+  GuestWithNote,
+  InviteWithCustomization,
+} from '../model/index.js';
+import { CapacityExceededError, InviteNotOpenError } from './errors.js';
+import { projectDate } from './project-time.js';
+import { validateRsvp, type RsvpCommand } from './rsvp-rules.js';
 import { generatePersonalToken } from './tokens.js';
 
-const CATEGORY_CODES = new Set<string>(Object.values(DietaryCategoryCode));
-const PROJECT_TIME_ZONE = 'America/Sao_Paulo';
-
-export interface RsvpCommand {
-  name: string;
-  status: string;
-  companionCount?: number;
-  dietaryNote?: { categories: string[]; freeText?: string };
+/** O retorno de getPublishedInvite no diagrama do UC005: convite, personalização e categorias. */
+export interface PublishedInviteView extends InviteWithCustomization {
+  categories: DietaryCategory[];
 }
 
-export function validateRsvpRequest(command: RsvpCommand, companionLimit: number | null) {
-  if (!command.name?.trim()) throw new ValidationError('name', 'required');
-  if (command.name.trim().length > TEXT_LIMITS.guestName) {
-    throw new ValidationError('name', 'maxLength');
-  }
-  const status = Object.values(RsvpStatus).find((value) => value === command.status);
-  if (!status) {
-    throw new ValidationError('status', 'allowedValue');
-  }
-  const companionCount = status === RsvpStatus.Declined ? 0 : command.companionCount;
-  if (status !== RsvpStatus.Declined && companionCount === undefined) {
-    throw new ValidationError('companionCount', 'required');
-  }
-  if (companionCount !== undefined && companionCount < 0) {
-    throw new ValidationError('companionCount', 'minValue');
-  }
-  if (companionCount !== undefined && companionCount > 2_147_483_647) {
-    throw new ValidationError('companionCount', 'maxValue');
-  }
-  if (
-    status !== RsvpStatus.Declined &&
-    companionLimit !== null &&
-    companionCount !== undefined &&
-    companionCount > companionLimit
-  ) {
-    throw new ValidationError('companionCount', 'companionLimit');
-  }
-  const dietaryNote = status === RsvpStatus.Declined ? undefined : command.dietaryNote;
-  const categories: DietaryCategoryCodeType[] = [];
-  for (const category of dietaryNote?.categories ?? []) {
-    const validCategory = Object.values(DietaryCategoryCode).find((code) => code === category);
-    if (!CATEGORY_CODES.has(category) || !validCategory || categories.includes(validCategory)) {
-      throw new ValidationError('dietaryNote.categories', 'allowedValue');
-    }
-    categories.push(validCategory);
-  }
-  const freeText = dietaryNote?.freeText?.trim() ?? '';
-  if (freeText.length > TEXT_LIMITS.dietaryFreeText) {
-    throw new ValidationError('dietaryNote.freeText', 'maxLength');
-  }
-  if (categories.includes(DietaryCategoryCode.Allergy) && !freeText) {
-    throw new ValidationError('dietaryNote.freeText', 'descriptionRequired');
-  }
-  return {
-    name: command.name.trim(),
-    status,
-    companionCount: companionCount ?? 0,
-    categories,
-    freeText: categories.length > 0 ? freeText || null : null,
-  };
-}
-
-export function isWithinResponseDeadline(eventStartsAt: Date, now = new Date()): boolean {
-  const dateInProjectTimeZone = (value: Date) => {
-    const parts = new Intl.DateTimeFormat('en', {
-      timeZone: PROJECT_TIME_ZONE,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).formatToParts(value);
-    const part = (type: Intl.DateTimeFormatPartTypes) =>
-      parts.find((item) => item.type === type)?.value ?? '';
-    return `${part('year')}-${part('month')}-${part('day')}`;
-  };
-  return dateInProjectTimeZone(now) <= dateInProjectTimeZone(eventStartsAt);
+/** O que o link pessoal mostra (UC005 ED2 e RN3). */
+export interface GuestResponseView extends PublishedInviteView {
+  response: GuestWithNote;
+  editable: boolean;
 }
 
 @Injectable()
 export class RsvpService {
   constructor(
     private readonly invites: InviteRepository,
-    private readonly dietaryCategories: DietaryCategoryRepository,
+    private readonly categories: DietaryCategoryRepository,
   ) {}
 
-  async getPublishedInvite(token: string): Promise<PublishedInvite | null> {
-    const found = await this.invites.findPublishedByPublicToken(token);
+  /** O convite publicado, ou vazio para token inexistente, rascunho e despublicado (Guia, 9.5). */
+  async getPublishedInvite(publicToken: string): Promise<PublishedInviteView | null> {
+    const found = await this.invites.findPublishedByPublicToken(publicToken);
     if (!found) return null;
-    return this.publishedView(found.invite, found.customization);
+    return { ...found, categories: await this.categories.listDietaryCategories() };
   }
 
-  async registerRsvp(token: string, command: RsvpCommand) {
-    const found = await this.invites.findPublishedByPublicToken(token);
+  /** UC005 passo 7: valida, deriva as vagas e grava dentro do teto. Vazio se o token não resolve. */
+  async registerRsvp(publicToken: string, rsvpCommand: RsvpCommand): Promise<Guest | null> {
+    const found = await this.invites.findPublishedByPublicToken(publicToken);
     if (!found) return null;
-    const input = validateRsvpRequest(command, found.invite.maxCompanionsPerGuest);
-    const personalToken = generatePersonalToken();
-    const result = await this.invites.saveRsvpWithinCapacity(found.invite.id, {
-      ...input,
-      personalToken,
-      respondedAt: new Date(),
-    });
-    if (result === 'capacity') throw new CapacityExceededError();
-    if (result === 'closed') throw new InviteNotOpenError();
-    return { personalToken };
+    const valid = validateRsvp(
+      rsvpCommand,
+      found.invite,
+      await this.categories.listDietaryCategories(),
+    );
+    const result = await this.invites.saveRsvpWithinCapacity(
+      found.invite.id,
+      { ...valid.guest, respondedAt: new Date(), personalToken: generatePersonalToken() },
+      valid.dietaryNote,
+      valid.seatsRequested,
+    );
+    return savedGuest(result);
   }
 
-  async resolveGuestResponse(token: string): Promise<GuestResponsePage | null> {
-    const guest = await this.invites.findGuestByPersonalToken(token);
-    if (!guest) return null;
-    const found = await this.invites.findDetails(guest.inviteId);
+  /**
+   * A resposta de quem apresentou o token pessoal. Abre também com o convite despublicado,
+   * porque quem tem o token já respondeu àquele convite (Guia, 9.5).
+   */
+  async getGuestResponse(personalToken: string): Promise<GuestResponseView | null> {
+    const response = await this.invites.findGuestByPersonalToken(personalToken);
+    if (!response) return null;
+    const found = await this.invites.findWithCustomization(response.guest.inviteId);
     if (!found) return null;
-    return this.guestPage(guest, found.invite, found.customization);
-  }
-
-  async updateRsvp(token: string, command: RsvpCommand): Promise<GuestResponsePage | null> {
-    const guest = await this.invites.findGuestByPersonalToken(token);
-    if (!guest) return null;
-    const found = await this.invites.findDetails(guest.inviteId);
-    if (!found) return null;
-    if (!isWithinResponseDeadline(found.invite.eventStartsAt)) throw new InviteNotOpenError();
-    const input = validateRsvpRequest(command, found.invite.maxCompanionsPerGuest);
-    const result = await this.invites.updateRsvpWithinCapacity(guest, {
-      ...input,
-      personalToken: guest.personalToken,
-      respondedAt: new Date(),
-    });
-    if (result === 'capacity') throw new CapacityExceededError();
-    if (result === 'closed') throw new InviteNotOpenError();
-    const updated = await this.invites.findGuestByPersonalToken(token);
-    return updated ? this.guestPage(updated, found.invite, found.customization) : null;
-  }
-
-  private async publishedView(
-    invite: Invite,
-    customization: InviteCustomization,
-  ): Promise<PublishedInvite> {
-    const categories = await this.dietaryCategories.list();
     return {
-      eventName: invite.eventName,
-      eventStartsAt: invite.eventStartsAt.toISOString(),
-      location: invite.location,
-      companionLimit: invite.maxCompanionsPerGuest,
-      customization: {
-        templateCode: customization.templateCode,
-        colorOverrides: Object.fromEntries(
-          customization.colorOverrides.map(({ role, value }) => [role, value]),
-        ),
-      },
-      dietaryCategories: categories,
+      ...found,
+      categories: await this.categories.listDietaryCategories(),
+      response,
+      editable: isEditable(found.invite.eventStartsAt),
     };
   }
 
-  private async guestPage(
-    guest: GuestResponseRecord,
-    invite: NonNullable<Awaited<ReturnType<InviteRepository['findById']>>>,
-    customization: InviteCustomization,
-  ): Promise<GuestResponsePage> {
-    const publishedInvite = await this.publishedView(invite, customization);
-    const note: DietaryNoteInput | null =
-      guest.categories.length === 0
-        ? null
-        : { categories: guest.categories, ...(guest.freeText ? { freeText: guest.freeText } : {}) };
-    return {
-      invite: publishedInvite,
-      response: {
-        name: guest.name,
-        status: guest.status,
-        companionCount: guest.companionCount,
-        dietaryNote: note,
-        respondedAt: guest.respondedAt.toISOString(),
-      },
-      editable: isWithinResponseDeadline(invite.eventStartsAt),
-    };
+  /** UC005 RN3: regrava a resposta até o fim do dia do evento, respeitando o teto (RN4). */
+  async updateRsvp(
+    personalToken: string,
+    rsvpCommand: RsvpCommand,
+  ): Promise<GuestResponseView | null> {
+    const current = await this.getGuestResponse(personalToken);
+    if (!current) return null;
+    if (!current.editable) throw new InviteNotOpenError();
+    const valid = validateRsvp(rsvpCommand, current.invite, current.categories);
+    const result = await this.invites.updateRsvpWithinCapacity(
+      current.response.guest.id,
+      current.invite.id,
+      { ...valid.guest, respondedAt: new Date() },
+      valid.dietaryNote,
+      valid.seatsRequested,
+    );
+    savedGuest(result);
+    return this.getGuestResponse(personalToken);
   }
+}
+
+/** ADR-0013: a alteração vale até 23:59:59 do dia do evento, no fuso do projeto. */
+export function isEditable(eventStartsAt: Date, now = new Date()): boolean {
+  return projectDate(now) <= projectDate(eventStartsAt);
+}
+
+/** Dá nome de negócio à recusa que a camada de Dados devolveu (Guia, 9.2). */
+function savedGuest(result: RsvpWriteResult): Guest {
+  if (result.kind === 'saved') return result.guest;
+  if (result.reason === 'CapacityExceeded') throw new CapacityExceededError();
+  throw new InviteNotOpenError();
 }
