@@ -1,88 +1,68 @@
-import { DietaryCategoryCode, RsvpStatus } from '@invite-app/contract';
-import { ValidationError } from './errors.js';
-import { isWithinResponseDeadline, validateRsvpRequest } from './rsvp.service.js';
+import type { DietaryCategoryRepository } from '../data/dietary-category.repository.js';
+import type { InviteRepository } from '../data/invite.repository.js';
+import type { Invite } from '../model/index.js';
+import { CapacityExceededError, InviteNotOpenError } from './errors.js';
+import { RsvpService, isEditable } from './rsvp.service.js';
 
-describe('validateRsvpRequest', () => {
-  it('accepts a response with dietary categories and companions within the configured limit', () => {
-    expect(
-      validateRsvpRequest(
-        {
-          name: 'Ana',
-          status: RsvpStatus.Accepted,
-          companionCount: 2,
-          dietaryNote: {
-            categories: [DietaryCategoryCode.Vegetarian, DietaryCategoryCode.Allergy],
-            freeText: 'Amendoim',
-          },
-        },
-        2,
-      ),
-    ).toMatchObject({
-      name: 'Ana',
-      companionCount: 2,
-      categories: [DietaryCategoryCode.Vegetarian, DietaryCategoryCode.Allergy],
-      freeText: 'Amendoim',
+const invite: Invite = {
+  id: '10',
+  hostId: '1',
+  eventName: 'Festa',
+  eventStartsAt: new Date('2099-01-01T21:00:00Z'),
+  location: 'Salão',
+  status: 'PUBLISHED',
+  publicToken: 'T',
+  capacityLimit: 10,
+  maxCompanionsPerGuest: null,
+};
+const found = { invite, customization: { templateCode: 'classic', colorOverrides: [] } };
+const categories = { listDietaryCategories: vi.fn(async () => []) };
+
+function service(repo: Partial<Record<keyof InviteRepository, unknown>>) {
+  return new RsvpService(
+    repo as unknown as InviteRepository,
+    categories as unknown as DietaryCategoryRepository,
+  );
+}
+
+describe('RsvpService.registerRsvp (UC005)', () => {
+  it('entrega aos Dados as vagas calculadas no Domínio, e não o status', async () => {
+    const save = vi.fn(async () => ({ kind: 'saved', guest: { personalToken: 'P' } }));
+    const repo = {
+      findPublishedByPublicToken: vi.fn(async () => found),
+      saveRsvpWithinCapacity: save,
+    };
+    await service(repo).registerRsvp('T', { name: 'Ana', status: 'MAYBE', companionCount: 3 });
+    expect(save).toHaveBeenCalledWith('10', expect.anything(), null, 0);
+    await service(repo).registerRsvp('T', { name: 'Ana', status: 'ACCEPTED', companionCount: 3 });
+    expect(save).toHaveBeenLastCalledWith('10', expect.anything(), null, 4);
+  });
+
+  it('dá nome de negócio às recusas dos Dados (Guia, 9.2)', async () => {
+    const refusing = (reason: string) => ({
+      findPublishedByPublicToken: vi.fn(async () => found),
+      saveRsvpWithinCapacity: vi.fn(async () => ({ kind: 'refused', reason })),
     });
+    const body = { name: 'Ana', status: 'ACCEPTED' };
+    await expect(
+      service(refusing('CapacityExceeded')).registerRsvp('T', body),
+    ).rejects.toBeInstanceOf(CapacityExceededError);
+    await expect(service(refusing('InviteNotOpen')).registerRsvp('T', body)).rejects.toBeInstanceOf(
+      InviteNotOpenError,
+    );
   });
 
-  it('requires an allergy description and enforces companion counts', () => {
-    expect(() =>
-      validateRsvpRequest(
-        {
-          name: 'Ana',
-          status: RsvpStatus.Accepted,
-          companionCount: 0,
-          dietaryNote: { categories: [DietaryCategoryCode.Allergy] },
-        },
-        null,
-      ),
-    ).toThrow(new ValidationError('dietaryNote.freeText', 'descriptionRequired'));
-    expect(() =>
-      validateRsvpRequest({ name: 'Ana', status: RsvpStatus.Maybe, companionCount: 3 }, 2),
-    ).toThrow(new ValidationError('companionCount', 'companionLimit'));
-  });
-
-  it('rejects unknown response statuses and dietary categories', () => {
-    expect(() =>
-      validateRsvpRequest({ name: 'Ana', status: 'UNKNOWN', companionCount: 0 }, null),
-    ).toThrow(new ValidationError('status', 'allowedValue'));
-    expect(() =>
-      validateRsvpRequest(
-        {
-          name: 'Ana',
-          status: RsvpStatus.Accepted,
-          companionCount: 0,
-          dietaryNote: { categories: ['UNKNOWN'] },
-        },
-        null,
-      ),
-    ).toThrow(new ValidationError('dietaryNote.categories', 'allowedValue'));
-  });
-
-  it('normalizes declined responses to zero companions and no dietary note', () => {
-    expect(
-      validateRsvpRequest(
-        {
-          name: 'Ana',
-          status: RsvpStatus.Declined,
-          companionCount: 5,
-          dietaryNote: { categories: [DietaryCategoryCode.Allergy], freeText: 'Amendoim' },
-        },
-        0,
-      ),
-    ).toMatchObject({
-      status: RsvpStatus.Declined,
-      companionCount: 0,
-      categories: [],
-      freeText: null,
-    });
+  it('devolve vazio quando o token não resolve', async () => {
+    const repo = { findPublishedByPublicToken: vi.fn(async () => null) };
+    await expect(service(repo).registerRsvp('X', { name: 'Ana' })).resolves.toBeNull();
   });
 });
 
-describe('isWithinResponseDeadline', () => {
-  it('allows edits through the event day in the project timezone, but not after it', () => {
-    const event = new Date('2026-10-20T22:00:00.000Z');
-    expect(isWithinResponseDeadline(event, new Date('2026-10-21T02:59:59.000Z'))).toBe(true);
-    expect(isWithinResponseDeadline(event, new Date('2026-10-21T03:00:00.000Z'))).toBe(false);
+describe('isEditable (ADR-0013)', () => {
+  const event = new Date('2026-12-01T23:00:00Z'); // 20h do dia 1º em São Paulo
+
+  it('vale até 23:59 do dia do evento no fuso do projeto', () => {
+    expect(isEditable(event, new Date('2026-12-02T02:59:00Z'))).toBe(true);
+    expect(isEditable(event, new Date('2026-12-02T03:00:00Z'))).toBe(false);
   });
 });
