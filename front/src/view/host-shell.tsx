@@ -4,7 +4,8 @@
 // volta à entrada (Guia, 4.1).
 import { createContext, useContext, type ReactNode } from 'react';
 import { useHostSession, type HostSession } from '../controller/host-session';
-import { Brand, Notice } from './brand';
+import { Brand } from './brand';
+import { Notice } from './notice';
 import { LeaveIcon } from './icons';
 import { UNAVAILABLE_MESSAGE } from './messages';
 

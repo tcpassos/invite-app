@@ -107,7 +107,7 @@ export class InviteController {
     return { status: 'UNPUBLISHED' };
   }
 
-  /** Consultada a cada 20 segundos pelo painel (ADR-0007). Resposta guardada seria lista velha. */
+  /** Consultada periodicamente pelo painel (ADR-0007). Resposta guardada seria lista velha. */
   @Get(':inviteId/attendance')
   @Header('Cache-Control', PRIVATE_NO_STORE)
   async listAttendance(

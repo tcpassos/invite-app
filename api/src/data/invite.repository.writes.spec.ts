@@ -73,7 +73,7 @@ describe.skipIf(!url)('InviteRepository, escritas e painel', () => {
     await db.deleteFrom('invite').where('id', '=', invite.id).execute();
   });
 
-  it('confere o teto dentro da transação com as vagas que o Domínio calculou (UC005 RN4)', async () => {
+  it('confere o teto na transação com as vagas que o Domínio calculou (UC005 RN4)', async () => {
     const inviteId = await publishedInvite(5);
     const ana = await repo.saveRsvpWithinCapacity(inviteId, guest('Ana', 'ACCEPTED', 2), null, 3);
     expect(ana.kind).toBe('saved');

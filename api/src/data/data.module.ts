@@ -1,5 +1,5 @@
-// Os repositórios da camada de Dados, disponíveis para todos os módulos do Domínio.
-// Cada parte acrescenta aqui o repositório que criar.
+// Os três repositórios da camada de Dados, disponíveis para os serviços do Domínio de
+// qualquer módulo.
 import { Global, Module } from '@nestjs/common';
 import { InviteRepository } from './invite.repository.js';
 import { HostRepository } from './host.repository.js';

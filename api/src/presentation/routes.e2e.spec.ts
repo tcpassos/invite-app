@@ -56,7 +56,7 @@ describe.skipIf(!url)('rotas da API de ponta a ponta', () => {
     companionLimit: 2,
   };
 
-  it('entrada do anfitrião: cadastro, sessão, recusa sem dizer o campo e saída (UC001)', async () => {
+  it('entrada do anfitrião: cadastro, sessão, recusa sem apontar campo e saída (UC001)', async () => {
     const { agent, email } = host('ana');
     await agent.get('/auth/session').expect(401);
     const signUp = await agent
@@ -224,7 +224,7 @@ describe.skipIf(!url)('rotas da API de ponta a ponta', () => {
     await request(app.getHttpServer()).get(`/public/responses/${personal}`).expect(200);
   });
 
-  it('as situações de ausência saem com o mesmo 404, sem nada que as distinga (Guia, 9.5)', async () => {
+  it('as situações de ausência saem com o mesmo 404, idêntico (Guia, 9.5)', async () => {
     const ana = await signedUp('dona');
     const bia = await signedUp('outra');
     const { body: invite } = await ana.post('/invites').send(newInvite).expect(201);
@@ -245,7 +245,10 @@ describe.skipIf(!url)('rotas da API de ponta a ponta', () => {
       expect(response.status).toBe(404);
       expect(response.headers['cache-control']).toBe('no-store');
       const { traceId: _traceId, ...body } = response.body;
-      expect(body).toEqual({ code: 'NOT_FOUND', message: 'Não encontramos o que você procurou.' });
+      expect(body).toEqual({
+        code: 'NOT_FOUND',
+        message: 'Não encontramos o que você procurou.',
+      });
     }
   });
 });

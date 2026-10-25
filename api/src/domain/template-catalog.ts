@@ -7,10 +7,6 @@ export function findTemplate(templateCode: string): TemplateDefinition | undefin
   return TEMPLATES.find((template) => template.code === templateCode);
 }
 
-export function listTemplateCodes(): string[] {
-  return TEMPLATES.map((template) => template.code);
-}
-
 /** O tamanho máximo do nome do evento e do local no template (UC003 RN2). */
 export function textFieldLimits(templateCode: string): TemplateDefinition['textLimits'] {
   return (findTemplate(templateCode) ?? defaultTemplate()).textLimits;

@@ -7,7 +7,8 @@ import { ErrorCode, TEXT_LIMITS, type ValidationRule } from '@invite-app/contrac
 import { errorCode, fieldErrors } from '../controller/api-errors';
 import { signIn, signUp } from '../controller/host-panel';
 import { PANEL_PATH } from '../controller/host-session';
-import { Brand, FieldError } from './brand';
+import { Brand } from './brand';
+import { FieldError } from './field-error';
 import { Spinner } from './icons';
 import { RATE_LIMITED_MESSAGE, UNAVAILABLE_MESSAGE, ruleMessage } from './messages';
 

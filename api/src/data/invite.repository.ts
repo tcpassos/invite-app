@@ -175,7 +175,7 @@ export class InviteRepository {
 
   // ------------------------------------------------------------ Parte 3, convite do anfitrião
 
-  /** Os convites de um anfitrião, o mais novo primeiro. É a lista do painel, não autorização. */
+  /** Os convites de um anfitrião, o mais novo primeiro. É filtro da lista, não autorização. */
   async findByHost(hostId: string): Promise<Invite[]> {
     if (!isId(hostId)) return [];
     const rows = await this.db
@@ -350,7 +350,8 @@ export class InviteRepository {
         'dietary_note.id as note_id',
         'dietary_note.free_text',
         sql<DietaryCategoryCode[]>`coalesce(
-          array_agg(dietary_note_category.category_code ORDER BY dietary_note_category.category_code)
+          array_agg(dietary_note_category.category_code
+            ORDER BY dietary_note_category.category_code)
             FILTER (WHERE dietary_note_category.category_code IS NOT NULL),
           '{}')`.as('category_codes'),
       ])

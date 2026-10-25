@@ -55,7 +55,7 @@ export class InviteService {
     return found!;
   }
 
-  /** UC002 A2: corrige o rascunho com as mesmas regras da criação. Fora do rascunho, recusa (RN3). */
+  /** UC002 A2: corrige o rascunho com as regras da criação. Fora do rascunho, recusa (RN3). */
   async updateInvite(
     inviteId: string,
     hostId: string,
@@ -70,7 +70,7 @@ export class InviteService {
     return { invite: updated, customization };
   }
 
-  /** UC003: template do catálogo, só os papéis de cor dele, e os textos no limite do template. */
+  /** UC003: template do catálogo, só os papéis de cor dele e os textos no limite dele. */
   async customizeInvite(
     inviteId: string,
     hostId: string,

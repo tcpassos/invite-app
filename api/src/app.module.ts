@@ -7,7 +7,8 @@ import { InviteModule } from './presentation/authenticated/invite.module.js';
 import { CommonModule } from './presentation/common/common.module.js';
 import { PublicModule } from './presentation/public/public.module.js';
 
-// Módulo raiz. Cada parte acrescenta em `imports` o módulo das rotas que implementa.
+// Módulo raiz: o banco, os repositórios, as peças comuns da Apresentação e um módulo por
+// pacote de rotas, auth, autenticado e público (Guia, 5.3).
 @Module({})
 export class AppModule {
   static forRoot(config: AppConfig): DynamicModule {

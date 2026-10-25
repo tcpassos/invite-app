@@ -98,7 +98,7 @@ A maior parte não era usada por tela nenhuma.
 
 As Instruções de Implementação deixam o jeito de fazer o mock com a parte 2, e pedem só que ele responda com os tipos de `contract/` e com o formato de erro. O protótipo fazia o mock com rotas de API dentro do próprio Next.js, em `app/auth/*/route.ts`, devolvendo um token JWT fora do contrato. Rota de API no Next.js é exatamente o que o ADR-0004 proíbe e o que a terceira busca da seção 6.4 procura.
 
-O mock passou a ser um processo Node separado, em `front/mock/mock-api.ts`, fora do `src` e fora da imagem. Ele sobe na porta 3001, a mesma da API, e responde as 18 rotas da tabela 4.1 com os tipos do contrato e com as recusas, para as telas de erro existirem antes da integração. Quando a API ficar pronta, basta não subir o mock. O README do front explica como usar.
+O mock passou a ser um processo Node separado, em `front/mock/mock-api.ts`, fora do `src` e fora da imagem. Ele sobe na porta 3001, a mesma da API, e responde as 18 rotas da tabela 4.1 com os tipos do contrato e com as recusas, para as telas de erro existirem antes da integração. Com a API pronta, ele continua servindo para desenvolver as telas sem banco, e também sobe pelo compose, no lugar da API, com o `docker-compose.mock.yml`. O README do front explica como usar.
 
 ### 1.8 O CSV do UC008 sem restrição registrada
 
@@ -151,6 +151,7 @@ O backend chegou na branch `gabriel`, com as rotas da tabela 4.1 escritas e func
 - **As operações novas da camada de Dados** ganharam uma segunda tabela na seção 4.3 do Guia, como a 4.2 já tinha para os serviços. É a linha 39.
 - **As projeções que atravessam as camadas**, como o convite com a personalização e as linhas do painel, foram para `model/`. A Apresentação precisa lê-las e não pode importar da camada de Dados pela seção 6.2.
 - **O total de pessoas do UC007** é somado no Domínio, com `seatsRequested`, sobre as linhas que a lista já traz. Pedir a soma ao banco obrigaria a escrever a regra do talvez no SQL. A seção 6.3 proíbe percorrer uma lista para contar o que um `GROUP BY` resolveria, e aqui o `GROUP BY` só resolveria levando a regra junto.
+- **O `TemplateCatalog` ganhou `findTemplate` e `defaultTemplate`** no lugar de `listTemplateCodes`, que nada usava. A validação das cores precisa das cores padrão do template, e a criação precisa dos limites do template padrão. O `TemplateSet` do front virou dois arquivos por template, o CSS e a imagem de prévia, sem operação de código. O DAS e o Diagrama de Componentes foram atualizados.
 - **O CSV usa ponto e vírgula**, que é o separador que a planilha em português abre sem perguntar, com BOM para os acentos.
 
 ### 3.3 O que não entrou

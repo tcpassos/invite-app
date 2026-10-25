@@ -107,7 +107,7 @@ export class PublicRsvpController {
   }
 }
 
-/** Confere a forma do RsvpRequest, e só. Valor fora do conjunto é regra do Domínio (Guia, 3.1). */
+/** Só a forma do RsvpRequest. Valor fora do conjunto é regra do Domínio (Guia, 3.1). */
 function parseRsvpCommand(raw: unknown): RsvpCommand {
   const body = asObject(raw);
   const note = optionalObject(body, 'dietaryNote');

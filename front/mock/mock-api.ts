@@ -293,26 +293,26 @@ function dietarySummary(invite: Invite): DietarySummary {
   };
 }
 
+/** O mesmo formato do renderCsv da API: aspas em tudo, ponto e vírgula e BOM. */
 function csv(invite: Invite): string {
   // ADR-0008, medida 5: campo começado por =, +, - ou @ ganha aspa simples.
   const cell = (value: string | number) => {
-    let text = String(value);
-    if (/^[=+\-@]/.test(text)) text = `'${text}`;
-    return /[";\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+    const text = String(value);
+    return `"${(/^[=+\-@]/.test(text) ? `'${text}` : text).replace(/"/g, '""')}"`;
   };
   const label = (code: DietaryCategoryCode) => CATEGORIES.find((c) => c.code === code)!.displayName;
   const rows = guests
     .filter((guest) => guest.inviteId === invite.id && guest.status !== 'DECLINED')
+    .sort((a, b) => a.name.localeCompare(b.name))
     .map((g) => [
       g.name,
       g.status === 'ACCEPTED' ? 'Sim' : 'Talvez',
       g.companionCount,
-      g.categories.map(label).join(' / '),
+      g.categories.map(label).sort().join(', '),
       g.freeText ?? '',
     ]);
-  return [['Nome', 'Situação', 'Acompanhantes', 'Categorias', 'Observação'], ...rows]
-    .map((row) => row.map(cell).join(';'))
-    .join('\r\n');
+  const lines = [['Nome', 'Situação', 'Acompanhantes', 'Categorias', 'Observação'], ...rows];
+  return '\uFEFF' + lines.map((row) => row.map(cell).join(';')).join('\r\n');
 }
 
 // ---------------------------------------------------------------- HTTP
@@ -539,7 +539,7 @@ const routes: Route[] = [
     async (req, res, [id]) => {
       const invite = ownInvite(req, id!);
       res.setHeader('content-type', 'text/csv; charset=utf-8');
-      res.setHeader('content-disposition', 'attachment; filename="lista.csv"');
+      res.setHeader('content-disposition', 'attachment; filename="lista-para-o-buffet.csv"');
       return csv(invite);
     },
   ],

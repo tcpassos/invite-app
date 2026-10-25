@@ -40,7 +40,7 @@ export class RsvpService {
     return { ...found, categories: await this.categories.listDietaryCategories() };
   }
 
-  /** UC005 passo 7: valida, deriva as vagas e grava dentro do teto. Vazio se o token não resolve. */
+  /** UC005 passo 7: valida, deriva as vagas e grava no teto. Vazio se o token não resolve. */
   async registerRsvp(publicToken: string, rsvpCommand: RsvpCommand): Promise<Guest | null> {
     const found = await this.invites.findPublishedByPublicToken(publicToken);
     if (!found) return null;
