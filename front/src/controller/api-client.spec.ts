@@ -107,3 +107,26 @@ describe('ApiClient.download', () => {
     expect((erro as ApiRequestError).code).toBe('NOT_FOUND');
   });
 });
+
+describe('ApiClient com tempo limite (Guia, 9.4)', () => {
+  // Um fetch que nunca responde e só termina quando o sinal desiste.
+  const hanging = vi.fn(
+    (_url: unknown, init?: RequestInit) =>
+      new Promise<Response>((_resolve, reject) => {
+        init?.signal?.addEventListener('abort', () => reject(init.signal?.reason));
+      }),
+  );
+  const fetch = hanging as unknown as typeof globalThis.fetch;
+
+  it('desiste da API lenta e trata como indisponível, repetindo só quando pedido', async () => {
+    const client = new ApiClient({ baseUrl: 'http://api:3000', fetch, timeoutMs: 20 });
+    await expect(client.request('GET', '/x', { retry: 'once' })).rejects.toBeInstanceOf(
+      ApiUnavailableError,
+    );
+    expect(hanging).toHaveBeenCalledTimes(2);
+    await expect(client.request('POST', '/x', { body: {} })).rejects.toBeInstanceOf(
+      ApiUnavailableError,
+    );
+    expect(hanging).toHaveBeenCalledTimes(3);
+  });
+});
