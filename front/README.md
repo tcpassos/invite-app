@@ -7,10 +7,19 @@ Tier Front do invite-app, em Next.js. Renderiza o convite público no servidor e
 | `src/app` | As rotas do Next.js. Cada página busca o dado pelo `ApiClient` e entrega para a view |
 | `src/controller` | O `ApiClient`, que já existe, e a lógica de tela, como a consulta periódica do ADR-0007 |
 | `src/view` | Os componentes de tela do convite público e do painel |
-| `src/templates` | Os templates em HTML e CSS do ADR-0009 |
+| `src/templates` | O `TemplateSet` em JSX e seus estilos CSS estáticos do ADR-0009 |
 | `public` | Arquivos servidos como estão, entre eles o `robots.txt` |
 
 A view pode usar o controller, e o controller não conhece a view. `templates` não importa código nenhum. O lint verifica as duas regras e também recusa `pg`, `kysely` e `'use server'` dentro do front, porque o Next.js aqui é front-end apenas (ADR-0004).
+
+## Fluxos disponíveis
+
+- `/`: cadastro e entrada do anfitrião.
+- `/dashboard`: criação, edição visual, prévia, publicação e despublicação de convites; painel de presença com consulta periódica e consolidação/exportação CSV.
+- `/i/{publicToken}`: convite público e formulário de presença sem conta.
+- `/r/{personalToken}`: consulta e alteração da resposta pessoal dentro do prazo do evento.
+
+O mesmo componente de convite é usado na prévia e na página pública. `src/templates/` mantém a estrutura visual dos templates e seus estilos; os códigos, cores padrão e limites de texto ficam catalogados em `contract/src/templates.ts`.
 
 ## Comandos
 

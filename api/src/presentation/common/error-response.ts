@@ -38,6 +38,7 @@ const RULE_MESSAGES: Record<ValidationRule, string> = {
   allowedValue: 'Escolha uma das opções disponíveis.',
   companionLimit: 'O número de acompanhantes está acima do limite deste convite.',
   minValue: 'O valor informado está abaixo do permitido.',
+  maxValue: 'O valor informado está acima do permitido.',
   dateNotInPast: 'A data do evento não pode estar no passado.',
   descriptionRequired: 'Descreva a restrição alimentar marcada.',
   maxLength: 'O texto passou do tamanho permitido.',

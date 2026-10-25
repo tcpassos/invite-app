@@ -1,0 +1,71 @@
+.invite-template {
+  position: relative;
+  min-height: 270px;
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--invite-primary) 24%, transparent);
+  border-radius: 18px;
+  padding: 2rem;
+  background: var(--invite-background);
+  color: var(--invite-text);
+}
+
+.invite-template h1 {
+  margin: 0;
+  color: var(--invite-primary);
+  font-size: clamp(2rem, 7vw, 3.6rem);
+  overflow-wrap: anywhere;
+}
+
+.invite-template p {
+  margin: 0;
+}
+
+.invite-template__eyebrow {
+  color: var(--invite-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.invite-template--classic {
+  justify-items: center;
+  border-width: 2px;
+  outline: 1px solid color-mix(in srgb, var(--invite-primary) 24%, transparent);
+  outline-offset: -8px;
+  font-family: Georgia, 'Times New Roman', serif;
+  text-align: center;
+}
+
+.invite-template--botanical {
+  justify-items: center;
+  border-radius: 42% 42% 18px 18px / 20% 20% 18px 18px;
+  padding-top: 3.5rem;
+  text-align: center;
+}
+
+.invite-template__ornament {
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid color-mix(in srgb, var(--invite-primary) 35%, transparent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.invite-template--modern {
+  align-content: end;
+  border: 0;
+  border-left: 12px solid var(--invite-primary);
+  border-radius: 4px;
+  text-align: left;
+}
+
+.invite-template--modern .invite-template__details {
+  display: grid;
+  gap: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--invite-primary) 35%, transparent);
+  padding-top: 1rem;
+}

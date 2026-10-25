@@ -30,11 +30,17 @@ export interface AllergyDescription {
   description: string;
 }
 
-/**
- * Consolidação do UC008. Só entram categorias com contagem maior que zero, então
- * `counts` vazio é o A1, nenhuma restrição registrada, e a tela não oferece o CSV.
- */
+/** Consolidação do UC008; a exportação também inclui respostas sem restrição alimentar. */
 export interface DietarySummary {
   counts: CategoryCount[];
   descriptions: AllergyDescription[];
+}
+
+/** Uma linha do arquivo CSV do UC008, ainda sem serialização CSV. */
+export interface DietaryExportRow {
+  name: string;
+  status: RsvpStatus;
+  companionCount: number;
+  categories: string[];
+  freeText: string;
 }

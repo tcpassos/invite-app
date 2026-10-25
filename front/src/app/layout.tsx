@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import './globals.css';
+import '../templates/templates.css';
 
 export const metadata: Metadata = {
   title: 'invite-app',

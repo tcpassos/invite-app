@@ -33,6 +33,7 @@ export const ValidationRule = {
   AllowedValue: 'allowedValue',
   CompanionLimit: 'companionLimit',
   MinValue: 'minValue',
+  MaxValue: 'maxValue',
   DateNotInPast: 'dateNotInPast',
   DescriptionRequired: 'descriptionRequired',
   MaxLength: 'maxLength',

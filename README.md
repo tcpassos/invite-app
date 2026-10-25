@@ -4,6 +4,12 @@ Convites virtuais com confirmação de presença e observação alimentar por co
 
 A documentação do projeto fica em [`docs/`](docs/Proposta-de-Trabalho.md) e é publicada na wiki do Azure DevOps.
 
+Para orientar a integração do backend atual com o front da nova versão de `main`, consulte o [prompt de implementação com checklist por fluxo e endpoint](docs/Prompt-Integracao-Backend-Front-Main.md) e o [relatório de funcionalidades e mudanças](docs/Relatorio-de-Implementacao-Funcionalidades.md). O prompt exige conferir o código e os contratos existentes antes de implementar qualquer ajuste.
+
+O backend aceita os catálogos de templates da versão atual e do front de `main`, preservando os limites e papéis de cor de cada versão; veja os detalhes na [documentação da API](api/README.md).
+
+O front utiliza Next.js 16.4.3, incluindo a atualização de segurança já adotada pela branch `main`.
+
 ## Como subir o app na sua máquina
 
 O app roda inteiro em containers: o front, a API e o banco. Para testar, você só precisa do Docker.
@@ -66,11 +72,18 @@ Use `http://127.0.0.1:3000`, com o número, e não `localhost`. É o mesmo ender
 
 ### O que dá para testar hoje
 
-O app está na fase de fundação. A estrutura dos três serviços está pronta e as telas do convite e do painel ainda vão ser construídas. Por enquanto, dá para conferir que cada peça está de pé:
+O fluxo principal já está disponível: crie uma conta, monte e personalize um convite, confira a prévia, publique o link, responda como convidado e acompanhe a lista e as restrições alimentares no painel.
+
+1. Abra `http://127.0.0.1:3000` e crie uma conta de anfitrião.
+2. No painel, crie um convite. Escolha o template, ajuste cores e textos e confira a prévia.
+3. Publique o convite e copie o link para abrir em uma janela privada ou em outro navegador.
+4. Responda ao convite, incluindo acompanhantes e restrições. O link pessoal exibido após o envio permite alterar a resposta até o fim do dia do evento.
+5. No painel, acompanhe as respostas e baixe o CSV da consolidação alimentar.
+
+Também é possível conferir os serviços separadamente:
 
 | O que conferir | Como | O que deve aparecer |
 |---|---|---|
-| O front | Abrir `http://127.0.0.1:3000` | A página com "invite-app" e "O front está de pé." |
 | A API | Abrir `http://127.0.0.1:3001/qualquer` | Um JSON com `"code":"NOT_FOUND"` e um `traceId` |
 | O banco | Rodar o comando logo abaixo da tabela | As cinco categorias alimentares, de `ALLERGY` a `VEGETARIAN` |
 | O log da API | `docker compose logs api` | Uma linha em JSON por requisição, com o mesmo `requestId` do `traceId` acima |
@@ -81,7 +94,7 @@ Comando para ver as categorias no banco:
 docker compose exec db psql -U invite_app -d invite_app -c "select * from dietary_category"
 ```
 
-Esta tabela cresce conforme as telas forem entrando.
+O catálogo alimentar é carregado junto com o esquema inicial do banco.
 
 ### Parar, atualizar e recomeçar
 

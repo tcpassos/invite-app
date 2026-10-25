@@ -8,11 +8,31 @@ Tier API do invite-app, em NestJS. As três camadas do ADR-0001 moram aqui, cada
 | `src/presentation/authenticated` | Controllers das rotas do painel do anfitrião |
 | `src/presentation/auth` | Entrada e cadastro do anfitrião |
 | `src/presentation/common` | Filtro de erro, identificador de correlação, log, sessão e limite de taxa. Tudo já existe |
-| `src/domain` | Serviços e regras de negócio. Já existem os erros, o gerador de token e a conferência de dono |
-| `src/data` | Repositórios e o acesso ao banco com Kysely (ADR-0014). Já existe a parte compartilhada do `InviteRepository` |
+| `src/domain` | Serviços e regras de negócio, incluindo anfitrião, convite, resposta, presença e consolidação alimentar |
+| `src/data` | Repositórios e acesso ao banco com Kysely (ADR-0014), incluindo anfitriões, categorias alimentares e gravação transacional de respostas e capacidade |
 | `src/model` | As classes do Diagrama de Classes, todas já escritas |
 
 A regra de dependência entre essas pastas é verificada pelo lint. Se o Domínio importar da Apresentação, ou a Apresentação importar dos Dados, o `npm run lint` falha.
+
+## Rotas implementadas
+
+- `POST /auth/sign-up`, `POST /auth/sign-in`, `POST /auth/sign-out` e `GET /auth/session`.
+- Rotas autenticadas para listar, criar, consultar, corrigir, personalizar, publicar e despublicar convites.
+- `GET /public/invites/:publicToken` e `POST /public/invites/:publicToken/rsvp`.
+- `GET /public/responses/:personalToken` e `PUT /public/responses/:personalToken`.
+- Consultas autenticadas de presença e consolidação alimentar, com exportação `text/csv`.
+
+As senhas são armazenadas com Argon2id. A validação do teto de pessoas ocorre na transação do PostgreSQL; não mova essa regra para o controller ou para o front.
+
+### Catálogo de templates
+
+A validação da personalização aceita os templates atuais (`classic`, `botanical` e
+`modern`) e também os códigos ainda consumidos pelo front da versão anterior de `main`
+(`classic`, `garden` e `night`). No código `classic`, os papéis de cor `primary`,
+`background`, `text` e `accent` são aceitos para manter compatibilidade entre os dois
+catálogos. O limite de nome de evento é 80 caracteres, conforme o contrato compartilhado;
+templates atuais que limitam a entrada a 60 continuam aplicando esse limite na
+personalização.
 
 ## Comandos
 
@@ -57,7 +77,7 @@ Rodando no Docker Desktop, todas as requisições do navegador chegam à API com
 
 **Conferência de dono**, em `domain/ownership.ts`. Todo serviço do painel faz `validateOwnership(await repo.findById(inviteId), hostId)`. Convite que não existe e convite de outro anfitrião saem pelo mesmo `NotInviteOwner`, que vira o mesmo 404.
 
-**`InviteRepository`**, em `data/invite.repository.ts`. `findById` e `findPublishedByPublicToken` já existem. Cada parte acrescenta as próprias operações no bloco marcado com o número dela, no fim da classe, para os PRs não disputarem as mesmas linhas.
+**`InviteRepository`**, em `data/invite.repository.ts`. Reúne o agregado de convite, personalização, respostas transacionais e projeções do painel; mantenha consultas SQL nesta camada.
 
 ## Como responder um erro
 
