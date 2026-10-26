@@ -15,9 +15,12 @@ PROIBIDO = [
     ('nome de arquivo',    r'\b[\w-]+\.(ts|tsx|mjs|cjs|json|yml|yaml|sql|md|py)\b'),
     ('estado do quadro',   r'\bTo Do\b|\bDoing\b'),
     ('nome de persona',    r'\bMarina\b|\bRafael\b|\bJorge\b'),
+    ('codigo de historia', r'\bH\d{2}\b'),
+    ('nome provisorio',    r'Invite[ -]?People|invite-app'),
+    ('ponto medio',        r'·'),
 ]
-# No T3 os codigos das historias (H01 a H12) e as sprints ficam no slide: sao os mesmos do quadro
-# mostrado ao vivo e do cronograma da disciplina. A capa identifica o trabalho.
+# As sprints ficam no slide, porque sao as do cronograma da disciplina. Os codigos das historias e o
+# nome provisorio do projeto ficam so na fala. A capa identifica o trabalho.
 ISENTO_POR_SLIDE = {'trabalho da cadeira': {1}}
 ISENTO_POR_TITULO = {}
 

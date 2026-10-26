@@ -3,19 +3,20 @@
     "modelo": "capa",
     "n": 1,
     "bloco": "",
-    "cartola": "Trabalho 3 · Apresentação intermediária",
-    "titulo": "Invite People",
-    "sub": "Evolução da implementação desde o Grau A",
-    "equipe": "Andreas Grings · Gabriel Tomasi<br>Guilherme Toebe · Tiago Passos",
+    "cartola": "Trabalho 3, apresentação intermediária",
+    "titulo": "App de gerenciamento<br>de convites",
+    "sub": "Convite por link, confirmação de presença e restrições alimentares. Evolução da implementação desde o Grau A.",
+    "equipe": "Andreas Grings, Gabriel Tomasi<br>Guilherme Toebe, Tiago Passos",
     "disciplina": "Arquitetura de Software<br>Prof. Kleinner Farias",
     "data": "27/10/2026<br>Time 04",
     "captura": "c03-convite.png",
-    "notas": "Andreas. Somos o Time 04, do Invite People. Vamos apresentar o problema e o escopo, a arquitetura implementada, o front-end, o back-end, uma demonstração e o planejamento até 17/11. Cada um responde pelo próprio bloco na arguição."
+    "notas": "Andreas. Somos o Time 04. Nosso projeto é um app para gerenciamento de convites, com confirmação de presença e restrições alimentares. Vamos apresentar o problema e o escopo, a arquitetura implementada, o front-end, o back-end, uma demonstração e o planejamento até 17/11. Cada um responde pelo próprio bloco na arguição.",
+    "tam": 56
   },
   {
     "modelo": "conteudo",
     "n": 2,
-    "bloco": "Problema e escopo · Andreas",
+    "bloco": "Problema e escopo, Andreas",
     "titulo": "O problema e os usuários",
     "right": 72,
     "itens": [
@@ -29,48 +30,48 @@
   {
     "modelo": "cartoes",
     "n": 3,
-    "bloco": "Problema e escopo · Andreas",
+    "bloco": "Problema e escopo, Andreas",
     "titulo": "Escopo do MVP",
     "colunas": 3,
     "cartoes": [
       {
-        "k": "H01",
+        "k": "1 história",
         "t": "Conta do anfitrião",
         "d": "Criar conta e entrar."
       },
       {
-        "k": "H02 · H03 · H04",
+        "k": "3 histórias",
         "t": "Criação do convite",
         "d": "Criar o convite, escolher template e cores e ver a prévia."
       },
       {
-        "k": "H05 · H06",
+        "k": "2 histórias",
         "t": "Compartilhamento",
         "d": "Gerar o link, publicar e despublicar."
       },
       {
-        "k": "H07 · H08 · H09",
+        "k": "3 histórias",
         "t": "Confirmação",
         "d": "Responder sem conta, informar acompanhantes e alterar pelo link pessoal."
       },
       {
-        "k": "H10",
+        "k": "1 história",
         "t": "Restrições alimentares",
         "d": "Informar a restrição. Alergia exige descrição."
       },
       {
-        "k": "H11 · H12",
+        "k": "2 histórias",
         "t": "Painel",
         "d": "Lista de presença e consolidação das restrições, com exportação em CSV."
       }
     ],
     "legenda": "As doze histórias estão implementadas, integradas e rodando pelo docker compose.",
-    "notas": "Andreas. São seis grupos com as doze histórias de usuário, H01 a H12. Os códigos são os mesmos do quadro do Azure Boards que vamos mostrar depois da demonstração."
+    "notas": "Andreas. São seis grupos com as doze histórias de usuário. No quadro do Azure Boards elas aparecem como H01 a H12: conta do anfitrião é a H01, criação do convite da H02 à H04, compartilhamento H05 e H06, confirmação da H07 à H09, restrições alimentares H10, e o painel H11 e H12."
   },
   {
     "modelo": "linhaTempo",
     "n": 4,
-    "bloco": "Problema e escopo · Andreas",
+    "bloco": "Problema e escopo, Andreas",
     "titulo": "Linha do tempo do projeto",
     "marcos": [
       {
@@ -104,7 +105,7 @@
   {
     "modelo": "diagrama",
     "n": 5,
-    "bloco": "Arquitetura · Tiago",
+    "bloco": "Arquitetura, Tiago",
     "titulo": "Tiers e camadas",
     "svgNome": "svgArquitetura",
     "notas": "Tiago. Três tiers no compose: front em Next.js, API em NestJS e PostgreSQL. As três camadas lógicas ficam dentro da API: Apresentação, Domínio e Dados. O front segue MVC. O contract é o pacote de tipos compartilhado entre os dois lados. Camada é divisão lógica, tier é processo separado. As três camadas ficam no mesmo container da API."
@@ -112,7 +113,7 @@
   {
     "modelo": "duasColunas",
     "n": 6,
-    "bloco": "Arquitetura · Tiago",
+    "bloco": "Arquitetura, Tiago",
     "titulo": "Base do projeto: lint, CI e docker compose",
     "tituloA": "Lint e integração contínua",
     "corA": "#21049A",
@@ -134,7 +135,7 @@
   {
     "modelo": "tabela",
     "n": 7,
-    "bloco": "Arquitetura · Tiago",
+    "bloco": "Arquitetura, Tiago",
     "titulo": "Regras da arquitetura no código",
     "xs": [
       72,
@@ -168,7 +169,7 @@
   {
     "modelo": "capturas",
     "n": 8,
-    "bloco": "Front-end · Guilherme",
+    "bloco": "Front-end, Guilherme",
     "titulo": "Telas do front-end",
     "imagens": [
       {
@@ -190,7 +191,7 @@
   {
     "modelo": "tabela",
     "n": 9,
-    "bloco": "Front-end · Guilherme",
+    "bloco": "Front-end, Guilherme",
     "titulo": "Mudanças no front para seguir a arquitetura",
     "xs": [
       72,
@@ -234,7 +235,7 @@
   {
     "modelo": "diagrama",
     "n": 10,
-    "bloco": "Back-end · Gabriel",
+    "bloco": "Back-end, Gabriel",
     "titulo": "Caminho de uma resposta na API",
     "svgNome": "svgRaias",
     "legenda": "Sim ocupa uma vaga mais os acompanhantes. Talvez e não ocupam zero. Não vou zera os acompanhantes e a observação. Alergia exige descrição.",
@@ -243,7 +244,7 @@
   {
     "modelo": "cartoes",
     "n": 11,
-    "bloco": "Back-end · Gabriel",
+    "bloco": "Back-end, Gabriel",
     "titulo": "Testes",
     "colunas": 3,
     "destacar": 1,
@@ -270,52 +271,52 @@
   {
     "modelo": "tabela",
     "n": 12,
-    "bloco": "Demonstração · Guilherme e Gabriel",
+    "bloco": "Demonstração, Guilherme e Gabriel",
     "titulo": "Roteiro da demonstração",
     "xs": [
       72,
-      600,
-      900
+      470,
+      960
     ],
     "ws": [
-      510,
-      290,
-      308
+      380,
+      470,
+      248
     ],
     "cabecalhos": [
       "Passo",
-      "Histórias",
+      "O que mostra",
       "Quem conduz"
     ],
     "linhas": [
       [
         "Criar, personalizar e publicar",
-        "H02 · H03 · H04 · H05 · H06",
+        "Template, cores, prévia e o link gerado",
         "Guilherme"
       ],
       [
         "Responder como convidado",
-        "H07 · H08 · H10",
+        "Resposta sem conta, com acompanhante e restrição alimentar",
         "Gabriel"
       ],
       [
-        "Tentar responder num convite lotado",
-        "H07",
+        "Responder num convite lotado",
+        "A recusa pelo teto de vagas",
         "Gabriel"
       ],
       [
         "Alterar pelo link pessoal",
-        "H09",
+        "A troca da resposta para talvez",
         "Gabriel"
       ],
       [
         "Painel e CSV",
-        "H11 · H12",
+        "Lista de presença e restrições exportadas",
         "Guilherme"
       ],
       [
         "Despublicar",
-        "H06",
+        "O link do convite deixa de abrir",
         "Guilherme"
       ]
     ],
@@ -324,7 +325,7 @@
   {
     "modelo": "conteudo",
     "n": 13,
-    "bloco": "Organização · Andreas",
+    "bloco": "Organização, Andreas",
     "titulo": "Organização do trabalho",
     "right": 72,
     "itens": [
@@ -337,7 +338,7 @@
   {
     "modelo": "tabela",
     "n": 14,
-    "bloco": "Planejamento · Andreas",
+    "bloco": "Planejamento, Andreas",
     "titulo": "Planejamento até 17/11",
     "xs": [
       72,
@@ -393,9 +394,9 @@
     "modelo": "impacto",
     "n": 15,
     "bloco": "Perguntas",
-    "cartola": "Time 04 · Invite People",
+    "cartola": "Time 04",
     "titulo": "Perguntas",
-    "sub": "Andreas Grings · problema, requisitos e planejamento<br>Tiago Passos · arquitetura, Docker e GitHub<br>Guilherme Toebe · front-end e Azure Boards<br>Gabriel Tomasi · back-end, regras e testes",
+    "sub": "Andreas Grings: problema, requisitos e planejamento<br>Tiago Passos: arquitetura, Docker e GitHub<br>Guilherme Toebe: front-end e Azure Boards<br>Gabriel Tomasi: back-end, regras e testes",
     "notas": "Andreas, fechamento: as doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão registradas com o motivo. Até 17/11 vamos revisar a documentação contra o código e preparar o Pitch. Para perguntas: requisitos e planejamento comigo, arquitetura e Docker com o Tiago, telas e quadro com o Guilherme, API e regras com o Gabriel."
   },
   {

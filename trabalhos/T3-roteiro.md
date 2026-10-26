@@ -17,7 +17,7 @@ GitHub e a colaboração da equipe.
 | Critério                                     | Peso | Onde a apresentação responde                                                                             |
 | -------------------------------------------- | ---- | -------------------------------------------------------------------------------------------------------- |
 | Evolução e qualidade da implementação        | 30%  | Slide 4, a linha do tempo, e os blocos 2, 3 e 4                                                          |
-| Aderência à arquitetura e aos requisitos     | 20%  | Slide 7, com cada regra e o lugar do código onde ela está, e as histórias marcadas em cada passo da demo |
+| Aderência à arquitetura e aos requisitos     | 20%  | Slide 7, com cada regra e o lugar do código onde ela está, e o que cada passo da demo mostra |
 | Demonstração funcional e qualidade técnica   | 20%  | Bloco 5                                                                                                  |
 | Organização no Azure DevOps, GitHub e Kanban | 10%  | Bloco 5b, ao vivo, logo depois da demo                                                                   |
 | Apresentação, clareza e slides               | 10%  | O deck todo                                                                                              |
@@ -87,9 +87,11 @@ ordem de corte a resposta do convidado, a lotação, o painel e o bloco 6.
 
 ## Bloco 1, problema, escopo e linha do tempo (2:45, Andreas)
 
-**Slide 1, capa.** Nome do produto, os quatro nomes e a disciplina. Fala de abertura, 20 segundos:
+**Slide 1, capa.** Título "App de gerenciamento de convites", os quatro nomes e a disciplina. O nome
+provisório do projeto não vai para os slides. Fala de abertura, 20 segundos:
 
-> "Somos o Time 04, do Invite People. Vamos apresentar o problema e o escopo, a arquitetura
+> "Somos o Time 04. Nosso projeto é um app para gerenciamento de convites, com confirmação de
+> presença e restrições alimentares. Vamos apresentar o problema e o escopo, a arquitetura
 > implementada, o front-end, o back-end, uma demonstração e o planejamento até 17/11. Cada um
 > responde pelo próprio bloco na arguição."
 
@@ -99,10 +101,11 @@ não pode comer. Na fala, as personas que o time levantou: a anfitriã que organ
 só quer responder rápido, sem criar conta, e o buffet como interessado secundário, que é quem recebe
 a lista.
 
-**Slide 3, título "Escopo do MVP".** Seis grupos com as doze histórias, H01 a H12, e a marca de
-entregue em cada uma. Exceção à regra de identificadores: os códigos H01 a H12 ficam no slide,
-porque são os mesmos do quadro que aparece ao vivo, e a rastreabilidade é o próprio critério de
-aderência.
+**Slide 3, título "Escopo do MVP".** Seis grupos com o número de histórias de cada um e uma frase
+do que fazem. Os códigos H01 a H12 não vão no slide, porque a turma não sabe o que significam. Eles
+vão na fala, ligando cada grupo ao quadro que aparece ao vivo: conta do anfitrião é a H01, criação
+do convite da H02 à H04, compartilhamento H05 e H06, confirmação da H07 à H09, restrições
+alimentares H10, e o painel H11 e H12.
 
 **Slide 4, título "Linha do tempo do projeto".** Linha do tempo horizontal: Sprint 1, requisitos;
 Sprint 2, arquitetura; Sprint 3, documento de arquitetura e protótipo; marca do Grau A; Sprint 4, a
@@ -232,14 +235,17 @@ Passagem: "Agora a demonstração."
 **Slide 12, título "Roteiro da demonstração".** Fica na tela enquanto o Guilherme assume o
 compartilhamento, e serve de guia se a demo cair:
 
-| Passo                          | Histórias               |
-| ------------------------------ | ----------------------- |
-| Criar, personalizar e publicar | H02, H03, H04, H05, H06 |
-| Responder como convidado       | H07, H08, H10           |
-| A lotação                      | H07, o teto de vagas    |
-| Alterar pelo link pessoal      | H09                     |
-| Painel e CSV                   | H11, H12                |
-| Despublicar                    | H06                     |
+| Passo                          | O que mostra                                               | Quem conduz |
+| ------------------------------ | ---------------------------------------------------------- | ----------- |
+| Criar, personalizar e publicar | Template, cores, prévia e o link gerado                    | Guilherme   |
+| Responder como convidado       | Resposta sem conta, com acompanhante e restrição alimentar | Gabriel     |
+| Responder num convite lotado   | A recusa pelo teto de vagas                                | Gabriel     |
+| Alterar pelo link pessoal      | A troca da resposta para talvez                            | Gabriel     |
+| Painel e CSV                   | Lista de presença e restrições exportadas                  | Guilherme   |
+| Despublicar                    | O link do convite deixa de abrir                           | Guilherme   |
+
+Se perguntarem pelas histórias, a correspondência é: criar e publicar, H02 a H06; responder, H07,
+H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
 
 **Preparação, antes de entrar na chamada:** - `.env` criado a partir do `.env.example`. Para começar
 do zero, `docker compose down -v`, porque as migrations só rodam com o volume do banco vazio. -
@@ -344,8 +350,8 @@ checks ainda não estão no deck.
 
 ## O deck
 
-O deck está em `trabalhos/T3-Invite-People.pptx`, e o PDF para o Moodle em
-`trabalhos/T3-Invite-People.pdf`. As falas de cada slide estão nas notas do apresentador. Ele é
+O deck está em `trabalhos/T3-Apresentacao-Intermediaria.pptx`, e o PDF para o Moodle em
+`trabalhos/T3-Apresentacao-Intermediaria.pdf`. As falas de cada slide estão nas notas do apresentador. Ele é
 gerado a partir de `trabalhos/deck-t3/slides.json`, e o `README.md` dessa pasta diz como regerar
 depois de mudar o texto.
 
@@ -484,9 +490,11 @@ qualquer item que o professor clicar.
 
 ## Regras para os slides
 
-- Nenhum identificador interno no slide, exceto os códigos das histórias: nada de UC, número de work
-  item, ADR, linha do Guia ou nome de arquivo. Tudo isso vai na fala, e na arguição vira ponto de
+- Nenhum identificador interno no slide: nada de código de história, UC, número de work item, ADR,
+  linha do Guia ou nome de arquivo. Tudo isso vai na fala, e na arguição vira ponto de
   rastreabilidade.
+- Nada do nome provisório do projeto. Nos slides, o projeto é o "app de gerenciamento de convites".
+- Sem o caractere "·" como separador. Usar vírgula ou dois-pontos.
 - Um título por slide, descritivo: diz o assunto, sem frase de efeito.
 - Nenhuma contagem de commits, testes ou arquivos no slide, porque envelhece.
 - Nenhuma captura de tela que não tenha sido feita de verdade, com data no rodapé.

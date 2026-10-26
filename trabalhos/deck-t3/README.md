@@ -1,6 +1,6 @@
 # Deck do T3
 
-Gera `trabalhos/T3-Invite-People.pptx` a partir de `slides.json`, com o mesmo sistema visual do
+Gera `trabalhos/T3-Apresentacao-Intermediaria.pptx` a partir de `slides.json`, com o mesmo sistema visual do
 deck do T1. O texto de cada slide e as falas, que vão nas notas do apresentador, ficam em
 `slides.json`. O roteiro da apresentação está em `trabalhos/T3-roteiro.md`.
 
@@ -24,14 +24,14 @@ O template é o próprio deck do T1, que carrega os masters da Unisinos. O scrip
 dele e mantém o tema. Da pasta `trabalhos/deck-t3`:
 
 ```bash
-python3 montar-pptx.py ../T1-Docker-Invite-People.pptx slides.json ../T3-Invite-People.pptx logos capturas
-python3 checar-identificadores.py ../T3-Invite-People.pptx
+python3 montar-pptx.py ../T1-Docker-Invite-People.pptx slides.json ../T3-Apresentacao-Intermediaria.pptx logos capturas
+python3 checar-identificadores.py ../T3-Apresentacao-Intermediaria.pptx
 ```
 
 Para o PDF do Moodle, exportar pelo PowerPoint, ou pelo LibreOffice:
 
 ```bash
-soffice --headless --convert-to pdf --outdir .. ../T3-Invite-People.pptx
+soffice --headless --convert-to pdf --outdir .. ../T3-Apresentacao-Intermediaria.pptx
 ```
 
 ## Modelos usados

@@ -348,8 +348,8 @@ def dg_arquitetura(sl, x, y):
     # tier front
     fx, fw = 300, 240
     retangulo(sl, fx, y, fw, 284, preencher=LILAS, borda=AZUL, raio=6, tracejado=True)
-    rotulo(sl, fx + 18, y + 14, fw - 36, 'Front · Next.js', tam=16, cor=AZUL, peso=900)
-    rotulo(sl, fx + 18, y + 38, fw - 36, 'container front · porta 3000', tam=12.5, cor=CINZA, peso=400)
+    rotulo(sl, fx + 18, y + 14, fw - 36, 'Front em Next.js', tam=16, cor=AZUL, peso=900)
+    rotulo(sl, fx + 18, y + 38, fw - 36, 'container front, porta 3000', tam=12.5, cor=CINZA, peso=400)
     for k, nome in enumerate(['Rotas de tela', 'View', 'Controller']):
         retangulo(sl, fx + 20, y + 74 + k * 62, fw - 40, 46, preencher=BRANCO, borda=AZUL, raio=3)
         rotulo(sl, fx + 20, y + 87 + k * 62, fw - 40, nome, tam=14, cor=AZUL, peso=400, alinhar=PP_ALIGN.CENTER)
@@ -357,8 +357,8 @@ def dg_arquitetura(sl, x, y):
     # tier api
     ax, aw = 640, 260
     retangulo(sl, ax, y, aw, 284, preencher=PESSEGO, borda=LARANJA, raio=6, tracejado=True)
-    rotulo(sl, ax + 18, y + 14, aw - 36, 'API · NestJS', tam=16, cor=LARANJA, peso=900)
-    rotulo(sl, ax + 18, y + 38, aw - 36, 'container api · porta 3001', tam=12.5, cor=CINZA, peso=400)
+    rotulo(sl, ax + 18, y + 14, aw - 36, 'API em NestJS', tam=16, cor=LARANJA, peso=900)
+    rotulo(sl, ax + 18, y + 38, aw - 36, 'container api, porta 3001', tam=12.5, cor=CINZA, peso=400)
     for k, nome in enumerate(['Apresentação', 'Domínio', 'Dados']):
         retangulo(sl, ax + 20, y + 74 + k * 62, aw - 40, 46, preencher=BRANCO, borda=LARANJA, raio=3)
         rotulo(sl, ax + 20, y + 87 + k * 62, aw - 40, nome, tam=14, cor=GRAFITE, peso=400, alinhar=PP_ALIGN.CENTER)
@@ -383,7 +383,7 @@ def dg_arquitetura(sl, x, y):
     # pacote de tipos
     retangulo(sl, fx, y + 350, ax + aw - fx, 44, preencher=QUASE, borda=CINZA_CLARO, raio=4)
     tb, tf = caixa(sl, fx + 16, y + 362, ax + aw - fx - 32, 30)
-    escrever(tf, '<strong>contract</strong> · tipos de pedido e resposta usados pelo front e pela API', tam=13, cor=ESC, peso=300)
+    escrever(tf, '<strong>contract</strong>: tipos de pedido e resposta usados pelo front e pela API', tam=13, cor=ESC, peso=300)
 
 def dg_raias(sl, x, y):
     """O envio de uma resposta passando pelas tres camadas, uma raia por camada."""
@@ -428,7 +428,7 @@ def m_capa(sl, s):
     logo_completo(sl, 72, 58, 214)
     rotulo(sl, 72, 200, 700, s['cartola'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 72, 224, 780, 200)
-    escrever(tf, s['titulo'], tam=70, cor=BRANCO, peso=900, entre=1.02)
+    escrever(tf, s['titulo'], tam=s.get('tam', 70), cor=BRANCO, peso=900, entre=1.02)
     retangulo(sl, 72, 404, 64, 5, preencher=LARANJA, raio=2)
     tb2, tf2 = caixa(sl, 72, 432, 800, 90)
     escrever(tf2, s['sub'], tam=21, cor=RGBColor(0xD6, 0xCF, 0xF0), peso=300, entre=1.45)
