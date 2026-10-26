@@ -14,14 +14,14 @@ arquiteturais e técnicas, apresentar as dificuldades e o planejamento para conc
 demonstração ao vivo evidenciando a evolução do sistema, e mostrar o Azure DevOps, o Kanban, o
 GitHub e a colaboração da equipe.
 
-| Critério                                     | Peso | Onde a apresentação responde                                                                             |
-| -------------------------------------------- | ---- | -------------------------------------------------------------------------------------------------------- |
-| Evolução e qualidade da implementação        | 30%  | Slide 4, a linha do tempo, e os blocos 2, 3 e 4                                                          |
+| Critério                                     | Peso | Onde a apresentação responde                                                                 |
+| -------------------------------------------- | ---- | -------------------------------------------------------------------------------------------- |
+| Evolução e qualidade da implementação        | 30%  | Slide 4, a linha do tempo, e os blocos 2, 3 e 4                                              |
 | Aderência à arquitetura e aos requisitos     | 20%  | Slide 7, com cada regra e o lugar do código onde ela está, e o que cada passo da demo mostra |
-| Demonstração funcional e qualidade técnica   | 20%  | Bloco 5                                                                                                  |
-| Organização no Azure DevOps, GitHub e Kanban | 10%  | Bloco 5b, ao vivo, logo depois da demo                                                                   |
-| Apresentação, clareza e slides               | 10%  | O deck todo                                                                                              |
-| Participação individual na arguição          | 10%  | Protocolo de arguição e o estudo de cada um, no fim                                                      |
+| Demonstração funcional e qualidade técnica   | 20%  | Bloco 5                                                                                      |
+| Organização no Azure DevOps, GitHub e Kanban | 10%  | Bloco 5b, ao vivo, logo depois da demo                                                       |
+| Apresentação, clareza e slides               | 10%  | O deck todo                                                                                  |
+| Participação individual na arguição          | 10%  | Protocolo de arguição e o estudo de cada um, no fim                                          |
 
 A avaliação é individual. Por isso cada integrante fala do que construiu e do que aconteceu com isso
 na integração, e o tempo de fala é equilibrado entre os quatro.
@@ -64,9 +64,9 @@ Quando a correção foi feita por outro integrante, conta o que aprendeu com ela
 | 4     | Back-end                                                | 2:45 | 10 e 11 | Gabriel                         |
 | 5     | Demonstração ao vivo                                    | 6:00 | 12      | Guilherme conduz, Gabriel narra |
 | 5b    | Azure Boards, GitHub e organização do trabalho, ao vivo | 1:45 | 13      | Guilherme, Tiago e Andreas      |
-| 6     | Planejamento até a entrega e perguntas                  | 2:00 | 14 e 15 | Andreas                         |
+| 6     | Dificuldades, planejamento até a entrega e perguntas    | 2:30 | 14 a 16 | Andreas                         |
 
-Com as trocas, cerca de 23 minutos, com folga de quase 2 até o limite de 25.
+Com as trocas, cerca de 23 minutos e meio, com folga de 1 e meio até o limite de 25.
 
 **Compartilhamento.** O Andreas compartilha o PDF do início ao fim e avança quando quem fala diz
 "próximo". A tela muda só duas vezes: depois do slide 12, o Guilherme compartilha a **tela inteira**
@@ -303,8 +303,8 @@ Na mesma tela da demo, sem trocar de compartilhamento.
    front, que registra que as telas vieram do protótipo do Guilherme. Fala: "a integração foi feita
    por mim, e as mensagens dos commits indicam de onde veio cada parte."
 3. **Andreas, organização do trabalho (0:30).** Três frases:
-   - Planejamos em sprints de duas semanas no Azure Boards, com cada história quebrada em tarefas de
-     tela e de API.
+   - Planejamos em sprints de duas semanas e acompanhamos no quadro Kanban do Azure Boards, com cada
+     história quebrada em tarefas de tela e de API.
    - Conversamos pelo WhatsApp e discutimos o projeto no tempo de aula. O que decidimos fica
      registrado no repositório, no Guia, nos ADRs e nos Ajustes da Sprint 5.
    - Integramos por PR, e a CI verde é a nossa definição de pronto.
@@ -315,9 +315,21 @@ e números cobertos.
 
 ---
 
-## Bloco 6, planejamento até a entrega e perguntas (2:00, Andreas)
+## Bloco 6, dificuldades, planejamento até a entrega e perguntas (2:30, Andreas)
 
-**Slide 14, título "Planejamento até 17/11".** Tabela preenchida antes do ensaio e espelhada no
+**Slide 14, título "Dificuldades encontradas".** Três cartões com as dificuldades que cada dono já
+contou no próprio bloco: o trabalho feito em paralelo (Tiago), as regras no protótipo (Guilherme) e
+a regra de vagas na camada errada (Gabriel). Embaixo, a linha "Lições": definir os tipos
+compartilhados antes das telas, integrar front e back antes do fim da sprint, e manter as regras de
+negócio no Domínio desde a primeira versão. O slide existe para o item "dificuldades encontradas" do
+enunciado ficar visível. Fala, 30 segundos:
+
+> "Cada dificuldade foi contada por quem a viveu. Este slide só as reúne, com as lições que o time
+> tirou delas."
+
+Se perguntarem detalhes, passar para o dono de cada uma.
+
+**Slide 15, título "Planejamento até 17/11".** Tabela preenchida antes do ensaio e espelhada no
 quadro da Sprint 6, de 03/11 a 16/11:
 
 | O quê                                                                                                                                   | Quem | Até |
@@ -329,13 +341,10 @@ quadro da Sprint 6, de 03/11 a 16/11:
 | Fechar o Team Charter                                                                                                                   |      |     |
 | Deck e ensaio do Pitch Final                                                                                                            |      |     |
 
-Embaixo, uma linha "Lições": definir os tipos compartilhados antes das telas, integrar front e back
-antes do fim da sprint, e manter as regras de negócio no Domínio desde a primeira versão.
-
 Na fala, o Andreas diz quais itens assumiu. Ele escolhe antes do ensaio, e os itens entram no quadro
 com o nome dele, para a fala ter lastro.
 
-**Slide 15, título "Perguntas".** Os quatro nomes com o assunto de cada um. Fica na tela durante a
+**Slide 16, título "Perguntas".** Os quatro nomes com o assunto de cada um. Fica na tela durante a
 arguição. Fechamento:
 
 > "As doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão
@@ -343,7 +352,7 @@ arguição. Fechamento:
 > Pitch. Para perguntas: requisitos e planejamento comigo, arquitetura e Docker com o Tiago, telas e
 > quadro com o Guilherme, API e regras com o Gabriel."
 
-**Apêndice, slides 16 a 18.** Capturas da aplicação de 26/10: entrada e lista de convites, as telas
+**Apêndice, slides 17 a 19.** Capturas da aplicação de 26/10: entrada e lista de convites, as telas
 do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link despublicado.
 Servem ao plano C e ficam no PDF do Moodle como evidência. Capturas do quadro e de um PR com os
 checks ainda não estão no deck.
@@ -507,7 +516,7 @@ qualquer item que o professor clicar.
 - [ ] Confirmar a divisão de blocos no grupo
 - [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 8
 - [ ] Andreas escolhe os itens dele na Sprint 6, e os itens da Sprint 6 entram no quadro com dono
-- [ ] Preencher a tabela do slide 14 com quem e até quando
+- [ ] Preencher a tabela do slide 15 com quem e até quando
 - [ ] Andreas preenche a ficha dele no Team Charter, e o Guilherme o papel dele no time. Depois,
       fechar a #87 e a #57
 - [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
