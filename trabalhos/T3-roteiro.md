@@ -122,24 +122,27 @@ todo PR. Ao vivo, dez segundos: a lista de PRs fechados no GitHub e a aba de che
 deles.
 
 **Slide 6, o Docker que apresentamos no T1, agora com o produto dentro.** O `docker-compose.yml` é a
-forma executável do Diagrama de Implantação: o banco não publica porta, a API publica a 3001 porque
-o navegador chama a API direto ao enviar a resposta, e o front publica a 3000. A API só sobe depois
-que o banco responde ao healthcheck. As migrations rodam na primeira subida. Um segundo arquivo
-troca a API por um mock, para desenvolver as telas sem banco. Fala: "no T1 a promessa era um
+forma executável do Diagrama de Implantação: o banco não publica porta, o front publica a 3000 e a
+API publica a 3001, porque o navegador fala com ela direto, em todo o painel do anfitrião e quando o
+convidado envia ou altera a resposta. Só a leitura da página do convite passa pelo servidor do
+front. A API só sobe depois que o banco responde ao healthcheck, e as migrations rodam quando o
+volume do banco está vazio. Um segundo arquivo troca a API por um mock, para desenvolver as telas
+sem banco. Fala: "no T1 a promessa era um
 arquivo que qualquer um de nós sobe com um comando. Esse comando é o que vai rodar na demo."
 
 **Slide 7, o Guia disse, o código faz.** Quatro linhas, cada uma com a regra e onde ela mora:
 - O teto de vagas é conferido pela camada de Dados dentro da transação, travando a linha do
-  convite. O Domínio só calcula quantas vagas a resposta pede.
-- O convite público nunca confirma se um convite existe: link inválido, rascunho, despublicado e
-  de outro anfitrião dão o mesmo 404.
+  convite. O Domínio calcula quantas vagas a resposta nova pede.
+- Nenhuma rota confirma que um convite existe. Link inválido e convite despublicado dão o mesmo 404
+  na página pública, e o convite de outro anfitrião dá o mesmo 404 no painel. Um teste de ponta a
+  ponta confere que o corpo e o cabeçalho são idênticos.
 - A sessão do anfitrião é cookie assinado, e o front não guarda token.
 - O link do convite tem 128 bits de gerador seguro e nasce no Domínio, nunca no navegador.
 
 Dificuldade do bloco: **juntar o trabalho de quatro pessoas.** O front e o back foram escritos em
 paralelo, fora da `main`, e precisaram ser adequados ao contrato e às camadas para entrar. Lição: o
-`contract` com as 18 rotas tipadas foi o que permitiu juntar sem reescrever tudo, e deveria ter sido
-a primeira entrega de todas.
+`contract`, com os tipos de pedido e resposta das 18 rotas, foi o que permitiu juntar sem reescrever
+tudo, e deveria ter sido a primeira entrega de todas.
 
 Passagem: "As telas que o convidado e o anfitrião usam são do Guilherme."
 
@@ -152,8 +155,11 @@ Perguntas prováveis:
   juntas. O Domínio decide quantas vagas a resposta pede, os Dados garantem o teto na transação.
 - **Por que 404 e não 403 para convite de outro anfitrião?** Porque 403 confirmaria que o convite
   existe. Quem decide o que o mundo lê é a Apresentação.
-- **Por que local e não na nuvem?** Decisão do ADR-0003: o ambiente de execução é o compose local,
-  e publicar não estava no escopo da disciplina.
+- **Por que local e não na nuvem?** Decisão do ADR-0003: nesta fase o MVP não tem requisito de
+  disponibilidade, de usuários reais nem de acesso externo, e o projeto não tem custo. O compose
+  local cobre o que o projeto precisa, e o mesmo arquivo serve de base se um dia houver publicação.
+- **A pasta `api/src/model` é uma quarta camada?** Não. São as classes do modelo e as projeções que
+  atravessam as camadas, que todas podem ler e que não importam nenhuma camada. O lint garante isso.
 
 ---
 
@@ -192,12 +198,15 @@ tela. Separar o que era visual, e fica, do que era regra, e sai, foi o trabalho 
 Passagem: "Quem recebe essas chamadas é a API, e a primeira versão dela é do Gabriel."
 
 Perguntas prováveis:
-- **Onde fica o Controller do MVC no Next.js?** Em `front/src/controller`: o `ApiClient`, que faz
-  toda chamada à API com tempo limite e repetição, e os módulos que traduzem cada ação da tela numa
-  chamada tipada. A View está em `front/src/view` e as rotas de tela em `front/src/app`.
-- **Como a lista de presença se atualiza?** A tela consulta a API a cada 20 segundos. Se a consulta
-  falha, o intervalo dobra até 2 minutos, e a tela avisa que a lista pode estar desatualizada em vez
-  de mostrar lista vazia.
+- **Onde fica o Controller do MVC no Next.js?** Em `front/src/controller`: o `ApiClient`, por onde
+  passa toda chamada à API, com tempo limite de 4 segundos no servidor e 15 no navegador, e os
+  módulos que traduzem cada ação da tela numa chamada tipada. A View está em `front/src/view` e as
+  rotas de tela em `front/src/app`.
+- **O `ApiClient` repete chamada que falhou?** Só as leituras e o publicar, uma vez. O envio da
+  resposta do convidado nunca repete, porque repetir poderia gravar duas vezes.
+- **Como a lista de presença se atualiza?** A tela consulta a API a cada 20 segundos. Na primeira
+  falha a tela avisa que a lista pode estar desatualizada. A partir da segunda falha seguida o
+  intervalo dobra, até 2 minutos. Falha nunca vira lista vazia.
 - **Como funciona a personalização?** Três templates prontos (Clássico, Jardim e Noite), cada um com
   duas cores que o anfitrião escolhe. O convidado vê o convite com o template e as cores escolhidos.
 - **Por que não deixaram as bibliotecas do protótipo?** A maior parte não era usada por tela nenhuma,
@@ -213,31 +222,39 @@ depois e mostra as mesmas regras funcionando.
 
 **Slide 11, o caminho de uma resposta.** O convidado envia a resposta. A Apresentação valida a forma
 e o limite de tráfego. O Domínio aplica as regras: limite de acompanhantes, "não vou" zera os
-acompanhantes, "talvez" não ocupa vaga, a alergia exige descrição, e calcula quantas vagas a
-resposta pede. Os Dados abrem a transação, travam o convite, conferem o teto e gravam. Se não cabe,
-devolvem a recusa, e o Domínio dá nome ao erro. Fala: "o banco garante o teto, o Domínio decide o
-que é uma vaga."
+acompanhantes e a observação, "talvez" não ocupa vaga, a alergia exige descrição, e calcula quantas
+vagas a resposta nova pede. Os Dados abrem a transação, travam o convite, somam as vagas já
+ocupadas pelos confirmados e seus acompanhantes, conferem o teto e gravam. Se não cabe, devolvem a
+recusa, e o Domínio dá nome ao erro. Fala: "o Domínio decide quantas vagas a resposta pede, o banco
+garante o teto."
 
 **Slide 12, como sabemos que funciona.** Testes do Domínio para as regras, testes contra um
 PostgreSQL de verdade e testes das rotas de ponta a ponta. O teste que vale citar: quatro respostas
-simultâneas num convite com cinco vagas, e só as que cabem passam.
+simultâneas, cada uma pedindo duas vagas, num convite com cinco vagas. Passam exatamente duas.
 
 Dificuldade do bloco: **a regra de negócio fugiu de camada.** Na primeira versão, a regra das vagas
 e a do "talvez" estavam escritas na consulta SQL. Funcionava, mas a camada de Dados passava a saber
-o que é uma vaga, e o Guia diz que isso é do Domínio. Na adequação, o cálculo subiu para o Domínio e
-a camada de Dados ficou só com a conferência do teto. Uma segunda: o fuso horário. "Alterar até o
-fim do dia do evento" com o fuso fixo em `-03:00` recusava um convite para hoje depois da hora
-marcada. Agora o fuso é `America/Sao_Paulo` pelo nome, e a comparação é por dia.
+o que é uma vaga, e o Guia diz que isso é do Domínio. Na adequação, o cálculo das vagas que a
+resposta pede subiu para o Domínio, e a camada de Dados ficou com a soma das vagas ocupadas e a
+conferência do teto. Uma segunda: o fuso horário. A data e a hora do convite eram juntadas com o
+fuso fixo `-03:00`, e a regra de "data no passado" comparava com o instante atual, então criar um
+convite para hoje com a hora já passada era recusado. Agora a data e a hora são juntadas no fuso
+`America/Sao_Paulo`, pelo nome, e o Domínio compara por dia. A mesma comparação por dia vale para o
+prazo de alteração da resposta.
 
 Passagem: "Agora vamos ver isso funcionando."
 
 Perguntas prováveis:
 - **O que acontece se duas pessoas confirmarem ao mesmo tempo com uma vaga sobrando?** A transação
-  trava a linha do convite. A segunda espera a primeira terminar, soma de novo e é recusada. É o que
-  o teste de concorrência prova.
+  trava a linha do convite. A segunda só soma depois de conseguir a trava, então já enxerga a
+  primeira gravada, e é recusada. É o que o teste de concorrência prova.
 - **Como a senha é guardada?** Com hash argon2id. A senha nunca é gravada.
-- **O que impede alguém de adivinhar um link de convite?** O token tem 128 bits, e as rotas públicas
-  têm limite de tráfego por origem. Link inválido e link de rascunho dão o mesmo 404.
+- **O que impede alguém de adivinhar um link de convite?** O token tem 128 bits de gerador
+  criptográfico, então adivinhar é inviável. Além disso, enviar resposta tem limite por endereço de
+  origem e por token. Link inválido e convite despublicado dão o mesmo 404. O link só nasce na
+  primeira publicação, então rascunho nem tem link.
+- **E o link pessoal, depois que o anfitrião despublica?** Continua valendo para quem já respondeu,
+  por decisão da seção 9.5 do Guia: a pessoa ainda consegue ver e alterar a própria resposta.
 - **O que acontece se o convidado abrir o link pessoal depois do evento?** Ele vê a resposta, mas não
   consegue mais alterar depois do fim do dia do evento.
 
@@ -252,6 +269,8 @@ ambiente subido do zero. Padrão: a do Guilherme, que conduz. Reserva: a do Tiag
 compartilhados por quem não está na demo, e a troca de compartilhamento é ensaiada.
 
 **Preparação, antes de entrar na chamada:**
+- Ter o `.env` criado a partir do `.env.example`. Para começar do zero, `docker compose down -v`,
+  porque as migrations só rodam com o volume do banco vazio.
 - Subir com `docker compose up -d --build` e conferir com `docker compose ps`.
 - Abrir `http://127.0.0.1:3000`. Não usar `localhost`.
 - Conta de anfitrião criada e logada numa janela normal.
@@ -269,19 +288,23 @@ compartilhados por quem não está na demo, e a troca de compartilhamento é ens
    pede conta. Confirmar com 1 acompanhante e restrição "Alergia", com a descrição. Mostrar o link
    pessoal que aparece no fim. Fala: "a API calculou duas vagas no Domínio e conferiu o teto dentro
    da transação."
-3. **Gabriel narra, as recusas (1 min).** Mostrar que o campo não aceita 2 acompanhantes, e dizer que
-   isso é só conforto da tela: a API recusa do mesmo jeito se a tela for contornada. No convite de
+3. **Gabriel narra, as recusas (1 min).** Digitar 2 acompanhantes e tentar enviar: o navegador
+   barra. Dizer que isso é só conforto da tela: a API recusa do mesmo jeito se a tela for
+   contornada. No convite de
    reserva, tentar confirmar: aparece a lotação, sem dizer quantas vagas existem.
 4. **Gabriel narra, a alteração (30 s).** Abrir o link pessoal e trocar a resposta para "talvez".
    Fala: "o talvez não ocupa vaga, e a alteração vale até o fim do dia do evento."
 5. **Guilherme, o painel (1 min).** Voltar ao painel. A lista de presença mostra a resposta. Abrir a
    consolidação alimentar e baixar o CSV. Abrir na planilha e mostrar os acentos certos e a alergia
    com a descrição.
-6. **Guilherme, despublicar (30 s).** Despublicar e recarregar a janela do convidado: a página de
-   não encontrado, igual à de um link que nunca existiu.
+6. **Guilherme, despublicar (30 s).** Despublicar e, na janela do convidado, abrir de novo o **link
+   do convite**, não o link pessoal: aparece a página de não encontrado, igual à de um link que
+   nunca existiu. O link pessoal continua valendo para quem já respondeu, e isso é de propósito.
 
 **Se der errado.** Plano B: `docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d`
-sobe o mock com um convite de exemplo, e quem fala avisa que é o mock. Plano C: o vídeo de 2
+sobe o mock. Entrar com `demo@convite.dev` e a senha `senha1234`. O convite de exemplo está em
+`http://127.0.0.1:3000/i/DEMO0000000000000000000000`. A sessão da API real não vale no mock, e quem
+fala avisa que é o mock. Plano C: o vídeo de 2
 minutos do caminho acima, gravado hoje, e quatro capturas no fim do deck. Nenhum dos dois é
 improvisado na hora: os dois são ensaiados.
 
