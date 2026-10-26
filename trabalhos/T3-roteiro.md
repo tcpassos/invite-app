@@ -40,12 +40,11 @@ com o motivo, nos Ajustes de Arquitetura para o MVP da Sprint 5.
 - **O MVP está completo e integrado na `main`.** As doze histórias, H01 a H12, funcionam de ponta a
   ponta com a API de verdade e o banco, e tudo sobe pelo `docker compose`. Front no PR #7, backend
   e fechamento no PR #8, os dois mergeados.
-- **O quadro do Azure Boards não mostra isso.** Na leitura de hoje, as doze histórias e quase todas
-  as tarefas das Sprints 4 e 5 estão em To Do, e as tarefas de API não têm responsável. O professor
-  vai abrir o quadro. Atualizar antes da aula é o item 1 do checklist.
-- **O Gabriel não tem nenhum work item atribuído**, embora as rotas da API tenham vindo da branch
-  dele. **O Andreas tem só a ficha do Team Charter (#87), ainda em To Do.** Na avaliação individual
-  isso pesa, e o quadro é onde o professor olha.
+- **O quadro do Azure Boards foi atualizado em 26/10.** As histórias H01 a H12, a #125, as tarefas
+  das Sprints 4 e 5 e os seis épicos foram para Done. As quinze tarefas de API, que estavam sem
+  responsável, ficaram com o Gabriel, porque as rotas vieram da branch dele.
+- **O Andreas tem só a ficha do Team Charter (#87), ainda em To Do**, e a ficha dele ainda tem
+  trechos a preencher. Na avaliação individual isso pesa, e o quadro é onde o professor olha.
 - **O GitHub mostra os commits de cada um.** O front do Guilherme veio do repositório dele,
   `guitoebe/frontend-invite-people`, e foi transplantado no PR #7. O backend do Gabriel entrou com
   a autoria dele preservada no primeiro commit do PR #8. Parte do trabalho foi feita com apoio de
@@ -223,11 +222,10 @@ slide, porque envelhece. Nenhuma captura de tela que não tenha sido feita de ve
 
 ## Checklist até terça
 
-- [ ] **Atualizar o Azure Boards.** Mover para Done as histórias H01 a H12 (#40 a #51), a #125 e as
-      tarefas filhas (#134 a #162), que estão entregues nos PRs #7 e #8. Atribuir as tarefas de API
-      a quem fez. Os épicos #34 a #39 também vão para Done
-- [ ] Conferir a #57 e a #87, do Team Charter, que seguem abertas desde a Sprint 1. A ficha do
-      Andreas já existe em `docs/Team-Charter`
+- [x] Atualizar o Azure Boards: H01 a H12, a #125, as tarefas das Sprints 4 e 5 e os épicos em
+      Done, e as tarefas de API com o Gabriel
+- [ ] Fechar a #87 e a #57, do Team Charter, que seguem abertas desde a Sprint 1. A ficha do
+      Andreas em `docs/Team-Charter` ainda tem trechos a preencher
 - [ ] Criar os itens da Sprint 6, para o slide 12 ter lastro no quadro
 - [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
 - [ ] Confirmar a divisão de blocos no grupo
