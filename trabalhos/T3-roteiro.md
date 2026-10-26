@@ -2,8 +2,8 @@
 
 > Documento de trabalho do time. Fica no GitHub e não vai para a wiki, porque tem decisão tática de
 > apresentação. Apresentação em 27/10/2026, aula remota síncrona pelo Teams, Time 04 na agenda.
-> Slides no Moodle, na tarefa "Entrega do Terceiro Trabalho da Disciplina", até 23h55 do mesmo dia.
-> Subir antes da aula, não depois.
+> Slides em PDF no Moodle, na tarefa "Entrega do Terceiro Trabalho da Disciplina", até 23h55 do
+> mesmo dia. Subir antes da aula, não depois.
 
 ## O que o enunciado cobra
 
@@ -15,223 +15,354 @@ demonstração ao vivo, e mostrar o Azure DevOps, o Kanban, o GitHub e a colabor
 
 | Critério | Peso | Onde a apresentação responde |
 |---|---|---|
-| Evolução e qualidade da implementação | 30% | Blocos B e C |
-| Aderência à arquitetura e aos requisitos | 20% | Bloco B, com o quadro "planejado e implementado" |
-| Demonstração funcional e qualidade técnica | 20% | Bloco C inteiro |
-| Organização no Azure DevOps, GitHub e Kanban | 10% | Bloco A, com o quadro aberto ao vivo |
+| Evolução e qualidade da implementação | 30% | Blocos 2, 3 e 4 |
+| Aderência à arquitetura e aos requisitos | 20% | Bloco 2, e o fio "o Guia disse, o código faz" nos blocos 3 e 4 |
+| Demonstração funcional e qualidade técnica | 20% | Bloco 5 |
+| Organização no Azure DevOps, GitHub e Kanban | 10% | GitHub no bloco 2, Azure Boards no bloco 3, os dois ao vivo |
 | Apresentação, clareza e slides | 10% | O deck todo |
-| Participação individual na arguição | 10% | Protocolo de arguição, no fim |
+| Participação individual na arguição | 10% | Protocolo de arguição e o estudo de cada um, no fim |
 
-A avaliação é individual. Cada um precisa ter um bloco que consiga defender sozinho.
+A avaliação é individual. Por isso cada integrante fala do que construiu, e o tempo de fala é
+equilibrado entre os quatro, mesmo que o volume de trabalho não tenha sido.
 
 ## A ideia que sustenta tudo
 
 No T2 entregamos uma arquitetura no papel. No T3 mostramos que ela virou código sem ser traída, e
-contamos onde a implementação obrigou a ajustar o desenho. A frase que fecha a apresentação: **a
-regra mais importante do sistema, o teto de vagas, está onde o Guia disse que estaria, e um teste
-com respostas simultâneas prova isso.**
+contamos onde a implementação obrigou a ajustar o desenho.
 
-Isso responde de uma vez aos dois critérios mais pesados, evolução (30%) e aderência (20%). Os
-ajustes não são confissão de erro, são o critério de aderência funcionando: cada um está registrado
-com o motivo, nos Ajustes de Arquitetura para o MVP da Sprint 5.
+O fio da apresentação inteira é uma frase repetida em cada bloco técnico: **"o Guia disse, o código
+faz"**. Cada um mostra uma regra da arquitetura e o lugar do código onde ela é cumprida. Os ajustes
+não são confissão de erro, são o critério de aderência funcionando: cada um está registrado com o
+motivo, nos Ajustes de Arquitetura para o MVP da Sprint 5.
 
-## Situação real em 26/10, para ninguém ser pego de surpresa
+A frase que fecha: **o teto de vagas está onde o Guia disse que estaria, e um teste com respostas
+simultâneas prova isso.**
 
-- **O MVP está completo e integrado na `main`.** As doze histórias, H01 a H12, funcionam de ponta a
-  ponta com a API de verdade e o banco, e tudo sobe pelo `docker compose`. Front no PR #7, backend
-  e fechamento no PR #8, os dois mergeados.
-- **O quadro do Azure Boards foi atualizado em 26/10.** As histórias H01 a H12, a #125, as tarefas
-  das Sprints 4 e 5 e os seis épicos foram para Done. As quinze tarefas de API, que estavam sem
-  responsável, ficaram com o Gabriel, porque as rotas vieram da branch dele.
-- **O Andreas tem só a ficha do Team Charter (#87), ainda em To Do**, e a ficha dele ainda tem
-  trechos a preencher. Na avaliação individual isso pesa, e o quadro é onde o professor olha.
-- **O GitHub mostra os commits de cada um.** O front do Guilherme veio do repositório dele,
-  `guitoebe/frontend-invite-people`, e foi transplantado no PR #7. O backend do Gabriel entrou com
-  a autoria dele preservada no primeiro commit do PR #8. Parte do trabalho foi feita com apoio de
-  assistente de IA, e os commits mostram isso. Se perguntarem, responder com franqueza: a decisão e
-  a revisão foram do time, a ferramenta acelerou a escrita.
+## Quem fez o quê, e como isso entra na fala
+
+| Integrante | O que construiu | O que apresenta |
+|---|---|---|
+| Tiago | A base do projeto: monorepo, `contract`, regra de camadas no lint, integração contínua e a orquestração dos três tiers no `docker compose`. A documentação de arquitetura. A integração do front com o back na `main` | Arquitetura, Docker e GitHub |
+| Guilherme | O front: as telas do anfitrião e do convidado, o visual dos templates, a primeira versão do mock. O projeto no Azure DevOps é da organização dele | Front e Azure Boards, e conduz a demo |
+| Gabriel | A primeira versão do back-end: os serviços do anfitrião, do convite e da resposta, os repositórios, os controllers, o CSV e os primeiros testes | Back-end, e narra a parte da demo que passa pela API |
+| Andreas | Apresentou um bloco no seminário do T1. Os itens dele na Sprint 6 são definidos pelo time antes do ensaio | Abertura com o problema e o escopo, que são do time, e o planejamento até o fim |
+
+Regra para todos: **ninguém diz "eu fiz" sobre o que não fez.** Para o que foi feito em conjunto, ou
+por outro integrante, a fala é "o time decidiu" ou "o Gabriel escreveu". Nada perde ponto por ser
+coletivo, e uma atribuição errada desmonta na primeira pergunta do professor.
+
+Sobre o uso de assistente de IA, que aparece no histórico do GitHub: se perguntarem, responder com
+franqueza. A ferramenta acelerou a escrita e a adequação do código, e as decisões, a revisão e a
+validação foram do time. O quadro de Ajustes da Sprint 5 é a prova de que houve revisão contra a
+arquitetura.
 
 ## Tempo e donos
 
-Proposta de divisão. O critério foi dar a cada um o território que ele construiu ou que consegue
-defender. O time confirma ou troca antes do ensaio.
-
-| Bloco | Tema | Min | Slides | Dono sugerido |
+| Bloco | Tema | Min | Slides | Dono |
 |---|---|---|---|---|
-| A | Problema, escopo do MVP e como o time se organizou | 5 | 1 a 4 | Andreas |
-| B | Arquitetura planejada e implementada, e os ajustes | 6 | 5 a 8 | Tiago |
-| C | Demonstração ao vivo | 8 | 9 | Guilherme e Gabriel |
-| D | Dificuldades, qualidade e planejamento até o fim | 4 | 10 a 12 | Gabriel |
+| 1 | O problema, quem usa e o escopo do MVP | 3 | 1 a 3 | Andreas |
+| 2 | Do Guia ao código: arquitetura, base e Docker | 5 | 4 a 7 | Tiago |
+| 3 | O front e a organização do trabalho | 4 | 8 a 10 | Guilherme |
+| 4 | O back-end e a regra mais importante do sistema | 3 | 11 e 12 | Gabriel |
+| 5 | Demonstração ao vivo | 6 | 13 | Guilherme conduz, Gabriel narra |
+| 6 | O que falta e como termina | 2 | 14 | Andreas |
 
 Mais um minuto para as trocas. Total 24, dentro da faixa de 20 a 25.
 
-A demonstração tem dois donos de propósito. O Guilherme conduz o lado do anfitrião, que são as telas
-que ele fez. O Gabriel conduz o lado do convidado e explica o que a API faz em cada passo, que é o
-código que veio dele. Assim os dois aparecem no critério de 20%.
+As dificuldades não têm bloco próprio. Cada um conta a sua dentro do próprio bloco, porque quem
+viveu a dificuldade é quem convence na arguição.
 
 ---
 
-## Bloco A, problema, escopo e organização (5 min, Andreas)
+## Bloco 1, o problema e o escopo (3 min, Andreas)
 
-Objetivo: situar em um minuto e gastar o resto no critério de organização, que é o mais fácil de
-garantir e o único que depende só de mostrar o que existe.
+Objetivo: situar a turma em três minutos, sem detalhe técnico. Tudo aqui saiu dos artefatos da
+Sprint 1, que estão em `docs/Sprints/Sprint-1`.
 
-1. **O problema em uma frase.** Quem organiza uma festa junta confirmações por WhatsApp e perde a
-   conta de quantas pessoas vêm e do que cada uma não pode comer. O Invite People é um convite por
-   link, com confirmação sem cadastro, limite de acompanhantes e teto de vagas, e um painel com a
-   lista de presença e as restrições alimentares exportáveis para o buffet.
-2. **O escopo do MVP.** Seis épicos e doze histórias, H01 a H12. Slide com os seis épicos e, ao lado,
-   a marca de entregue. Não listar as doze no slide, citar na fala.
-3. **Como o time trabalhou.** Seis sprints de duas semanas no Azure Boards: requisitos na 1,
-   arquitetura na 2, projeto da solução na 3, implementação na 4 e na 5, consolidação na 6.
-4. **Ao vivo, trocar para o navegador e mostrar o Azure Boards.** O quadro da Sprint 5 com as
-   histórias em Done, uma história aberta com as tarefas filhas separadas em API e tela, e o
-   responsável de cada uma. Mostrar a lista de sprints com as datas.
-5. **Ao vivo, mostrar o GitHub.** A lista de PRs fechados, com o fluxo de branch, PR, CI verde e
-   merge. Abrir o PR #8 e mostrar a descrição com "o que entra" e "como verificar", e a aba de
-   checks. Mostrar o `docs/` com as pastas por sprint.
-6. **O Teams.** Uma captura do canal do time com uma discussão de decisão, já que a aula é pelo
-   próprio Teams e trocar de janela confunde. Escolher a captura antes.
+**Slide 1, capa.** Nome do produto, os quatro nomes e a disciplina.
 
-Perguntas prováveis: como vocês dividiram o trabalho, por que as tarefas têm API e tela separadas,
-o que ficou para a Sprint 6, como o GitHub se liga ao Azure Boards.
+**Slide 2, o problema.** Quem organiza uma festa junta confirmações por WhatsApp e perde a conta de
+quantas pessoas vêm, quantos acompanhantes cada um leva e o que cada um não pode comer. O buffet
+precisa desse número e dessa lista. Na fala, as duas personas: o anfitrião que organiza e o
+convidado que só quer responder rápido, sem criar conta.
 
----
+**Slide 3, o MVP em seis grupos.** Conta do anfitrião, criação e personalização do convite,
+compartilhamento por link, confirmação de presença, restrições alimentares e o painel com a
+consolidação. Ao lado de cada grupo, a marca de entregue. Na fala: são doze histórias de usuário e
+as doze funcionam hoje de ponta a ponta.
 
-## Bloco B, arquitetura planejada e implementada (6 min, Tiago)
+Passagem: "Como isso foi construído em cima da arquitetura que apresentamos no Grau A, o Tiago
+mostra agora."
 
-Objetivo: o critério de aderência. Mostrar que o desenho do Grau A está no código, e que cada
-desvio foi decidido e registrado.
-
-1. **Slide 5, o desenho em uma figura.** Três tiers no compose (front em Next.js, API em NestJS,
-   PostgreSQL) e as três camadas dentro da API: Apresentação, Domínio e Dados. O front segue MVC. O
-   `contract` é o pacote de tipos que os dois lados compartilham, e é por ele que o front não
-   inventa rota nem campo.
-2. **Slide 6, "o Guia disse, o código faz".** Um quadro de quatro linhas, cada uma com a regra e o
-   arquivo onde ela mora:
-   - O teto de vagas é conferido pela camada de Dados dentro da transação, com `SELECT ... FOR
-     UPDATE`. O Domínio calcula quantas vagas a resposta pede e entrega o número.
-   - O convite público não confirma se um convite existe: token inexistente, rascunho, despublicado
-     e de outro anfitrião dão o mesmo 404 (ADR-0008).
-   - A sessão do anfitrião é cookie assinado, e o front não guarda token (ADR-0010).
-   - O link do convite tem 128 bits de gerador seguro e nasce no Domínio (ADR-0005).
-3. **Slide 7, o que o protótipo fazia e a arquitetura não permitia.** Três exemplos da seção 2 dos
-   Ajustes: contagem de vagas na página pública, CSV montado no navegador e token no
-   `localStorage`. Para cada um, a regra e como ficou. Isto mostra que a revisão contra a
-   arquitetura aconteceu de verdade.
-4. **Slide 8, o que a arquitetura precisou ajustar.** A saudação virou texto fixo do template, os
-   templates ganharam dois papéis de cor, a faixa numérica passou a ser tratada como erro de forma
-   (400) e não de regra (422), e o tempo limite das chamadas ganhou número: 4 segundos no servidor
-   e 15 no navegador. Cada um tem linha na seção 11.1 do Guia.
-
-Perguntas prováveis: por que três camadas e não quatro, por que o teto fica nos Dados e não no
-Domínio, por que o front não confere o limite de acompanhantes, o que acontece se duas pessoas
-confirmarem ao mesmo tempo com uma vaga sobrando, por que 404 e não 403 para convite de outro
-anfitrião.
+Perguntas prováveis e o que responder:
+- **Por que o convidado não cria conta?** Porque o convidado só abre o link e responde. Exigir conta
+  derruba a taxa de resposta, que é o que o anfitrião mais quer.
+- **Como o convidado altera a resposta, se não tem conta?** Ao responder, ele recebe um link pessoal,
+  só dele, que serve para voltar e alterar.
+- **Quais restrições alimentares existem?** Vegetariano, vegano, sem glúten, sem lactose e alergia.
+  A alergia exige descrever o quê.
 
 ---
 
-## Bloco C, demonstração ao vivo (8 min, Guilherme e Gabriel)
+## Bloco 2, do Guia ao código (5 min, Tiago)
 
-Objetivo: os 20% da demo. Um caminho só, ensaiado, sem improviso. Tudo roda na máquina de quem
-compartilha a tela, com `docker compose up -d --build` feito antes da aula.
+Objetivo: o critério de aderência. Mostrar que o desenho do Grau A está no código e que a regra de
+camadas é verificada por máquina, não só por boa vontade.
 
-Preparação, antes de entrar na chamada:
-- Subir o ambiente e abrir `http://127.0.0.1:3000` no navegador. Não usar `localhost`.
-- Deixar uma conta de anfitrião criada e logada numa janela normal.
-- Deixar uma janela anônima aberta para o convidado.
-- Deixar um convite de reserva já publicado e lotado, com teto de 2 pessoas e uma confirmação com 1
+**Slide 4, o desenho em uma figura.** Três tiers no compose (front em Next.js, API em NestJS e
+PostgreSQL) e as três camadas lógicas dentro da API: Apresentação, Domínio e Dados. O front segue
+MVC. O `contract` é o pacote de tipos compartilhado entre os dois lados. Fala: "camada é divisão
+lógica, tier é processo separado. As três camadas moram no mesmo container da API."
+
+**Slide 5, a base que segura o resto.** O monorepo com `contract`, `api` e `front`. A regra de
+camadas está no lint: o Domínio não pode importar da Apresentação, e os Dados não podem importar de
+nenhuma camada de cima. Um PR que quebra a regra fica vermelho. A integração contínua roda lint,
+formatação, tipos, testes contra um PostgreSQL de verdade, build e a construção das imagens, em
+todo PR. Ao vivo, dez segundos: a lista de PRs fechados no GitHub e a aba de checks verdes de um
+deles.
+
+**Slide 6, o Docker que apresentamos no T1, agora com o produto dentro.** O `docker-compose.yml` é a
+forma executável do Diagrama de Implantação: o banco não publica porta, a API publica a 3001 porque
+o navegador chama a API direto ao enviar a resposta, e o front publica a 3000. A API só sobe depois
+que o banco responde ao healthcheck. As migrations rodam na primeira subida. Um segundo arquivo
+troca a API por um mock, para desenvolver as telas sem banco. Fala: "no T1 a promessa era um
+arquivo que qualquer um de nós sobe com um comando. Esse comando é o que vai rodar na demo."
+
+**Slide 7, o Guia disse, o código faz.** Quatro linhas, cada uma com a regra e onde ela mora:
+- O teto de vagas é conferido pela camada de Dados dentro da transação, travando a linha do
+  convite. O Domínio só calcula quantas vagas a resposta pede.
+- O convite público nunca confirma se um convite existe: link inválido, rascunho, despublicado e
+  de outro anfitrião dão o mesmo 404.
+- A sessão do anfitrião é cookie assinado, e o front não guarda token.
+- O link do convite tem 128 bits de gerador seguro e nasce no Domínio, nunca no navegador.
+
+Dificuldade do bloco: **juntar o trabalho de quatro pessoas.** O front e o back foram escritos em
+paralelo, fora da `main`, e precisaram ser adequados ao contrato e às camadas para entrar. Lição: o
+`contract` com as 18 rotas tipadas foi o que permitiu juntar sem reescrever tudo, e deveria ter sido
+a primeira entrega de todas.
+
+Passagem: "As telas que o convidado e o anfitrião usam são do Guilherme."
+
+Perguntas prováveis:
+- **Por que três camadas e não quatro?** Porque só existem três motivos de mudança com vida
+  própria: o jeito de falar com o mundo, as regras do evento e o armazenamento. Uma quarta camada
+  cobraria o custo sem entregar separação. Está na seção 1 do Guia.
+- **Por que o teto fica nos Dados e não no Domínio?** Porque a conferência precisa ser atômica com
+  a gravação. Se o Domínio lesse a soma e depois gravasse, duas respostas simultâneas passariam
+  juntas. O Domínio decide quantas vagas a resposta pede, os Dados garantem o teto na transação.
+- **Por que 404 e não 403 para convite de outro anfitrião?** Porque 403 confirmaria que o convite
+  existe. Quem decide o que o mundo lê é a Apresentação.
+- **Por que local e não na nuvem?** Decisão do ADR-0003: o ambiente de execução é o compose local,
+  e publicar não estava no escopo da disciplina.
+
+---
+
+## Bloco 3, o front e a organização (4 min, Guilherme)
+
+Objetivo: mostrar as telas como produto e contar a adequação do protótipo à arquitetura, que é a
+melhor prova de aderência do front. Depois, o quadro ao vivo.
+
+**Slide 8, do protótipo às telas.** As telas nasceram de um protótipo feito com ferramenta de
+prototipação, com o visual que está no produto hoje. Para entrar na arquitetura, o protótipo foi
+adequado: o visual foi mantido e reescrito em CSS puro, e o front ficou só com Next.js e React,
+como manda a stack escolhida. Fala: "o visual é o mesmo do protótipo. O que mudou foi onde cada
+decisão mora."
+
+**Slide 9, o que a tela fazia e a arquitetura não deixa.** Três exemplos, cada um com o antes e o
+depois:
+- A página pública mostrava quantas vagas restavam. Hoje não mostra contagem nenhuma, porque isso
+  expõe dado do anfitrião. A lotação só aparece quando a resposta é recusada.
+- O CSV para o buffet era montado no navegador. Hoje vem pronto da API, com a proteção contra
+  fórmula de planilha.
+- O login guardava um token no navegador. Hoje a sessão é cookie, e o front não guarda nada.
+
+Fala: "a checagem na tela é conforto. Quem decide é a API."
+
+**Slide 10, como o time se organizou.** Seis sprints de duas semanas no Azure Boards: requisitos,
+arquitetura, projeto da solução, duas de implementação e uma de consolidação. As histórias quebradas
+em tarefas de API e de tela, com responsável. Ao vivo, um minuto: o quadro da Sprint 5 com as
+histórias em Done, uma história aberta com as tarefas filhas, e a lista de sprints com as datas.
+Depois, uma captura do canal do time no Teams com uma discussão de decisão. Não trocar de janela
+para o Teams, porque a aula já é nele.
+
+Dificuldade do bloco: **o protótipo trazia muita coisa que a arquitetura não queria**, de
+bibliotecas de componentes a um banco de outra plataforma, e algumas regras de negócio estavam na
+tela. Separar o que era visual, e fica, do que era regra, e sai, foi o trabalho da adequação.
+
+Passagem: "Quem recebe essas chamadas é a API, e a primeira versão dela é do Gabriel."
+
+Perguntas prováveis:
+- **Onde fica o Controller do MVC no Next.js?** Em `front/src/controller`: o `ApiClient`, que faz
+  toda chamada à API com tempo limite e repetição, e os módulos que traduzem cada ação da tela numa
+  chamada tipada. A View está em `front/src/view` e as rotas de tela em `front/src/app`.
+- **Como a lista de presença se atualiza?** A tela consulta a API a cada 20 segundos. Se a consulta
+  falha, o intervalo dobra até 2 minutos, e a tela avisa que a lista pode estar desatualizada em vez
+  de mostrar lista vazia.
+- **Como funciona a personalização?** Três templates prontos (Clássico, Jardim e Noite), cada um com
+  duas cores que o anfitrião escolhe. O convidado vê o convite com o template e as cores escolhidos.
+- **Por que não deixaram as bibliotecas do protótipo?** A maior parte não era usada por tela nenhuma,
+  e só um integrante tinha experiência com a stack. Cada biblioteca a mais é mais coisa para
+  aprender e manter.
+
+---
+
+## Bloco 4, o back-end e a regra mais importante (3 min, Gabriel)
+
+Objetivo: mostrar as regras de negócio e onde elas moram. Este bloco prepara a demo, que vem logo
+depois e mostra as mesmas regras funcionando.
+
+**Slide 11, o caminho de uma resposta.** O convidado envia a resposta. A Apresentação valida a forma
+e o limite de tráfego. O Domínio aplica as regras: limite de acompanhantes, "não vou" zera os
+acompanhantes, "talvez" não ocupa vaga, a alergia exige descrição, e calcula quantas vagas a
+resposta pede. Os Dados abrem a transação, travam o convite, conferem o teto e gravam. Se não cabe,
+devolvem a recusa, e o Domínio dá nome ao erro. Fala: "o banco garante o teto, o Domínio decide o
+que é uma vaga."
+
+**Slide 12, como sabemos que funciona.** Testes do Domínio para as regras, testes contra um
+PostgreSQL de verdade e testes das rotas de ponta a ponta. O teste que vale citar: quatro respostas
+simultâneas num convite com cinco vagas, e só as que cabem passam.
+
+Dificuldade do bloco: **a regra de negócio fugiu de camada.** Na primeira versão, a regra das vagas
+e a do "talvez" estavam escritas na consulta SQL. Funcionava, mas a camada de Dados passava a saber
+o que é uma vaga, e o Guia diz que isso é do Domínio. Na adequação, o cálculo subiu para o Domínio e
+a camada de Dados ficou só com a conferência do teto. Uma segunda: o fuso horário. "Alterar até o
+fim do dia do evento" com o fuso fixo em `-03:00` recusava um convite para hoje depois da hora
+marcada. Agora o fuso é `America/Sao_Paulo` pelo nome, e a comparação é por dia.
+
+Passagem: "Agora vamos ver isso funcionando."
+
+Perguntas prováveis:
+- **O que acontece se duas pessoas confirmarem ao mesmo tempo com uma vaga sobrando?** A transação
+  trava a linha do convite. A segunda espera a primeira terminar, soma de novo e é recusada. É o que
+  o teste de concorrência prova.
+- **Como a senha é guardada?** Com hash argon2id. A senha nunca é gravada.
+- **O que impede alguém de adivinhar um link de convite?** O token tem 128 bits, e as rotas públicas
+  têm limite de tráfego por origem. Link inválido e link de rascunho dão o mesmo 404.
+- **O que acontece se o convidado abrir o link pessoal depois do evento?** Ele vê a resposta, mas não
+  consegue mais alterar depois do fim do dia do evento.
+
+---
+
+## Bloco 5, demonstração ao vivo (6 min, Guilherme conduz, Gabriel narra)
+
+Objetivo: os 20% da demo. Um caminho só, ensaiado, sem improviso.
+
+**Quem compartilha a tela.** Uma máquina só para a demo inteira, a que passar no ensaio de hoje com o
+ambiente subido do zero. Padrão: a do Guilherme, que conduz. Reserva: a do Tiago. Os slides ficam
+compartilhados por quem não está na demo, e a troca de compartilhamento é ensaiada.
+
+**Preparação, antes de entrar na chamada:**
+- Subir com `docker compose up -d --build` e conferir com `docker compose ps`.
+- Abrir `http://127.0.0.1:3000`. Não usar `localhost`.
+- Conta de anfitrião criada e logada numa janela normal.
+- Uma janela anônima aberta para o convidado.
+- Um convite de reserva já publicado e lotado, com teto de 2 pessoas e uma confirmação com 1
   acompanhante, para mostrar a lotação sem depender do caminho principal.
+- Fonte do navegador em 125%, para ficar legível na transmissão.
 
-O caminho, com quem fala:
+**O caminho, com quem fala:**
 
-1. **Guilherme, anfitrião.** Criar o convite com nome, data, hora, local, teto de 4 pessoas e no
-   máximo 1 acompanhante. Personalizar: trocar o template e as cores e mostrar a prévia mudando.
+1. **Guilherme, criar e personalizar (1 min 30).** Criar o convite com nome, data, hora, local, teto
+   de 4 pessoas e no máximo 1 acompanhante. Trocar o template e as cores e mostrar a prévia mudando.
    Publicar e copiar o link.
-2. **Gabriel, convidado.** Colar o link na janela anônima. Mostrar que não pede conta. Confirmar
-   com 1 acompanhante e restrição alimentar "alergia", com a descrição. Mostrar o link pessoal que
-   aparece no fim. Na fala: a API calculou duas vagas no Domínio e conferiu o teto dentro da
-   transação.
-3. **Gabriel, recusas.** Mostrar que o campo não aceita 2 acompanhantes. Na fala: isso é só conforto
-   da tela, e quem decide é a API, que recusa do mesmo jeito se a tela for contornada. No convite de
-   reserva, que já está lotado, tentar confirmar: aparece a lotação, sem dizer quantas vagas
-   existem.
-4. **Gabriel, alteração.** Abrir o link pessoal e trocar a resposta para "talvez". Na fala: o
-   talvez não ocupa vaga, e a alteração vale até o fim do dia do evento.
-5. **Guilherme, painel.** Voltar ao painel. A lista de presença já mostra a resposta, porque a tela
-   consulta a cada 20 segundos. Abrir a consolidação alimentar e baixar o CSV. Abrir o CSV na
-   planilha e mostrar que os acentos estão certos.
-6. **Guilherme, despublicar.** Despublicar o convite e recarregar a janela do convidado: a página
-   de não encontrado, igual à de um link que nunca existiu.
+2. **Gabriel narra, convidado responde (1 min 30).** Colar o link na janela anônima. Mostrar que não
+   pede conta. Confirmar com 1 acompanhante e restrição "Alergia", com a descrição. Mostrar o link
+   pessoal que aparece no fim. Fala: "a API calculou duas vagas no Domínio e conferiu o teto dentro
+   da transação."
+3. **Gabriel narra, as recusas (1 min).** Mostrar que o campo não aceita 2 acompanhantes, e dizer que
+   isso é só conforto da tela: a API recusa do mesmo jeito se a tela for contornada. No convite de
+   reserva, tentar confirmar: aparece a lotação, sem dizer quantas vagas existem.
+4. **Gabriel narra, a alteração (30 s).** Abrir o link pessoal e trocar a resposta para "talvez".
+   Fala: "o talvez não ocupa vaga, e a alteração vale até o fim do dia do evento."
+5. **Guilherme, o painel (1 min).** Voltar ao painel. A lista de presença mostra a resposta. Abrir a
+   consolidação alimentar e baixar o CSV. Abrir na planilha e mostrar os acentos certos e a alergia
+   com a descrição.
+6. **Guilherme, despublicar (30 s).** Despublicar e recarregar a janela do convidado: a página de
+   não encontrado, igual à de um link que nunca existiu.
 
-Plano B: se a API cair, `docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d` sobe
-o mock com o convite de exemplo, e quem fala avisa que é o mock. Plano C: um vídeo de 2 minutos do
-caminho acima, gravado hoje, e quatro capturas no fim do deck.
-
-Perguntas prováveis: o que acontece se o convidado abrir o link depois do evento, a senha é
-guardada como, por que o painel não atualiza na hora, o que impede alguém de adivinhar um link.
+**Se der errado.** Plano B: `docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d`
+sobe o mock com um convite de exemplo, e quem fala avisa que é o mock. Plano C: o vídeo de 2
+minutos do caminho acima, gravado hoje, e quatro capturas no fim do deck. Nenhum dos dois é
+improvisado na hora: os dois são ensaiados.
 
 ---
 
-## Bloco D, dificuldades, qualidade e o que falta (4 min, Gabriel)
+## Bloco 6, o que falta e como termina (2 min, Andreas)
 
-1. **Slide 10, dificuldades.** Três, contadas como decisão e não como desculpa:
-   - **Juntar o trabalho de quatro pessoas.** O front e o backend foram feitos em paralelo, cada um
-     no seu repositório ou branch, e precisaram ser adequados ao contrato e às camadas para entrar
-     na `main`. Lição: o `contract` deveria ter sido a primeira entrega, antes de qualquer tela.
-   - **Regra de negócio fugindo de camada.** A primeira versão do backend tinha a regra das vagas e
-     a do "talvez" escritas no SQL. Mover para o Domínio, deixando nos Dados só a conferência do
-     teto, foi a maior mudança do PR #8.
-   - **Fuso horário.** "Até o fim do dia do evento" exigiu o fuso de São Paulo pelo nome e
-     comparação por dia, no ADR-0013. Com `-03:00` fixo, um convite para hoje era recusado depois
-     da hora marcada.
-2. **Slide 11, como a qualidade foi conferida.** Integração contínua no GitHub Actions com lint,
-   formatação, tipos, testes e build em todo PR. Testes do Domínio, testes de integração contra
-   PostgreSQL e testes de ponta a ponta das rotas. O teste que vale citar: quatro respostas
-   simultâneas num teto de cinco vagas, e só as que cabem passam.
-3. **Slide 12, o planejamento até 17/11.** Sprint 6, de 03/11 a 16/11: consolidar e preparar o
-   Pitch Final. Itens: o Protótipo de Baixa Fidelidade da Sprint 3, que ainda está a preencher; o
-   diagrama de sequência do UC007; o aval do time às linhas 35 a 40 do Guia; revisar os artefatos
-   contra o código; e o deck e o ensaio do pitch.
+**Slide 14, até a entrega final em 17/11.** A Sprint 6, de 03/11 a 16/11, consolida a solução e
+prepara o Pitch Final. Os itens:
+- Completar o Protótipo de Baixa Fidelidade da Sprint 3 com as telas que agora existem.
+- Desenhar o diagrama de sequência da lista de presença, que faltou no Grau A.
+- Fechar o Team Charter, que ainda tem uma ficha a preencher.
+- Revisar os artefatos das Sprints 1 a 3 contra o código, e registrar o que divergir.
+- Preparar o deck e o ensaio do Pitch Final.
 
-Perguntas prováveis: o que vocês fariam diferente, o que acontece se a API tiver duas instâncias
-(o limite de taxa fica na memória do processo, registrado em aberto), por que não publicaram na
-nuvem (ADR-0003, ambiente local).
+Na fala, Andreas diz quais desses itens ficam com ele. **O time decide isso antes do ensaio**, e os
+itens entram no quadro da Sprint 6 com o dono, para a fala ter lastro.
+
+Fechamento, dito devagar e sem slide próprio: o desenho do Grau A está no código, os desvios estão
+registrados com motivo, e o teto de vagas está onde o Guia disse que estaria. Depois, anunciar quem
+responde pelo quê e abrir para a arguição.
+
+Perguntas prováveis:
+- **O que vocês fariam diferente?** Começar pelo contrato de tipos e pela base, antes de qualquer
+  tela, e integrar mais cedo, em vez de juntar front e back no fim.
+- **Qual o maior risco até a entrega?** Divergência entre a documentação do Grau A e o código, que é
+  o que a revisão da Sprint 6 resolve.
 
 ---
-
-## Fechamento
-
-Sem slide próprio. A última fala retoma a frase do início: o desenho do Grau A está no código, os
-desvios estão registrados com motivo, e o teto de vagas está onde o Guia disse que estaria. Depois
-anunciar quem responde pelo quê e abrir para a arguição.
 
 ## Protocolo de arguição
 
 1. Quem recebe a pergunta responde a primeira frase e passa nominalmente para o dono do assunto.
 2. Ninguém responde duas seguidas enquanto houver integrante que ainda não respondeu.
-3. Territórios: organização e requisitos com o Andreas, arquitetura e decisões com o Tiago, telas e
-   fluxo do anfitrião com o Guilherme, API, regras e testes com o Gabriel.
-4. Pergunta sobre uso de IA: responder com franqueza, como está na situação real acima.
+3. Territórios: problema, requisitos e planejamento com o Andreas; arquitetura, Docker, GitHub e
+   integração com o Tiago; telas, MVC do front e Azure Boards com o Guilherme; API, regras e testes
+   com o Gabriel.
+4. O Tiago não responde primeiro. Ele completa quando o dono travar, para o professor ouvir os
+   outros três.
+
+## O que cada um precisa saber de cor
+
+A arguição vale 10% e é individual. Cada um estuda o próprio território antes do ensaio.
+
+**Andreas.** `docs/Sprints/Sprint-1`: as personas, a jornada e as histórias H01 a H12. Saber dizer
+em uma frase o que cada um dos seis grupos do MVP faz. Saber os itens da Sprint 6 que ficam com ele.
+
+**Tiago.** A seção 1 do Guia, para a pergunta das três camadas. O `docker-compose.yml` linha a linha.
+A seção 3 dos Ajustes da Sprint 5, porque perguntas sobre a adequação do back podem cair em você.
+
+**Guilherme.** A estrutura final de `front/src`, que mudou na adequação: `app` são as rotas de tela,
+`view` são as telas e `controller` são o `ApiClient` e as chamadas tipadas. A seção 2 dos Ajustes da
+Sprint 5, que é a tabela "o protótipo fazia, a arquitetura não permite". O `polling.ts`, para a
+pergunta da atualização.
+
+**Gabriel.** Os serviços em `api/src/domain`, principalmente `rsvp-rules.ts` e `rsvp.service.ts`, e
+o `saveRsvpWithinCapacity` em `api/src/data/invite.repository.ts`. A seção 3.1 dos Ajustes da Sprint
+5, que diz o que mudou no código dele e por quê. O teste de concorrência em
+`api/src/data/invite.repository.writes.spec.ts`.
 
 ## Regras para os slides
 
-Mesmas do T1: nenhum identificador interno no slide (UC, número de work item, ADR, linha do Guia),
-tudo isso vai na fala. Um título por slide. Nenhuma contagem de commits, de testes ou de arquivos no
-slide, porque envelhece. Nenhuma captura de tela que não tenha sido feita de verdade.
+- Nenhum identificador interno no slide: UC, número de work item, ADR, linha do Guia, nome de
+  arquivo. Tudo isso vai na fala, e na arguição vira ponto de rastreabilidade.
+- Um título por slide, que já diz a mensagem.
+- Nenhuma contagem de commits, testes ou arquivos no slide, porque envelhece.
+- Nenhuma captura de tela que não tenha sido feita de verdade, com data no rodapé.
+- No rodapé de cada slide, o nome de quem apresenta, para o professor associar fala e pessoa.
 
 ## Checklist até terça
 
 - [x] Atualizar o Azure Boards: H01 a H12, a #125, as tarefas das Sprints 4 e 5 e os épicos em
       Done, e as tarefas de API com o Gabriel
-- [ ] Fechar a #87 e a #57, do Team Charter, que seguem abertas desde a Sprint 1. A ficha do
-      Andreas em `docs/Team-Charter` ainda tem trechos a preencher
-- [ ] Criar os itens da Sprint 6, para o slide 12 ter lastro no quadro
-- [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
 - [ ] Confirmar a divisão de blocos no grupo
-- [ ] Escolher a captura do Teams para o Bloco A
-- [ ] Ensaiar a demo duas vezes na máquina que vai compartilhar a tela, com o ambiente subido do
-      zero, e gravar o vídeo do plano C
-- [ ] Ensaiar cronometrado, com as trocas, e uma rodada de perguntas cruzadas
-- [ ] Exportar em PDF e subir no Moodle antes das 19h30. Um envio pelo grupo ou um por pessoa?
-      Conferir na tarefa
+- [ ] Definir os itens da Sprint 6 que ficam com o Andreas, e criar os itens da Sprint 6 no quadro
+- [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
+- [ ] Fechar a #87 e a #57, do Team Charter, quando a ficha do Andreas estiver preenchida
+- [ ] Escolher a captura do Teams para o bloco 3
+- [ ] Ensaiar a demo duas vezes na máquina que vai compartilhar, com o ambiente subido do zero, e
+      gravar o vídeo do plano C
+- [ ] Ensaiar cronometrado, com as trocas de fala e de compartilhamento, e uma rodada de perguntas
+      cruzadas
+- [ ] Exportar em PDF e subir no Moodle antes das 19h30. Conferir na tarefa se o envio é um pelo
+      grupo ou um por pessoa
