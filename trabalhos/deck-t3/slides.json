@@ -1,0 +1,460 @@
+[
+  {
+    "modelo": "capa",
+    "n": 1,
+    "bloco": "",
+    "cartola": "Trabalho 3 · Apresentação intermediária",
+    "titulo": "Invite People",
+    "sub": "Evolução da implementação desde o Grau A",
+    "equipe": "Andreas Grings · Gabriel Tomasi<br>Guilherme Toebe · Tiago Passos",
+    "disciplina": "Arquitetura de Software<br>Prof. Kleinner Farias",
+    "data": "27/10/2026<br>Time 04",
+    "captura": "c03-convite.png",
+    "notas": "Andreas. Somos o Time 04, do Invite People. Vamos apresentar o problema e o escopo, a arquitetura implementada, o front-end, o back-end, uma demonstração e o planejamento até 17/11. Cada um responde pelo próprio bloco na arguição."
+  },
+  {
+    "modelo": "conteudo",
+    "n": 2,
+    "bloco": "Problema e escopo · Andreas",
+    "titulo": "O problema e os usuários",
+    "right": 72,
+    "itens": [
+      "Quem organiza uma festa costuma juntar as confirmações pelo WhatsApp e perde a conta de quantas pessoas vêm, quantos acompanhantes cada uma leva e o que cada uma não pode comer.",
+      "<strong>Anfitriã:</strong> cria o convite, compartilha o link e acompanha as respostas.",
+      "<strong>Convidado:</strong> abre o link e responde sem criar conta.",
+      "<strong>Buffet:</strong> recebe a lista de restrições alimentares para planejar o cardápio."
+    ],
+    "notas": "Andreas. As personas foram levantadas pelo time na Sprint 1: a anfitriã e o convidado como usuários primários, e o buffet como interessado secundário, que é quem recebe a lista."
+  },
+  {
+    "modelo": "cartoes",
+    "n": 3,
+    "bloco": "Problema e escopo · Andreas",
+    "titulo": "Escopo do MVP",
+    "colunas": 3,
+    "cartoes": [
+      {
+        "k": "H01",
+        "t": "Conta do anfitrião",
+        "d": "Criar conta e entrar."
+      },
+      {
+        "k": "H02 · H03 · H04",
+        "t": "Criação do convite",
+        "d": "Criar o convite, escolher template e cores e ver a prévia."
+      },
+      {
+        "k": "H05 · H06",
+        "t": "Compartilhamento",
+        "d": "Gerar o link, publicar e despublicar."
+      },
+      {
+        "k": "H07 · H08 · H09",
+        "t": "Confirmação",
+        "d": "Responder sem conta, informar acompanhantes e alterar pelo link pessoal."
+      },
+      {
+        "k": "H10",
+        "t": "Restrições alimentares",
+        "d": "Informar a restrição. Alergia exige descrição."
+      },
+      {
+        "k": "H11 · H12",
+        "t": "Painel",
+        "d": "Lista de presença e consolidação das restrições, com exportação em CSV."
+      }
+    ],
+    "legenda": "As doze histórias estão implementadas, integradas e rodando pelo docker compose.",
+    "notas": "Andreas. São seis grupos com as doze histórias de usuário, H01 a H12. Os códigos são os mesmos do quadro do Azure Boards que vamos mostrar depois da demonstração."
+  },
+  {
+    "modelo": "linhaTempo",
+    "n": 4,
+    "bloco": "Problema e escopo · Andreas",
+    "titulo": "Linha do tempo do projeto",
+    "marcos": [
+      {
+        "ano": "Sprint 1",
+        "txt": "18/08 a 31/08<br>Requisitos e casos de uso"
+      },
+      {
+        "ano": "Sprint 2",
+        "txt": "01/09 a 14/09<br>Arquitetura e decisões"
+      },
+      {
+        "ano": "Sprint 3",
+        "txt": "15/09 a 28/09<br>Documento de arquitetura e protótipo"
+      },
+      {
+        "ano": "Sprint 4",
+        "txt": "06/10 a 19/10<br>Base do projeto"
+      },
+      {
+        "ano": "Sprint 5",
+        "txt": "20/10 a 02/11<br>Integração do front e do back"
+      },
+      {
+        "ano": "Sprint 6",
+        "txt": "03/11 a 16/11<br>Consolidação e Pitch Final"
+      }
+    ],
+    "remate": "Sprints 1 a 3, Grau A: documentação e protótipo. Sprints 4 a 6, Grau B: implementação.",
+    "notas": "Andreas. No Grau A o projeto tinha doze histórias, o Guia da Arquitetura e um protótipo de telas. Na Sprint 4 foi feita a base: o repositório, o pacote de tipos compartilhado entre front e back, a integração contínua e o compose. Na Sprint 5 o front e o back foram integrados nessa base, e o que precisou mudar na arquitetura foi registrado com o motivo. As doze histórias estão implementadas. Passagem: o Tiago apresenta a arquitetura implementada."
+  },
+  {
+    "modelo": "diagrama",
+    "n": 5,
+    "bloco": "Arquitetura · Tiago",
+    "titulo": "Tiers e camadas",
+    "svgNome": "svgArquitetura",
+    "notas": "Tiago. Três tiers no compose: front em Next.js, API em NestJS e PostgreSQL. As três camadas lógicas ficam dentro da API: Apresentação, Domínio e Dados. O front segue MVC. O contract é o pacote de tipos compartilhado entre os dois lados. Camada é divisão lógica, tier é processo separado. As três camadas ficam no mesmo container da API."
+  },
+  {
+    "modelo": "duasColunas",
+    "n": 6,
+    "bloco": "Arquitetura · Tiago",
+    "titulo": "Base do projeto: lint, CI e docker compose",
+    "tituloA": "Lint e integração contínua",
+    "corA": "#21049A",
+    "itensA": [
+      "O lint recusa import que quebra a regra de camadas: o Domínio não importa da Apresentação, e os Dados não importam de nenhuma camada de cima.",
+      "Em todo PR, a integração contínua roda lint, formatação, tipos, testes contra um PostgreSQL e build.",
+      "A mesma integração constrói as imagens da API, do front e do mock."
+    ],
+    "tituloB": "docker compose",
+    "corB": "#E94D1C",
+    "itensB": [
+      "Três serviços: banco, API e front. O banco não publica porta.",
+      "O front publica a 3000 e a API a 3001, porque o navegador chama a API direto no painel e no envio da resposta.",
+      "A API só sobe depois que o banco responde ao healthcheck.",
+      "Um segundo arquivo troca a API por um mock, para trabalhar nas telas sem banco."
+    ],
+    "notas": "Tiago. Um PR que quebra a regra de camadas fica vermelho na integração contínua. Sobre o compose: no T1 apresentamos o Docker como forma de cada integrante subir o ambiente com um comando. É esse compose que roda na demonstração. Se perguntarem das migrations: elas rodam quando o volume do banco está vazio."
+  },
+  {
+    "modelo": "tabela",
+    "n": 7,
+    "bloco": "Arquitetura · Tiago",
+    "titulo": "Regras da arquitetura no código",
+    "xs": [
+      72,
+      560
+    ],
+    "ws": [
+      460,
+      648
+    ],
+    "cabecalhos": [
+      "Regra",
+      "Onde fica"
+    ],
+    "linhas": [
+      [
+        "Nenhuma rota confirma que um convite existe",
+        "Na Apresentação. Link inválido e convite despublicado dão o mesmo 404 na página pública, e o convite de outro anfitrião dá o mesmo 404 no painel. Um teste de ponta a ponta compara corpo e cabeçalho."
+      ],
+      [
+        "Sessão do anfitrião em cookie assinado",
+        "Na Apresentação. O front não guarda token."
+      ],
+      [
+        "Link do convite gerado no Domínio",
+        "No Domínio, com gerador seguro, na primeira publicação. Nunca no navegador."
+      ]
+    ],
+    "legenda": "A regra do teto de vagas está no bloco do back-end.",
+    "notas": "Tiago. Fala final: a regra do teto de vagas o Gabriel mostra no bloco dele. Dificuldade do bloco: juntar o front e o back, que foram escritos em paralelo, fora da main. A integração foi em duas etapas. Primeiro o front, com um mock que responde às rotas com os tipos do contract. Depois o back. Em cada etapa, o que não cabia na arquitetura foi adequado, registrado com o motivo nos Ajustes da Sprint 5, e só entrou na main com a CI verde. O contract permitiu juntar as duas partes sem reescrever tudo. Ele deveria ter sido feito antes das telas. Passagem: o Guilherme apresenta o front-end, que partiu do protótipo dele."
+  },
+  {
+    "modelo": "capturas",
+    "n": 8,
+    "bloco": "Front-end · Guilherme",
+    "titulo": "Telas do front-end",
+    "imagens": [
+      {
+        "arq": "c02-editor.png",
+        "t": "Editor do convite, com a prévia"
+      },
+      {
+        "arq": "c03-convite.png",
+        "t": "Convite no celular"
+      },
+      {
+        "arq": "c04-resposta.png",
+        "t": "Resposta enviada, com o link pessoal"
+      }
+    ],
+    "legenda": "As telas partiram do protótipo e foram adequadas à arquitetura: o visual foi mantido, reescrito em CSS puro, e as regras de negócio saíram da tela.",
+    "notas": "Guilherme. O protótipo foi meu: [o fluxo, as telas, os três templates e as cores; ajustar ao que for verdade]. Ele foi gerado numa ferramenta de prototipação, e por isso trazia muita coisa que a nossa stack não usa. Na integração, o Tiago adequou o protótipo à arquitetura: o visual ficou, reescrito em CSS puro, e o que era regra de negócio saiu da tela e foi para a API."
+  },
+  {
+    "modelo": "tabela",
+    "n": 9,
+    "bloco": "Front-end · Guilherme",
+    "titulo": "Mudanças no front para seguir a arquitetura",
+    "xs": [
+      72,
+      330,
+      760
+    ],
+    "ws": [
+      240,
+      410,
+      448
+    ],
+    "cabecalhos": [
+      "Ponto",
+      "No protótipo",
+      "Hoje"
+    ],
+    "linhas": [
+      [
+        "Vagas na página pública",
+        "Mostrava quantas vagas restavam",
+        "Sem contagem. A lotação aparece só quando a resposta é recusada"
+      ],
+      [
+        "CSV para o buffet",
+        "Montado no navegador",
+        "Gerado pela API, com proteção contra fórmula de planilha"
+      ],
+      [
+        "Sessão do anfitrião",
+        "Token guardado no navegador",
+        "Cookie de sessão. O front não guarda token"
+      ],
+      [
+        "Limites do formulário",
+        "Conferidos só na tela",
+        "A tela limita os campos, e a API valida"
+      ]
+    ],
+    "notas": "Guilherme. A tela ainda limita os campos, para ajudar quem preenche, mas a validação que vale é a da API. Dificuldade do bloco: o protótipo nasceu antes de a arquitetura estar no código, e algumas regras de negócio ficaram na tela. O que eu aprendi vendo a adequação: prototipar com ferramenta é rápido para validar o visual, mas o protótipo precisa ser lido contra o Guia antes de virar código. Se eu fizesse de novo, desenharia as telas em cima do contract desde o começo. Passagem: quem recebe essas chamadas é a API. A primeira versão das rotas e das regras dela foi escrita pelo Gabriel."
+  },
+  {
+    "modelo": "diagrama",
+    "n": 10,
+    "bloco": "Back-end · Gabriel",
+    "titulo": "Caminho de uma resposta na API",
+    "svgNome": "svgRaias",
+    "legenda": "Sim ocupa uma vaga mais os acompanhantes. Talvez e não ocupam zero. Não vou zera os acompanhantes e a observação. Alergia exige descrição.",
+    "notas": "Gabriel. As regras que vou mostrar são as que estão hoje no código. A primeira versão das rotas e dessas regras foi minha, inclusive a transação com a trava na linha do convite. Na integração, algumas regras mudaram de camada, e eu conto isso no fim do bloco. Fecho do slide: o Domínio calcula quantas vagas a resposta pede, e a camada de Dados confere o teto dentro da transação."
+  },
+  {
+    "modelo": "cartoes",
+    "n": 11,
+    "bloco": "Back-end · Gabriel",
+    "titulo": "Testes",
+    "colunas": 3,
+    "destacar": 1,
+    "cartoes": [
+      {
+        "k": "Domínio",
+        "t": "Regras",
+        "d": "Vagas pedidas por resposta, recusa do não vou, descrição da alergia, comparação por dia no fuso do projeto e publicação."
+      },
+      {
+        "k": "Banco",
+        "t": "Contra PostgreSQL",
+        "d": "Gravação dentro do teto e concorrência: quatro respostas simultâneas pedindo duas vagas cada, num teto de cinco. Passam duas."
+      },
+      {
+        "k": "Rotas",
+        "t": "Ponta a ponta",
+        "d": "O fluxo completo pelas rotas, e o mesmo 404 para link inválido, convite despublicado e convite de outro anfitrião."
+      }
+    ],
+    "legenda": "Os testes rodam na integração contínua em todo PR, com um PostgreSQL de serviço.",
+    "notas": "Gabriel. Os testes de hoje foram reescritos na integração, porque os meus testavam assinaturas antigas. O que vale citar: quatro respostas simultâneas, cada uma pedindo duas vagas, num convite com teto de cinco. Passam exatamente duas. Dificuldade do bloco: uma regra de negócio na camada errada. Na minha primeira versão, a regra de que só a confirmação ocupa vaga estava na consulta da camada de Dados, junto com a conferência do teto. Funcionava, mas a camada de Dados passava a saber o que é uma vaga, e o Guia diz que isso é do Domínio. Na integração, o Tiago subiu o cálculo das vagas que a resposta pede para o Domínio, e a camada de Dados ficou com a soma do que já está gravado e a conferência do teto. Passagem: agora a demonstração."
+  },
+  {
+    "modelo": "tabela",
+    "n": 12,
+    "bloco": "Demonstração · Guilherme e Gabriel",
+    "titulo": "Roteiro da demonstração",
+    "xs": [
+      72,
+      600,
+      900
+    ],
+    "ws": [
+      510,
+      290,
+      308
+    ],
+    "cabecalhos": [
+      "Passo",
+      "Histórias",
+      "Quem conduz"
+    ],
+    "linhas": [
+      [
+        "Criar, personalizar e publicar",
+        "H02 · H03 · H04 · H05 · H06",
+        "Guilherme"
+      ],
+      [
+        "Responder como convidado",
+        "H07 · H08 · H10",
+        "Gabriel"
+      ],
+      [
+        "Tentar responder num convite lotado",
+        "H07",
+        "Gabriel"
+      ],
+      [
+        "Alterar pelo link pessoal",
+        "H09",
+        "Gabriel"
+      ],
+      [
+        "Painel e CSV",
+        "H11 · H12",
+        "Guilherme"
+      ],
+      [
+        "Despublicar",
+        "H06",
+        "Guilherme"
+      ]
+    ],
+    "notas": "Este slide fica na tela enquanto o Guilherme assume o compartilhamento. Abrir dizendo: a conta já está criada para poupar tempo; cadastro e entrada estão no apêndice. Depois da demonstração, na mesma tela: o quadro do Azure Boards (Guilherme), o GitHub (Tiago) e a organização do trabalho (Andreas)."
+  },
+  {
+    "modelo": "conteudo",
+    "n": 13,
+    "bloco": "Organização · Andreas",
+    "titulo": "Organização do trabalho",
+    "right": 72,
+    "itens": [
+      "Sprints de duas semanas no Azure Boards. Cada história é quebrada em tarefas de tela e de API, com responsável.",
+      "Conversas pelo WhatsApp e no tempo de aula. As decisões ficam registradas na documentação do repositório.",
+      "Integração por PR no GitHub. Um PR só entra na main com a integração contínua aprovada."
+    ],
+    "notas": "Andreas. Planejamos em sprints de duas semanas no Azure Boards, com cada história quebrada em tarefas de tela e de API. Conversamos pelo WhatsApp e discutimos o projeto no tempo de aula. O que decidimos fica registrado no repositório, no Guia, nos ADRs e nos Ajustes da Sprint 5. Integramos por PR, e a CI verde é a nossa definição de pronto."
+  },
+  {
+    "modelo": "tabela",
+    "n": 14,
+    "bloco": "Planejamento · Andreas",
+    "titulo": "Planejamento até 17/11",
+    "xs": [
+      72,
+      800,
+      1010
+    ],
+    "ws": [
+      700,
+      200,
+      198
+    ],
+    "cabecalhos": [
+      "O quê",
+      "Quem",
+      "Até"
+    ],
+    "linhas": [
+      [
+        "Revisar os artefatos das Sprints 1 a 3 contra o código, ligando cada história ao caso de uso, à rota, à tela e ao teste",
+        "a definir",
+        "a definir"
+      ],
+      [
+        "Diagrama de sequência da lista de presença",
+        "a definir",
+        "a definir"
+      ],
+      [
+        "Protótipo de baixa fidelidade com as telas reais",
+        "a definir",
+        "a definir"
+      ],
+      [
+        "Aval do time às decisões novas da arquitetura",
+        "a definir",
+        "a definir"
+      ],
+      [
+        "Fechar o Team Charter",
+        "a definir",
+        "a definir"
+      ],
+      [
+        "Deck e ensaio do Pitch Final",
+        "a definir",
+        "a definir"
+      ]
+    ],
+    "legenda": "Lições: definir os tipos compartilhados antes das telas, integrar front e back antes do fim da sprint, e manter as regras de negócio no Domínio desde a primeira versão.",
+    "notas": "Andreas. Dizer quais itens assumiu. Preencher Quem e Até antes do ensaio e criar os itens no quadro da Sprint 6, de 03/11 a 16/11."
+  },
+  {
+    "modelo": "impacto",
+    "n": 15,
+    "bloco": "Perguntas",
+    "cartola": "Time 04 · Invite People",
+    "titulo": "Perguntas",
+    "sub": "Andreas Grings · problema, requisitos e planejamento<br>Tiago Passos · arquitetura, Docker e GitHub<br>Guilherme Toebe · front-end e Azure Boards<br>Gabriel Tomasi · back-end, regras e testes",
+    "notas": "Andreas, fechamento: as doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão registradas com o motivo. Até 17/11 vamos revisar a documentação contra o código e preparar o Pitch. Para perguntas: requisitos e planejamento comigo, arquitetura e Docker com o Tiago, telas e quadro com o Guilherme, API e regras com o Gabriel."
+  },
+  {
+    "modelo": "capturas",
+    "n": 16,
+    "bloco": "Apêndice",
+    "titulo": "Telas do anfitrião",
+    "imagens": [
+      {
+        "arq": "c01-entrada.png",
+        "t": "Entrada e cadastro"
+      },
+      {
+        "arq": "c08-lista.png",
+        "t": "Lista de convites"
+      }
+    ],
+    "legenda": "Capturas da aplicação rodando localmente em 26/10/2026."
+  },
+  {
+    "modelo": "capturas",
+    "n": 17,
+    "bloco": "Apêndice",
+    "titulo": "Telas do convidado",
+    "imagens": [
+      {
+        "arq": "c03-convite.png",
+        "t": "Convite"
+      },
+      {
+        "arq": "c04-resposta.png",
+        "t": "Resposta enviada"
+      },
+      {
+        "arq": "c05-lotado.png",
+        "t": "Convite lotado"
+      },
+      {
+        "arq": "c06-link-pessoal.png",
+        "t": "Link pessoal"
+      }
+    ],
+    "legenda": "Capturas da aplicação rodando localmente em 26/10/2026."
+  },
+  {
+    "modelo": "capturas",
+    "n": 18,
+    "bloco": "Apêndice",
+    "titulo": "Painel e convite despublicado",
+    "imagens": [
+      {
+        "arq": "c07-painel.png",
+        "t": "Painel de respostas"
+      },
+      {
+        "arq": "c09-nao-encontrado.png",
+        "t": "Link do convite depois de despublicar"
+      }
+    ],
+    "legenda": "Capturas da aplicação rodando localmente em 26/10/2026."
+  }
+]

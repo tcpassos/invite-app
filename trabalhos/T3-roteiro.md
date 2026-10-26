@@ -156,7 +156,11 @@ Passagem: "O Guilherme apresenta o front-end, que partiu do protótipo dele."
 
 ## Bloco 3, front-end (3:00, Guilherme)
 
-**Slide 8, título "Protótipo e tela atual".** Uma mesma tela no protótipo e hoje, lado a lado. Fala:
+**Slide 8, título "Telas do front-end".** Três capturas da aplicação atual: o editor com a prévia, o
+convite no celular e a resposta enviada com o link pessoal. O protótipo, como está no repositório do
+Guilherme, não sobe sozinho (faltam o cliente do Supabase e o `@tanstack/react-start`), por isso o
+slide não tem a captura dele. Se o Guilherme tiver uma captura do protótipo, ela pode entrar ao lado.
+Fala:
 
 > "O protótipo foi meu: [o fluxo, as telas, os três templates e as cores; ajustar ao que for
 > verdade]. Ele foi gerado numa ferramenta de prototipação, e por isso trazia muita coisa que a nossa
@@ -333,8 +337,17 @@ arguição. Fechamento:
 > Pitch. Para perguntas: requisitos e planejamento comigo, arquitetura e Docker com o Tiago, telas e
 > quadro com o Guilherme, API e regras com o Gabriel."
 
-**Apêndice.** Capturas datadas: cadastro e entrada, os passos da demo, o quadro e um PR com os
-checks. Servem ao plano C e ficam no PDF do Moodle como evidência.
+**Apêndice, slides 16 a 18.** Capturas da aplicação de 26/10: entrada e lista de convites, as telas
+do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link despublicado.
+Servem ao plano C e ficam no PDF do Moodle como evidência. Capturas do quadro e de um PR com os
+checks ainda não estão no deck.
+
+## O deck
+
+O deck está em `trabalhos/T3-Invite-People.pptx`, e o PDF para o Moodle em
+`trabalhos/T3-Invite-People.pdf`. As falas de cada slide estão nas notas do apresentador. Ele é
+gerado a partir de `trabalhos/deck-t3/slides.json`, e o `README.md` dessa pasta diz como regerar
+depois de mudar o texto.
 
 ---
 
@@ -493,7 +506,8 @@ qualquer item que o professor clicar.
 - [ ] Decidir se entra uma captura do WhatsApp no slide 13
 - [ ] Ensaiar a demo duas vezes na máquina do Guilherme e uma na do Tiago, com o ambiente subido do
       zero, e gravar o vídeo do plano C com cadastro e entrada no começo
-- [ ] Tirar as capturas do apêndice
+- [x] Tirar as capturas da aplicação para o apêndice
+- [ ] Decidir se entram capturas do quadro e de um PR com os checks no apêndice
 - [ ] Ensaiar cronometrado, com as trocas de fala e de compartilhamento, e uma rodada de perguntas
       cruzadas usando a seção de perguntas prováveis
 - [ ] Exportar em PDF e subir no Moodle antes das 19h30. Conferir na tarefa se o envio é um pelo
