@@ -403,7 +403,7 @@ def dg_raias(sl, x, y):
         (1, 'Calcula as vagas pedidas'),
         (2, 'Trava o convite e soma as vagas ocupadas'),
         (2, 'Confere o teto e grava, ou devolve a recusa'),
-        (1, 'Dá nome à recusa: convite lotado'),
+        (1, 'Se não cabe, dá nome à recusa: convite lotado'),
         (0, 'Responde com o link pessoal ou com o erro'),
     ]
     x0, gap = 72 + lrot + 14, 12
@@ -422,6 +422,11 @@ def dg_raias(sl, x, y):
         else:
             cotovelo(sl, [(ax_ + aw, ay + ah / 2), (ax_ + aw + gap / 2, ay + ah / 2),
                           (ax_ + aw + gap / 2, by_ + bh / 2), (bx_, by_ + bh / 2)], CINZA, 1.5)
+    # Quando cabe, a gravação volta direto para a Apresentação, sem passar pela recusa.
+    (gx, gy, gw, gh), (rx, ry, rw, rh) = caixas[4], caixas[6]
+    meio, alvo = gx + gw / 2, ry + rh * 0.28
+    cotovelo(sl, [(meio, gy), (meio, alvo), (rx, alvo)], CINZA, 1.5)
+    rotulo(sl, meio + 6, topo + alt_raia + 8 + alt_raia / 2 - 11, 90, 'se cabe', tam=13, cor=ESC)
 
 DIAGRAMAS = {'svgArquitetura': dg_arquitetura, 'svgRaias': dg_raias}
 

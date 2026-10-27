@@ -8,6 +8,8 @@
 '   docker run --rm -v "<caminho desta pasta>:/data" plantuml/plantuml -tpng /data/diagrama-de-componentes-slide.puml
 skinparam defaultFontSize 18
 skinparam nodesep 30
+' Rótulos das interfaces menores, para os nomes vizinhos não se encostarem.
+skinparam interfaceFontSize 13
 skinparam ranksep 50
 skinparam dpi 150
 ' Fonte do Diagrama de Componentes da Sprint 2, item #59 do Azure Boards.

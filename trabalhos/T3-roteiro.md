@@ -112,18 +112,27 @@ só quer responder rápido, sem criar conta, e o buffet como interessado secund�
 a lista.
 
 **Slide 3, título "Escopo do MVP".** Uma tabela com os seis grupos de funcionalidades e o que cada
-um permite. Os códigos H01 a H12 não vão no slide. Na fala: são doze histórias, as doze estão
+um permite, e a legenda "As doze histórias de usuário desses grupos estão implementadas". A criação
+inclui o teto de pessoas e a confirmação o limite de acompanhantes, porque os dois voltam nos slides
+do back-end e na demo. Os códigos H01 a H12 não vão no slide. Na fala: são doze histórias, as doze estão
 implementadas, e no quadro elas aparecem como H01 a H12 (conta é a H01, criação do convite da H02 à
 H04, compartilhamento H05 e H06, confirmação da H07 à H09, restrições H10, painel H11 e H12).
 
 **Slide 4, título "Linha do tempo do projeto".** Linha do tempo horizontal: Sprint 1, requisitos;
-Sprint 2, arquitetura; Sprint 3, documento de arquitetura e protótipo; marca do Grau A; Sprint 4, a
-base; Sprint 5, integração e ajustes; Sprint 6, consolidação. Fala:
+Sprint 2, arquitetura; Sprint 3, documento de arquitetura; marca do Grau A; Sprint 4, a base;
+Sprint 5, protótipo e integração; Sprint 6, consolidação. Fala:
 
-> "No Grau A o projeto tinha as doze histórias, o Guia da Arquitetura e um protótipo de telas. Na
-> Sprint 4 o Tiago montou a base: o repositório, o pacote de tipos compartilhado entre front-end e back-end, a
-> integração contínua e o compose. Na Sprint 5 o front-end e o back-end foram integrados nessa base, e o que
-> precisou mudar na arquitetura foi registrado com o motivo."
+> "No Grau A o projeto tinha as doze histórias, o Guia da Arquitetura, os ADRs e o documento de
+> arquitetura. O protótipo de baixa fidelidade ficou incompleto e está no plano da Sprint 6. Na Sprint
+> 4 o Tiago montou a base do código, sobre o repositório e o compose que já existiam: o pacote de
+> tipos compartilhado entre front-end e back-end, o lint de camadas, a integração contínua e os
+> esqueletos da API e do front-end. O plano era fechar o fluxo central nessa sprint, mas ele só fechou
+> na Sprint 5. Na Sprint 5 o Guilherme fez o protótipo das telas, o front-end e o back-end foram
+> integrados nessa base, e o que precisou mudar na arquitetura foi registrado com o motivo nos Ajustes
+> da Sprint 5."
+
+As datas são as sprints do time, de duas semanas. O Plano de Ensino põe a Sprint 6 a partir de
+27/10, e a semana entre 29/09 e 05/10 foi a entrega do Grau A. Ter essa resposta pronta.
 
 Passagem: "O Tiago mostra os diagramas da arquitetura."
 
@@ -140,19 +149,25 @@ DAS, renderizados de novo com fonte maior para ler na chamada. As versões para 
   MVC. Fala: "camada é divisão lógica, tier é processo separado. As três camadas ficam no mesmo
   container da API."
 - **Slide 6, "Diagrama de componentes".** Cortado em duas metades lado a lado: o front-end com a
-  Apresentação, e o Domínio com os Dados e o banco. Fala: cada componente da API existe no código com
-  o mesmo nome, e a única diferença é o `TemplateSet`, que virou arquivos (o CSS e a imagem de
-  prévia de cada template), como o DAS registra.
+  Apresentação, e o Domínio com os Dados e o banco. Os rótulos das interfaces estão menores que os
+  dos componentes, para não se encostarem. Fala: os componentes da API existem no código com o mesmo
+  nome. O limite de tráfego virou um serviço chamado pelo controller, e não uma guarda do Nest. No
+  front-end, o painel é montado pelo layout das telas do anfitrião. O `TemplateSet` virou um CSS com
+  uma classe por template e uma imagem de prévia por template, como o DAS registra. O código tem peças
+  que o diagrama não detalha, como a guarda que só aceita JSON e o cookie de sessão.
 - **Slide 7, "Diagrama de implantação".** O `docker-compose.yml` é a forma executável dele. Fala: o
   banco não publica porta, o front-end fica na 3000 e a API na 3001 do host, porque o navegador fala com
   ela direto; a API sobe depois do healthcheck do banco. "No T1 apresentamos o Docker como forma de
-  cada integrante subir o ambiente com um comando. É esse compose que roda na demo."
+  cada integrante subir o ambiente com um comando." Se a demo for local, é esse compose que roda
+  nela. Se for publicada, dizer que publicar fora da máquina local é uma decisão nova, que revisa o
+  ADR-0003.
 
 **Slide 8, título "Lint e integração contínua".** O lint recusa import que quebra a regra de
-camadas: o Domínio não importa da Apresentação, e os Dados não importam de nenhuma camada de cima.
+camadas: o Domínio não importa da Apresentação, os Dados não importam de nenhuma camada de cima, e
+a Apresentação não chama os Dados direto.
 Em todo PR a integração contínua roda lint, formatação, tipos, testes contra um PostgreSQL e build,
-e constrói as imagens. Um segundo arquivo do compose troca a API por um mock. Ao lado, a captura
-dos checks verdes de um PR no GitHub.
+e constrói as imagens. Um segundo arquivo do compose troca a API por um mock. Ao lado, o recorte
+com os dois jobs verdes de um PR no GitHub.
 
 Dificuldade do bloco, dita assim:
 
@@ -178,9 +193,9 @@ Fala de abertura do bloco:
 **Slide 9, título "Regras da arquitetura no código".** Três regras, cada uma com o lugar do código
 onde está:
 
-- Quem não tem acesso não descobre se um convite existe. Fica no Domínio e na Apresentação: link
-  inválido, convite despublicado e convite de outro anfitrião dão o mesmo 404, com o mesmo corpo e
-  cabeçalho, conferido por um teste de ponta a ponta.
+- Quem não tem acesso não descobre se um convite existe. O Domínio distingue os casos, e a
+  Apresentação responde a todos com o mesmo 404: link inválido, convite despublicado e convite de
+  outro anfitrião. Um teste de ponta a ponta confere o status e o corpo.
 - A sessão do anfitrião é cookie assinado, e o front-end não guarda token.
 - O link do convite nasce no Domínio, com gerador seguro, na primeira publicação. Nunca no
   navegador.
@@ -190,10 +205,13 @@ Fala final do slide: "A regra do teto de vagas está no próximo slide."
 **Slide 10, título "Caminho de uma resposta na API".** Diagrama de três raias, uma por camada, com
 sete passos:
 
-- Apresentação: confere o formato e o limite de tráfego.
+- Apresentação: confere o formato e o limite de tráfego. Na fala, a ordem real: limite por endereço
+  de origem, formato do corpo, se o link existe, e só então o limite por link, para o erro de excesso
+  de tentativas não revelar que o link existe.
 - Domínio: aplica as regras da resposta e calcula as vagas pedidas.
 - Dados: trava o convite e soma as vagas ocupadas, confere o teto e grava, ou devolve a recusa.
-- Domínio: quando a resposta não cabe, dá nome à recusa (convite lotado).
+- Se cabe, a seta volta direto para a Apresentação.
+- Domínio: se não cabe, dá nome à recusa (convite lotado).
 - Apresentação: responde com o link pessoal ou com o erro.
 
 A legenda resume as regras: "Sim" ocupa uma vaga para o convidado e uma para cada acompanhante,
@@ -207,15 +225,18 @@ testes das rotas de ponta a ponta. Fala:
 
 > "Os testes de hoje foram reescritos na integração, porque os meus testavam assinaturas antigas. O
 > que vale citar: quatro respostas simultâneas, cada uma pedindo duas vagas, num convite com teto de
-> cinco. Passam exatamente duas."
+> cinco. Duas são gravadas e duas recusadas."
 
 Dificuldade do bloco:
 
-> "A dificuldade deste bloco foi uma regra de negócio na camada errada. Na minha primeira versão, a
-> regra de que só a confirmação ocupa vaga estava na consulta da camada de Dados, junto com a
-> conferência do teto. Funcionava, mas a camada de Dados passava a saber o que é uma vaga, e o Guia
-> diz que isso é do Domínio. Na integração, o Tiago subiu o cálculo das vagas que a resposta pede para
-> o Domínio, e a camada de Dados ficou com a soma do que já está gravado e a conferência do teto."
+> "A dificuldade deste bloco foi regra de negócio na camada errada. Na minha primeira versão, a
+> consulta da camada de Dados decidia quanto cada resposta ocupava, e o Guia diz que isso é regra do
+> Domínio. Na integração, o Tiago levou para o Domínio o cálculo das vagas que a resposta nova pede. A
+> camada de Dados continua somando as vagas das respostas já gravadas, dentro da transação, como o
+> documento de arquitetura define, e confere o teto. Outras mudanças do mesmo tipo estão nos Ajustes
+> da Sprint 5: o 'Não' zerando acompanhantes também saiu dos Dados, o Domínio deixou de receber os
+> tipos HTTP do pacote de tipos e passou a receber comandos, e a data do evento passou a usar o fuso
+> pelo nome, como manda o ADR-0013."
 
 Passagem: "O Guilherme mostra o front-end, que partiu do protótipo dele."
 
@@ -237,17 +258,20 @@ Fala:
 **Slide 13, título "Mudanças no front-end para seguir a arquitetura".** Uma tabela com três
 colunas: o ponto, como era no protótipo e como está na versão atual.
 
-| Ponto                                | No protótipo                                     | Na versão atual                                                                               |
-| ------------------------------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
-| Vagas restantes                      | O convite mostrava quantas vagas restavam        | O convite não mostra contagem. O aviso de lotado só aparece para quem tenta responder         |
-| Lista para o buffet                  | O CSV era montado no próprio navegador           | O CSV é gerado pela API, que protege a planilha contra fórmulas                               |
-| Login do anfitrião                   | Um token ficava guardado no navegador            | A sessão fica num cookie controlado pela API, e o front-end não guarda nada                   |
-| Limites de acompanhantes e de vagas  | Só a tela conferia                               | A tela ainda limita os campos, mas quem aceita ou recusa é a API                              |
+| Ponto                   | No protótipo                                                          | Na versão atual                                                                        |
+| ----------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Teto do evento          | O convite mostrava o teto e avisava de lotado antes da resposta       | O convite não mostra teto nem contagem. O aviso de lotado só aparece para quem tenta responder |
+| Link do convite         | Gerado no navegador                                                   | Gerado pela API, na primeira publicação                                                |
+| Lista para o buffet     | O CSV era montado no navegador                                        | O CSV é gerado pela API, que protege a planilha contra fórmulas                        |
+| Login do anfitrião      | Um token ficava guardado no navegador                                 | A sessão fica num cookie controlado pela API                                           |
+| Limite de acompanhantes | Conferido na tela. A parte de servidor do protótipo não chegava a rodar | A tela limita o campo, mas quem aceita ou recusa a resposta é a API                  |
 
-A contagem de vagas saiu do convite porque expõe dado do anfitrião.
+O protótipo calculava as vagas restantes, mas não mostrava o número: mostrava o teto e o aviso de
+lotado. As conferências de servidor dele dependiam de bibliotecas que não estavam no projeto.
 
-Fala: "a tela ainda limita os campos, para ajudar quem preenche, mas a validação que vale é a da
-API."
+Fala: "o teto saiu do convite porque é dado do anfitrião, e quem só tem o link não precisa saber
+quantas pessoas cabem. O link e o CSV saíram do navegador porque são regras do servidor no Guia. A
+tela ainda limita os campos, para ajudar quem preenche, mas a validação que vale é a da API."
 
 Dificuldade do bloco:
 
@@ -267,7 +291,8 @@ Fala do Guilherme, 30 segundos:
 
 Se perguntarem detalhes, passar para quem passou por cada uma.
 
-**Slide 15, título "Organização do trabalho".** Ao lado, a captura do quadro Kanban. Quatro itens:
+**Slide 15, título "Organização do trabalho".** Ao lado, a coluna Done do quadro Kanban, recortada
+para não mostrar o item do Grau A que ficou aberto. Quatro itens:
 sprints de duas semanas no quadro Kanban do Azure Boards, com cada história dividida em tarefas de
 tela e de API; conversas pelo WhatsApp e nas aulas, com as decisões registradas na documentação do
 repositório; cada mudança entrando na `main` por PR, depois que a integração contínua passa; e o que
@@ -423,8 +448,9 @@ depois de mudar o texto.
 
 ### Tiago
 
-- **Como vocês priorizaram as Sprints 4 e 5?** A Sprint 4 fechou o fluxo central de ponta a ponta:
-  conta, criação, link, resposta, acompanhantes e restrição alimentar. A Sprint 5 completou com
+- **Como vocês priorizaram as Sprints 4 e 5?** A Sprint 4 planejava fechar o fluxo central de ponta
+  a ponta: conta, criação, link, resposta, acompanhantes e restrição alimentar. Na prática, ela montou
+  a base, e o fluxo central fechou na Sprint 5, junto com o resto. A Sprint 5 completou com
   personalização, prévia, despublicação, alteração da resposta, lista de presença e consolidação.
 - **Por que três camadas e não quatro?** Porque só existem três motivos de mudança com vida própria:
   o jeito de falar com o mundo, as regras do evento e o armazenamento. Seção 1 do Guia.
@@ -545,7 +571,9 @@ qualquer item que o professor clicar, e os itens da Sprint 6, que ele diz no sli
       Done, e as tarefas de API com o Gabriel
 - [ ] Confirmar a divisão de blocos no grupo
 - [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 12
-- [ ] Criar os itens da Sprint 6 no quadro
+- [ ] Criar os itens da Sprint 6 no quadro, para mostrar ao vivo depois da demo junto com o plano até 17/11
+- [ ] Lembrar que o projeto no Azure DevOps ainda se chama invite-people e aparece no topo da tela
+      quando o quadro for mostrado ao vivo. Se perguntarem, é o nome provisório do projeto
 - [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
 - [ ] Decidir se entra uma captura do WhatsApp no slide 15
 - [ ] Decidir hoje se a demo é no Railway (Guilherme) ou local (Tiago), e ensaiar duas vezes na
