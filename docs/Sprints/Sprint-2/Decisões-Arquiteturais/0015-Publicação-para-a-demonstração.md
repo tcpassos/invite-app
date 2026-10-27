@@ -21,7 +21,7 @@ Publicar no Railway muda três coisas que o ambiente local escondia:
 
 - **Cookie entre sites.** Com `SESSION_COOKIE_CROSS_SITE=true`, a API emite o cookie de sessão com `SameSite=None` e `Secure`. O `Secure` é o que o [ADR-0010](0010-Autenticação-do-anfitrião.md) já pedia para quando houvesse publicação. Sem a variável, o cookie continua como no ambiente local.
 - **IP de origem.** Com `TRUST_PROXY=1`, a API lê o IP do convidado no `X-Forwarded-For` que o proxy do Railway preenche. Sem a variável, usa o IP do socket, como no compose.
-- **Migrations.** Aplicadas uma vez, à mão, no banco publicado, na ordem dos arquivos. O passo a passo está em [Publicação no Railway](../../../Começando/Publicação-no-Railway.md).
+- **Migrations.** O comando de pré-deploy da API, `node api/dist/migrate.js`, aplica os scripts de `migrations/` quando o banco está vazio, numa transação só, e não faz nada quando já há tabelas. É a mesma regra do volume vazio do compose. O passo a passo está em [Publicação no Railway](../../../Começando/Publicação-no-Railway.md).
 - **Rede.** O banco fica só na rede privada do Railway, como no compose ele não publica porta. O servidor do front chama a API pela rede privada, e o navegador chama a API pelo domínio público dela, como na seção 5.3 do Diagrama de Implantação.
 
 ## Consequências
@@ -34,7 +34,8 @@ Publicar no Railway muda três coisas que o ambiente local escondia:
 **Negativas**
 - `SameSite=None` tira a proteção contra requisição forjada que o `Lax` dava. O que segura é o CORS, que só aceita a origem do front, e a guarda que só aceita `application/json`, porque um formulário de outro site não consegue mandar esse tipo sem a checagem prévia do navegador.
 - O cookie da API é de terceiro para o front. O Chrome, o Edge e o Firefox mandam esse cookie; o Safari e o Brave bloqueiam, e a janela anônima do Chrome também. O anfitrião precisa entrar por um desses três navegadores, numa janela normal. O convidado não usa cookie e não é afetado. Um domínio próprio, com front e API como subdomínios, resolveria isso e fica como alternativa.
-- O esquema do banco publicado evolui à mão, como o do compose. A limitação registrada na seção 8.1 do Diagrama de Implantação continua.
+- O esquema do banco publicado só é criado em banco vazio, como o do compose. A limitação registrada na seção 8.1 do Diagrama de Implantação continua.
+- A imagem da API passa a levar a pasta `migrations/`, que antes só o container do banco montava.
 - O plano gratuito do Railway tem limite de uso. A publicação vale para a demonstração, não como ambiente permanente.
 
 ## Revisão

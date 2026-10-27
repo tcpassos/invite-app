@@ -1,6 +1,6 @@
 # migrations
 
-Scripts de esquema do banco, aplicados pelo container `db` na inicialização.
+Scripts de esquema do banco, aplicados pelo container `db` na inicialização. Na publicação, quem aplica é o `api/src/migrate.ts`, com a mesma regra do banco vazio (ADR-0015).
 
 O diretório é montado em `/docker-entrypoint-initdb.d` pelo `docker-compose.yml`. A imagem do PostgreSQL executa os arquivos `.sql` deste diretório em ordem alfabética, **e só quando o volume está vazio**.
 

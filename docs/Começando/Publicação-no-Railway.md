@@ -7,21 +7,8 @@ São três serviços num projeto só: `Postgres`, `api` e `front`. Os nomes impo
 ## 1. Projeto e banco
 
 1. No Railway, **New Project → Deploy PostgreSQL**. O serviço se chama `Postgres`.
-2. Em **Postgres → Variables**, copie o valor de `DATABASE_PUBLIC_URL`. Ele só serve para aplicar as migrations da sua máquina.
-3. Da raiz do repositório, aplique as migrations, na ordem:
 
-   ```bash
-   for f in migrations/*.sql; do
-     docker run --rm -i postgres:17-alpine psql "<DATABASE_PUBLIC_URL>" -v ON_ERROR_STOP=1 -f - < "$f"
-   done
-   ```
-
-   No Windows, sem o laço, rode uma vez para cada arquivo:
-
-   ```powershell
-   Get-Content migrations/001-esquema-inicial.sql | docker run --rm -i postgres:17-alpine psql "<DATABASE_PUBLIC_URL>" -v ON_ERROR_STOP=1 -f -
-   Get-Content migrations/002-carga-de-categorias.sql | docker run --rm -i postgres:17-alpine psql "<DATABASE_PUBLIC_URL>" -v ON_ERROR_STOP=1 -f -
-   ```
+As tabelas não são criadas aqui: quem cria é o comando de pré-deploy da API, no passo 2.
 
 ## 2. API
 
@@ -40,7 +27,8 @@ São três serviços num projeto só: `Postgres`, `api` e `front`. Os nomes impo
    | `TRUST_PROXY`               | `1`                                                                                           |
    | `FRONT_ORIGIN`              | o endereço do front, preenchido no passo 4                                                    |
 
-4. Em **Settings → Networking → Generate Domain**, com a porta `3000`. Anote o endereço, por exemplo `https://api-xxxx.up.railway.app`.
+4. Em **Settings → Deploy → Pre-deploy Command**, coloque `node api/dist/migrate.js`. Antes de cada deploy, ele aplica os scripts de `migrations/` se o banco estiver vazio, e não faz nada se já houver tabelas. No log do deploy aparece uma linha por migração aplicada.
+5. Em **Settings → Networking → Generate Domain**, com a porta `3000`. Anote o endereço, por exemplo `https://api-xxxx.up.railway.app`.
 
 ## 3. Front
 
@@ -73,5 +61,4 @@ São três serviços num projeto só: `Postgres`, `api` e `front`. Os nomes impo
 
 ## O que não muda
 
-- O banco não tem domínio público além do `DATABASE_PUBLIC_URL`, que serve só para as migrations.
-- O esquema publicado evolui à mão, como o do compose.
+- O esquema só é criado em banco vazio, como no compose. Uma migração acrescentada depois exige um banco novo.

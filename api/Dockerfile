@@ -26,6 +26,9 @@ COPY front/package.json front/
 RUN npm ci --omit=dev --workspace api && npm cache clean --force
 COPY --from=build /repo/contract/dist contract/dist
 COPY --from=build /repo/api/dist api/dist
+# Os scripts do banco vão junto só para o comando de pré-deploy da publicação, que os aplica
+# num banco vazio (api/src/migrate.ts e ADR-0015). No compose quem aplica é o container db.
+COPY migrations migrations
 USER node
 EXPOSE 3000
 CMD ["node", "api/dist/main.js"]
