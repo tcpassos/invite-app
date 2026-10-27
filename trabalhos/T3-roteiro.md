@@ -148,7 +148,8 @@ DAS, renderizados de novo com fonte maior para ler na chamada. As versões para 
 **Slide 8, título "Lint e integração contínua".** O lint recusa import que quebra a regra de
 camadas: o Domínio não importa da Apresentação, e os Dados não importam de nenhuma camada de cima.
 Em todo PR a integração contínua roda lint, formatação, tipos, testes contra um PostgreSQL e build,
-e constrói as imagens. Um segundo arquivo do compose troca a API por um mock.
+e constrói as imagens. Um segundo arquivo do compose troca a API por um mock. Ao lado, a captura
+dos checks verdes de um PR no GitHub.
 
 Dificuldade do bloco, dita assim:
 
@@ -350,7 +351,7 @@ Na mesma tela e com a mesma pessoa falando, sem trocar de voz.
 
 O PDF volta ao slide 16. O Guilherme fala até o fim.
 
-**Slide 16, título "Organização do trabalho".** Três itens: sprints de duas semanas no quadro Kanban
+**Slide 16, título "Organização do trabalho".** Ao lado, a captura do quadro Kanban. Três itens: sprints de duas semanas no quadro Kanban
 do Azure Boards, com cada história dividida em tarefas de tela e de API; conversas pelo WhatsApp e
 nas aulas, com as decisões registradas na documentação do repositório; e cada mudança entrando na
 `main` por PR, depois que a integração contínua passa. Fala, 30 segundos, logo depois de mostrar o quadro. Dizer com franqueza que o
@@ -373,10 +374,10 @@ arguição. Fechamento:
 > Pitch. Para perguntas: problema e requisitos com o Andreas, arquitetura, Docker e GitHub com o Tiago,
 > telas, organização e planejamento comigo, e API, regras e testes com o Gabriel."
 
-**Apêndice, slides 19 a 22.** Capturas de 26/10: a tela de entrada e a lista de convites, as telas
-do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link despublicado, e
-o quadro Kanban com a integração contínua aprovada no PR do back-end. Servem ao plano C e ficam no
-PDF do Moodle como evidência do critério de organização.
+**Apêndice, slides 19 a 21.** Capturas da aplicação de 26/10: a tela de entrada e a lista de
+convites, as telas do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link
+despublicado. Servem ao plano C e ficam no PDF do Moodle como evidência. As capturas do quadro e do
+GitHub ficam nos slides 8 e 16.
 
 ## O deck
 

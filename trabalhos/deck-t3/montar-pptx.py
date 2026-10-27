@@ -730,7 +730,27 @@ def m_capturas(sl, s):
         escrever(tf, s['legenda'], tam=tam_leg, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.5)
     rodape(sl, s['n'], s['bloco'])
 
-MODELOS = {'capturas': m_capturas, 'capa': m_capa, 'secao': m_secao, 'citacao': m_citacao, 'impacto': m_impacto,
+def m_conteudo_imagem(sl, s):
+    """Lista à esquerda e uma captura à direita, para a imagem ficar junto do texto que fala dela."""
+    cabeca(sl, s)
+    larg_txt = s.get('largTexto', 560)
+    x_img = 72 + larg_txt + 40
+    larg_img_max, alt_img_max = 1208 - x_img, 440
+    prop = proporcao(s['imagem'])
+    larg_img = min(larg_img_max, alt_img_max * prop)
+    alt_img = larg_img / prop
+    tam, gap, alt = ajustar(s['itens'], larg_txt, 424, tam=19, gap=22, minimo=15, maximo=21)
+    topo = 176
+    y_txt = centrar(alt, topo, 636)
+    itens(sl, s['itens'], 72, y_txt, larg_txt, tam=tam, gap=gap)
+    y_img = centrar(alt_img + (28 if s.get('legendaImagem') else 0), topo, 636)
+    x = x_img + (larg_img_max - larg_img) / 2
+    captura(sl, s['imagem'], x, y_img, larg=larg_img)
+    if s.get('legendaImagem'):
+        rotulo(sl, x - 20, y_img + alt_img + 8, larg_img + 40, s['legendaImagem'], tam=14, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
+    rodape(sl, s['n'], s['bloco'])
+
+MODELOS = {'conteudoImagem': m_conteudo_imagem, 'capturas': m_capturas, 'capa': m_capa, 'secao': m_secao, 'citacao': m_citacao, 'impacto': m_impacto,
            'conteudo': m_conteudo, 'duasColunas': m_duas, 'terminal': m_terminal,
            'codigo': m_codigo, 'diagrama': m_diagrama, 'tabela': m_tabela,
            'agenda': m_agenda, 'linhaTempo': m_linha_tempo, 'cartoes': m_cartoes}
