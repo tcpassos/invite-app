@@ -365,58 +365,19 @@
     "tamCorpo": 18
   },
   {
-    "modelo": "tabela",
+    "modelo": "conteudo",
     "n": 15,
     "bloco": "Planejamento, Andreas",
     "titulo": "Planejamento até a apresentação final, em 17/11",
-    "xs": [
-      72,
-      800,
-      1010
+    "right": 72,
+    "itens": [
+      "Revisar os artefatos das Sprints 1 a 3 contra o código, ligando cada história ao caso de uso, à rota, à tela e ao teste.",
+      "Desenhar o diagrama de sequência da lista de presença, que faltou no Grau A.",
+      "Completar o protótipo de baixa fidelidade da Sprint 3 a partir das telas reais.",
+      "Dar o aval do time às decisões novas da arquitetura.",
+      "Preparar e ensaiar o Pitch Final."
     ],
-    "ws": [
-      700,
-      200,
-      198
-    ],
-    "cabecalhos": [
-      "O quê",
-      "Quem",
-      "Até"
-    ],
-    "linhas": [
-      [
-        "Revisar os artefatos das Sprints 1 a 3 contra o código, ligando cada história ao caso de uso, à rota, à tela e ao teste",
-        "a definir",
-        "a definir"
-      ],
-      [
-        "Diagrama de sequência da lista de presença",
-        "a definir",
-        "a definir"
-      ],
-      [
-        "Completar o protótipo de baixa fidelidade da Sprint 3 a partir das telas reais",
-        "a definir",
-        "a definir"
-      ],
-      [
-        "Aval do time às decisões novas da arquitetura",
-        "a definir",
-        "a definir"
-      ],
-      [
-        "Fechar o Team Charter",
-        "a definir",
-        "a definir"
-      ],
-      [
-        "Deck e ensaio do Pitch Final",
-        "a definir",
-        "a definir"
-      ]
-    ],
-    "notas": "Andreas. Dizer quais itens assumiu. Preencher Quem e Até antes do ensaio e criar os itens no quadro da Sprint 6, de 03/11 a 16/11."
+    "notas": "Andreas. Estes são os itens da Sprint 6, de 03/11 a 16/11, até a apresentação final em 17/11. Se tiver assumido algum deles, dizer qual."
   },
   {
     "modelo": "impacto",

@@ -345,21 +345,18 @@ enunciado ficar visível. Fala, 30 segundos:
 
 Se perguntarem detalhes, passar para o dono de cada uma.
 
-**Slide 15, título "Planejamento até a apresentação final, em 17/11".** A data é a da apresentação do
-protótipo no Plano de Ensino. Tabela preenchida antes do ensaio e espelhada no
-quadro da Sprint 6, de 03/11 a 16/11:
+**Slide 15, título "Planejamento até a apresentação final, em 17/11".** A data é a da apresentação
+do protótipo no Plano de Ensino. Uma lista com os itens da Sprint 6, de 03/11 a 16/11, sem dono nem
+prazo no slide:
 
-| O quê                                                                                                                                   | Quem | Até |
-| --------------------------------------------------------------------------------------------------------------------------------------- | ---- | --- |
-| Revisar os artefatos das Sprints 1 a 3 contra o código, com uma matriz que liga cada história ao caso de uso, à rota, à tela e ao teste |      |     |
-| Diagrama de sequência da lista de presença, que faltou no Grau A                                                                        |      |     |
-| Completar o protótipo de baixa fidelidade da Sprint 3 a partir das telas reais                                                          |      |     |
-| Aval do time às decisões novas do Guia                                                                                                  |      |     |
-| Fechar o Team Charter                                                                                                                   |      |     |
-| Deck e ensaio do Pitch Final                                                                                                            |      |     |
+- Revisar os artefatos das Sprints 1 a 3 contra o código, ligando cada história ao caso de uso, à
+  rota, à tela e ao teste.
+- Desenhar o diagrama de sequência da lista de presença, que faltou no Grau A.
+- Completar o protótipo de baixa fidelidade da Sprint 3 a partir das telas reais.
+- Dar o aval do time às decisões novas da arquitetura.
+- Preparar e ensaiar o Pitch Final.
 
-Na fala, o Andreas diz quais itens assumiu. Ele escolhe antes do ensaio, e os itens entram no quadro
-com o nome dele, para a fala ter lastro.
+Na fala, se o Andreas tiver assumido algum desses itens, ele diz qual.
 
 **Slide 16, título "Perguntas".** Os quatro nomes com o assunto de cada um. Fica na tela durante a
 arguição. Fechamento:
@@ -532,10 +529,7 @@ qualquer item que o professor clicar.
       Done, e as tarefas de API com o Gabriel
 - [ ] Confirmar a divisão de blocos no grupo
 - [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 8
-- [ ] Andreas escolhe os itens dele na Sprint 6, e os itens da Sprint 6 entram no quadro com dono
-- [ ] Preencher a tabela do slide 15 com quem e até quando
-- [ ] Andreas preenche a ficha dele no Team Charter, e o Guilherme o papel dele no time. Depois,
-      fechar a #87 e a #57
+- [ ] Criar os itens da Sprint 6 no quadro
 - [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
 - [ ] Decidir se entra uma captura do WhatsApp no slide 13
 - [ ] Ensaiar a demo duas vezes na máquina do Guilherme e uma na do Tiago, com o ambiente subido do
