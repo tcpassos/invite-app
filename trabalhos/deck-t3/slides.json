@@ -324,18 +324,11 @@
       "Na primeira versão do back-end, a regra das vagas estava na consulta SQL da camada de Dados. O cálculo foi movido para o Domínio.",
       "Faríamos diferente: fazer as telas já sobre o pacote de tipos, que existia desde o início da Sprint 4, e juntar front-end e back-end nessa mesma sprint."
     ],
-    "notas": "Guilherme. Cada dificuldade já foi contada por quem passou por ela: a integração pelo Tiago, a regra de vagas pelo Gabriel e o protótipo por mim. Aqui elas aparecem juntas. Se perguntarem detalhes, passar para quem passou por cada uma. O pacote de tipos existia desde 07/10, mas o protótipo do front-end foi feito sem ele, e por isso precisou de adequação. E front-end e back-end só foram juntados na Sprint 5, quando o plano era fechar o fluxo central já na Sprint 4. Passagem: agora a demonstração."
-  },
-  {
-    "modelo": "impacto",
-    "n": 15,
-    "bloco": "Demonstração",
-    "titulo": "Demonstração",
-    "notas": "Se a aplicação estiver publicada, o Guilherme conduz, compartilhando a tela dele. Se não, o Tiago conduz na máquina dele. Abrir dizendo: a conta já está criada para poupar tempo; a tela de entrada está no apêndice. Passos: criar, personalizar e publicar o convite; responder como convidado, com acompanhante e alergia; tentar responder no convite lotado; alterar a resposta pelo link pessoal; mostrar o painel e baixar o CSV; despublicar e abrir de novo o link do convite. Depois, na mesma tela e com a mesma pessoa falando: o quadro Kanban no Azure Boards e o GitHub, com os PRs e os checks. Passagem: o Guilherme mostra como o time se organizou e o que falta."
+    "notas": "Guilherme. Cada dificuldade já foi contada por quem passou por ela: a integração pelo Tiago, a regra de vagas pelo Gabriel e o protótipo por mim. Aqui elas aparecem juntas. Se perguntarem detalhes, passar para quem passou por cada uma. O pacote de tipos existia desde 07/10, mas o protótipo do front-end foi feito sem ele, e por isso precisou de adequação. E front-end e back-end só foram juntados na Sprint 5, quando o plano era fechar o fluxo central já na Sprint 4."
   },
   {
     "modelo": "conteudoImagem",
-    "n": 16,
+    "n": 15,
     "bloco": "Organização, Guilherme",
     "titulo": "Organização do trabalho",
     "itens": [
@@ -344,23 +337,20 @@
       "Cada mudança entra na main por PR, depois que a integração contínua passa.",
       "Até a apresentação final, em 17/11: revisar a documentação contra o código e preparar o Pitch Final."
     ],
-    "notas": "Guilherme. Planejamos em sprints de duas semanas e acompanhamos no quadro Kanban do Azure Boards, com cada história dividida em tarefas de tela e de API. Não usamos o Teams: conversamos pelo WhatsApp e nas aulas, e o que decidimos fica registrado no repositório, no Guia, nos ADRs e nos Ajustes da Sprint 5. Cada mudança entra na main por PR, depois que a integração contínua passa. Planejamento até a apresentação final, em 17/11, na Sprint 6: revisar os artefatos das Sprints 1 a 3 contra o código, desenhar o diagrama de sequência da lista de presença, completar o protótipo de baixa fidelidade com as telas reais, dar o aval do time às decisões novas da arquitetura, e preparar e ensaiar o Pitch Final.",
+    "notas": "Guilherme. Planejamos em sprints de duas semanas e acompanhamos no quadro Kanban do Azure Boards, com cada história dividida em tarefas de tela e de API. Não usamos o Teams: conversamos pelo WhatsApp e nas aulas, e o que decidimos fica registrado no repositório, no Guia, nos ADRs e nos Ajustes da Sprint 5. Cada mudança entra na main por PR, depois que a integração contínua passa. Planejamento até a apresentação final, em 17/11, na Sprint 6: revisar os artefatos das Sprints 1 a 3 contra o código, desenhar o diagrama de sequência da lista de presença, completar o protótipo de baixa fidelidade com as telas reais, dar o aval do time às decisões novas da arquitetura, e preparar e ensaiar o Pitch Final. Passagem: agora a demonstração.",
     "imagem": "c10-kanban.png",
     "legendaImagem": "Quadro Kanban no Azure Boards, em 26/10/2026"
   },
   {
     "modelo": "impacto",
-    "n": 17,
-    "bloco": "Perguntas, Guilherme",
-    "cartola": "Time 04",
-    "titulo": "Perguntas",
-    "sub": "Andreas Grings: problema, requisitos e evolução do projeto<br>Tiago Passos: arquitetura, Docker e GitHub<br>Guilherme Toebe: front-end, dificuldades, organização e planejamento<br>Gabriel Tomasi: back-end, regras e testes",
-    "notas": "Guilherme, fechamento: as doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão registradas com o motivo. Até 17/11 vamos revisar a documentação contra o código e preparar o Pitch. Para perguntas: problema e requisitos com o Andreas, arquitetura, Docker e GitHub com o Tiago, telas, dificuldades, organização e planejamento comigo, e API, regras e testes com o Gabriel.",
-    "subY": 274
+    "n": 16,
+    "bloco": "Demonstração",
+    "titulo": "Demonstração",
+    "notas": "Se a aplicação estiver publicada, o Guilherme conduz, compartilhando a tela dele. Se não, o Tiago conduz na máquina dele. Abrir dizendo: a conta já está criada para poupar tempo; a tela de entrada está no apêndice. Passos: criar, personalizar e publicar o convite; responder como convidado, com acompanhante e alergia; tentar responder no convite lotado; alterar a resposta pelo link pessoal; mostrar o painel e baixar o CSV; despublicar e abrir de novo o link do convite. Depois, na mesma tela e com a mesma pessoa falando: o quadro Kanban no Azure Boards e o GitHub, com os PRs e os checks. Fechamento, por quem conduziu a demo: as doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão registradas com o motivo. Até 17/11 vamos revisar a documentação contra o código e preparar o Pitch. Ficamos à disposição para perguntas."
   },
   {
     "modelo": "capturas",
-    "n": 18,
+    "n": 17,
     "bloco": "Apêndice",
     "titulo": "Telas do anfitrião",
     "imagens": [
@@ -377,7 +367,7 @@
   },
   {
     "modelo": "capturas",
-    "n": 19,
+    "n": 18,
     "bloco": "Apêndice",
     "titulo": "Telas do convidado",
     "imagens": [
@@ -402,7 +392,7 @@
   },
   {
     "modelo": "capturas",
-    "n": 20,
+    "n": 19,
     "bloco": "Apêndice",
     "titulo": "Painel e convite despublicado",
     "imagens": [
