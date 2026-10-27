@@ -27,7 +27,7 @@ As tabelas não são criadas aqui: quem cria é o comando de pré-deploy da API,
    | `TRUST_PROXY`               | `1`                                                                                           |
    | `FRONT_ORIGIN`              | o endereço do front, preenchido no passo 4                                                    |
 
-4. Em **Settings → Deploy → Pre-deploy Command**, coloque `node api/dist/migrate.js`. Antes de cada deploy, ele aplica os scripts de `migrations/` se o banco estiver vazio, e não faz nada se já houver tabelas. No log do deploy aparece uma linha por migração aplicada.
+4. Em **Settings → Deploy → Pre-deploy Command**, coloque `node api/dist/migrate.js`. Antes de cada deploy, ele aplica os scripts de `migrations/` se o banco estiver vazio, e não faz nada se já houver tabelas. No log do deploy aparece uma linha por migração aplicada. **O comando vai no Pre-deploy, não no Custom Start Command**, que fica vazio: no Start Command o container roda as migrations, termina, e a API não sobe. O sinal é o serviço aparecer como Completed e o domínio responder 502. Com a API no ar, o log mostra `{"level":"info","message":"API escutando","port":3000}`.
 5. Em **Settings → Networking → Generate Domain**, com a porta `3000`. Anote o endereço, por exemplo `https://api-xxxx.up.railway.app`.
 
 ## 3. Front

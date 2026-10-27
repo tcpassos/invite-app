@@ -331,7 +331,10 @@ local. O passo a passo fica aqui e nas notas do apresentador, não no slide:
 Se perguntarem pelas histórias, a correspondência é: criar e publicar, H02 a H06; responder, H07,
 H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
 
-**Preparação, antes de entrar na chamada:**
+**Preparação, antes de entrar na chamada.** Na demo pelo Railway, os três primeiros itens viram:
+front aberto pelo endereço público, no Chrome ou no Edge, em janela normal, porque o Safari, o
+Brave e a janela anônima bloqueiam o cookie da API. O convidado pode ficar na janela anônima, porque
+não usa cookie. O resto vale igual. Na demo local:
 
 - `.env` criado a partir do `.env.example`. Para começar do zero, `docker compose down -v`, porque as
   migrations só rodam com o volume do banco vazio.
@@ -470,9 +473,11 @@ depois de mudar o texto.
 - **E com duas instâncias da API?** O limite de tráfego fica na memória do processo e deixaria de
   valer. Está em aberto na seção 5 dos Ajustes. Hoje o ADR-0003 não prevê réplica.
 - **Por que local e não na nuvem?** ADR-0003: nesta fase o MVP não tem requisito de disponibilidade,
-  de usuários reais nem de acesso externo, e o projeto não tem custo. Se a demo for no Railway, a
-  resposta muda: a publicação foi para a demonstração, e precisa ser registrada como revisão do
-  ADR-0003.
+  de usuários reais nem de acesso externo, e o projeto não tem custo. A demo está no Railway, e por
+  isso o ADR-0015 propõe substituir o ADR-0003: o compose local continua para desenvolvimento, e a
+  publicação é para a demonstração. Ela pediu duas mudanças ligadas por variável de ambiente, o
+  cookie com `SameSite=None` e `Secure`, porque front e API ficam em domínios diferentes, e a leitura
+  do IP do convidado atrás do proxy.
 - **Por que o histórico da `main` está quase todo em um nome?** Porque a integração passou por quem
   montou a base. O back-end entrou com a autoria do Gabriel, o front-end a partir do protótipo do Guilherme,
   e as mensagens dos commits registram isso. [Se o time combinar que, na Sprint 6, cada um abre o
@@ -579,8 +584,10 @@ qualquer item que o professor clicar, e os itens da Sprint 6, que ele diz no sli
 - [ ] Decidir hoje se a demo é no Railway (Guilherme) ou local (Tiago), e ensaiar duas vezes na
       versão escolhida, com o ambiente subido do zero. Gravar o vídeo do plano C com cadastro e
       entrada no começo
-- [ ] Se for no Railway: testar a entrada no painel pelo endereço público antes da aula, e registrar
-      a publicação como revisão do ADR-0003
+- [x] Publicar no Railway e registrar a publicação no ADR-0015, que substitui o ADR-0003 com o aval
+      do time
+- [ ] No Railway: percorrer a demo inteira pelo endereço público antes da aula, com o anfitrião no
+      Chrome ou no Edge em janela normal e o convidado no celular
 - [x] Tirar as capturas da aplicação para o apêndice
 - [x] Capturas do quadro Kanban e de um PR com os checks no apêndice
 - [ ] Ensaiar cronometrado, com as trocas de fala e de compartilhamento, e uma rodada de perguntas
