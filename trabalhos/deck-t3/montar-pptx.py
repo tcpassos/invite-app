@@ -60,6 +60,8 @@ def escrever(tf, html, *, tam, cor, peso=300, entre=1.28, espaco=0, fonte=FONTE,
     linhas = re.split(r'<br\s*/?>', html or '')
     for k, linha in enumerate(linhas):
         p = tf.paragraphs[0] if (primeiro and k == 0) else tf.add_paragraph()
+        # a linha nova herda o alinhamento da primeira, senao o texto quebrado com <br> volta para a esquerda
+        p.alignment = tf.paragraphs[0].alignment
         p.line_spacing = entre
         if espaco:
             p.space_after = pt(espaco)
