@@ -17,7 +17,7 @@ GitHub e a colaboração da equipe.
 | Critério                                     | Peso | Onde a apresentação responde                                                                 |
 | -------------------------------------------- | ---- | -------------------------------------------------------------------------------------------- |
 | Evolução e qualidade da implementação        | 30%  | Slide 4, a linha do tempo, e os blocos 2, 3 e 4                                              |
-| Aderência à arquitetura e aos requisitos     | 20%  | Slides 5 a 7, os diagramas do Grau A, e o slide 9, com cada regra e o lugar do código onde ela está, e o que cada passo da demo mostra |
+| Aderência à arquitetura e aos requisitos     | 20%  | Slides 5 a 7, os diagramas do Grau A, e o slide 11, com cada regra e o lugar do código onde ela está, e o que cada passo da demo mostra |
 | Demonstração funcional e qualidade técnica   | 20%  | Bloco 5                                                                                      |
 | Organização no Azure DevOps, GitHub e Kanban | 10%  | Bloco 5b, ao vivo, logo depois da demo                                                       |
 | Apresentação, clareza e slides               | 10%  | O deck todo                                                                                  |
@@ -41,8 +41,8 @@ adjetivo para o próprio trabalho ou de bordão repetido.
 
 | Integrante | Responsável por                                                                                                                                                                                                                                                                                                         | O que apresenta                                                               |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Tiago      | A base do projeto: monorepo, `contract`, regra de camadas no lint, integração contínua e a orquestração dos três tiers no `docker compose`. A documentação de arquitetura. A integração do front e do back na `main`, com a adequação dos dois à arquitetura registrada nos Ajustes da Sprint 5                         | Os diagramas do Grau A, lint e integração contínua, o GitHub ao vivo, a demo se for local, e o fechamento |
-| Guilherme  | O protótipo do front: [o fluxo e o visual das telas do anfitrião e do convidado, os três templates e a primeira versão do mock; confirmar com ele]. Na integração, o protótipo foi adequado à arquitetura. O projeto no Azure DevOps é da organização dele                                                              | O protótipo e o que mudou nele, o quadro ao vivo, a organização, o planejamento, e a demo se a aplicação estiver publicada |
+| Tiago      | A base do projeto: monorepo, `contract`, regra de camadas no lint, integração contínua e a orquestração dos três tiers no `docker compose`. A documentação de arquitetura. A integração do front e do back na `main`, com a adequação dos dois à arquitetura registrada nos Ajustes da Sprint 5                         | Os diagramas do Grau A, lint e integração contínua, e a demo com o quadro e o GitHub se for local |
+| Guilherme  | O protótipo do front: [o fluxo e o visual das telas do anfitrião e do convidado, os três templates e a primeira versão do mock; confirmar com ele]. Na integração, o protótipo foi adequado à arquitetura. O projeto no Azure DevOps é da organização dele                                                              | O protótipo e o que mudou nele, a demo com o quadro e o GitHub se a aplicação estiver publicada, a organização, o planejamento e o fechamento |
 | Gabriel    | A primeira versão das rotas e das regras do back-end, sobre a base: os serviços do anfitrião, do convite e da resposta, os repositórios, os controllers, a transação do teto com trava na linha do convite, o CSV com proteção contra fórmula e os primeiros testes. Na integração, essa versão foi adequada às camadas | As regras da arquitetura no código, o caminho de uma resposta pela API, os testes e as dificuldades |
 | Andreas    | Nesta apresentação, o problema, o escopo do MVP e a linha do tempo, que são artefatos do time. Cronometra a apresentação | Abertura, problema, escopo e linha do tempo |
 
@@ -59,24 +59,26 @@ Regras para todos:
 
 ## Tempo, donos e tela
 
-| Bloco | Tema | Min | Slides | Quem fala |
-| --- | --- | --- | --- | --- |
-| 1 | Problema, escopo e linha do tempo | 2:45 | 1 a 4 | Andreas |
-| 2 | Diagramas do Grau A, lint e integração contínua | 4:30 | 5 a 8 | Tiago |
-| 3 | Front-end | 3:00 | 9 e 10 | Guilherme |
-| 4 | Back-end: regras, caminho de uma resposta e testes | 3:30 | 11 a 13 | Gabriel |
-| 5 | Demonstração ao vivo | 6:00 | 14 | Guilherme, se a aplicação estiver publicada; senão, Tiago |
-| 5b | Azure Boards e GitHub, ao vivo | 1:15 | | Guilherme no quadro, Tiago no GitHub |
-| 6 | Dificuldades, organização, planejamento e perguntas | 2:45 | 15 a 18 | Gabriel, Guilherme e Tiago |
+| Bloco | Tema                                              | Min  | Slides  | Quem fala                                                 |
+| ----- | ------------------------------------------------- | ---- | ------- | --------------------------------------------------------- |
+| 1     | Problema, escopo e linha do tempo                 | 2:45 | 1 a 4   | Andreas                                                   |
+| 2     | Diagramas do Grau A, lint e integração contínua   | 4:30 | 5 a 8   | Tiago                                                     |
+| 3     | Front-end                                         | 3:00 | 9 e 10  | Guilherme                                                 |
+| 4     | Back-end e dificuldades                           | 4:00 | 11 a 14 | Gabriel                                                   |
+| 5     | Demonstração, quadro Kanban e GitHub, ao vivo     | 7:15 | 15      | Guilherme, se a aplicação estiver publicada; senão, Tiago |
+| 6     | Organização, planejamento e perguntas             | 2:15 | 16 a 18 | Guilherme                                                 |
 
 Com as trocas, cerca de 24 minutos e meio, com folga de meio minuto até o limite de 25. O ensaio
 cronometrado é o que diz se cabe.
 
-**Compartilhamento.** O Tiago compartilha o PDF. Se a demonstração for local, ele continua
-compartilhando a tela inteira da máquina dele na demo, no quadro e no GitHub, sem troca nenhuma. Se
-a aplicação estiver publicada, o Guilherme assume o compartilhamento no slide 14, com o navegador, o
-quadro e o GitHub já abertos, e devolve para o Tiago no slide 15. Quem fala diz "próximo" para
-avançar.
+**Compartilhamento.** O Tiago compartilha o PDF até o slide 14. Na demonstração:
+
+- **Aplicação publicada:** o Guilherme assume o compartilhamento no slide 15 e segue até o fim, com
+  o navegador, o quadro, o GitHub e o PDF abertos na máquina dele. Uma troca só.
+- **Demonstração local:** o Tiago compartilha do começo ao fim, e no slide 16 o Guilherme começa a
+  falar sobre a tela do Tiago. Nenhuma troca de compartilhamento.
+
+Quem fala diz "próximo" para avançar.
 
 **Na máquina que compartilha:** modo não perturbe, e-mail e WhatsApp fechados, barra de favoritos
 oculta, carregador ligado, de preferência cabo de rede. **Os outros:** câmera ligada enquanto falam,
@@ -84,8 +86,8 @@ e a primeira frase de cada um começa com o nome ("Aqui é o Gabriel..."), porqu
 individual.
 
 **Ordem de corte.** O Andreas cronometra e avisa pelo WhatsApp do grupo, fora da reunião. Se o fim do
-bloco 4 passar de 14:30, corta-se nesta ordem: o slide 8 fica numa frase só; o passo 4 da demo, que fica só dito; abrir a
-planilha, mostrando só o download; o GitHub do bloco 5b, reduzido à aba de checks. Não entram na
+bloco 4 passar de 15:00, corta-se nesta ordem: o slide 8 fica numa frase só; o passo 4 da demo, que fica só dito; abrir a
+planilha, mostrando só o download; o GitHub depois da demo, reduzido à aba de checks. Não entram na
 ordem de corte a resposta do convidado, a lotação, o painel e o bloco 6.
 
 ---
@@ -196,7 +198,7 @@ Passagem: "Quem recebe essas chamadas é a API, e o Gabriel mostra as regras del
 
 ---
 
-## Bloco 4, back-end (3:30, Gabriel)
+## Bloco 4, back-end e dificuldades (4:00, Gabriel)
 
 Fala de abertura do bloco:
 
@@ -246,13 +248,22 @@ Dificuldade do bloco:
 > diz que isso é do Domínio. Na integração, o Tiago subiu o cálculo das vagas que a resposta pede para
 > o Domínio, e a camada de Dados ficou com a soma do que já está gravado e a conferência do teto."
 
+**Slide 14, título "Dificuldades encontradas".** Uma lista com as três dificuldades que cada dono já
+contou no próprio bloco (a integração, o protótipo e a regra de vagas) e uma linha com o que o time
+faria diferente. O slide existe para o item "dificuldades encontradas" do enunciado ficar visível.
+Fala do Gabriel, 30 segundos:
+
+> "Cada dificuldade já foi contada por quem passou por ela. Aqui elas aparecem juntas."
+
+Se perguntarem detalhes, passar para quem passou por cada uma.
+
 Passagem: "Agora a demonstração."
 
 ---
 
-## Bloco 5, demonstração ao vivo (6:00, Guilherme ou Tiago)
+## Bloco 5, demonstração, quadro Kanban e GitHub, ao vivo (7:15, Guilherme ou Tiago)
 
-**Slide 14, título "Demonstração".** Só um divisor, que fica na tela enquanto quem conduz a demo
+**Slide 15, título "Demonstração".** Só um divisor, que fica na tela enquanto quem conduz a demo
 assume a tela. Pela chamada do Teams só uma pessoa compartilha a tela e conduz a demonstração
 inteira. Se a aplicação estiver publicada no Railway, quem conduz é o Guilherme, compartilhando a
 tela dele e usando o endereço público. Se não estiver, é o Tiago, na máquina dele, com o compose
@@ -283,7 +294,7 @@ H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
 - A planilha já aberta, para o CSV.
 - Um bloco de notas fora da tela com os textos para colar: nome do evento, local e uma data futura
   fixa.
-- As abas do bloco 5b abertas, na ordem: quadro da Sprint 5, uma história com tarefas filhas, a
+- As abas do quadro e do GitHub abertas, na ordem: quadro da Sprint 5, uma história com tarefas filhas, a
   lista de sprints, a lista de PRs, a aba de checks de um PR e a branch `gabriel`.
 
 **O caminho:**
@@ -321,40 +332,31 @@ H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
 
 ---
 
-## Bloco 5b, Azure Boards e GitHub, ao vivo (1:15)
+### Depois da demo: quadro Kanban e GitHub (1:15)
 
-Na mesma tela da demo.
+Na mesma tela e com a mesma pessoa falando, sem trocar de voz.
 
-1. **O quadro, com o Guilherme falando (0:40).** O quadro Kanban com as histórias em Done, uma história
+1. **O quadro (0:40).** O quadro Kanban com as histórias em Done, uma história
    aberta com as tarefas de tela e de API, cada uma com responsável, e a lista de sprints com as
    datas.
-2. **O GitHub, com o Tiago falando (0:35).** A lista de PRs fechados e a aba de checks verdes de um deles. Depois, a
+2. **O GitHub (0:35).** A lista de PRs fechados e a aba de checks verdes de um deles. Depois, a
    branch `gabriel` e a mensagem do commit que trouxe o back com a autoria dele, e a do commit do
    front, que registra que as telas vieram do protótipo do Guilherme. Fala: "a integração foi feita
-   por mim, e as mensagens dos commits indicam de onde veio cada parte."
+   pelo Tiago, e as mensagens dos commits indicam de onde veio cada parte."
 
 ---
 
-## Bloco 6, dificuldades, organização, planejamento e perguntas (2:45)
+## Bloco 6, organização, planejamento e perguntas (2:15, Guilherme)
 
-Quem compartilha o PDF volta ao slide 15.
-
-**Slide 15, título "Dificuldades encontradas".** Uma lista com as três dificuldades que cada dono já
-contou no próprio bloco (a integração, o protótipo e a regra de vagas) e uma linha com o que o time
-faria diferente. O slide existe para o item "dificuldades encontradas" do enunciado ficar visível.
-Fala do Gabriel, 30 segundos:
-
-> "Cada dificuldade já foi contada por quem passou por ela. Aqui elas aparecem juntas."
-
-Se perguntarem detalhes, passar para quem passou por cada uma.
+O PDF volta ao slide 16. O Guilherme fala até o fim.
 
 **Slide 16, título "Organização do trabalho".** Três itens: sprints de duas semanas no quadro Kanban
 do Azure Boards, com cada história dividida em tarefas de tela e de API; conversas pelo WhatsApp e
 nas aulas, com as decisões registradas na documentação do repositório; e cada mudança entrando na
-`main` por PR, depois que a integração contínua passa. Fala do Guilherme, 30 segundos. Dizer com franqueza que o
+`main` por PR, depois que a integração contínua passa. Fala, 30 segundos, logo depois de mostrar o quadro. Dizer com franqueza que o
 time não usou o Teams.
 
-**Slide 17, título "Planejamento até a apresentação final, em 17/11".** Fala do Guilherme. A data é a da apresentação
+**Slide 17, título "Planejamento até a apresentação final, em 17/11".** A data é a da apresentação
 do protótipo no Plano de Ensino. Uma lista com os itens da Sprint 6, de 03/11 a 16/11:
 
 - Revisar os artefatos das Sprints 1 a 3 contra o código, história por história.
@@ -363,13 +365,13 @@ do protótipo no Plano de Ensino. Uma lista com os itens da Sprint 6, de 03/11 a
 - Dar o aval do time às decisões novas da arquitetura.
 - Preparar e ensaiar o Pitch Final.
 
-**Slide 18, título "Perguntas".** Fala do Tiago. Os quatro nomes com o assunto de cada um. Fica na tela durante a
+**Slide 18, título "Perguntas".** Os quatro nomes com o assunto de cada um. Fica na tela durante a
 arguição. Fechamento:
 
 > "As doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão
 > registradas com o motivo. Até 17/11 vamos revisar a documentação contra o código e preparar o
-> Pitch. Para perguntas: problema e requisitos com o Andreas, arquitetura e Docker comigo, telas,
-> organização e planejamento com o Guilherme, API, regras e testes com o Gabriel."
+> Pitch. Para perguntas: problema e requisitos com o Andreas, arquitetura, Docker e GitHub com o Tiago,
+> telas, organização e planejamento comigo, e API, regras e testes com o Gabriel."
 
 **Apêndice, slides 19 a 22.** Capturas de 26/10: a tela de entrada e a lista de convites, as telas
 do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link despublicado, e
@@ -533,10 +535,10 @@ qualquer item que o professor clicar, e os itens da Sprint 6 do slide 17.
 - [x] Atualizar o Azure Boards: H01 a H12, a #125, as tarefas das Sprints 4 e 5 e os épicos em
       Done, e as tarefas de API com o Gabriel
 - [ ] Confirmar a divisão de blocos no grupo
-- [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 10
+- [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 9
 - [ ] Criar os itens da Sprint 6 no quadro
 - [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
-- [ ] Decidir se entra uma captura do WhatsApp no slide 15
+- [ ] Decidir se entra uma captura do WhatsApp no slide 16
 - [ ] Decidir hoje se a demo é no Railway (Guilherme) ou local (Tiago), e ensaiar duas vezes na
       versão escolhida, com o ambiente subido do zero. Gravar o vídeo do plano C com cadastro e
       entrada no começo

@@ -308,19 +308,12 @@
       ]
     ],
     "legenda": "Todos rodam na integração contínua, a cada PR, com um PostgreSQL de serviço.",
-    "notas": "Gabriel. Os testes de hoje foram reescritos na integração, porque os meus testavam assinaturas antigas. O que vale citar: quatro respostas simultâneas, cada uma pedindo duas vagas, num convite com teto de cinco. Passam exatamente duas. Dificuldade do bloco: uma regra de negócio na camada errada. Na minha primeira versão, a regra de que só a confirmação ocupa vaga estava na consulta da camada de Dados, junto com a conferência do teto. Funcionava, mas a camada de Dados passava a saber o que é uma vaga, e o Guia diz que isso é do Domínio. Na integração, o Tiago subiu o cálculo das vagas que a resposta pede para o Domínio, e a camada de Dados ficou com a soma do que já está gravado e a conferência do teto. Passagem: agora a demonstração."
-  },
-  {
-    "modelo": "impacto",
-    "n": 14,
-    "bloco": "Demonstração",
-    "titulo": "Demonstração",
-    "notas": "Se a aplicação estiver publicada, o Guilherme conduz, compartilhando a tela dele. Se não, o Tiago conduz na máquina dele. Abrir dizendo: a conta já está criada para poupar tempo; a tela de entrada está no apêndice. Passos: criar, personalizar e publicar o convite; responder como convidado, com acompanhante e alergia; tentar responder no convite lotado; alterar a resposta pelo link pessoal; mostrar o painel e baixar o CSV; despublicar e abrir de novo o link do convite. Depois, na mesma tela: o quadro Kanban no Azure Boards, com o Guilherme falando, e o GitHub, com o Tiago falando."
+    "notas": "Gabriel. Os testes de hoje foram reescritos na integração, porque os meus testavam assinaturas antigas. O que vale citar: quatro respostas simultâneas, cada uma pedindo duas vagas, num convite com teto de cinco. Passam exatamente duas. Dificuldade do bloco: uma regra de negócio na camada errada. Na minha primeira versão, a regra de que só a confirmação ocupa vaga estava na consulta da camada de Dados, junto com a conferência do teto. Funcionava, mas a camada de Dados passava a saber o que é uma vaga, e o Guia diz que isso é do Domínio. Na integração, o Tiago subiu o cálculo das vagas que a resposta pede para o Domínio, e a camada de Dados ficou com a soma do que já está gravado e a conferência do teto."
   },
   {
     "modelo": "conteudo",
-    "n": 15,
-    "bloco": "Dificuldades, Gabriel",
+    "n": 14,
+    "bloco": "Back-end, Gabriel",
     "titulo": "Dificuldades encontradas",
     "right": 72,
     "itens": [
@@ -329,7 +322,14 @@
       "Na primeira versão do back-end, a regra das vagas estava na consulta SQL da camada de Dados. O cálculo foi movido para o Domínio.",
       "Faríamos diferente: definir o pacote de tipos antes das telas e integrar front e back mais cedo."
     ],
-    "notas": "Gabriel. Cada dificuldade já foi contada por quem passou por ela: a integração pelo Tiago, o protótipo pelo Guilherme e a regra de vagas por mim. Aqui elas aparecem juntas. Se perguntarem detalhes, passar para quem passou por cada uma. Passagem: o Guilherme mostra como o time se organizou e o que falta."
+    "notas": "Gabriel. Cada dificuldade já foi contada por quem passou por ela: a integração pelo Tiago, o protótipo pelo Guilherme e a regra de vagas por mim. Aqui elas aparecem juntas. Se perguntarem detalhes, passar para quem passou por cada uma. Passagem: agora a demonstração."
+  },
+  {
+    "modelo": "impacto",
+    "n": 15,
+    "bloco": "Demonstração",
+    "titulo": "Demonstração",
+    "notas": "Se a aplicação estiver publicada, o Guilherme conduz, compartilhando a tela dele. Se não, o Tiago conduz na máquina dele. Abrir dizendo: a conta já está criada para poupar tempo; a tela de entrada está no apêndice. Passos: criar, personalizar e publicar o convite; responder como convidado, com acompanhante e alergia; tentar responder no convite lotado; alterar a resposta pelo link pessoal; mostrar o painel e baixar o CSV; despublicar e abrir de novo o link do convite. Depois, na mesma tela e com a mesma pessoa falando: o quadro Kanban no Azure Boards e o GitHub, com os PRs e os checks. Passagem: o Guilherme mostra como o time se organizou e o que falta."
   },
   {
     "modelo": "conteudo",
@@ -362,11 +362,11 @@
   {
     "modelo": "impacto",
     "n": 18,
-    "bloco": "Perguntas, Tiago",
+    "bloco": "Perguntas, Guilherme",
     "cartola": "Time 04",
     "titulo": "Perguntas",
     "sub": "Andreas Grings: problema, requisitos e evolução do projeto<br>Tiago Passos: arquitetura, Docker e GitHub<br>Guilherme Toebe: front-end, organização e planejamento<br>Gabriel Tomasi: back-end, regras e testes",
-    "notas": "Tiago, fechamento: as doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão registradas com o motivo. Até 17/11 vamos revisar a documentação contra o código e preparar o Pitch. Para perguntas: problema e requisitos com o Andreas, arquitetura e Docker comigo, telas, organização e planejamento com o Guilherme, API, regras e testes com o Gabriel.",
+    "notas": "Guilherme, fechamento: as doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão registradas com o motivo. Até 17/11 vamos revisar a documentação contra o código e preparar o Pitch. Para perguntas: problema e requisitos com o Andreas, arquitetura, Docker e GitHub com o Tiago, telas, organização e planejamento comigo, e API, regras e testes com o Gabriel.",
     "subY": 274
   },
   {
