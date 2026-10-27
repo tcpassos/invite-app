@@ -17,15 +17,15 @@ GitHub e a colaboração da equipe.
 | Critério                                     | Peso | Onde a apresentação responde                                                                 |
 | -------------------------------------------- | ---- | -------------------------------------------------------------------------------------------- |
 | Evolução e qualidade da implementação        | 30%  | Slide 4, a linha do tempo, e os blocos 2, 3 e 4                                              |
-| Aderência à arquitetura e aos requisitos     | 20%  | Slides 5 a 7, os diagramas do Grau A, e o slide 11, com cada regra e o lugar do código onde ela está, e o que cada passo da demo mostra |
+| Aderência à arquitetura e aos requisitos     | 20%  | Slides 5 a 7, os diagramas do Grau A, e o slide 9, com cada regra e o lugar do código onde ela está, e o que cada passo da demo mostra |
 | Demonstração funcional e qualidade técnica   | 20%  | Bloco 5                                                                                      |
 | Organização no Azure DevOps, GitHub e Kanban | 10%  | Bloco 5b, ao vivo, logo depois da demo                                                       |
 | Apresentação, clareza e slides               | 10%  | O deck todo                                                                                  |
 | Participação individual na arguição          | 10%  | Protocolo de arguição e o estudo de cada um, no fim                                          |
 
 A avaliação é individual. Por isso cada integrante fala do que construiu e do que aconteceu com isso
-na integração. O Andreas fica com a abertura, e o Tiago assume a linha do tempo, a demonstração e o
-fechamento.
+na integração. O Andreas fica com a abertura e a linha do tempo, o Tiago com a arquitetura, o Gabriel
+com o back-end, e o Guilherme com o front-end, as dificuldades, a organização e o fechamento.
 
 ## Objetivo da apresentação
 
@@ -42,8 +42,8 @@ adjetivo para o próprio trabalho ou de bordão repetido.
 | Integrante | Responsável por                                                                                                                                                                                                                                                                                                         | O que apresenta                                                               |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | Tiago      | A base do projeto: monorepo, `contract`, regra de camadas no lint, integração contínua e a orquestração dos três tiers no `docker compose`. A documentação de arquitetura. A integração do front-end e do back-end na `main`, com a adequação dos dois à arquitetura registrada nos Ajustes da Sprint 5                         | Os diagramas do Grau A, lint e integração contínua, e a demo com o quadro e o GitHub se for local |
-| Guilherme  | O protótipo do front-end: [o fluxo e o visual das telas do anfitrião e do convidado, os três templates e a primeira versão do mock; confirmar com ele]. Na integração, o protótipo foi adequado à arquitetura. O projeto no Azure DevOps é da organização dele                                                              | O protótipo e o que mudou nele, a demo com o quadro e o GitHub se a aplicação estiver publicada, a organização, o planejamento e o fechamento |
-| Gabriel    | A primeira versão das rotas e das regras do back-end, sobre a base: os serviços do anfitrião, do convite e da resposta, os repositórios, os controllers, a transação do teto com trava na linha do convite, o CSV com proteção contra fórmula e os primeiros testes. Na integração, essa versão foi adequada às camadas | As regras da arquitetura no código, o caminho de uma resposta pela API, os testes e as dificuldades |
+| Guilherme  | O protótipo do front-end: [o fluxo e o visual das telas do anfitrião e do convidado, os três templates e a primeira versão do mock; confirmar com ele]. Na integração, o protótipo foi adequado à arquitetura. O projeto no Azure DevOps é da organização dele                                                              | O protótipo e o que mudou nele, as dificuldades, a demo com o quadro e o GitHub se a aplicação estiver publicada, a organização, o planejamento e o fechamento |
+| Gabriel    | A primeira versão das rotas e das regras do back-end, sobre a base: os serviços do anfitrião, do convite e da resposta, os repositórios, os controllers, a transação do teto com trava na linha do convite, o CSV com proteção contra fórmula e os primeiros testes. Na integração, essa versão foi adequada às camadas | As regras da arquitetura no código, o caminho de uma resposta pela API e os testes |
 | Andreas    | Nesta apresentação, o problema, o escopo do MVP e a linha do tempo, que são artefatos do time. Cronometra a apresentação | Abertura, problema, escopo e linha do tempo |
 
 Regras para todos:
@@ -63,12 +63,14 @@ Regras para todos:
 | ----- | ------------------------------------------------- | ---- | ------- | --------------------------------------------------------- |
 | 1     | Problema, escopo e linha do tempo                 | 2:45 | 1 a 4   | Andreas                                                   |
 | 2     | Diagramas do Grau A, lint e integração contínua   | 4:30 | 5 a 8   | Tiago                                                     |
-| 3     | Front-end                                         | 3:00 | 9 e 10  | Guilherme                                                 |
-| 4     | Back-end e dificuldades                           | 4:00 | 11 a 14 | Gabriel                                                   |
+| 3     | Back-end                                          | 3:30 | 9 a 11  | Gabriel                                                   |
+| 4     | Front-end e dificuldades                          | 3:30 | 12 a 14 | Guilherme                                                 |
 | 5     | Demonstração, quadro Kanban e GitHub, ao vivo     | 7:15 | 15      | Guilherme, se a aplicação estiver publicada; senão, Tiago |
-| 6     | Organização, planejamento e perguntas             | 2:15 | 16 a 18 | Guilherme                                                 |
+| 6     | Organização, planejamento e perguntas             | 1:45 | 16 e 17 | Guilherme                                                 |
 
-Com as trocas, cerca de 24 minutos e meio, com folga de meio minuto até o limite de 25. O ensaio
+São quatro vozes em sequência, sem voltar a ninguém: Andreas, Tiago, Gabriel e Guilherme, que fica
+do slide 12 até o fim, com a demonstração no meio se a aplicação estiver publicada. Com as trocas,
+cerca de 23 minutos e meio, com folga até o limite de 25. O ensaio
 cronometrado é o que diz se cabe.
 
 **Compartilhamento.** O Tiago compartilha o PDF até o slide 14. Na demonstração:
@@ -86,7 +88,7 @@ e a primeira frase de cada um começa com o nome ("Aqui é o Gabriel..."), porqu
 individual.
 
 **Ordem de corte.** O Andreas cronometra e avisa pelo WhatsApp do grupo, fora da reunião. Se o fim do
-bloco 4 passar de 15:00, corta-se nesta ordem: o slide 8 fica numa frase só; o passo 4 da demo, que fica só dito; abrir a
+bloco 4 passar de 15:00, quando a demonstração deveria começar, corta-se nesta ordem: o slide 8 fica numa frase só; o passo 4 da demo, que fica só dito; abrir a
 planilha, mostrando só o download; o GitHub depois da demo, reduzido à aba de checks. Não entram na
 ordem de corte a resposta do convidado, a lotação, o painel e o bloco 6.
 
@@ -160,46 +162,11 @@ Dificuldade do bloco, dita assim:
 > `contract`, criado no começo da Sprint 4, permitiu juntar as duas partes sem reescrever tudo. O
 > protótipo do front-end foi feito sem usar ele, e foi isso que exigiu a maior parte da adequação."
 
-Passagem: "O Guilherme apresenta o front-end, que partiu do protótipo dele."
+Passagem: "O Gabriel mostra o back-end."
 
 ---
 
-## Bloco 3, front-end (3:00, Guilherme)
-
-**Slide 9, título "Telas do front-end".** Três capturas da aplicação atual: o editor com a prévia, o
-convite no celular e a resposta enviada com o link pessoal. O protótipo, como está no repositório do
-Guilherme, não sobe sozinho (faltam o cliente do Supabase e o `@tanstack/react-start`), por isso o
-slide não tem a captura dele. Se o Guilherme tiver uma captura do protótipo, ela pode entrar ao lado.
-Fala:
-
-> "O protótipo foi meu: [o fluxo, as telas, os três templates e as cores; ajustar ao que for
-> verdade]. Ele foi gerado numa ferramenta de prototipação, e por isso trazia muita coisa que a nossa
-> stack não usa. Na integração, o Tiago adequou o protótipo à arquitetura: o visual ficou, reescrito
-> em CSS puro, e o que era regra de negócio saiu da tela e foi para a API."
-
-**Slide 10, título "Mudanças no front-end para seguir a arquitetura".** Três linhas de antes e depois:
-
-- A página pública mostrava quantas vagas restavam. Hoje não mostra contagem, porque isso expõe dado
-  do anfitrião. A lotação só aparece quando a resposta é recusada.
-- O CSV para o buffet era montado no navegador. Hoje vem pronto da API, com proteção contra fórmula
-  de planilha.
-- O login guardava um token no navegador. Hoje a sessão é cookie, e o front-end não guarda nada.
-
-Fala: "a tela ainda limita os campos, para ajudar quem preenche, mas a validação que vale é a da
-API."
-
-Dificuldade do bloco:
-
-> "A dificuldade deste bloco foi que o protótipo foi feito numa ferramenta de prototipação, fora da
-> base do projeto e sem o pacote de tipos, e algumas regras de negócio ficaram na tela. O que eu aprendi vendo a adequação: prototipar com
-> ferramenta é rápido para validar o visual, mas o protótipo precisa ser lido contra o Guia antes de
-> virar código. Se eu fizesse de novo, desenharia as telas em cima do `contract` desde o começo."
-
-Passagem: "Quem recebe essas chamadas é a API, e o Gabriel mostra as regras dela."
-
----
-
-## Bloco 4, back-end e dificuldades (4:00, Gabriel)
+## Bloco 3, back-end (3:30, Gabriel)
 
 Fala de abertura do bloco:
 
@@ -207,7 +174,7 @@ Fala de abertura do bloco:
 > regras foi minha, inclusive a transação com a trava na linha do convite. Na integração, algumas
 > regras mudaram de camada, e eu conto isso no fim do bloco."
 
-**Slide 11, título "Regras da arquitetura no código".** Três regras, cada uma com o lugar do código
+**Slide 9, título "Regras da arquitetura no código".** Três regras, cada uma com o lugar do código
 onde está:
 
 - Quem não tem acesso não descobre se um convite existe. Fica no Domínio e na Apresentação: link
@@ -219,7 +186,7 @@ onde está:
 
 Fala final do slide: "A regra do teto de vagas está no próximo slide."
 
-**Slide 12, título "Caminho de uma resposta na API".** Diagrama de três raias, uma por camada, com
+**Slide 10, título "Caminho de uma resposta na API".** Diagrama de três raias, uma por camada, com
 sete passos:
 
 - Apresentação: confere o formato e o limite de tráfego.
@@ -234,7 +201,7 @@ A legenda resume as regras: "Sim" ocupa uma vaga para o convidado e uma para cad
 Fala de fecho do slide: "o Domínio calcula quantas vagas a resposta pede, e a camada de Dados
 confere o teto dentro da transação."
 
-**Slide 13, título "Testes".** Testes do Domínio, testes contra um PostgreSQL de verdade e
+**Slide 11, título "Testes".** Testes do Domínio, testes contra um PostgreSQL de verdade e
 testes das rotas de ponta a ponta. Fala:
 
 > "Os testes de hoje foram reescritos na integração, porque os meus testavam assinaturas antigas. O
@@ -249,13 +216,53 @@ Dificuldade do bloco:
 > diz que isso é do Domínio. Na integração, o Tiago subiu o cálculo das vagas que a resposta pede para
 > o Domínio, e a camada de Dados ficou com a soma do que já está gravado e a conferência do teto."
 
+Passagem: "O Guilherme mostra o front-end, que partiu do protótipo dele."
+
+---
+
+## Bloco 4, front-end e dificuldades (3:30, Guilherme)
+
+**Slide 12, título "Telas do front-end".** Três capturas da aplicação atual: o editor com a prévia, o
+convite no celular e a resposta enviada com o link pessoal. O protótipo, como está no repositório do
+Guilherme, não sobe sozinho (faltam o cliente do Supabase e o `@tanstack/react-start`), por isso o
+slide não tem a captura dele. Se o Guilherme tiver uma captura do protótipo, ela pode entrar ao lado.
+Fala:
+
+> "O protótipo foi meu: [o fluxo, as telas, os três templates e as cores; ajustar ao que for
+> verdade]. Ele foi gerado numa ferramenta de prototipação, e por isso trazia muita coisa que a nossa
+> stack não usa. Na integração, o Tiago adequou o protótipo à arquitetura: o visual ficou, reescrito
+> em CSS puro, e o que era regra de negócio saiu da tela e foi para a API."
+
+**Slide 13, título "Mudanças no front-end para seguir a arquitetura".** Uma tabela com três
+colunas: o ponto, como era no protótipo e como está na versão atual.
+
+| Ponto                                | No protótipo                                     | Na versão atual                                                                               |
+| ------------------------------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| Vagas restantes                      | O convite mostrava quantas vagas restavam        | O convite não mostra contagem. O aviso de lotado só aparece para quem tenta responder         |
+| Lista para o buffet                  | O CSV era montado no próprio navegador           | O CSV é gerado pela API, que protege a planilha contra fórmulas                               |
+| Login do anfitrião                   | Um token ficava guardado no navegador            | A sessão fica num cookie controlado pela API, e o front-end não guarda nada                   |
+| Limites de acompanhantes e de vagas  | Só a tela conferia                               | A tela ainda limita os campos, mas quem aceita ou recusa é a API                              |
+
+A contagem de vagas saiu do convite porque expõe dado do anfitrião.
+
+Fala: "a tela ainda limita os campos, para ajudar quem preenche, mas a validação que vale é a da
+API."
+
+Dificuldade do bloco:
+
+> "A dificuldade deste bloco foi que o protótipo foi feito numa ferramenta de prototipação, fora da
+> base do projeto e sem o pacote de tipos, e algumas regras de negócio ficaram na tela. O que eu aprendi vendo a adequação: prototipar com
+> ferramenta é rápido para validar o visual, mas o protótipo precisa ser lido contra o Guia antes de
+> virar código. Se eu fizesse de novo, desenharia as telas em cima do `contract` desde o começo."
+
 **Slide 14, título "Dificuldades encontradas".** Uma lista com as três dificuldades que cada dono já
 contou no próprio bloco (a integração, o protótipo e a regra de vagas) e uma linha com o que o time
 faria diferente: fazer as telas já em cima do pacote de tipos, que existia desde 07/10, e
 juntar front-end e back-end ainda na Sprint 4, quando o plano era fechar o fluxo central. O slide existe para o item "dificuldades encontradas" do enunciado ficar visível.
-Fala do Gabriel, 30 segundos:
+Fala do Guilherme, 30 segundos:
 
-> "Cada dificuldade já foi contada por quem passou por ela. Aqui elas aparecem juntas."
+> "Cada dificuldade já foi contada por quem passou por ela: a integração pelo Tiago, a regra de
+> vagas pelo Gabriel e o protótipo por mim. Aqui elas aparecem juntas."
 
 Se perguntarem detalhes, passar para quem passou por cada uma.
 
@@ -348,18 +355,18 @@ Na mesma tela e com a mesma pessoa falando, sem trocar de voz.
 
 ---
 
-## Bloco 6, organização, planejamento e perguntas (2:15, Guilherme)
+## Bloco 6, organização, planejamento e perguntas (1:45, Guilherme)
 
 O PDF volta ao slide 16. O Guilherme fala até o fim.
 
-**Slide 16, título "Organização do trabalho".** Ao lado, a captura do quadro Kanban. Três itens: sprints de duas semanas no quadro Kanban
-do Azure Boards, com cada história dividida em tarefas de tela e de API; conversas pelo WhatsApp e
-nas aulas, com as decisões registradas na documentação do repositório; e cada mudança entrando na
-`main` por PR, depois que a integração contínua passa. Fala, 30 segundos, logo depois de mostrar o quadro. Dizer com franqueza que o
-time não usou o Teams.
+**Slide 16, título "Organização do trabalho".** Ao lado, a captura do quadro Kanban. Quatro itens:
+sprints de duas semanas no quadro Kanban do Azure Boards, com cada história dividida em tarefas de
+tela e de API; conversas pelo WhatsApp e nas aulas, com as decisões registradas na documentação do
+repositório; cada mudança entrando na `main` por PR, depois que a integração contínua passa; e o que
+falta até a apresentação final, em 17/11. Dizer com franqueza que o time não usou o Teams.
 
-**Slide 17, título "Planejamento até a apresentação final, em 17/11".** A data é a da apresentação
-do protótipo no Plano de Ensino. Uma lista com os itens da Sprint 6, de 03/11 a 16/11:
+O planejamento, que o enunciado pede, fica no último item e na fala, sem slide próprio. A data é a
+da apresentação do protótipo no Plano de Ensino. Na fala, os itens da Sprint 6, de 03/11 a 16/11:
 
 - Revisar os artefatos das Sprints 1 a 3 contra o código, história por história.
 - Desenhar o diagrama de sequência da lista de presença, que faltou no Grau A.
@@ -367,15 +374,15 @@ do protótipo no Plano de Ensino. Uma lista com os itens da Sprint 6, de 03/11 a
 - Dar o aval do time às decisões novas da arquitetura.
 - Preparar e ensaiar o Pitch Final.
 
-**Slide 18, título "Perguntas".** Os quatro nomes com o assunto de cada um. Fica na tela durante a
+**Slide 17, título "Perguntas".** Os quatro nomes com o assunto de cada um. Fica na tela durante a
 arguição. Fechamento:
 
 > "As doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão
 > registradas com o motivo. Até 17/11 vamos revisar a documentação contra o código e preparar o
 > Pitch. Para perguntas: problema e requisitos com o Andreas, arquitetura, Docker e GitHub com o Tiago,
-> telas, organização e planejamento comigo, e API, regras e testes com o Gabriel."
+> telas, dificuldades, organização e planejamento comigo, e API, regras e testes com o Gabriel."
 
-**Apêndice, slides 19 a 21.** Capturas da aplicação de 26/10: a tela de entrada e a lista de
+**Apêndice, slides 18 a 20.** Capturas da aplicação de 26/10: a tela de entrada e a lista de
 convites, as telas do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link
 despublicado. Servem ao plano C e ficam no PDF do Moodle como evidência. As capturas do quadro e do
 GitHub ficam nos slides 8 e 16.
@@ -394,8 +401,8 @@ depois de mudar o texto.
 1. Quem recebe a pergunta responde a primeira frase e passa nominalmente para o dono do assunto.
 2. Ninguém responde duas seguidas enquanto houver integrante que ainda não respondeu.
 3. Territórios: problema, requisitos e evolução do projeto com o Andreas; arquitetura, Docker,
-   GitHub e integração com o Tiago; protótipo, telas, Azure Boards, organização e planejamento com o
-   Guilherme; API, regras, testes e dificuldades com o Gabriel.
+   GitHub e integração com o Tiago; protótipo, telas, dificuldades, Azure Boards, organização e
+   planejamento com o Guilherme; API, regras e testes com o Gabriel.
 4. Nas perguntas de arquitetura, Docker, GitHub e integração, o Tiago responde direto. Nas dos outros
    territórios, ele só completa quando o dono pedir.
 
@@ -511,7 +518,7 @@ da Sprint 5, o que continua em aberto.
 **Guilherme.** O `front/README.md`. A estrutura de `front/src`: `app`, `view` e `controller`. Em
 `controller`, o cabeçalho de `api-client.ts`, mais `polling.ts`, `server-api.ts` e `browser-api.ts`.
 As seções 1 e 2 dos Ajustes da Sprint 5. Os ADRs 0001, 0007 e 0009. O quadro, a ponto de abrir
-qualquer item que o professor clicar, e os itens da Sprint 6 do slide 17.
+qualquer item que o professor clicar, e os itens da Sprint 6, que ele diz no slide 16.
 
 **Gabriel.** A própria versão, na branch `gabriel`, e o que mudou nela, com
 `git diff a3fb8db e088d73 -- api/src`. Em `api/src/domain`, `rsvp-rules.ts`, `rsvp.service.ts` e
@@ -537,7 +544,7 @@ qualquer item que o professor clicar, e os itens da Sprint 6 do slide 17.
 - [x] Atualizar o Azure Boards: H01 a H12, a #125, as tarefas das Sprints 4 e 5 e os épicos em
       Done, e as tarefas de API com o Gabriel
 - [ ] Confirmar a divisão de blocos no grupo
-- [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 9
+- [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 12
 - [ ] Criar os itens da Sprint 6 no quadro
 - [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
 - [ ] Decidir se entra uma captura do WhatsApp no slide 16
