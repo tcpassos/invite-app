@@ -2,16 +2,17 @@
 // limite de taxa. Global, para nenhum módulo de rota precisar importar.
 import { Global, Module, type DynamicModule } from '@nestjs/common';
 import { RateLimitGuard } from './rate-limit.js';
-import { SESSION_SECRET, SessionCookie, SessionGuard } from './session.js';
+import { SESSION_CROSS_SITE, SESSION_SECRET, SessionCookie, SessionGuard } from './session.js';
 
 @Global()
 @Module({})
 export class CommonModule {
-  static forRoot(sessionSecret: string): DynamicModule {
+  static forRoot(sessionSecret: string, crossSite = false): DynamicModule {
     return {
       module: CommonModule,
       providers: [
         { provide: SESSION_SECRET, useValue: sessionSecret },
+        { provide: SESSION_CROSS_SITE, useValue: crossSite },
         SessionCookie,
         SessionGuard,
         // Uma instância só para a API inteira, senão cada módulo contaria a própria janela.
