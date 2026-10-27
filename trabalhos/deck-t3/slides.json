@@ -107,38 +107,71 @@
     "notas": "Tiago. No Grau A o projeto tinha as doze histórias, o Guia da Arquitetura e um protótipo de telas. Na Sprint 4 eu montei a base: o repositório, o pacote de tipos compartilhado entre front e back, a integração contínua e o compose. Na Sprint 5 o front e o back foram integrados nessa base, e o que precisou mudar na arquitetura foi registrado com o motivo."
   },
   {
-    "modelo": "diagrama",
+    "modelo": "capturas",
     "n": 5,
     "bloco": "Arquitetura, Tiago",
-    "titulo": "Tiers e camadas",
-    "svgNome": "svgArquitetura",
-    "notas": "Tiago. Três tiers no compose: front em Next.js, API em NestJS e PostgreSQL. As três camadas lógicas ficam dentro da API: Apresentação, Domínio e Dados. O front segue MVC. O contract é o pacote de tipos compartilhado entre os dois lados. Camada é divisão lógica, tier é processo separado. As três camadas ficam no mesmo container da API."
+    "titulo": "Diagrama de camadas",
+    "alt": 500,
+    "imagens": [
+      {
+        "arq": "../diagramas/diagrama-de-camadas-slide.png",
+        "t": ""
+      }
+    ],
+    "notas": "Tiago. É o diagrama de camadas do documento de arquitetura do Grau A. Três tiers no compose: front em Next.js, API em NestJS e PostgreSQL. As três camadas lógicas ficam dentro da API: Apresentação, Domínio e Dados. O front segue MVC. O navegador fala com a API direto no painel e no envio da resposta, e a página do convite é lida pelo servidor do front. Camada é divisão lógica, tier é processo separado: as três camadas ficam no mesmo container da API.",
+    "topo": 150
   },
   {
-    "modelo": "duasColunas",
+    "modelo": "capturas",
     "n": 6,
     "bloco": "Arquitetura, Tiago",
-    "titulo": "Base do projeto: lint, integração contínua e Docker",
-    "tituloA": "Lint e integração contínua",
-    "corA": "#21049A",
-    "itensA": [
+    "titulo": "Diagrama de componentes",
+    "alt": 500,
+    "imagens": [
+      {
+        "arq": "../diagramas/diagrama-de-componentes-slide-1.png",
+        "t": "Front e camada de Apresentação"
+      },
+      {
+        "arq": "../diagramas/diagrama-de-componentes-slide-2.png",
+        "t": "Camadas de Domínio e de Dados, e o banco"
+      }
+    ],
+    "notas": "Tiago. É o diagrama de componentes do Grau A, dividido em duas metades para caber no slide. Cada componente da API existe no código com o mesmo nome: os quatro controllers, os guards de sessão e de limite de tráfego, o filtro de erro, os cinco services, o catálogo de templates e os três repositórios. No front, o ApiClient e as duas páginas também. A única diferença é o TemplateSet, que virou dois arquivos por template, o CSS e a imagem de prévia, como o documento de arquitetura já registra.",
+    "topo": 150
+  },
+  {
+    "modelo": "capturas",
+    "n": 7,
+    "bloco": "Arquitetura, Tiago",
+    "titulo": "Diagrama de implantação",
+    "alt": 500,
+    "imagens": [
+      {
+        "arq": "../diagramas/diagrama-de-implantacao-slide.png",
+        "t": ""
+      }
+    ],
+    "notas": "Tiago. O diagrama de implantação do Grau A. O docker-compose.yml é a forma executável dele: os três containers, o banco sem porta publicada, o front na 3000 e a API na 3001, porque o navegador chama a API direto. A API só sobe depois que o banco responde ao healthcheck, e as migrations rodam com o volume do banco vazio. No T1 apresentamos o Docker como forma de cada integrante subir o ambiente com um comando. É esse compose que roda na demonstração.",
+    "topo": 150
+  },
+  {
+    "modelo": "conteudo",
+    "n": 8,
+    "bloco": "Arquitetura, Tiago",
+    "titulo": "Lint e integração contínua",
+    "right": 72,
+    "itens": [
       "O lint recusa import que quebra a regra de camadas: o Domínio não importa da Apresentação, e os Dados não importam de nenhuma camada de cima.",
       "Em todo PR, a integração contínua roda lint, formatação, tipos, testes contra um PostgreSQL e build.",
-      "A mesma integração constrói as imagens da API, do front e do mock."
+      "A mesma integração constrói as imagens da API, do front e do mock.",
+      "Um segundo arquivo do compose troca a API por um mock, para trabalhar nas telas sem banco."
     ],
-    "tituloB": "docker compose",
-    "corB": "#E94D1C",
-    "itensB": [
-      "Três serviços: banco, API e front. O banco não publica porta.",
-      "O front publica a 3000 e a API a 3001, porque o navegador chama a API direto no painel e no envio da resposta.",
-      "A API só sobe depois que o banco responde ao healthcheck.",
-      "Um segundo arquivo troca a API por um mock, para trabalhar nas telas sem banco."
-    ],
-    "notas": "Tiago. Um PR que quebra a regra de camadas fica vermelho na integração contínua. Sobre o compose: no T1 apresentamos o Docker como forma de cada integrante subir o ambiente com um comando. É esse compose que roda na demonstração. Se perguntarem das migrations: elas rodam quando o volume do banco está vazio."
+    "notas": "Tiago. Um PR que quebra a regra de camadas fica vermelho na integração contínua."
   },
   {
     "modelo": "tabela",
-    "n": 7,
+    "n": 9,
     "bloco": "Arquitetura, Tiago",
     "titulo": "Regras da arquitetura no código",
     "xs": [
@@ -171,7 +204,7 @@
   },
   {
     "modelo": "capturas",
-    "n": 8,
+    "n": 10,
     "bloco": "Front-end, Guilherme",
     "titulo": "Telas do front-end",
     "imagens": [
@@ -192,7 +225,7 @@
   },
   {
     "modelo": "tabela",
-    "n": 9,
+    "n": 11,
     "bloco": "Front-end, Guilherme",
     "titulo": "Mudanças no front para seguir a arquitetura",
     "xs": [
@@ -236,7 +269,7 @@
   },
   {
     "modelo": "diagrama",
-    "n": 10,
+    "n": 12,
     "bloco": "Back-end, Gabriel",
     "titulo": "Caminho de uma resposta na API",
     "svgNome": "svgRaias",
@@ -245,7 +278,7 @@
   },
   {
     "modelo": "tabela",
-    "n": 11,
+    "n": 13,
     "bloco": "Back-end, Gabriel",
     "titulo": "Testes",
     "xs": [
@@ -279,14 +312,14 @@
   },
   {
     "modelo": "impacto",
-    "n": 12,
+    "n": 14,
     "bloco": "Demonstração, Tiago",
     "titulo": "Demonstração",
     "notas": "Tiago. Trocar do PDF para o navegador. Abrir dizendo: a conta já está criada para poupar tempo; a tela de entrada está no apêndice. Passos: criar, personalizar e publicar o convite; responder como convidado, com acompanhante e alergia; tentar responder no convite lotado; alterar a resposta pelo link pessoal; mostrar o painel e baixar o CSV; despublicar e abrir de novo o link do convite. Depois, na mesma tela: o quadro Kanban no Azure Boards e o GitHub, com os PRs e os checks. Voltar ao PDF no slide 13."
   },
   {
     "modelo": "conteudo",
-    "n": 13,
+    "n": 15,
     "bloco": "Organização, Tiago",
     "titulo": "Organização do trabalho",
     "right": 72,
@@ -299,7 +332,7 @@
   },
   {
     "modelo": "conteudo",
-    "n": 14,
+    "n": 16,
     "bloco": "Dificuldades, Tiago",
     "titulo": "Dificuldades encontradas",
     "right": 72,
@@ -313,7 +346,7 @@
   },
   {
     "modelo": "conteudo",
-    "n": 15,
+    "n": 17,
     "bloco": "Planejamento, Tiago",
     "titulo": "Planejamento até a apresentação final, em 17/11",
     "right": 72,
@@ -328,7 +361,7 @@
   },
   {
     "modelo": "impacto",
-    "n": 16,
+    "n": 18,
     "bloco": "Perguntas, Tiago",
     "cartola": "Time 04",
     "titulo": "Perguntas",
@@ -338,7 +371,7 @@
   },
   {
     "modelo": "capturas",
-    "n": 17,
+    "n": 19,
     "bloco": "Apêndice",
     "titulo": "Telas do anfitrião",
     "imagens": [
@@ -355,7 +388,7 @@
   },
   {
     "modelo": "capturas",
-    "n": 18,
+    "n": 20,
     "bloco": "Apêndice",
     "titulo": "Telas do convidado",
     "imagens": [
@@ -380,7 +413,7 @@
   },
   {
     "modelo": "capturas",
-    "n": 19,
+    "n": 21,
     "bloco": "Apêndice",
     "titulo": "Painel e convite despublicado",
     "imagens": [
@@ -397,7 +430,7 @@
   },
   {
     "modelo": "capturas",
-    "n": 20,
+    "n": 22,
     "bloco": "Apêndice",
     "titulo": "Quadro Kanban e integração no GitHub",
     "imagens": [

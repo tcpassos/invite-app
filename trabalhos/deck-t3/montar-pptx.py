@@ -708,7 +708,9 @@ def m_capturas(sl, s):
         alt_leg = altura_estimada(s['legenda'], tam_leg, 1116) * 1.16
         topo_leg = 634 - alt_leg
     fundo_util = (topo_leg - 24) if s.get('legenda') else 640
-    alt = min(s.get('alt', 400), fundo_util - 176 - 34)
+    topo = s.get('topo', 176)
+    reserva = 34 if any(i.get('t') for i in imgs) else 0
+    alt = min(s.get('alt', 400), fundo_util - topo - reserva)
     largs = [alt * proporcao(i['arq']) for i in imgs]
     total = sum(largs) + gap * (len(imgs) - 1)
     if total > 1136:
@@ -716,10 +718,11 @@ def m_capturas(sl, s):
         alt, largs = alt * f, [l * f for l in largs]
         total = 1136
     x = 72 + (1136 - total) / 2
-    y = centrar(alt + 34, 176, fundo_util)
+    y = centrar(alt + reserva, topo, fundo_util)
     for i, l in zip(imgs, largs):
         captura(sl, i['arq'], x, y, larg=l)
-        rotulo(sl, x - 20, y + alt + 10, l + 40, i.get('t', ''), tam=15, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
+        if i.get('t'):
+            rotulo(sl, x - 20, y + alt + 10, l + 40, i['t'], tam=15, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
         x += l + gap
     if s.get('legenda'):
         retangulo(sl, 72, topo_leg + 2, 3, alt_leg - 4, preencher=LARANJA)

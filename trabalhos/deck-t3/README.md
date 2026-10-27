@@ -10,6 +10,7 @@ deck do T1. O texto de cada slide e as falas, que vão nas notas do apresentador
 |---|---|
 | `slides.json` | Conteúdo dos slides: modelo, título, itens, tabelas, capturas e notas |
 | `montar-pptx.py` | Monta o `.pptx`. Adaptado do `deck-t1`, com o modelo de capturas e os diagramas de tiers e de raias |
+| `diagramas/` | Os diagramas de camadas, componentes e implantação do DAS, com fonte maior para o slide. O `.puml` de cada um diz como gerar o PNG |
 | `capturas/` | Telas da aplicação real, tiradas em 26/10/2026 |
 | `capturar-telas.cjs` | Refaz as capturas, percorrendo o caminho da demo com o Playwright |
 | `checar-identificadores.py` | Procura no `.pptx` identificador interno que a turma não consegue resolver |
@@ -39,4 +40,5 @@ soffice --headless --convert-to pdf --outdir .. ../T3-Apresentacao-Intermediaria
 `capa`, `conteudo`, `cartoes`, `linhaTempo`, `diagrama`, `duasColunas`, `tabela`, `impacto` e
 `capturas`. A `tabela` aceita `xs` e `ws` para a posição e a largura das colunas, e uma `legenda`.
 O `diagrama` aceita `svgArquitetura` e `svgRaias`, desenhados com formas nativas, que dá para
-editar no PowerPoint.
+editar no PowerPoint. Os diagramas do DAS entram pelo modelo `capturas`, apontando para
+`../diagramas/*.png`.

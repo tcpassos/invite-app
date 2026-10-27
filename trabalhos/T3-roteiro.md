@@ -17,7 +17,7 @@ GitHub e a colaboração da equipe.
 | Critério                                     | Peso | Onde a apresentação responde                                                                 |
 | -------------------------------------------- | ---- | -------------------------------------------------------------------------------------------- |
 | Evolução e qualidade da implementação        | 30%  | Slide 4, a linha do tempo, e os blocos 2, 3 e 4                                              |
-| Aderência à arquitetura e aos requisitos     | 20%  | Slide 7, com cada regra e o lugar do código onde ela está, e o que cada passo da demo mostra |
+| Aderência à arquitetura e aos requisitos     | 20%  | Slides 5 a 7, os diagramas do Grau A, e o slide 9, com cada regra e o lugar do código onde ela está, e o que cada passo da demo mostra |
 | Demonstração funcional e qualidade técnica   | 20%  | Bloco 5                                                                                      |
 | Organização no Azure DevOps, GitHub e Kanban | 10%  | Bloco 5b, ao vivo, logo depois da demo                                                       |
 | Apresentação, clareza e slides               | 10%  | O deck todo                                                                                  |
@@ -62,14 +62,15 @@ Regras para todos:
 | Bloco | Tema | Min | Slides | Quem fala |
 | --- | --- | --- | --- | --- |
 | 1 | Problema e escopo | 2:00 | 1 a 3 | Andreas |
-| 2 | Linha do tempo, arquitetura, base do projeto e Docker | 5:00 | 4 a 7 | Tiago |
-| 3 | Front-end | 3:00 | 8 e 9 | Guilherme |
-| 4 | Back-end | 2:45 | 10 e 11 | Gabriel |
-| 5 | Demonstração ao vivo | 6:00 | 12 | Tiago |
+| 2 | Linha do tempo, diagramas do Grau A, base do projeto e regras | 6:00 | 4 a 9 | Tiago |
+| 3 | Front-end | 3:00 | 10 e 11 | Guilherme |
+| 4 | Back-end | 2:45 | 12 e 13 | Gabriel |
+| 5 | Demonstração ao vivo | 6:00 | 14 | Tiago |
 | 5b | Azure Boards e GitHub, ao vivo | 1:15 | | Tiago |
-| 6 | Organização, dificuldades, planejamento e perguntas | 2:45 | 13 a 16 | Tiago |
+| 6 | Organização, dificuldades, planejamento e perguntas | 2:45 | 15 a 18 | Tiago |
 
-Com as trocas, cerca de 23 minutos e meio, com folga de 1 e meio até o limite de 25.
+Com as trocas, cerca de 24 minutos e meio, com folga de meio minuto até o limite de 25. O bloco 2
+ficou mais longo com os diagramas, então o ensaio cronometrado é o que diz se cabe.
 
 **Compartilhamento.** O Tiago compartilha a tela inteira da máquina dele do começo ao fim: o PDF, a
 aplicação na demo, o Azure Boards e o GitHub. Assim não há troca de compartilhamento. Quem fala diz
@@ -81,7 +82,7 @@ e a primeira frase de cada um começa com o nome ("Aqui é o Gabriel..."), porqu
 individual.
 
 **Ordem de corte.** O Andreas cronometra e avisa pelo WhatsApp do grupo, fora da reunião. Se o fim do
-bloco 4 passar de 13:30, corta-se nesta ordem: o passo 4 da demo, que fica só dito; abrir a
+bloco 4 passar de 14:30, corta-se nesta ordem: o slide 8 fica numa frase só; o passo 4 da demo, que fica só dito; abrir a
 planilha, mostrando só o download; o GitHub do bloco 5b, reduzido à aba de checks. Não entram na
 ordem de corte a resposta do convidado, a lotação, o painel e o bloco 6.
 
@@ -123,21 +124,29 @@ base; Sprint 5, integração e ajustes; Sprint 6, consolidação. Fala:
 > integração contínua e o compose. Na Sprint 5 o front e o back foram integrados nessa base, e o que
 > precisou mudar na arquitetura foi registrado com o motivo."
 
-**Slide 5, título "Tiers e camadas".** Três tiers no compose (front em Next.js, API em NestJS e
-PostgreSQL) e as três camadas lógicas dentro da API: Apresentação, Domínio e Dados. O front segue
-MVC. O `contract` é o pacote de tipos compartilhado entre os dois lados. Fala: "camada é divisão
-lógica, tier é processo separado. As três camadas moram no mesmo container da API."
+**Slides 5, 6 e 7, os diagramas do documento de arquitetura do Grau A.** Os mesmos diagramas do
+DAS, renderizados de novo com fonte maior para ler na chamada. As versões para slide estão em
+`trabalhos/deck-t3/diagramas`.
 
-**Slide 6, título "Base do projeto: lint, integração contínua e Docker".** Duas colunas.
+- **Slide 5, "Diagrama de camadas".** Três tiers no compose (front em Next.js, API em NestJS e
+  PostgreSQL) e as três camadas lógicas dentro da API: Apresentação, Domínio e Dados. O front segue
+  MVC. Fala: "camada é divisão lógica, tier é processo separado. As três camadas ficam no mesmo
+  container da API."
+- **Slide 6, "Diagrama de componentes".** Cortado em duas metades lado a lado: o front com a
+  Apresentação, e o Domínio com os Dados e o banco. Fala: cada componente da API existe no código com
+  o mesmo nome, e a única diferença é o `TemplateSet`, que virou arquivos (o CSS e a imagem de
+  prévia de cada template), como o DAS registra.
+- **Slide 7, "Diagrama de implantação".** O `docker-compose.yml` é a forma executável dele. Fala: o
+  banco não publica porta, o front fica na 3000 e a API na 3001 do host, porque o navegador fala com
+  ela direto; a API sobe depois do healthcheck do banco. "No T1 apresentamos o Docker como forma de
+  cada integrante subir o ambiente com um comando. É esse compose que roda na demo."
 
-- Esquerda, "Lint e integração contínua": o Domínio não pode importar da Apresentação, e os Dados
-  não podem importar de nenhuma camada de cima. Um PR que quebra a regra fica vermelho. A integração
-  contínua roda lint, tipos, testes contra um PostgreSQL de verdade, build e as imagens.
-- Direita, "docker compose": o banco não publica porta, o front publica a 3000 e a API a 3001 no
-  host, porque o navegador fala com ela direto. Fala: "no T1 apresentamos o Docker como forma
-  de cada integrante subir o ambiente com um comando. É esse compose que roda na demo."
+**Slide 8, título "Lint e integração contínua".** O lint recusa import que quebra a regra de
+camadas: o Domínio não importa da Apresentação, e os Dados não importam de nenhuma camada de cima.
+Em todo PR a integração contínua roda lint, formatação, tipos, testes contra um PostgreSQL e build,
+e constrói as imagens. Um segundo arquivo do compose troca a API por um mock.
 
-**Slide 7, título "Regras da arquitetura no código".** Três regras, cada uma com o lugar do código
+**Slide 9, título "Regras da arquitetura no código".** Três regras, cada uma com o lugar do código
 onde está:
 
 - Quem não tem acesso não descobre se um convite existe. Fica no Domínio e na Apresentação: link
@@ -164,7 +173,7 @@ Passagem: "O Guilherme apresenta o front-end, que partiu do protótipo dele."
 
 ## Bloco 3, front-end (3:00, Guilherme)
 
-**Slide 8, título "Telas do front-end".** Três capturas da aplicação atual: o editor com a prévia, o
+**Slide 10, título "Telas do front-end".** Três capturas da aplicação atual: o editor com a prévia, o
 convite no celular e a resposta enviada com o link pessoal. O protótipo, como está no repositório do
 Guilherme, não sobe sozinho (faltam o cliente do Supabase e o `@tanstack/react-start`), por isso o
 slide não tem a captura dele. Se o Guilherme tiver uma captura do protótipo, ela pode entrar ao lado.
@@ -175,7 +184,7 @@ Fala:
 > stack não usa. Na integração, o Tiago adequou o protótipo à arquitetura: o visual ficou, reescrito
 > em CSS puro, e o que era regra de negócio saiu da tela e foi para a API."
 
-**Slide 9, título "Mudanças no front para seguir a arquitetura".** Três linhas de antes e depois:
+**Slide 11, título "Mudanças no front para seguir a arquitetura".** Três linhas de antes e depois:
 
 - A página pública mostrava quantas vagas restavam. Hoje não mostra contagem, porque isso expõe dado
   do anfitrião. A lotação só aparece quando a resposta é recusada.
@@ -200,7 +209,7 @@ escrita pelo Gabriel."
 
 ## Bloco 4, back-end (2:45, Gabriel)
 
-**Slide 10, título "Caminho de uma resposta na API".** Diagrama de três raias, uma por camada, com
+**Slide 12, título "Caminho de uma resposta na API".** Diagrama de três raias, uma por camada, com
 sete passos:
 
 - Apresentação: confere o formato e o limite de tráfego.
@@ -221,7 +230,7 @@ Fala de abertura:
 Fala de fecho do slide: "o Domínio calcula quantas vagas a resposta pede, e a camada de Dados
 confere o teto dentro da transação."
 
-**Slide 11, título "Testes".** Testes do Domínio, testes contra um PostgreSQL de verdade e
+**Slide 13, título "Testes".** Testes do Domínio, testes contra um PostgreSQL de verdade e
 testes das rotas de ponta a ponta. Fala:
 
 > "Os testes de hoje foram reescritos na integração, porque os meus testavam assinaturas antigas. O
@@ -242,7 +251,7 @@ Passagem: "Agora a demonstração."
 
 ## Bloco 5, demonstração ao vivo (6:00, Tiago)
 
-**Slide 12, título "Demonstração".** Só um divisor, que fica na tela enquanto o Tiago troca do PDF
+**Slide 14, título "Demonstração".** Só um divisor, que fica na tela enquanto o Tiago troca do PDF
 para o navegador. Pela chamada do Teams só uma pessoa compartilha a tela, então o Tiago conduz e
 narra a demonstração inteira. O passo a passo fica aqui e nas notas do apresentador, não no slide:
 
@@ -325,15 +334,15 @@ Na mesma tela da demo, com o Tiago.
 
 ## Bloco 6, organização, dificuldades, planejamento e perguntas (2:45, Tiago)
 
-O Tiago volta ao PDF no slide 13.
+O Tiago volta ao PDF no slide 15.
 
-**Slide 13, título "Organização do trabalho".** Três itens: sprints de duas semanas no quadro Kanban
+**Slide 15, título "Organização do trabalho".** Três itens: sprints de duas semanas no quadro Kanban
 do Azure Boards, com cada história dividida em tarefas de tela e de API; conversas pelo WhatsApp e
 nas aulas, com as decisões registradas na documentação do repositório; e cada mudança entrando na
 `main` por PR, depois que a integração contínua passa. Fala, 30 segundos. Dizer com franqueza que o
 time não usou o Teams.
 
-**Slide 14, título "Dificuldades encontradas".** Uma lista com as três dificuldades que cada dono já
+**Slide 16, título "Dificuldades encontradas".** Uma lista com as três dificuldades que cada dono já
 contou no próprio bloco (a integração, o protótipo e a regra de vagas) e uma linha com o que o time
 faria diferente. O slide existe para o item "dificuldades encontradas" do enunciado ficar visível.
 Fala, 30 segundos:
@@ -342,7 +351,7 @@ Fala, 30 segundos:
 
 Se perguntarem detalhes, passar para quem passou por cada uma.
 
-**Slide 15, título "Planejamento até a apresentação final, em 17/11".** A data é a da apresentação
+**Slide 17, título "Planejamento até a apresentação final, em 17/11".** A data é a da apresentação
 do protótipo no Plano de Ensino. Uma lista com os itens da Sprint 6, de 03/11 a 16/11:
 
 - Revisar os artefatos das Sprints 1 a 3 contra o código, história por história.
@@ -351,7 +360,7 @@ do protótipo no Plano de Ensino. Uma lista com os itens da Sprint 6, de 03/11 a
 - Dar o aval do time às decisões novas da arquitetura.
 - Preparar e ensaiar o Pitch Final.
 
-**Slide 16, título "Perguntas".** Os quatro nomes com o assunto de cada um. Fica na tela durante a
+**Slide 18, título "Perguntas".** Os quatro nomes com o assunto de cada um. Fica na tela durante a
 arguição. Fechamento:
 
 > "As doze histórias estão implementadas, e as mudanças em relação à arquitetura do Grau A estão
@@ -359,7 +368,7 @@ arguição. Fechamento:
 > Pitch. Para perguntas: problema e requisitos com o Andreas, arquitetura e Docker comigo, telas e
 > quadro com o Guilherme, API e testes com o Gabriel."
 
-**Apêndice, slides 17 a 20.** Capturas de 26/10: a tela de entrada e a lista de convites, as telas
+**Apêndice, slides 19 a 22.** Capturas de 26/10: a tela de entrada e a lista de convites, as telas
 do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link despublicado, e
 o quadro Kanban com a integração contínua aprovada no PR do back-end. Servem ao plano C e ficam no
 PDF do Moodle como evidência do critério de organização.
@@ -519,10 +528,10 @@ qualquer item que o professor clicar.
 - [x] Atualizar o Azure Boards: H01 a H12, a #125, as tarefas das Sprints 4 e 5 e os épicos em
       Done, e as tarefas de API com o Gabriel
 - [ ] Confirmar a divisão de blocos no grupo
-- [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 8
+- [ ] Guilherme confirma o que foi dele no protótipo, para preencher a fala do slide 10
 - [ ] Criar os itens da Sprint 6 no quadro
 - [ ] Criar o item do T3 no quadro, como o #78 foi para o T1, com o dono do deck
-- [ ] Decidir se entra uma captura do WhatsApp no slide 13
+- [ ] Decidir se entra uma captura do WhatsApp no slide 15
 - [ ] Ensaiar a demo duas vezes na máquina do Tiago e uma na do Guilherme, com o ambiente subido do
       zero, e gravar o vídeo do plano C com cadastro e entrada no começo
 - [x] Tirar as capturas da aplicação para o apêndice
