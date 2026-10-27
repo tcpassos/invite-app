@@ -19,6 +19,9 @@ async function main(): Promise<void> {
   // Fecha o pool do banco quando o container recebe o sinal de parada.
   app.enableShutdownHooks();
   await app.listen(config.port);
+  // Uma linha só na subida, no mesmo formato JSON do log de requisição (ADR-0012). Sem ela,
+  // uma API no ar e um container que não subiu a API deixam o mesmo log vazio.
+  console.log(JSON.stringify({ level: 'info', message: 'API escutando', port: config.port }));
 }
 
 await main();
