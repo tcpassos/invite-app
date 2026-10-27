@@ -342,76 +342,78 @@ def dg_arquitetura(sl, x, y):
     """Os tres tiers do compose, as camadas da API, o MVC do front e o pacote de tipos compartilhado."""
     ESC = RGBColor(0x3A, 0x3A, 0x44)
     # navegador
-    retangulo(sl, 72, y + 96, 150, 92, preencher=AZUL, raio=5)
-    rotulo(sl, 72, y + 118, 150, 'Navegador', tam=16, cor=BRANCO, peso=900, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, 80, y + 144, 134, 'anfitrião e convidado', tam=12, cor=BRANCO, peso=300, alinhar=PP_ALIGN.CENTER)
+    nx, nw = 72, 132
+    retangulo(sl, nx, y + 92, nw, 100, preencher=AZUL, raio=5)
+    rotulo(sl, nx, y + 112, nw, 'Navegador', tam=17, cor=BRANCO, peso=900, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, nx + 6, y + 140, nw - 12, 'anfitrião e<br>convidado', tam=14, cor=BRANCO, peso=300, alinhar=PP_ALIGN.CENTER)
     # tier front
-    fx, fw = 300, 240
-    retangulo(sl, fx, y, fw, 284, preencher=LILAS, borda=AZUL, raio=6, tracejado=True)
-    rotulo(sl, fx + 18, y + 14, fw - 36, 'Front em Next.js', tam=16, cor=AZUL, peso=900)
-    rotulo(sl, fx + 18, y + 38, fw - 36, 'container front, porta 3000', tam=12.5, cor=CINZA, peso=400)
+    fx, fw = 300, 234
+    retangulo(sl, fx, y, fw, 290, preencher=LILAS, borda=AZUL, raio=6, tracejado=True)
+    rotulo(sl, fx + 16, y + 12, fw - 32, 'Front em Next.js', tam=17, cor=AZUL, peso=900)
+    rotulo(sl, fx + 16, y + 38, fw - 32, 'container front, porta 3000', tam=14, cor=CINZA, peso=400)
     for k, nome in enumerate(['Rotas de tela', 'View', 'Controller']):
-        retangulo(sl, fx + 20, y + 74 + k * 62, fw - 40, 46, preencher=BRANCO, borda=AZUL, raio=3)
-        rotulo(sl, fx + 20, y + 87 + k * 62, fw - 40, nome, tam=14, cor=AZUL, peso=400, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, fx, y + 262, fw, 'MVC', tam=11, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER, espacar=1.2)
+        retangulo(sl, fx + 18, y + 72 + k * 62, fw - 36, 48, preencher=BRANCO, borda=AZUL, raio=3)
+        rotulo(sl, fx + 18, y + 84 + k * 62, fw - 36, nome, tam=16, cor=AZUL, peso=400, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, fx, y + 266, fw, 'MVC', tam=13, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER, espacar=1.2)
     # tier api
-    ax, aw = 640, 260
-    retangulo(sl, ax, y, aw, 284, preencher=PESSEGO, borda=LARANJA, raio=6, tracejado=True)
-    rotulo(sl, ax + 18, y + 14, aw - 36, 'API em NestJS', tam=16, cor=LARANJA, peso=900)
-    rotulo(sl, ax + 18, y + 38, aw - 36, 'container api, porta 3001', tam=12.5, cor=CINZA, peso=400)
+    ax, aw = 652, 250
+    retangulo(sl, ax, y, aw, 290, preencher=PESSEGO, borda=LARANJA, raio=6, tracejado=True)
+    rotulo(sl, ax + 16, y + 12, aw - 32, 'API em NestJS', tam=17, cor=LARANJA, peso=900)
+    rotulo(sl, ax + 16, y + 38, aw - 32, 'container api, porta 3001 no host', tam=14, cor=CINZA, peso=400)
     for k, nome in enumerate(['Apresentação', 'Domínio', 'Dados']):
-        retangulo(sl, ax + 20, y + 74 + k * 62, aw - 40, 46, preencher=BRANCO, borda=LARANJA, raio=3)
-        rotulo(sl, ax + 20, y + 87 + k * 62, aw - 40, nome, tam=14, cor=GRAFITE, peso=400, alinhar=PP_ALIGN.CENTER)
+        retangulo(sl, ax + 18, y + 72 + k * 62, aw - 36, 48, preencher=BRANCO, borda=LARANJA, raio=3)
+        rotulo(sl, ax + 18, y + 84 + k * 62, aw - 36, nome, tam=16, cor=GRAFITE, peso=400, alinhar=PP_ALIGN.CENTER)
         if k:
-            seta(sl, ax + aw / 2, y + 74 + k * 62 - 16, ax + aw / 2, y + 74 + k * 62, LARANJA, 1.5)
-    rotulo(sl, ax, y + 262, aw, 'TRÊS CAMADAS', tam=11, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER, espacar=1.2)
+            seta(sl, ax + aw / 2, y + 72 + k * 62 - 14, ax + aw / 2, y + 72 + k * 62, LARANJA, 1.5)
+    rotulo(sl, ax, y + 266, aw, 'TRÊS CAMADAS', tam=13, cor=LARANJA, peso=900, alinhar=PP_ALIGN.CENTER, espacar=1.2)
     # tier banco
-    bx, bw = 1010, 190
-    retangulo(sl, bx, y + 84, bw, 116, preencher=QUASE, borda=CINZA, raio=6, tracejado=True)
-    rotulo(sl, bx, y + 104, bw, 'PostgreSQL', tam=16, cor=GRAFITE, peso=900, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, bx + 10, y + 132, bw - 20, 'container db', tam=12.5, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
-    rotulo(sl, bx + 10, y + 150, bw - 20, 'sem porta publicada', tam=12.5, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
-    # ligacoes
-    seta(sl, 222, y + 120, fx, y + 120, AZUL, 2)
-    rotulo(sl, 222, y + 128, 78, 'página do<br>convite', tam=12, cor=AZUL, peso=400, alinhar=PP_ALIGN.CENTER)
-    seta(sl, fx + fw, y + 120, ax, y + 120, AZUL, 2)
-    rotulo(sl, fx + fw, y + 78, ax - fx - fw, 'leitura no<br>servidor', tam=12, cor=AZUL, peso=400, alinhar=PP_ALIGN.CENTER)
-    seta(sl, ax + aw, y + 142, bx, y + 142, CINZA, 2)
-    rotulo(sl, ax + aw, y + 118, bx - ax - aw, 'SQL', tam=12, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
-    cotovelo(sl, [(147, y + 188), (147, y + 312), (ax + aw / 2, y + 312), (ax + aw / 2, y + 284)], LARANJA, 2)
-    rotulo(sl, 160, y + 318, 470, 'painel do anfitrião e envio das respostas, direto na API', tam=12, cor=LARANJA, peso=400)
+    bx, bw = 1020, 188
+    retangulo(sl, bx, y + 82, bw, 124, preencher=QUASE, borda=CINZA, raio=6, tracejado=True)
+    rotulo(sl, bx, y + 100, bw, 'PostgreSQL', tam=17, cor=GRAFITE, peso=900, alinhar=PP_ALIGN.CENTER)
+    rotulo(sl, bx + 8, y + 130, bw - 16, 'container db,<br>sem porta publicada', tam=14, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
+    # ligacoes, com o rotulo centralizado no vao, acima da seta
+    def ligacao(x1, x2, ys, texto, cor):
+        seta(sl, x1 + 4, ys, x2 - 4, ys, cor, 2)
+        rotulo(sl, x1, ys - 46, x2 - x1, texto, tam=14, cor=cor, peso=400, alinhar=PP_ALIGN.CENTER)
+    ligacao(nx + nw, fx, y + 142, 'página do<br>convite', AZUL)
+    ligacao(fx + fw, ax, y + 142, 'leitura no<br>servidor', AZUL)
+    ligacao(ax + aw, bx, y + 142, 'SQL', CINZA)
+    cotovelo(sl, [(nx + nw / 2, y + 192), (nx + nw / 2, y + 318), (ax + aw / 2, y + 318), (ax + aw / 2, y + 290)], LARANJA, 2)
+    rotulo(sl, nx + nw / 2 + 12, y + 324, 520, 'painel do anfitrião e envio das respostas, direto na API', tam=15, cor=LARANJA, peso=400)
     # pacote de tipos
-    retangulo(sl, fx, y + 350, ax + aw - fx, 44, preencher=QUASE, borda=CINZA_CLARO, raio=4)
-    tb, tf = caixa(sl, fx + 16, y + 362, ax + aw - fx - 32, 30)
-    escrever(tf, '<strong>contract</strong>: tipos de pedido e resposta usados pelo front e pela API', tam=13, cor=ESC, peso=300)
+    retangulo(sl, fx, y + 360, ax + aw - fx, 46, preencher=QUASE, borda=CINZA_CLARO, raio=4)
+    tb, tf = caixa(sl, fx + 16, y + 372, ax + aw - fx - 32, 30)
+    escrever(tf, '<strong>Pacote de tipos compartilhado (contract):</strong> pedidos e respostas usados pelo front e pela API', tam=14, cor=ESC, peso=300)
 
 def dg_raias(sl, x, y):
     """O envio de uma resposta passando pelas tres camadas, uma raia por camada."""
     ESC = RGBColor(0x3A, 0x3A, 0x44)
     raias = [('Apresentação', AZUL), ('Domínio', LARANJA), ('Dados', CINZA)]
-    alt_raia, topo = 104, y
+    alt_raia, lrot, topo = 112, 136, y
     for k, (nome, cor) in enumerate(raias):
         ry = topo + k * (alt_raia + 8)
         retangulo(sl, 72, ry, 1136, alt_raia, preencher=QUASE, raio=4)
-        retangulo(sl, 72, ry, 150, alt_raia, preencher=cor, raio=4)
-        rotulo(sl, 72, ry + alt_raia / 2 - 11, 150, nome, tam=15, cor=BRANCO, peso=900, alinhar=PP_ALIGN.CENTER)
+        retangulo(sl, 72, ry, lrot, alt_raia, preencher=cor, raio=4)
+        rotulo(sl, 72, ry + alt_raia / 2 - 12, lrot, nome, tam=16, cor=BRANCO, peso=900, alinhar=PP_ALIGN.CENTER)
     passos = [
-        (0, 'Recebe a resposta e confere o formato e o limite de tráfego'),
+        (0, 'Confere o formato e o limite de tráfego'),
         (1, 'Aplica as regras da resposta'),
-        (1, 'Calcula as vagas que a resposta pede'),
-        (2, 'Abre a transação e trava a linha do convite'),
-        (2, 'Soma as vagas ocupadas, confere o teto e grava, ou devolve a recusa'),
+        (1, 'Calcula as vagas pedidas'),
+        (2, 'Trava o convite e soma as vagas ocupadas'),
+        (2, 'Confere o teto e grava, ou devolve a recusa'),
+        (1, 'Dá nome à recusa: convite lotado'),
         (0, 'Responde com o link pessoal ou com o erro'),
     ]
-    x0, larg, gap = 240, 150, 13
+    x0, gap = 72 + lrot + 14, 12
+    larg = (1208 - 8 - x0 - gap * (len(passos) - 1)) / len(passos)
     caixas = []
     for i, (r, txt) in enumerate(passos):
         bx = x0 + i * (larg + gap)
-        by = topo + r * (alt_raia + 8) + 12
-        retangulo(sl, bx, by, larg, alt_raia - 24, preencher=BRANCO, borda=raias[r][1], largura=1.5, raio=4)
-        tb, tf = caixa(sl, bx + 10, by + 8, larg - 20, alt_raia - 40, ancora=MSO_ANCHOR.MIDDLE)
-        escrever(tf, txt, tam=13.5, cor=ESC, peso=400, entre=1.2)
-        caixas.append((bx, by, larg, alt_raia - 24))
+        by = topo + r * (alt_raia + 8) + 10
+        retangulo(sl, bx, by, larg, alt_raia - 20, preencher=BRANCO, borda=raias[r][1], largura=1.5, raio=4)
+        tb, tf = caixa(sl, bx + 9, by + 6, larg - 18, alt_raia - 32, ancora=MSO_ANCHOR.MIDDLE)
+        escrever(tf, txt, tam=15, cor=ESC, peso=400, entre=1.15)
+        caixas.append((bx, by, larg, alt_raia - 20))
     for (ax_, ay, aw, ah), (bx_, by_, bw, bh) in zip(caixas, caixas[1:]):
         if ay == by_:
             seta(sl, ax_ + aw, ay + ah / 2, bx_, by_ + bh / 2, CINZA, 1.5)
@@ -479,7 +481,7 @@ def m_impacto(sl, s):
     tb, tf = caixa(sl, 96, 196, 700 if s.get('logo') else 1020, 200)
     escrever(tf, s['titulo'], tam=s.get('tam', 52), cor=BRANCO, peso=900, entre=1.06)
     if s.get('sub'):
-        tb2, tf2 = caixa(sl, 96, 430, 900, 160)
+        tb2, tf2 = caixa(sl, 96, s.get('subY', 430), 900, 160)
         escrever(tf2, s['sub'], tam=19, cor=RGBColor(0xE2, 0xDE, 0xF5), peso=300, entre=1.5)
     rodape(sl, s['n'], s['bloco'], True)
 
@@ -633,8 +635,9 @@ def m_linha_tempo(sl, s):
         retangulo(sl, cx + largura / 2 - 8, 311, 16, 16, preencher=cor, raio=8)
         rotulo(sl, cx, 340, largura, m['ano'], tam=20, cor=AZUL, peso=900, alinhar=PP_ALIGN.CENTER)
         tb, tf = caixa(sl, cx + 6, 368, largura - 12, 90, alinhar=PP_ALIGN.CENTER)
-        escrever(tf, m['txt'], tam=14.5, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.35)
-        tf.paragraphs[0].alignment = PP_ALIGN.CENTER
+        escrever(tf, m['txt'], tam=15, cor=RGBColor(0x3A, 0x3A, 0x44), peso=300, entre=1.35)
+        for par in tf.paragraphs:
+            par.alignment = PP_ALIGN.CENTER
     alt = altura_estimada(s['remate'], 19, 1100)
     retangulo(sl, 72, 486, 3, alt, preencher=LARANJA)
     tb2, tf2 = caixa(sl, 92, 484, 1100, 80)
@@ -651,7 +654,7 @@ def m_cartoes(sl, s):
     gap = 72 if setas else 24
     n_lin = -(-len(cards) // cols)
     larg = (1136 - gap * (cols - 1)) / cols
-    tam_corpo = 16 if cols <= 2 else 15
+    tam_corpo = s.get('tamCorpo', 16 if cols <= 2 else 15)
     def precisa(c):
         h = 84 + altura_estimada(c['d'], tam_corpo, larg - 48) * 1.1 + 24
         if c.get('codigo'):
@@ -714,7 +717,7 @@ def m_capturas(sl, s):
     y = centrar(alt + 34, 176, fundo_util)
     for i, l in zip(imgs, largs):
         captura(sl, i['arq'], x, y, larg=l)
-        rotulo(sl, x, y + alt + 10, l, i.get('t', ''), tam=13, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
+        rotulo(sl, x - 20, y + alt + 10, l + 40, i.get('t', ''), tam=15, cor=CINZA, peso=400, alinhar=PP_ALIGN.CENTER)
         x += l + gap
     if s.get('legenda'):
         retangulo(sl, 72, topo_leg + 2, 3, alt_leg - 4, preencher=LARANJA)
@@ -740,6 +743,15 @@ for sid in list(xml_slides):
     xml_slides.remove(sid)
 
 branco = [l for l in prs.slide_masters[0].slide_layouts if l.name == 'Blank'][0]
+
+# propriedades do arquivo, para nao carregar o autor do template
+META = 'Time 04: Andreas Grings, Gabriel Tomasi, Guilherme Toebe, Tiago Passos'
+prs.core_properties.title = 'App de gerenciamento de convites, apresentação intermediária'
+prs.core_properties.author = META
+prs.core_properties.last_modified_by = META
+prs.core_properties.subject = 'Arquitetura de Software, Trabalho 3'
+prs.core_properties.keywords = ''
+prs.core_properties.comments = ''
 
 for s in S:
     sl = prs.slides.add_slide(branco)

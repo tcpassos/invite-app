@@ -45,11 +45,13 @@ adjetivo para o próprio trabalho ou de bordão repetido.
 | Gabriel    | A primeira versão das rotas e das regras do back-end, sobre a base: os serviços do anfitrião, do convite e da resposta, os repositórios, os controllers, a transação do teto com trava na linha do convite, o CSV com proteção contra fórmula e os primeiros testes. Na integração, essa versão foi adequada às camadas | O caminho de uma resposta pela API, e narra a parte da demo que passa por ela |
 | Andreas    | Nesta apresentação, o problema, o escopo do MVP, como o time trabalha e o plano até a entrega. Na Sprint 6, [os itens que ele assumir], com o nome dele no quadro                                                                                                                                                       | Abertura, "como o time trabalha" e o planejamento                             |
 
-Regras para todos: - **Ninguém diz "eu fiz" sobre o que não fez.** Para o que foi feito em conjunto,
-a fala é "o time levantou" ou "o time decidiu". Para o que outro fez, diz quem fez. Uma atribuição
-errada desmonta na primeira pergunta do professor. - **Cada um conta a dificuldade que viveu.**
-Quando a correção foi feita por outro integrante, conta o que aprendeu com ela e diz quem corrigiu.
+Regras para todos:
 
+- **Ninguém diz "eu fiz" sobre o que não fez.** Para o que foi feito em conjunto, a fala é "o time
+  levantou" ou "o time decidiu". Para o que outro fez, diz quem fez. Uma atribuição errada desmonta
+  na primeira pergunta do professor.
+- **Cada um conta a dificuldade que viveu.** Quando a correção foi feita por outro integrante, conta
+  o que aprendeu com ela e diz quem corrigiu.
 - **Ferramentas de IA.** Assistentes de IA e ferramenta de prototipação foram usados no projeto, e o
   histórico do GitHub mostra isso. Se perguntarem, cada um responde com franqueza pelo que fez e pelo
   que revisou. As decisões estão nos ADRs, no Guia e nos Ajustes da Sprint 5.
@@ -79,7 +81,7 @@ e a primeira frase de cada um começa com o nome ("Aqui é o Gabriel..."), porqu
 individual.
 
 **Ordem de corte.** O Tiago cronometra e avisa pelo WhatsApp do grupo, fora da reunião. Se o fim do
-bloco 4 passar de 12 minutos, corta-se nesta ordem: o passo 4 da demo, que fica só dito; abrir a
+bloco 4 passar de 13:30, corta-se nesta ordem: o passo 4 da demo, que fica só dito; abrir a
 planilha, mostrando só o download; o GitHub do bloco 5b, reduzido à aba de checks. Não entram na
 ordem de corte a resposta do convidado, a lotação, o painel e o bloco 6.
 
@@ -127,20 +129,24 @@ PostgreSQL) e as três camadas lógicas dentro da API: Apresentação, Domínio 
 MVC. O `contract` é o pacote de tipos compartilhado entre os dois lados. Fala: "camada é divisão
 lógica, tier é processo separado. As três camadas moram no mesmo container da API."
 
-**Slide 6, título "Base do projeto: lint, CI e docker compose".** Duas colunas.
+**Slide 6, título "Base do projeto: lint, integração contínua e Docker".** Duas colunas.
 
-- Esquerda, "Lint e CI": o Domínio não pode importar da
-  Apresentação, e os Dados não podem importar de nenhuma camada de cima. Um PR que quebra a regra
-  fica vermelho. A CI roda lint, tipos, testes contra um PostgreSQL de verdade, build e as imagens.
-- Direita, "docker compose": o banco não publica porta, o front publica a 3000 e a
-  API a 3001, porque o navegador fala com ela direto. Fala: "no T1 apresentamos o Docker como forma
+- Esquerda, "Lint e integração contínua": o Domínio não pode importar da Apresentação, e os Dados
+  não podem importar de nenhuma camada de cima. Um PR que quebra a regra fica vermelho. A integração
+  contínua roda lint, tipos, testes contra um PostgreSQL de verdade, build e as imagens.
+- Direita, "docker compose": o banco não publica porta, o front publica a 3000 e a API a 3001 no
+  host, porque o navegador fala com ela direto. Fala: "no T1 apresentamos o Docker como forma
   de cada integrante subir o ambiente com um comando. É esse compose que roda na demo."
 
 **Slide 7, título "Regras da arquitetura no código".** Três regras, cada uma com o lugar do código
-onde está: - Nenhuma rota confirma que um convite existe: link inválido e convite despublicado dão o
-mesmo 404 na página pública, e o convite de outro anfitrião dá o mesmo 404 no painel. - A sessão do
-anfitrião é cookie assinado, e o front não guarda token. - O link do convite nasce no Domínio, com
-gerador seguro, nunca no navegador.
+onde está:
+
+- Quem não tem acesso não descobre se um convite existe. Fica no Domínio e na Apresentação: link
+  inválido, convite despublicado e convite de outro anfitrião dão o mesmo 404, com o mesmo corpo e
+  cabeçalho, conferido por um teste de ponta a ponta.
+- A sessão do anfitrião é cookie assinado, e o front não guarda token.
+- O link do convite nasce no Domínio, com gerador seguro, na primeira publicação. Nunca no
+  navegador.
 
 Fala final do slide: "A regra do teto de vagas o Gabriel mostra no bloco dele."
 
@@ -195,12 +201,17 @@ escrita pelo Gabriel."
 
 ## Bloco 4, back-end (2:45, Gabriel)
 
-**Slide 10, título "Caminho de uma resposta na API".** Diagrama de três raias, uma por camada, sem
-texto corrido: - Apresentação: valida a forma e o limite de tráfego. - Domínio: limite de
-acompanhantes; "não vou" zera acompanhantes e observação; "talvez" não ocupa vaga; alergia exige
-descrição; calcula quantas vagas a resposta nova pede. - Dados: abre a transação, trava a linha do
-convite, soma as vagas ocupadas, confere o teto e grava, ou devolve a recusa para o Domínio dar nome
-ao erro.
+**Slide 10, título "Caminho de uma resposta na API".** Diagrama de três raias, uma por camada, com
+sete passos:
+
+- Apresentação: confere o formato e o limite de tráfego.
+- Domínio: aplica as regras da resposta e calcula as vagas pedidas.
+- Dados: trava o convite e soma as vagas ocupadas, confere o teto e grava, ou devolve a recusa.
+- Domínio: quando a resposta não cabe, dá nome à recusa (convite lotado).
+- Apresentação: responde com o link pessoal ou com o erro.
+
+A legenda resume as regras: "Sim" ocupa uma vaga para o convidado e uma para cada acompanhante,
+"Talvez" e "Não" não ocupam vaga, "Não" zera acompanhantes e observação, e alergia exige descrição.
 
 Fala de abertura:
 
@@ -235,8 +246,8 @@ Passagem: "Agora a demonstração."
 **Slide 12, título "Roteiro da demonstração".** Fica na tela enquanto o Guilherme assume o
 compartilhamento, e serve de guia se a demo cair:
 
-| Passo                          | O que mostra                                               | Quem conduz |
-| ------------------------------ | ---------------------------------------------------------- | ----------- |
+| Passo                          | O que mostra                                               | Quem fala |
+| ------------------------------ | ---------------------------------------------------------- | --------- |
 | Criar, personalizar e publicar | Template, cores, prévia e o link gerado                    | Guilherme   |
 | Responder como convidado       | Resposta sem conta, com acompanhante e restrição alimentar | Gabriel     |
 | Responder num convite lotado   | A recusa pelo teto de vagas                                | Gabriel     |
@@ -247,21 +258,26 @@ compartilhamento, e serve de guia se a demo cair:
 Se perguntarem pelas histórias, a correspondência é: criar e publicar, H02 a H06; responder, H07,
 H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
 
-**Preparação, antes de entrar na chamada:** - `.env` criado a partir do `.env.example`. Para começar
-do zero, `docker compose down -v`, porque as migrations só rodam com o volume do banco vazio. -
-`docker compose up -d --build` e conferir com `docker compose ps`. - `http://127.0.0.1:3000` aberto.
-Não usar `localhost`. Fonte do navegador em 125%. - Conta de anfitrião criada e logada numa janela
-normal. - Uma janela anônima aberta para o convidado. - Um convite de reserva já publicado e lotado,
-com teto de 2 pessoas e uma confirmação com 1 acompanhante, com a página dele aberta numa aba da
-janela anônima. - A planilha já aberta, para o CSV. - Um bloco de notas fora da tela com os textos
-para colar: nome do evento, local e uma data futura fixa. - As abas do bloco 5b abertas, na ordem:
-quadro da Sprint 5, uma história com tarefas filhas, a lista de sprints, a lista de PRs, a aba de
-checks de um PR e a branch `gabriel`.
+**Preparação, antes de entrar na chamada:**
+
+- `.env` criado a partir do `.env.example`. Para começar do zero, `docker compose down -v`, porque as
+  migrations só rodam com o volume do banco vazio.
+- `docker compose up -d --build` e conferir com `docker compose ps`.
+- `http://127.0.0.1:3000` aberto. Não usar `localhost`. Fonte do navegador em 125%.
+- Conta de anfitrião criada e logada numa janela normal.
+- Uma janela anônima aberta para o convidado.
+- Um convite de reserva já publicado e lotado, com teto de 2 pessoas e uma confirmação com 1
+  acompanhante, com a página dele aberta numa aba da janela anônima.
+- A planilha já aberta, para o CSV.
+- Um bloco de notas fora da tela com os textos para colar: nome do evento, local e uma data futura
+  fixa.
+- As abas do bloco 5b abertas, na ordem: quadro da Sprint 5, uma história com tarefas filhas, a
+  lista de sprints, a lista de PRs, a aba de checks de um PR e a branch `gabriel`.
 
 **O caminho:**
 
 1. **Guilherme, criar e personalizar (1:30).** Abrir dizendo: "a conta já está criada para poupar
-   tempo; cadastro e entrada estão no vídeo do apêndice." Criar o convite colando os textos, com teto
+   tempo; a tela de entrada está no apêndice." Criar o convite colando os textos, com teto
    de 4 pessoas e no máximo 1 acompanhante. Trocar o template e as cores e mostrar a prévia mudando.
    Publicar e copiar o link.
 2. **Gabriel narra, o convidado responde (1:30).** Colar o link na janela anônima: não pede conta.
@@ -329,14 +345,15 @@ enunciado ficar visível. Fala, 30 segundos:
 
 Se perguntarem detalhes, passar para o dono de cada uma.
 
-**Slide 15, título "Planejamento até 17/11".** Tabela preenchida antes do ensaio e espelhada no
+**Slide 15, título "Planejamento até a apresentação final, em 17/11".** A data é a da apresentação do
+protótipo no Plano de Ensino. Tabela preenchida antes do ensaio e espelhada no
 quadro da Sprint 6, de 03/11 a 16/11:
 
 | O quê                                                                                                                                   | Quem | Até |
 | --------------------------------------------------------------------------------------------------------------------------------------- | ---- | --- |
 | Revisar os artefatos das Sprints 1 a 3 contra o código, com uma matriz que liga cada história ao caso de uso, à rota, à tela e ao teste |      |     |
 | Diagrama de sequência da lista de presença, que faltou no Grau A                                                                        |      |     |
-| Protótipo de baixa fidelidade com as telas reais                                                                                        |      |     |
+| Completar o protótipo de baixa fidelidade da Sprint 3 a partir das telas reais                                                          |      |     |
 | Aval do time às decisões novas do Guia                                                                                                  |      |     |
 | Fechar o Team Charter                                                                                                                   |      |     |
 | Deck e ensaio do Pitch Final                                                                                                            |      |     |
@@ -352,10 +369,10 @@ arguição. Fechamento:
 > Pitch. Para perguntas: requisitos e planejamento comigo, arquitetura e Docker com o Tiago, telas e
 > quadro com o Guilherme, API e regras com o Gabriel."
 
-**Apêndice, slides 17 a 19.** Capturas da aplicação de 26/10: entrada e lista de convites, as telas
-do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link despublicado.
-Servem ao plano C e ficam no PDF do Moodle como evidência. Capturas do quadro e de um PR com os
-checks ainda não estão no deck.
+**Apêndice, slides 17 a 20.** Capturas de 26/10: a tela de entrada e a lista de convites, as telas
+do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link despublicado, e
+o quadro Kanban com a integração contínua aprovada no PR do back-end. Servem ao plano C e ficam no
+PDF do Moodle como evidência do critério de organização.
 
 ## O deck
 
@@ -524,7 +541,7 @@ qualquer item que o professor clicar.
 - [ ] Ensaiar a demo duas vezes na máquina do Guilherme e uma na do Tiago, com o ambiente subido do
       zero, e gravar o vídeo do plano C com cadastro e entrada no começo
 - [x] Tirar as capturas da aplicação para o apêndice
-- [ ] Decidir se entram capturas do quadro e de um PR com os checks no apêndice
+- [x] Capturas do quadro Kanban e de um PR com os checks no apêndice
 - [ ] Ensaiar cronometrado, com as trocas de fala e de compartilhamento, e uma rodada de perguntas
       cruzadas usando a seção de perguntas prováveis
 - [ ] Exportar em PDF e subir no Moodle antes das 19h30. Conferir na tarefa se o envio é um pelo
