@@ -278,58 +278,11 @@
     "notas": "Gabriel. Os testes de hoje foram reescritos na integração, porque os meus testavam assinaturas antigas. O que vale citar: quatro respostas simultâneas, cada uma pedindo duas vagas, num convite com teto de cinco. Passam exatamente duas. Dificuldade do bloco: uma regra de negócio na camada errada. Na minha primeira versão, a regra de que só a confirmação ocupa vaga estava na consulta da camada de Dados, junto com a conferência do teto. Funcionava, mas a camada de Dados passava a saber o que é uma vaga, e o Guia diz que isso é do Domínio. Na integração, o Tiago subiu o cálculo das vagas que a resposta pede para o Domínio, e a camada de Dados ficou com a soma do que já está gravado e a conferência do teto. Passagem: agora a demonstração."
   },
   {
-    "modelo": "tabela",
+    "modelo": "impacto",
     "n": 12,
-    "bloco": "Demonstração, Tiago, Guilherme e Gabriel",
-    "titulo": "Roteiro da demonstração",
-    "xs": [
-      72,
-      420,
-      990
-    ],
-    "ws": [
-      330,
-      550,
-      218
-    ],
-    "cabecalhos": [
-      "Passo",
-      "O que mostra",
-      "Quem fala"
-    ],
-    "linhas": [
-      [
-        "Criar, personalizar e publicar",
-        "Template, cores, prévia e o link gerado",
-        "Guilherme"
-      ],
-      [
-        "Responder como convidado",
-        "Resposta sem conta, com acompanhante e restrição alimentar",
-        "Gabriel"
-      ],
-      [
-        "Responder num convite lotado",
-        "A recusa pelo teto de vagas",
-        "Gabriel"
-      ],
-      [
-        "Alterar pelo link pessoal",
-        "A troca da resposta para talvez",
-        "Gabriel"
-      ],
-      [
-        "Painel e CSV",
-        "Lista de presença e restrições exportadas",
-        "Guilherme"
-      ],
-      [
-        "Despublicar",
-        "O link do convite deixa de abrir",
-        "Guilherme"
-      ]
-    ],
-    "notas": "O Tiago opera a tela, na máquina dele, e os outros dois narram: o Guilherme as telas do anfitrião e o Gabriel a parte do convidado e o que a API faz. Abrir dizendo: a conta já está criada para poupar tempo; a tela de entrada está no apêndice. Depois da demonstração, na mesma tela: o quadro do Azure Boards (Guilherme narra) e o GitHub (Tiago)."
+    "bloco": "Demonstração, Tiago",
+    "titulo": "Demonstração",
+    "notas": "Tiago. Trocar do PDF para o navegador. Abrir dizendo: a conta já está criada para poupar tempo; a tela de entrada está no apêndice. Passos: criar, personalizar e publicar o convite; responder como convidado, com acompanhante e alergia; tentar responder no convite lotado; alterar a resposta pelo link pessoal; mostrar o painel e baixar o CSV; despublicar e abrir de novo o link do convite. Depois, na mesma tela: o quadro Kanban no Azure Boards e o GitHub, com os PRs e os checks. Voltar ao PDF no slide 13."
   },
   {
     "modelo": "conteudo",

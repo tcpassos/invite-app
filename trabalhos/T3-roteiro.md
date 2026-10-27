@@ -41,9 +41,9 @@ adjetivo para o próprio trabalho ou de bordão repetido.
 
 | Integrante | Responsável por                                                                                                                                                                                                                                                                                                         | O que apresenta                                                               |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Tiago      | A base do projeto: monorepo, `contract`, regra de camadas no lint, integração contínua e a orquestração dos três tiers no `docker compose`. A documentação de arquitetura. A integração do front e do back na `main`, com a adequação dos dois à arquitetura registrada nos Ajustes da Sprint 5                         | Linha do tempo, arquitetura, base e Docker, opera a demo, mostra o GitHub e faz o fechamento |
-| Guilherme  | O protótipo do front: [o fluxo e o visual das telas do anfitrião e do convidado, os três templates e a primeira versão do mock; confirmar com ele]. Na integração, o protótipo foi adequado à arquitetura. O projeto no Azure DevOps é da organização dele                                                              | O protótipo e o que mudou nele, narra o lado do anfitrião na demo e o Azure Boards |
-| Gabriel    | A primeira versão das rotas e das regras do back-end, sobre a base: os serviços do anfitrião, do convite e da resposta, os repositórios, os controllers, a transação do teto com trava na linha do convite, o CSV com proteção contra fórmula e os primeiros testes. Na integração, essa versão foi adequada às camadas | O caminho de uma resposta pela API, e narra a parte da demo que passa por ela |
+| Tiago      | A base do projeto: monorepo, `contract`, regra de camadas no lint, integração contínua e a orquestração dos três tiers no `docker compose`. A documentação de arquitetura. A integração do front e do back na `main`, com a adequação dos dois à arquitetura registrada nos Ajustes da Sprint 5                         | Linha do tempo, arquitetura, base e Docker, a demonstração, o Azure Boards e o GitHub, e o fechamento |
+| Guilherme  | O protótipo do front: [o fluxo e o visual das telas do anfitrião e do convidado, os três templates e a primeira versão do mock; confirmar com ele]. Na integração, o protótipo foi adequado à arquitetura. O projeto no Azure DevOps é da organização dele                                                              | O protótipo e o que mudou nele |
+| Gabriel    | A primeira versão das rotas e das regras do back-end, sobre a base: os serviços do anfitrião, do convite e da resposta, os repositórios, os controllers, a transação do teto com trava na linha do convite, o CSV com proteção contra fórmula e os primeiros testes. Na integração, essa versão foi adequada às camadas | O caminho de uma resposta pela API e os testes |
 | Andreas    | Nesta apresentação, o problema e o escopo do MVP, que são artefatos do time. Cronometra a apresentação | Abertura |
 
 Regras para todos:
@@ -65,8 +65,8 @@ Regras para todos:
 | 2 | Linha do tempo, arquitetura, base do projeto e Docker | 5:00 | 4 a 7 | Tiago |
 | 3 | Front-end | 3:00 | 8 e 9 | Guilherme |
 | 4 | Back-end | 2:45 | 10 e 11 | Gabriel |
-| 5 | Demonstração ao vivo | 6:00 | 12 | Tiago opera, Guilherme e Gabriel narram |
-| 5b | Azure Boards e GitHub, ao vivo | 1:15 | | Guilherme e Tiago |
+| 5 | Demonstração ao vivo | 6:00 | 12 | Tiago |
+| 5b | Azure Boards e GitHub, ao vivo | 1:15 | | Tiago |
 | 6 | Organização, dificuldades, planejamento e perguntas | 2:45 | 13 a 16 | Tiago |
 
 Com as trocas, cerca de 23 minutos e meio, com folga de 1 e meio até o limite de 25.
@@ -240,19 +240,20 @@ Passagem: "Agora a demonstração."
 
 ---
 
-## Bloco 5, demonstração ao vivo (6:00, Tiago opera, Guilherme e Gabriel narram)
+## Bloco 5, demonstração ao vivo (6:00, Tiago)
 
-**Slide 12, título "Roteiro da demonstração".** Fica na tela enquanto o Tiago troca do PDF para o
-navegador, e serve de guia se a demo cair:
+**Slide 12, título "Demonstração".** Só um divisor, que fica na tela enquanto o Tiago troca do PDF
+para o navegador. Pela chamada do Teams só uma pessoa compartilha a tela, então o Tiago conduz e
+narra a demonstração inteira. O passo a passo fica aqui e nas notas do apresentador, não no slide:
 
-| Passo                          | O que mostra                                               | Quem fala |
-| ------------------------------ | ---------------------------------------------------------- | --------- |
-| Criar, personalizar e publicar | Template, cores, prévia e o link gerado                    | Guilherme   |
-| Responder como convidado       | Resposta sem conta, com acompanhante e restrição alimentar | Gabriel     |
-| Responder num convite lotado   | A recusa pelo teto de vagas                                | Gabriel     |
-| Alterar pelo link pessoal      | A troca da resposta para talvez                            | Gabriel     |
-| Painel e CSV                   | Lista de presença e restrições exportadas                  | Guilherme   |
-| Despublicar                    | O link do convite deixa de abrir                           | Guilherme   |
+| Passo                          | O que mostra                                               |
+| ------------------------------ | ---------------------------------------------------------- |
+| Criar, personalizar e publicar | Template, cores, prévia e o link gerado                    |
+| Responder como convidado       | Resposta sem conta, com acompanhante e restrição alimentar |
+| Responder num convite lotado   | A recusa pelo teto de vagas                                |
+| Alterar pelo link pessoal      | A troca da resposta para talvez                            |
+| Painel e CSV                   | Lista de presença e restrições exportadas                  |
+| Despublicar                    | O link do convite deixa de abrir                           |
 
 Se perguntarem pelas histórias, a correspondência é: criar e publicar, H02 a H06; responder, H07,
 H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
@@ -275,23 +276,23 @@ H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
 
 **O caminho:**
 
-1. **Guilherme narra, criar e personalizar (1:30).** Abrir dizendo: "a conta já está criada para poupar
+1. **Criar e personalizar (1:30).** Abrir dizendo: "a conta já está criada para poupar
    tempo; a tela de entrada está no apêndice." Criar o convite colando os textos, com teto
    de 4 pessoas e no máximo 1 acompanhante. Trocar o template e as cores e mostrar a prévia mudando.
    Publicar e copiar o link.
-2. **Gabriel narra, o convidado responde (1:30).** Colar o link na janela anônima: não pede conta.
+2. **O convidado responde (1:30).** Colar o link na janela anônima: não pede conta.
    Confirmar com 1 acompanhante e restrição "Alergia", com a descrição. Durante o preenchimento: "a
    tela limita o campo a 1 acompanhante, mas quem valida é a API." Mostrar o
    link pessoal que aparece no fim. Fala: "a API calculou duas vagas no Domínio e conferiu o teto
    dentro da transação."
-3. **Gabriel narra, a lotação (0:40).** Na aba do convite de reserva, tentar confirmar: aparece a
+3. **A lotação (0:40).** Na aba do convite de reserva, tentar confirmar: aparece a
    lotação, sem dizer quantas vagas existem.
-4. **Gabriel narra, a alteração (0:30).** Abrir o link pessoal e trocar a resposta para "talvez".
+4. **A alteração (0:30).** Abrir o link pessoal e trocar a resposta para "talvez".
    Fala: "o talvez não ocupa vaga, e a alteração vale até o fim do dia do evento."
-5. **Guilherme narra, o painel (1:20).** Voltar ao painel: a lista de presença mostra a resposta. Abrir a
+5. **O painel (1:20).** Voltar ao painel: a lista de presença mostra a resposta. Abrir a
    consolidação alimentar e baixar o CSV. Na planilha, mostrar os acentos certos e a alergia com a
    descrição.
-6. **Guilherme narra, despublicar (0:30).** Despublicar e, na janela do convidado, abrir de novo o **link
+6. **Despublicar (0:30).** Despublicar e, na janela do convidado, abrir de novo o **link
    do convite**, não o link pessoal: aparece a página de não encontrado, igual à de um link que nunca
    existiu. O link pessoal continua valendo para quem já respondeu, por decisão da seção 9.5 do Guia.
 
@@ -299,7 +300,8 @@ H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
 
 - **Plano B:** a máquina do Guilherme, com o mesmo estado preparado (ambiente no ar, conta logada,
   convite de reserva lotado), pronta para compartilhar. Gatilho: se uma ação travar por mais de 20
-  segundos, o Tiago diz "vamos seguir na máquina do Guilherme" e para de compartilhar.
+  segundos, o Tiago diz "vamos seguir na máquina do Guilherme", para de compartilhar, o Guilherme
+  compartilha e o Tiago continua narrando e dizendo o que clicar.
 - **Plano C:** o vídeo de 2 minutos do caminho acima, gravado hoje, sem som e narrado ao vivo, e as
   capturas do apêndice.
 - O mock (`docker-compose.mock.yml`) só entra se a imagem tiver sido construída no ensaio, e sempre
@@ -309,12 +311,12 @@ H08 e H10; lotação, H07; alterar, H09; painel e CSV, H11 e H12.
 
 ## Bloco 5b, Azure Boards e GitHub, ao vivo (1:15)
 
-Na mesma tela da demo.
+Na mesma tela da demo, com o Tiago.
 
-1. **Guilherme narra, o quadro (0:40).** O quadro Kanban com as histórias em Done, uma história
+1. **O quadro (0:40).** O quadro Kanban com as histórias em Done, uma história
    aberta com as tarefas de tela e de API, cada uma com responsável, e a lista de sprints com as
    datas.
-2. **Tiago, o GitHub (0:35).** A lista de PRs fechados e a aba de checks verdes de um deles. Depois, a
+2. **O GitHub (0:35).** A lista de PRs fechados e a aba de checks verdes de um deles. Depois, a
    branch `gabriel` e a mensagem do commit que trouxe o back com a autoria dele, e a do commit do
    front, que registra que as telas vieram do protótipo do Guilherme. Fala: "a integração foi feita
    por mim, e as mensagens dos commits indicam de onde veio cada parte."
