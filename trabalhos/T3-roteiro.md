@@ -157,8 +157,8 @@ Dificuldade do bloco, dita assim:
 > `main`. A integração foi em duas etapas. Primeiro o front, com um mock que responde às rotas com os
 > tipos do `contract`. Depois o back. Em cada etapa, o que não cabia na arquitetura foi adequado,
 > registrado com o motivo nos Ajustes da Sprint 5, e só entrou na `main` com a CI verde. O
-> `contract` permitiu juntar as duas partes sem reescrever tudo. Ele deveria ter sido feito antes
-> das telas."
+> `contract`, criado no começo da Sprint 4, permitiu juntar as duas partes sem reescrever tudo. O
+> protótipo do front foi feito sem usar ele, e foi isso que exigiu a maior parte da adequação."
 
 Passagem: "O Guilherme apresenta o front-end, que partiu do protótipo dele."
 
@@ -190,8 +190,8 @@ API."
 
 Dificuldade do bloco:
 
-> "A dificuldade deste bloco foi que o protótipo nasceu antes de a arquitetura estar no código, e
-> algumas regras de negócio ficaram na tela. O que eu aprendi vendo a adequação: prototipar com
+> "A dificuldade deste bloco foi que o protótipo foi feito numa ferramenta de prototipação, fora da
+> base do projeto e sem o pacote de tipos, e algumas regras de negócio ficaram na tela. O que eu aprendi vendo a adequação: prototipar com
 > ferramenta é rápido para validar o visual, mas o protótipo precisa ser lido contra o Guia antes de
 > virar código. Se eu fizesse de novo, desenharia as telas em cima do `contract` desde o começo."
 
@@ -251,7 +251,8 @@ Dificuldade do bloco:
 
 **Slide 14, título "Dificuldades encontradas".** Uma lista com as três dificuldades que cada dono já
 contou no próprio bloco (a integração, o protótipo e a regra de vagas) e uma linha com o que o time
-faria diferente. O slide existe para o item "dificuldades encontradas" do enunciado ficar visível.
+faria diferente: fazer as telas já em cima do pacote de tipos, que existia desde 07/10, e
+juntar front e back ainda na Sprint 4, quando o plano era fechar o fluxo central. O slide existe para o item "dificuldades encontradas" do enunciado ficar visível.
 Fala do Gabriel, 30 segundos:
 
 > "Cada dificuldade já foi contada por quem passou por ela. Aqui elas aparecem juntas."
