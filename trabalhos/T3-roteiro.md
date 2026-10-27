@@ -41,8 +41,8 @@ adjetivo para o próprio trabalho ou de bordão repetido.
 
 | Integrante | Responsável por                                                                                                                                                                                                                                                                                                         | O que apresenta                                                               |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Tiago      | A base do projeto: monorepo, `contract`, regra de camadas no lint, integração contínua e a orquestração dos três tiers no `docker compose`. A documentação de arquitetura. A integração do front e do back na `main`, com a adequação dos dois à arquitetura registrada nos Ajustes da Sprint 5                         | Os diagramas do Grau A, lint e integração contínua, e a demo com o quadro e o GitHub se for local |
-| Guilherme  | O protótipo do front: [o fluxo e o visual das telas do anfitrião e do convidado, os três templates e a primeira versão do mock; confirmar com ele]. Na integração, o protótipo foi adequado à arquitetura. O projeto no Azure DevOps é da organização dele                                                              | O protótipo e o que mudou nele, a demo com o quadro e o GitHub se a aplicação estiver publicada, a organização, o planejamento e o fechamento |
+| Tiago      | A base do projeto: monorepo, `contract`, regra de camadas no lint, integração contínua e a orquestração dos três tiers no `docker compose`. A documentação de arquitetura. A integração do front-end e do back-end na `main`, com a adequação dos dois à arquitetura registrada nos Ajustes da Sprint 5                         | Os diagramas do Grau A, lint e integração contínua, e a demo com o quadro e o GitHub se for local |
+| Guilherme  | O protótipo do front-end: [o fluxo e o visual das telas do anfitrião e do convidado, os três templates e a primeira versão do mock; confirmar com ele]. Na integração, o protótipo foi adequado à arquitetura. O projeto no Azure DevOps é da organização dele                                                              | O protótipo e o que mudou nele, a demo com o quadro e o GitHub se a aplicação estiver publicada, a organização, o planejamento e o fechamento |
 | Gabriel    | A primeira versão das rotas e das regras do back-end, sobre a base: os serviços do anfitrião, do convite e da resposta, os repositórios, os controllers, a transação do teto com trava na linha do convite, o CSV com proteção contra fórmula e os primeiros testes. Na integração, essa versão foi adequada às camadas | As regras da arquitetura no código, o caminho de uma resposta pela API, os testes e as dificuldades |
 | Andreas    | Nesta apresentação, o problema, o escopo do MVP e a linha do tempo, que são artefatos do time. Cronometra a apresentação | Abertura, problema, escopo e linha do tempo |
 
@@ -118,8 +118,8 @@ Sprint 2, arquitetura; Sprint 3, documento de arquitetura e protótipo; marca do
 base; Sprint 5, integração e ajustes; Sprint 6, consolidação. Fala:
 
 > "No Grau A o projeto tinha as doze histórias, o Guia da Arquitetura e um protótipo de telas. Na
-> Sprint 4 o Tiago montou a base: o repositório, o pacote de tipos compartilhado entre front e back, a
-> integração contínua e o compose. Na Sprint 5 o front e o back foram integrados nessa base, e o que
+> Sprint 4 o Tiago montou a base: o repositório, o pacote de tipos compartilhado entre front-end e back-end, a
+> integração contínua e o compose. Na Sprint 5 o front-end e o back-end foram integrados nessa base, e o que
 > precisou mudar na arquitetura foi registrado com o motivo."
 
 Passagem: "O Tiago mostra os diagramas da arquitetura."
@@ -132,16 +132,16 @@ Passagem: "O Tiago mostra os diagramas da arquitetura."
 DAS, renderizados de novo com fonte maior para ler na chamada. As versões para slide estão em
 `trabalhos/deck-t3/diagramas`.
 
-- **Slide 5, "Diagrama de camadas".** Três tiers no compose (front em Next.js, API em NestJS e
-  PostgreSQL) e as três camadas lógicas dentro da API: Apresentação, Domínio e Dados. O front segue
+- **Slide 5, "Diagrama de camadas".** Três tiers no compose (front-end em Next.js, API em NestJS e
+  PostgreSQL) e as três camadas lógicas dentro da API: Apresentação, Domínio e Dados. O front-end segue
   MVC. Fala: "camada é divisão lógica, tier é processo separado. As três camadas ficam no mesmo
   container da API."
-- **Slide 6, "Diagrama de componentes".** Cortado em duas metades lado a lado: o front com a
+- **Slide 6, "Diagrama de componentes".** Cortado em duas metades lado a lado: o front-end com a
   Apresentação, e o Domínio com os Dados e o banco. Fala: cada componente da API existe no código com
   o mesmo nome, e a única diferença é o `TemplateSet`, que virou arquivos (o CSS e a imagem de
   prévia de cada template), como o DAS registra.
 - **Slide 7, "Diagrama de implantação".** O `docker-compose.yml` é a forma executável dele. Fala: o
-  banco não publica porta, o front fica na 3000 e a API na 3001 do host, porque o navegador fala com
+  banco não publica porta, o front-end fica na 3000 e a API na 3001 do host, porque o navegador fala com
   ela direto; a API sobe depois do healthcheck do banco. "No T1 apresentamos o Docker como forma de
   cada integrante subir o ambiente com um comando. É esse compose que roda na demo."
 
@@ -153,12 +153,12 @@ dos checks verdes de um PR no GitHub.
 
 Dificuldade do bloco, dita assim:
 
-> "A dificuldade deste bloco foi juntar o front e o back, que foram escritos em paralelo, fora da
-> `main`. A integração foi em duas etapas. Primeiro o front, com um mock que responde às rotas com os
-> tipos do `contract`. Depois o back. Em cada etapa, o que não cabia na arquitetura foi adequado,
+> "A dificuldade deste bloco foi juntar o front-end e o back-end, que foram escritos em paralelo, fora da
+> `main`. A integração foi em duas etapas. Primeiro o front-end, com um mock que responde às rotas com os
+> tipos do `contract`. Depois o back-end. Em cada etapa, o que não cabia na arquitetura foi adequado,
 > registrado com o motivo nos Ajustes da Sprint 5, e só entrou na `main` com a CI verde. O
 > `contract`, criado no começo da Sprint 4, permitiu juntar as duas partes sem reescrever tudo. O
-> protótipo do front foi feito sem usar ele, e foi isso que exigiu a maior parte da adequação."
+> protótipo do front-end foi feito sem usar ele, e foi isso que exigiu a maior parte da adequação."
 
 Passagem: "O Guilherme apresenta o front-end, que partiu do protótipo dele."
 
@@ -177,13 +177,13 @@ Fala:
 > stack não usa. Na integração, o Tiago adequou o protótipo à arquitetura: o visual ficou, reescrito
 > em CSS puro, e o que era regra de negócio saiu da tela e foi para a API."
 
-**Slide 10, título "Mudanças no front para seguir a arquitetura".** Três linhas de antes e depois:
+**Slide 10, título "Mudanças no front-end para seguir a arquitetura".** Três linhas de antes e depois:
 
 - A página pública mostrava quantas vagas restavam. Hoje não mostra contagem, porque isso expõe dado
   do anfitrião. A lotação só aparece quando a resposta é recusada.
 - O CSV para o buffet era montado no navegador. Hoje vem pronto da API, com proteção contra fórmula
   de planilha.
-- O login guardava um token no navegador. Hoje a sessão é cookie, e o front não guarda nada.
+- O login guardava um token no navegador. Hoje a sessão é cookie, e o front-end não guarda nada.
 
 Fala: "a tela ainda limita os campos, para ajudar quem preenche, mas a validação que vale é a da
 API."
@@ -213,7 +213,7 @@ onde está:
 - Quem não tem acesso não descobre se um convite existe. Fica no Domínio e na Apresentação: link
   inválido, convite despublicado e convite de outro anfitrião dão o mesmo 404, com o mesmo corpo e
   cabeçalho, conferido por um teste de ponta a ponta.
-- A sessão do anfitrião é cookie assinado, e o front não guarda token.
+- A sessão do anfitrião é cookie assinado, e o front-end não guarda token.
 - O link do convite nasce no Domínio, com gerador seguro, na primeira publicação. Nunca no
   navegador.
 
@@ -252,7 +252,7 @@ Dificuldade do bloco:
 **Slide 14, título "Dificuldades encontradas".** Uma lista com as três dificuldades que cada dono já
 contou no próprio bloco (a integração, o protótipo e a regra de vagas) e uma linha com o que o time
 faria diferente: fazer as telas já em cima do pacote de tipos, que existia desde 07/10, e
-juntar front e back ainda na Sprint 4, quando o plano era fechar o fluxo central. O slide existe para o item "dificuldades encontradas" do enunciado ficar visível.
+juntar front-end e back-end ainda na Sprint 4, quando o plano era fechar o fluxo central. O slide existe para o item "dificuldades encontradas" do enunciado ficar visível.
 Fala do Gabriel, 30 segundos:
 
 > "Cada dificuldade já foi contada por quem passou por ela. Aqui elas aparecem juntas."
@@ -342,8 +342,8 @@ Na mesma tela e com a mesma pessoa falando, sem trocar de voz.
    aberta com as tarefas de tela e de API, cada uma com responsável, e a lista de sprints com as
    datas.
 2. **O GitHub (0:35).** A lista de PRs fechados e a aba de checks verdes de um deles. Depois, a
-   branch `gabriel` e a mensagem do commit que trouxe o back com a autoria dele, e a do commit do
-   front, que registra que as telas vieram do protótipo do Guilherme. Fala: "a integração foi feita
+   branch `gabriel` e a mensagem do commit que trouxe o back-end com a autoria dele, e a do commit do
+   front-end, que registra que as telas vieram do protótipo do Guilherme. Fala: "a integração foi feita
    pelo Tiago, e as mensagens dos commits indicam de onde veio cada parte."
 
 ---
@@ -425,10 +425,10 @@ depois de mudar o texto.
   atravessam as camadas, e o lint impede que ela importe qualquer camada.
 - **O Domínio pode importar dos Dados? Como o lint sabe a regra?** Pode, a dependência só desce. O
   `import-x/no-restricted-paths` em `eslint.config.mjs` proíbe Domínio e Dados importando da
-  Apresentação, Dados importando do Domínio, a Apresentação importando dos Dados, e no front o
+  Apresentação, Dados importando do Domínio, a Apresentação importando dos Dados, e no front-end o
   controller importando da view.
 - **Se o navegador chama a API direto na 3001, isso não expõe a API?** A exposição é controlada: a
-  API só aceita chamada do navegador vinda da origem do front, o cookie é `httpOnly` e `SameSite`,
+  API só aceita chamada do navegador vinda da origem do front-end, o cookie é `httpOnly` e `SameSite`,
   as escritas públicas têm limite de tráfego e o banco não publica porta. Passar tudo pelo Next
   poria lógica no tier Front, que o ADR-0004 restringe a front-end.
 - **As migrations só rodam com o volume vazio. Como evoluem o esquema?** É uma limitação aceita e
@@ -441,7 +441,7 @@ depois de mudar o texto.
   resposta muda: a publicação foi para a demonstração, e precisa ser registrada como revisão do
   ADR-0003.
 - **Por que o histórico da `main` está quase todo em um nome?** Porque a integração passou por quem
-  montou a base. O back entrou com a autoria do Gabriel, o front a partir do protótipo do Guilherme,
+  montou a base. O back-end entrou com a autoria do Gabriel, o front-end a partir do protótipo do Guilherme,
   e as mensagens dos commits registram isso. [Se o time combinar que, na Sprint 6, cada um abre o
   próprio PR com revisão cruzada, dizer isso aqui. Só se for verdade.]
 
@@ -454,11 +454,11 @@ depois de mudar o texto.
   passa toda chamada à API, com tempo limite de 4 segundos no servidor e 15 no navegador, e os
   módulos que traduzem cada ação da tela numa chamada tipada. A View está em `front/src/view` e as
   rotas de tela em `front/src/app`.
-- **Se o front é MVC, onde está o Model?** O Model é o estado que a API guarda, e o front o conhece
+- **Se o front-end é MVC, onde está o Model?** O Model é o estado que a API guarda, e o front-end o conhece
   pelos tipos do `contract`. O ADR-0001 justifica o MVC com duas Views sobre o mesmo Model: o
   convite público e o painel.
 - **Por que o convite é renderizado no servidor e o painel no navegador?** O convite precisa das
-  metatags da prévia do link quando é compartilhado no WhatsApp, então é lido no servidor do front.
+  metatags da prévia do link quando é compartilhado no WhatsApp, então é lido no servidor do front-end.
   O painel roda no navegador, que manda o cookie de sessão direto para a API.
 - **Como a lista de presença se atualiza?** A tela consulta a API a cada 20 segundos. Na primeira
   falha avisa que a lista pode estar desatualizada. A partir da segunda falha seguida, o intervalo
