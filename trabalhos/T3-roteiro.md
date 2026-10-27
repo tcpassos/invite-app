@@ -158,9 +158,9 @@ DAS, renderizados de novo com fonte maior para ler na chamada. As versões para 
 - **Slide 7, "Diagrama de implantação".** O `docker-compose.yml` é a forma executável dele. Fala: o
   banco não publica porta, o front-end fica na 3000 e a API na 3001 do host, porque o navegador fala com
   ela direto; a API sobe depois do healthcheck do banco. "No T1 apresentamos o Docker como forma de
-  cada integrante subir o ambiente com um comando." Se a demo for local, é esse compose que roda
-  nela. Se for publicada, dizer que publicar fora da máquina local é uma decisão nova, que revisa o
-  ADR-0003.
+  cada integrante subir o ambiente com um comando." Depois: para esta apresentação as mesmas imagens
+  foram publicadas no Railway, uma decisão nova registrada no ADR-0015, com o cookie entre os dois
+  domínios e o IP do convidado atrás do proxy ligados por variável de ambiente.
 
 **Slide 8, título "Lint e integração contínua".** O lint recusa import que quebra a regra de
 camadas: o Domínio não importa da Apresentação, os Dados não importam de nenhuma camada de cima, e
@@ -374,10 +374,11 @@ não usa cookie. O resto vale igual. Na demo local:
 
 **Se der errado.**
 
-- **Plano B:** a máquina do Guilherme, com o mesmo estado preparado (ambiente no ar, conta logada,
-  convite de reserva lotado), pronta para compartilhar. Gatilho: se uma ação travar por mais de 20
-  segundos, o Tiago diz "vamos seguir na máquina do Guilherme", para de compartilhar, o Guilherme
-  compartilha e o Tiago continua narrando e dizendo o que clicar.
+- **Plano B:** a máquina do Tiago, com o compose local no ar e o mesmo estado preparado (conta
+  logada, convite de reserva lotado), pronta para compartilhar. Gatilho: se uma ação travar por mais
+  de 20 segundos ou o Railway cair, o Guilherme diz "vamos seguir na máquina do Tiago", para de
+  compartilhar, o Tiago compartilha e continua do passo em que parou. Nesse caso o fechamento fica
+  com o Tiago.
 - **Plano C:** o vídeo de 2 minutos do caminho acima, gravado hoje, sem som e narrado ao vivo, e as
   capturas do apêndice.
 - O mock (`docker-compose.mock.yml`) só entra se a imagem tiver sido construída no ensaio, e sempre
@@ -414,6 +415,9 @@ GitHub ou o PDF. Quem responde cada assunto está no protocolo de arguição, ma
 convites, as telas do convidado (convite, resposta enviada, lotação e link pessoal), o painel e o link
 despublicado. Servem ao plano C e ficam no PDF do Moodle como evidência. As capturas do quadro e do
 GitHub ficam nos slides 8 e 15.
+
+A fala de cada integrante, recortada deste roteiro, pode ficar num arquivo próprio. A do Tiago está
+em `T3-fala-Tiago.md`.
 
 ## O deck
 
@@ -464,12 +468,14 @@ depois de mudar o texto.
   Apresentação, Dados importando do Domínio, a Apresentação importando dos Dados, e no front-end o
   controller importando da view.
 - **Se o navegador chama a API direto na 3001, isso não expõe a API?** A exposição é controlada: a
-  API só aceita chamada do navegador vinda da origem do front-end, o cookie é `httpOnly` e `SameSite`,
-  as escritas públicas têm limite de tráfego e o banco não publica porta. Passar tudo pelo Next
+  API só aceita chamada do navegador vinda da origem do front-end, o cookie é `httpOnly`, as escritas
+  públicas têm limite de tráfego e só aceitam JSON, e o banco não publica porta. No Railway o cookie
+  sai com `SameSite=None`, e quem segura requisição forjada é o CORS com a guarda de JSON. Passar tudo pelo Next
   poria lógica no tier Front, que o ADR-0004 restringe a front-end.
-- **As migrations só rodam com o volume vazio. Como evoluem o esquema?** É uma limitação aceita e
-  registrada no Diagrama de Implantação: mudar o esquema exige `docker compose down -v`. Vale porque
-  o ADR-0003 limita o ambiente ao local, e precisa ser revista antes de qualquer publicação.
+- **As migrations só rodam com o banco vazio. Como evoluem o esquema?** É uma limitação aceita, no
+  compose e no Railway, onde o pré-deploy da API aplica os scripts só em banco vazio: mudar o
+  esquema exige banco novo. Está no Diagrama de Implantação e no ADR-0015, e vale enquanto não há
+  dado que precise ser conservado.
 - **E com duas instâncias da API?** O limite de tráfego fica na memória do processo e deixaria de
   valer. Está em aberto na seção 5 dos Ajustes. Hoje o ADR-0003 não prevê réplica.
 - **Por que local e não na nuvem?** ADR-0003: nesta fase o MVP não tem requisito de disponibilidade,

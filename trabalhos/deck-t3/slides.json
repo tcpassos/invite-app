@@ -153,7 +153,7 @@
         "t": ""
       }
     ],
-    "notas": "Tiago. O diagrama de implantação do Grau A. O docker-compose.yml é a forma executável dele: os três containers, o banco sem porta publicada, o front-end na 3000 e a API na 3001, porque o navegador chama a API direto. A API só sobe depois que o banco responde ao healthcheck, e as migrations rodam com o volume do banco vazio. No T1 apresentamos o Docker como forma de cada integrante subir o ambiente com um comando. Se a demonstração for local, é esse compose que roda nela. Publicar fora da máquina local é uma decisão nova, que revisa o ADR do ambiente de execução.",
+    "notas": "Tiago. O diagrama de implantação do Grau A. O docker-compose.yml é a forma executável dele: os três containers, o banco sem porta publicada, o front-end na 3000 e a API na 3001, porque o navegador chama a API direto. A API só sobe depois que o banco responde ao healthcheck, e as migrations rodam com o volume do banco vazio. No T1 apresentamos o Docker como forma de cada integrante subir o ambiente com um comando. É assim que desenvolvemos. Para esta apresentação publicamos as mesmas imagens no Railway, um serviço por tier. Isso é uma decisão nova, registrada num ADR novo, porque o ADR do ambiente de execução dizia só local: o cookie de sessão entre os dois domínios e o IP do convidado atrás do proxy, os dois ligados por variável de ambiente. O compose local continua igual.",
     "topo": 150
   },
   {
