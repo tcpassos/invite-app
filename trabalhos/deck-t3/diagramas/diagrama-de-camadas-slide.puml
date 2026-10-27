@@ -1,0 +1,75 @@
+@startuml diagrama-de-camadas-slide
+' Versão para o deck do T3: o mesmo conteúdo do arquivo de mesmo nome em docs/.attachments,
+' só com fonte maior e, quando cabe, no sentido horizontal, para ler numa chamada do Teams.
+' Gera o PNG desta pasta com o layout interno do PlantUML, que não precisa do Graphviz:
+'   java -jar plantuml.jar -Playout=smetana -tpng diagrama-de-camadas-slide.puml
+' ou com a imagem Docker que o resto do repositório usa:
+'   docker run --rm -v "<caminho desta pasta>:/data" plantuml/plantuml -tpng /data/diagrama-de-camadas-slide.puml
+left to right direction
+skinparam defaultFontSize 22
+skinparam dpi 150
+' Fonte do Diagrama de Camadas do Guia da Arquitetura.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-de-camadas.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' As três camadas lógicas vêm do ADR-0001 e os três tiers do ADR-0002.
+' O diagrama traz rótulo, não explicação. A leitura fica na seção 2 do Guia da Arquitetura.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+skinparam nodesep 25
+skinparam ranksep 45
+
+actor "Anfitrião" as HOST
+actor "Convidado" as GUEST
+
+node "Navegador" as BROWSER {
+  component "View" as VIEW
+  component "Controller" as CTRLW
+  component "Model" as MODEL
+}
+
+package "Tier Front, container Next.js" {
+  component "Controller de renderização" as SSR
+}
+
+package "Tier API, container NestJS" {
+  package "Camada de Apresentação" as PRESL {
+    component "PublicRsvpController" as PUB
+    component "InviteController\nDietaryController" as AUT
+  }
+  component "Camada de Domínio\nServices" as DOM
+  component "Camada de Dados\nRepositories" as DATA
+  component "Erros e log" as CROSS
+}
+
+package "Tier Banco, container PostgreSQL" {
+  database "invite_app" as DB
+}
+
+HOST -[dotted]-> VIEW
+GUEST -[dotted]-> VIEW
+
+VIEW -[dotted]-> CTRLW
+VIEW --> MODEL
+CTRLW --> MODEL
+
+VIEW -[dashed]-> SSR : HTTP
+SSR -[dashed]-> PUB : HTTP
+CTRLW -[dashed]-> PUB : HTTP
+CTRLW -[dashed]-> AUT : HTTP
+
+MODEL --> PRESL : contrato de tipos
+
+PUB --> DOM
+AUT --> DOM
+DOM --> DATA
+DATA -[dashed]-> DB : SQL
+
+PRESL -[norank]- CROSS
+DOM -[norank]- CROSS
+DATA -[norank]- CROSS
+
+@enduml

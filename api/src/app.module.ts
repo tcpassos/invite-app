@@ -17,7 +17,7 @@ export class AppModule {
       imports: [
         DatabaseModule.forRoot(config.databaseUrl),
         DataModule,
-        CommonModule.forRoot(config.sessionSecret),
+        CommonModule.forRoot(config.sessionSecret, config.crossSiteCookie),
         AuthModule,
         InviteModule,
         PublicModule,

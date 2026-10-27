@@ -36,7 +36,10 @@ export class RateLimitedException extends HttpException {
   }
 }
 
-/** O endereço que o socket enxerga. O tier Front não repassa o do convidado (Guia, 11.1, linha 32). */
+/**
+ * O endereço de origem. É o do socket, ou o do X-Forwarded-For quando TRUST_PROXY está ligado,
+ * atrás do proxy da publicação (ADR-0015). O tier Front não repassa o do convidado (Guia, 11.1, linha 32).
+ */
 export function clientIp(req: Request): string {
   return req.ip ?? req.socket.remoteAddress ?? 'desconhecido';
 }
