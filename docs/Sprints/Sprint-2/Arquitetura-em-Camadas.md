@@ -29,7 +29,9 @@ Trata da interação com quem está fora do sistema. No invite-app ela é a fron
 
 **O que faz.** Recebe a requisição e devolve a resposta, e é a única camada que conhece rota, método, cabeçalho e código de status. Autentica a sessão do anfitrião e traduz o cabeçalho em `hostId`. Controla tráfego na fronteira pública. Confere se o corpo chegou na forma declarada. Traduz o resultado do Domínio em protocolo, transformando uma exceção em 404, 409 ou 422. Serializa a saída, incluindo o CSV da exportação.
 
-**O que não faz.** Não cria identificador, porque a geração dos dois tokens públicos é do Domínio. Não decide regra de negócio. Não verifica o teto de capacidade. Não decide autorização, porque comparar o anfitrião com o dono do convite é do Domínio. E **não fala com o banco**, o que os três diagramas de sequência confirmam sem uma única seta.
+**O que não faz.** Não cria identificador, porque a geração dos dois tokens públicos é do Domínio. Não decide regra de negócio. Não verifica o teto de capacidade. Não decide autorização, porque comparar o anfitrião com o dono do convite é do Domínio. E **não fala com o banco**, o que os quatro diagramas de sequência confirmam sem uma única seta.
+
+**Os três pacotes.** A camada é dividida em três pacotes, e a figura mostra os três. O público, com o `PublicRsvpController`, atende o convidado sem sessão, no convite e no link pessoal. O autenticado, com o `InviteController` e o `DietaryController`, atende o painel e exige sessão em toda rota. O `auth`, com o `AuthController`, atende o cadastro, a entrada, a saída e a consulta da sessão do anfitrião. Ele fica separado dos outros dois porque a entrada acontece antes de existir sessão e porque o pacote público só pode chamar os serviços de Domínio do convidado. O navegador chama os três pacotes direto. O tier Front chama só o público, na leitura do convite e do link pessoal. No código, cada pacote é uma pasta de `api/src/presentation`: `public`, `authenticated` e `auth`.
 
 ### 2.2 Domínio
 

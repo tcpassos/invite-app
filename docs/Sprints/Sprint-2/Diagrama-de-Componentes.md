@@ -38,14 +38,16 @@ Também foram evitados nomes de tecnologia, como `Next.js` e `NestJS`, e nomes g
 
 | Componente | Responsabilidade | O que encapsula |
 |---|---|---|
-| `PublicInvitePage` | Servir a superfície pública do convite | Rota `/i/{publicToken}`, montagem do convite e o formulário do UC005 com a extensão do UC006 |
-| `HostPanelPage` | Servir as telas do painel do anfitrião | Criação, personalização, lista de presença e consolidação, mais a consulta periódica do ADR-0007 |
+| `PublicInvitePage` | Servir a superfície pública do convite e do link pessoal do convidado | Rotas `/i/{publicToken}` e `/r/{personalToken}`, montagem do convite, o formulário do UC005 com a extensão do UC006 e a alteração da resposta pelo link pessoal (ED2 e RN3 do UC005) |
+| `HostPanelPage` | Servir as telas do anfitrião | Entrada e cadastro do UC001, criação, personalização, lista de presença e consolidação, mais a consulta periódica do ADR-0007 |
 | `TemplateSet` | Guardar os templates de convite | HTML, CSS e imagem de Open Graph de cada template do ADR-0009 |
 | `ApiClient` | Falar com a API por um ponto só | Chamada HTTP tipada pelo contrato compartilhado do ADR-0004 e leitura do corpo de erro |
 
 O sufixo `Page` foi escolhido porque esses componentes incluem exibição, resolução de rota, seleção da View e consulta periódica. Na tabela 7.3 do Guia da Arquitetura, as três últimas tarefas pertencem ao Controller do MVC. O termo `View` fica reservado para a parte executada no navegador. `ApiClient` traduz os eventos do usuário em chamadas HTTP.
 
-`PublicInvitePage` é dividido entre o servidor do tier Front, responsável pela leitura, e o navegador, responsável pela escrita, conforme a seção 7.4 do guia. A divisão física aparece no passo 4, em dois artefatos.
+`PublicInvitePage` é dividido entre o servidor do tier Front, responsável pela leitura, e o navegador, responsável pela escrita, conforme a seção 7.4 do guia. A divisão vale para as duas rotas: o convite em `/i/{publicToken}` e o link pessoal em `/r/{personalToken}` são lidos no servidor, e a resposta e a alteração dela saem do navegador direto para a API. A divisão física aparece no passo 4, em dois artefatos.
+
+`HostPanelPage` cobre também a tela de entrada e cadastro, em `/sign-in`, porque é a porta de entrada do painel e usa o mesmo caminho: o navegador chama a API direto, sem leitura de dados no servidor do tier Front. A diferença com o resto do painel é que essa tela não exige sessão. Como o componente é implementado está na seção 4.4.
 
 ### 1.3 Tier API, camada de Apresentação
 
@@ -106,8 +108,8 @@ Como convenção, o nome da interface usa o substantivo do serviço em inglês, 
 
 | Interface | Provida por | Operações | Consumida por |
 |---|---|---|---|
-| `PublicInvitePageHttp` | `PublicInvitePage` | `GET /i/{publicToken}` | Navegador do convidado, fora da figura |
-| `HostPanelPageHttp` | `HostPanelPage` | Rotas de tela do painel | Navegador do anfitrião, fora da figura |
+| `PublicInvitePageHttp` | `PublicInvitePage` | `GET /i/{publicToken}`, `GET /r/{personalToken}` | Navegador do convidado, fora da figura |
+| `HostPanelPageHttp` | `HostPanelPage` | `GET /sign-in`, sem sessão, e as rotas de tela do painel, `GET /invites` e `GET /invites/{inviteId}`, com sessão | Navegador do anfitrião, fora da figura |
 | `InviteApi` | `ApiClient` | Uma operação por rota da tabela 4.1 do guia, tipada pelo contrato do ADR-0004 | `PublicInvitePage` e `HostPanelPage` |
 | `TemplateAssets` | `TemplateSet` | A classe `invite-template--{code}` do CSS do template e a imagem de Open Graph em `public/templates/{code}.png`, escolhidas pelo `templateCode`. Na implementação são arquivos, sem operação de código | `PublicInvitePage` e `HostPanelPage` |
 
@@ -117,15 +119,17 @@ A operação de `TemplateAssets` é decisão nova. Ela existe para que a interfa
 
 | Interface | Provida por | Operações | Consumida por |
 |---|---|---|---|
-| `PublicInviteHttp` | `PublicRsvpController` | `GET /public/invites/{publicToken}`, `POST /public/invites/{publicToken}/rsvp` | `ApiClient` |
-| `HostInviteHttp` | `InviteController` | `POST /invites/{inviteId}/publish`, `POST /invites/{inviteId}/unpublish`, `GET /invites/{inviteId}/attendance` | `ApiClient` |
+| `PublicInviteHttp` | `PublicRsvpController` | `GET /public/invites/{publicToken}`, `POST /public/invites/{publicToken}/rsvp`, `GET /public/responses/{personalToken}`, `PUT /public/responses/{personalToken}` | `ApiClient` |
+| `HostInviteHttp` | `InviteController` | `GET /invites`, `POST /invites`, `GET /invites/{inviteId}`, `PUT /invites/{inviteId}`, `PUT /invites/{inviteId}/customization`, `POST /invites/{inviteId}/publish`, `POST /invites/{inviteId}/unpublish`, `GET /invites/{inviteId}/attendance` | `ApiClient` |
 | `HostDietaryHttp` | `DietaryController` | `GET /invites/{inviteId}/dietary-summary`, `GET /invites/{inviteId}/dietary-notes.csv` | `ApiClient` |
-| `AuthHttp` | `AuthController` | Entrada e cadastro do UC001, sem rota fechada ainda | `ApiClient` |
+| `AuthHttp` | `AuthController` | `POST /auth/sign-up`, `POST /auth/sign-in`, `POST /auth/sign-out`, `GET /auth/session` | `ApiClient` |
 | `SessionAuth` | `SessionGuard` | `authenticateSession(session)`, que devolve `hostId` | `InviteController` e `DietaryController` |
-| `RateLimit` | `RateLimitGuard` | `enforceReadLimit(publicToken)` e `enforceWriteLimit(publicToken, clientIp)` | `PublicRsvpController` |
+| `RateLimit` | `RateLimitGuard` | `enforceOriginLimit(clientIp)`, `enforceReadLimit(token)` e `enforceWriteLimit(token)` na fronteira pública. `enforceSignInLimit(email, clientIp)`, `recordSignInFailure(email, clientIp)` e `enforceSignUpLimit(clientIp)` no UC001 | `PublicRsvpController`. No código, também o `AuthController`, conforme a seção 4.4 |
 | `ErrorTranslation` | `HttpExceptionFilter` | `toErrorResponse(error)` | Os quatro controllers |
 
 As duas operações de `RateLimit` foram separadas durante esta modelagem. A seção 3.1 do guia traz apenas `enforceRateLimit(publicToken, clientIp)`, mas a seção 4.1 determina que a leitura seja limitada somente pelo token do convite. Nesse fluxo, a API enxerga o IP do container do Front, e usá-lo no contador poderia bloquear a página para todos. A seção 3.1 do guia precisa receber a assinatura atualizada.
+
+Na implementação, em `api/src/presentation/common/rate-limit.ts`, a separação foi além. A escrita pública ganhou um limite por endereço de origem, `enforceOriginLimit(clientIp)`, que roda antes de resolver o token, e `enforceWriteLimit(token)` passou a contar só pelo token, depois que ele resolveu. O token pode ser o do convite ou o pessoal. As três operações do UC001 aplicam a RN4 dele. A ordem das chamadas está explicada na seção 4.4.
 
 `toErrorResponse(error)` também é decisão nova de nome. A operação é a tradução da tabela 9.1 do guia no formato único da seção 9.3, inclusive para as exceções levantadas pelo próprio framework.
 
@@ -133,12 +137,14 @@ As duas operações de `RateLimit` foram separadas durante esta modelagem. A se�
 
 | Interface | Provida por | Operações | Consumida por |
 |---|---|---|---|
-| `RsvpOperations` | `RsvpService` | `getPublishedInvite(publicToken)`, `registerRsvp(publicToken, rsvpCommand)` | `PublicRsvpController` |
-| `InviteOperations` | `InviteService` | `publishInvite(inviteId, hostId)`, `unpublishInvite(inviteId, hostId)` | `InviteController` |
+| `RsvpOperations` | `RsvpService` | `getPublishedInvite(publicToken)`, `registerRsvp(publicToken, rsvpCommand)`, e, no link pessoal, `getGuestResponse(personalToken)` e `updateRsvp(personalToken, rsvpCommand)` | `PublicRsvpController` |
+| `InviteOperations` | `InviteService` | `listInvites(hostId)`, `createInvite(hostId, command)`, `getInvite(inviteId, hostId)`, `updateInvite(inviteId, hostId, command)`, `customizeInvite(inviteId, hostId, command)`, `publishInvite(inviteId, hostId)`, `unpublishInvite(inviteId, hostId)` | `InviteController` |
 | `AttendanceOperations` | `AttendanceService` | `listAttendance(inviteId, hostId)` | `InviteController` |
 | `DietaryOperations` | `DietaryService` | `consolidateDietaryNotes(inviteId, hostId)`, `exportDietaryNotes(inviteId, hostId)` | `DietaryController` |
-| `HostOperations` | `HostService` | Cadastro e autenticação do anfitrião, sem assinatura fechada ainda | `AuthController` |
+| `HostOperations` | `HostService` | `signUp(name, email, password)`, `signIn(email, password)`, `getHostProfile(hostId)` | `AuthController` |
 | `TemplateRules` | `TemplateCatalog` | `findTemplate(templateCode)`, `textFieldLimits(templateCode)`, `defaultTemplate()` | `InviteService` |
+
+As assinaturas de `InviteOperations` e de `HostOperations` são as de `api/src/domain/invite.service.ts` e `api/src/domain/host.service.ts`. `signIn` devolve o anfitrião ou vazio, sem dizer se o erro foi no email ou na senha, conforme o A2 do UC001. A sessão não sai do Domínio: quem emite o cookie é o `AuthController`, com o anfitrião que o `HostService` devolve.
 
 As duas operações de `TemplateRules` são decisão nova desta página, porque nenhum artefato as nomeia. Elas existem para que a RN2 do UC003 seja verificável no Domínio.
 
@@ -146,10 +152,12 @@ As duas operações de `TemplateRules` são decisão nova desta página, porque 
 
 | Interface | Provida por | Operações | Consumida por |
 |---|---|---|---|
-| `InviteStore` | `InviteRepository` | `findById(inviteId)`, `findPublishedByPublicToken(publicToken)`, `publishIfPublishable(inviteId, publicToken)`, `unpublishIfPublished(inviteId)`, `saveRsvpWithinCapacity(invite, guest, dietaryNote, seatsRequested)`, `countGuestsByCategory(inviteId, statuses)`, `findDescriptionsByCategories(inviteId, statuses, categoryCodes)`, `findGuestsForExport(inviteId, statuses)`, `findAttendanceByStatus(inviteId, statuses)` | `InviteService`, `RsvpService`, `DietaryService` e `AttendanceService` |
+| `InviteStore` | `InviteRepository` | `findById(inviteId)`, `findByHost(hostId)`, `findWithCustomization(inviteId)`, `findPublishedByPublicToken(publicToken)`, `createDraft(hostId, fields)`, `updateIfDraft(inviteId, fields)`, `saveCustomization(inviteId, fields)`, `publishIfPublishable(inviteId, publicToken)`, `unpublishIfPublished(inviteId)`, `saveRsvpWithinCapacity(inviteId, guest, dietaryNote, seatsRequested)`, `findGuestByPersonalToken(personalToken)`, `updateRsvpWithinCapacity(guestId, inviteId, guest, dietaryNote, seatsRequested)`, `findAttendanceByStatus(inviteId, statuses)`, `countGuestsByCategory(inviteId, statuses)`, `findDescriptionsByCategories(inviteId, statuses, categoryCodes)`, `findGuestsForExport(inviteId, statuses)` | `InviteService`, `RsvpService`, `DietaryService` e `AttendanceService` |
 | `DietaryCategoryStore` | `DietaryCategoryRepository` | `listDietaryCategories()` | `RsvpService` e `DietaryService` |
-| `HostStore` | `HostRepository` | Busca do anfitrião por email e gravação da conta, sem assinatura fechada ainda | `HostService` |
+| `HostStore` | `HostRepository` | `findByEmail(email)`, `findById(hostId)`, `createIfEmailFree(name, email, passwordHash)` | `HostService` |
 | `PostgresWire` | `invite_app` | Protocolo do PostgreSQL na porta padrão, mais o esquema | `InviteRepository`, `DietaryCategoryRepository` e `HostRepository` |
+
+As operações de `InviteStore` são as de `api/src/data/invite.repository.ts`. Na implementação, `saveRsvpWithinCapacity` recebe o `inviteId` em vez do convite carregado, e o link pessoal ganhou `findGuestByPersonalToken` e `updateRsvpWithinCapacity`, que verifica o teto na mesma transação da gravação, como a primeira resposta.
 
 `findAttendanceByStatus(inviteId, statuses)` foi incluída porque as tabelas 4.1 e 4.2 do guia previam a rota e o serviço da lista de presença, mas a tabela 4.3 não oferecia uma consulta correspondente. A operação devolve nome, status e número de acompanhantes para cada convidado, conforme a ED1 do UC007. O parâmetro `statuses` mantém o filtro fora do SQL do repositório. `AttendanceService` calcula o total da RN1 usando as mesmas linhas que serão exibidas. A tabela 4.3 do guia precisa ser atualizada com essa operação.
 
@@ -251,19 +259,19 @@ Conforme o ADR-0002, as três camadas lógicas do back-end fazem parte de um ún
 
 ### 4.1 Inventário de artefatos
 
-A implementação começa na Sprint 3. A coluna Situação diferencia o que já existe do que ainda está previsto.
+A implementação começou na Sprint 3. Na revisão de 13/11/2026, todos os artefatos já existem, e a coluna Situação diz onde cada um está.
 
 | Artefato | Tipo | Como nasce | Situação |
 |---|---|---|---|
-| `invite-app-front:<tag>` | Imagem | Build do `Dockerfile` do front | Prevista |
-| `front-server.bundle` | Executável | Saída de servidor do build do Next.js | Prevista |
-| `front-client.bundle` | Executável | Saída de cliente do build do Next.js, entregue ao navegador | Prevista |
-| `templates/` | Ativo estático | Versionado no repositório, copiado no build | Prevista, ADR-0009 |
-| `robots.txt` | Ativo estático | Versionado no repositório, copiado no build | Prevista, seção 9.5 do Guia da Arquitetura |
-| `invite-app-api:<tag>` | Imagem | Build do `Dockerfile` da API | Prevista |
-| `api.bundle` | Executável | Compilação do TypeScript da API, com as três camadas | Prevista |
-| `contract/` | Módulo de fonte compartilhado | Versionado no repositório, compilado para dentro dos dois lados | Prevista, decisão nova desta página |
-| `migrations/` | Script | Versionado no repositório, aplicado contra o banco | Diretório criado, os scripts SQL entram com a implementação |
+| `invite-app-front:<tag>` | Imagem | Build do `Dockerfile` do front | Existe, `front/Dockerfile`, com a tag definida no `docker-compose.yml` |
+| `front-server.bundle` | Executável | Saída de servidor do build do Next.js | Existe, gerado no build em `front/.next/standalone`, pelo `output: 'standalone'` de `front/next.config.mjs` |
+| `front-client.bundle` | Executável | Saída de cliente do build do Next.js, entregue ao navegador | Existe, gerado no build em `front/.next/static` |
+| `templates/` | Ativo estático | Versionado no repositório, copiado no build | Existe, `front/src/templates/invite-templates.css` e `front/public/templates/{code}.png`, ADR-0009 |
+| `robots.txt` | Ativo estático | Versionado no repositório, copiado no build | Existe, `front/public/robots.txt`, seção 9.5 do Guia da Arquitetura |
+| `invite-app-api:<tag>` | Imagem | Build do `Dockerfile` da API | Existe, `api/Dockerfile`, com a tag definida no `docker-compose.yml` |
+| `api.bundle` | Executável | Compilação do TypeScript da API, com as três camadas | Existe, gerado no build em `api/dist` a partir de `api/src` |
+| `contract/` | Módulo de fonte compartilhado | Versionado no repositório, compilado para dentro dos dois lados | Existe, `contract/`, compilado em `contract/dist`. Decisão nova desta página |
+| `migrations/` | Script | Versionado no repositório, aplicado contra o banco | Existe, `001-esquema-inicial.sql` e `002-carga-de-categorias.sql`, aplicados pelo Compose no volume vazio e por `api/src/migrate.ts` na publicação |
 | `postgres:17-alpine` | Imagem | Obtida do registry, não construída pelo time | Definida no Compose |
 | `docker-compose.yml` | Especificação de implantação | Versionado no repositório | Concluída na Sprint 2 |
 | `.env`, a partir de um `.env.example` versionado | Configuração | Preenchido por quem sobe o ambiente | Concluída na Sprint 2 |
@@ -297,6 +305,18 @@ O contrato de tipos do ADR-0004 não é implantado como arquivo separado. Os tip
 O catálogo de templates tem dois consumidores. `TemplateSet`, em `templates/`, contém HTML, CSS e imagens. `TemplateCatalog` contém código, nome de exibição, cores padrão e limites de texto. O módulo `contract/` compartilha os dados necessários entre os dois builds sem fazer a API importar arquivos do Front. Ainda não há uma verificação automática de consistência entre `templates/` e `contract/`, e essa pendência está na seção 10.2.
 
 Os arquivos `Dockerfile` geram as imagens, mas não são implantados. O diagrama de implantação mostra as imagens identificadas por tag e digest.
+
+### 4.4 O que a implementação mostra e o diagrama não detalha
+
+O código entrou depois deste diagrama. A comparação mostrou quatro diferenças, registradas aqui para que a leitura da figura não as esconda. Nenhuma delas muda a regra de dependência da seção 3.5.
+
+1. **`HostPanelPage` é o layout das telas do anfitrião.** O componente é implementado em `front/src/app/invites/layout.tsx`, que envolve as telas `/invites` e `/invites/{inviteId}`. O layout confere a sessão com `GET /auth/session` antes de mostrar qualquer dado e leva o anfitrião de volta à entrada quando uma chamada responde 401. A tela de entrada e cadastro, `front/src/app/sign-in`, fica fora desse layout porque não exige sessão, mas pertence ao mesmo componente, conforme a seção 1.2.
+
+2. **`RateLimitGuard` é um serviço chamado pelo controller, não uma guarda registrada do Nest.** O nome foi mantido, mas a classe é um provider injetado no construtor dos controllers, que chamam as operações no ponto certo do método. A razão está no cabeçalho de `api/src/presentation/common/rate-limit.ts`: o limite por endereço de origem pode recusar antes de resolver o token, mas o limite por token só pode recusar depois que o token resolveu, senão o 429 revela que o token existe. Uma guarda do Nest roda antes do método e não conhece o token resolvido. As operações do código são `enforceOriginLimit(clientIp)`, `enforceReadLimit(token)` e `enforceWriteLimit(token)` na fronteira pública, e `enforceSignInLimit(email, clientIp)`, `recordSignInFailure(email, clientIp)` e `enforceSignUpLimit(clientIp)` na entrada e no cadastro do UC001, pela RN4 dele. O `AuthController` também usa esse serviço, o que a figura não desenha.
+
+3. **A sessão tem duas peças.** `SessionCookie`, em `api/src/presentation/common/session.ts`, emite, apaga e confere a assinatura do cookie. `SessionGuard`, no mesmo arquivo, é a guarda registrada com `@UseGuards` nas rotas do painel e usa o `SessionCookie` para obter o `hostId`. O nome e os atributos do cookie ficam em `session-cookie.ts`. O `AuthController` usa o `SessionCookie` para abrir e fechar a sessão e usa o `SessionGuard` em `GET /auth/session`. A figura mostra só `SessionGuard` e `SessionAuth`, porque a separação é interna à Apresentação.
+
+4. **Há peças de infraestrutura que o diagrama não detalha por decisão.** A guarda global `JsonContentTypeGuard`, em `json-content-type.guard.ts`, recusa corpo que não seja `application/json`. O middleware `requestContext`, em `request-context.ts`, resolve o identificador de correlação e escreve uma linha de log por requisição, conforme o [ADR-0012](Decisões-Arquiteturais/0012-Observabilidade-entre-os-tiers.md). As duas são registradas na inicialização, em `api/src/bootstrap.ts`, como o `HttpExceptionFilter`, e valem para todas as rotas. Ficam fora da figura porque nenhum componente as requer por interface, e desenhá-las encaixadas em todos os controllers não acrescentaria informação. Pelos critérios da seção 1.1, também não prestam um serviço que outro componente consuma.
 
 ---
 
@@ -411,7 +431,7 @@ As faixas totalizam 21 componentes e 31 interfaces requeridas, os mesmos número
 
 Cada componente tem uma responsabilidade identificada. Dois deles merecem acompanhamento:
 
-`InviteController` requer quatro interfaces e atende as três rotas de `HostInviteHttp`. Sua responsabilidade é expor o recurso de convite ao anfitrião. Quando forem criadas as rotas do UC002 e do UC003, a coesão deverá ser reavaliada.
+`InviteController` requer quatro interfaces e atende as oito rotas de `HostInviteHttp`: lista, criação, leitura, correção do rascunho, personalização, publicação, despublicação e lista de presença. Sua responsabilidade é expor o recurso de convite ao anfitrião. A reavaliação prevista para quando as rotas do UC002 e do UC003 existissem foi feita com o código. As oito rotas tratam do mesmo recurso, o convite de um anfitrião, e passam pelo mesmo `SessionGuard`, então o controller continua com uma responsabilidade. A lista de presença já tem serviço próprio no Domínio, `AttendanceService`, e é a primeira candidata a sair do controller se ele voltar a crescer.
 
 `InviteService` cuida de criação, personalização, publicação e despublicação. Essas operações pertencem ao ciclo de vida do convite. Se a personalização ganhar regras próprias, como validação de paleta ou versionamento de template, pode ser necessário separar o componente.
 
@@ -467,10 +487,10 @@ Os quatro componentes do tier Front, os quatro controllers, `SessionGuard`, `Rat
 
 ### 10.2 Pendências abertas
 
-1. **Rotas do UC002 e do UC003.** A tabela 4.1 tem sete rotas, mas nenhuma cria o convite ou salva sua personalização. `InviteController` e `InviteService` já assumem essas responsabilidades, e falta definir as rotas.
-2. **Pacote do UC001.** `AuthController` não cabe no pacote público, restrito aos dois serviços citados na seção 5.3, nem no autenticado, pois a entrada ocorre antes da criação da sessão. Falta decidir se haverá um terceiro pacote.
+1. **Rotas do UC002 e do UC003.** A tabela 4.1 tem sete rotas, mas nenhuma cria o convite ou salva sua personalização. `InviteController` e `InviteService` já assumem essas responsabilidades, e falta definir as rotas. **Resolvido.** As rotas entraram na tabela 4.1 do Guia da Arquitetura e estão implementadas em `api/src/presentation/authenticated/invite.controller.ts`: `POST /invites` para o UC002, `PUT /invites/{inviteId}` para a correção do rascunho e `PUT /invites/{inviteId}/customization` para o UC003, além de `GET /invites` e `GET /invites/{inviteId}`. As operações correspondentes estão em `api/src/domain/invite.service.ts` e aparecem na seção 2.3.
+2. **Pacote do UC001.** `AuthController` não cabe no pacote público, restrito aos dois serviços citados na seção 5.3, nem no autenticado, pois a entrada ocorre antes da criação da sessão. Falta decidir se haverá um terceiro pacote. **Resolvido.** O time confirmou o terceiro pacote, `auth`, conforme a seção 5.1 do [DAS](../Sprint-3/Documento-de-Arquitetura-do-Sistema-(DAS).md). No código ele é a pasta `api/src/presentation/auth`, e o [diagrama de camadas](Arquitetura-em-Camadas.md) passou a mostrá-lo.
 3. **Réplicas da API.** O [ADR-0010](Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) usa um contador em memória para `RateLimitGuard`. Com mais de uma instância, cada processo manteria seu próprio contador. A hipótese está registrada na seção 9 do [Diagrama de Implantação](Diagrama-de-Implantação.md).
-4. **Assinaturas de `HostOperations` e `HostStore`.** Elas ainda não foram definidas porque o UC001 não tem diagrama de sequência.
+4. **Assinaturas de `HostOperations` e `HostStore`.** Elas ainda não foram definidas porque o UC001 não tem diagrama de sequência. **Resolvido.** O UC001 ganhou diagrama de sequência em notação BCE no [Documento de Realização de Casos de Uso](../Sprint-3/Documento-de-Realização-de-Casos-de-Uso.md), e as assinaturas estão no código, em `api/src/domain/host.service.ts` e `api/src/data/host.repository.ts`. Elas aparecem nas seções 2.3 e 2.4.
 5. **Consistência entre `templates/` e `contract/`.** Ainda não há verificação no build. Adicionar um template exige alterar os dois locais manualmente, e limites de texto diferentes podem causar erros no UC003.
 
 ---

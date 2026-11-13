@@ -30,6 +30,7 @@ package "Tier API, container NestJS" {
   package "Camada de Apresentação" as PRESL {
     component "PublicRsvpController" as PUB
     component "InviteController\nDietaryController" as AUT
+    component "AuthController" as AUTH
   }
   component "Camada de Domínio\nServices" as DOM
   component "Camada de Dados\nRepositories" as DATA
@@ -51,11 +52,13 @@ VIEW -[dashed]-> SSR : HTTP
 SSR -[dashed]-> PUB : HTTP
 CTRLW -[dashed]-> PUB : HTTP
 CTRLW -[dashed]-> AUT : HTTP
+CTRLW -[dashed]-> AUTH : HTTP
 
 MODEL --> PRESL : contrato de tipos
 
 PUB --> DOM
 AUT --> DOM
+AUTH --> DOM
 DOM --> DATA
 DATA -[dashed]-> DB : SQL
 
