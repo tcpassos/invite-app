@@ -863,12 +863,21 @@ def m_grade(sl, s):
     cols = s.get('colunas', 3)
     n_lin = -(-len(cel) // cols)
     gap_x, gap_y = 40, s.get('gapY', 34)
-    larg = (1136 - gap_x * (cols - 1)) / cols
+    larg_total = 1136
+    if s.get('imagem'):
+        alt_im = s.get('altImagem', 430)
+        larg_im = alt_im * proporcao(s['imagem'])
+        larg_total = 1136 - larg_im - 48
+        y_im = centrar(alt_im + 28, 176, 630)
+        captura(sl, s['imagem'], 1208 - larg_im, y_im, larg=larg_im)
+        if s.get('legendaImagem'):
+            rotulo(sl, 1208 - larg_im - 30, y_im + alt_im + 8, larg_im + 60, s['legendaImagem'], tam=14, cor=CINZA, alinhar=PP_ALIGN.CENTER)
+    larg = (larg_total - gap_x * (cols - 1)) / cols
     d = s.get('icone', 52)
     tam_d = s.get('tamCorpo', 15)
     w_txt = larg - d - 18
     def alt_cel(c):
-        return 34 + altura_estimada(c['d'], tam_d, w_txt * 0.9) * 1.1 + (38 if c.get('etiqueta') else 0)
+        return 34 + altura_estimada(c['d'], tam_d, w_txt * 0.9) * 1.1 + (38 if c.get('etiqueta') and not s.get('etiquetaDireita') else 0)
     alt_lin = [max(alt_cel(c) for c in cel[i * cols:(i + 1) * cols]) for i in range(n_lin)]
     alt_leg = altura_estimada(s['legenda'], 16, 1100) * 1.16 if s.get('legenda') else 0
     base = (634 - alt_leg - 28) if s.get('legenda') else 630
@@ -886,7 +895,12 @@ def m_grade(sl, s):
             rotulo(sl, tx, y + 2, w_txt, c['t'], tam=tt, cor=AZUL, peso=900)
             yd = y + tt * 1.6 + 4
             # a etiqueta vai logo abaixo do título, em posição fixa, para nunca encostar no texto
-            if c.get('etiqueta'):
+            if c.get('etiqueta') and s.get('etiquetaDireita'):
+                # na mesma linha do título, alinhada à direita da célula, sem ocupar altura
+                m = _medidor(11)
+                lw = (m[0].textlength(c['etiqueta'].upper(), font=m[1]) if m else 60) * 1.12 + 22 + len(c['etiqueta']) * 0.6
+                pilula(sl, x + larg - lw, y + 4, c['etiqueta'], alt=22)
+            elif c.get('etiqueta'):
                 xx = tx
                 for e in c['etiqueta'] if isinstance(c['etiqueta'], list) else [c['etiqueta']]:
                     xx += pilula(sl, xx, yd + 2, e, alt=22) + 8
@@ -1013,31 +1027,32 @@ CORES_STATUS = {
     'Igual ao plano': (AZUL, BRANCO),
     'Ajustado': (LARANJA, BRANCO),
     'Novo': (LILAS, AZUL),
+    'Corrigido na integração': (GRAFITE, BRANCO),
 }
 
 def m_comparacao(sl, s):
     """Tabela planejado e implementado, com uma etiqueta de situação por linha."""
     cabeca(sl, s)
-    xs = [72, 296, 640, 1040]
-    ws = [210, 330, 384, 168]
+    xs = [72, 272, 568, 980]
+    ws = [186, 280, 392, 228]
     cab = ['Aspecto', 'Planejado no Grau A', 'Implementado']
-    y = 176
+    y = 168
     for x, t in zip(xs, cab):
         rotulo(sl, x, y, 300, t, tam=12, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
     rotulo(sl, xs[3], y, ws[3], 'Situação', tam=12, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
     y += 28
     for r in s['linhas']:
-        h = max(altura_estimada(r['plano'], 15, ws[1]), altura_estimada(r['feito'], 15, ws[2]), 24) * 1.1 + 22
+        h = max(alt_par(r['plano'], 16, ws[1]), alt_par(r['feito'], 16, ws[2]), alt_par(r['aspecto'], 17, ws[0]), 26) + 16
         retangulo(sl, 72, y, 1136, 1, preencher=CINZA_CLARO)
-        rotulo(sl, xs[0], y + 11, ws[0], r['aspecto'], tam=16, cor=AZUL, peso=900)
-        paragrafo(sl, xs[1], y + 11, ws[1], r['plano'], tam=15, cor=CINZA)
-        paragrafo(sl, xs[2], y + 11, ws[2], r['feito'], tam=15, cor=GRAFITE, peso=400)
+        paragrafo(sl, xs[0], y + 11, ws[0], r['aspecto'], tam=17, cor=AZUL, peso=900, entre=1.2)
+        paragrafo(sl, xs[1], y + 11, ws[1], r['plano'], tam=16, cor=CINZA)
+        paragrafo(sl, xs[2], y + 11, ws[2], r['feito'], tam=16, cor=GRAFITE, peso=400)
         f, c = CORES_STATUS[r['status']]
         pilula(sl, xs[3], y + 13, r['status'], fundo=f, cor=c)
         y += h
     retangulo(sl, 72, y, 1136, 1, preencher=CINZA_CLARO)
     if s.get('legenda'):
-        paragrafo(sl, 72, max(y + 20, 590), 1136, s['legenda'], tam=15, cor=CINZA, peso=400)
+        paragrafo(sl, 72, y + 18, 1136, s['legenda'], tam=16, cor=GRAFITE, peso=400)
     rodape(sl, s['n'], s['bloco'])
 
 def m_duas_icones(sl, s):
@@ -1097,8 +1112,8 @@ def m_codigo_fluxo(sl, s):
     rodape(sl, s['n'], s['bloco'])
 
 def m_divisor(sl, s):
-    """Divisor de bloco no fundo institucional: número grande, título e quem apresenta."""
-    fundo_imagem(sl, 'fundo-secao.jpg')
+    """Divisor de bloco em azul chapado: número grande, título e quem apresenta."""
+    fundo(sl, AZUL)
     logo(sl, claro=True)
     rotulo(sl, 92, 150, 400, s['num'], tam=120, cor=RGBColor(0x6E, 0x59, 0xD2), peso=900)
     tb, tf = caixa(sl, 96, 340, 900, 140)

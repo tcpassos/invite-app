@@ -18,12 +18,13 @@ como o projeto arquitetural ajudou a construir o MVP.
 | Gestão de backlog e refinamento            | 2 min | Slides 6 e 7      | Andreas    |
 | Arquitetura prescritiva                    | 3 min | Slides 8 a 10     | Tiago      |
 | Arquitetura descritiva, princípios e ADRs  | 3 min | Slides 11 a 13    | Tiago      |
-| Prescritiva × descritiva                   | 3 min | Slides 14 e 15    | Gabriel    |
-| Demonstração, tecnologias e código         | 7 min | Slides 16 a 20    | Gabriel e Guilherme |
-| Reflexão                                   | 3 min | Slides 21 a 25    | Guilherme  |
+| Prescritiva × descritiva                   | 3 min | Slides 14 a 16    | Gabriel    |
+| Demonstração, tecnologias e código         | 7 min | Slides 17 a 21    | Gabriel e Guilherme |
+| Reflexão                                   | 3 min | Slides 22 a 26    | Guilherme  |
 
 O código entra antes da demonstração e não depois, para o Gabriel falar dele logo depois da
-comparação e o Guilherme seguir do slide 19 até o fim sem troca de voz. Os slides 26 a 28 são
+comparação e o Guilherme seguir do slide 20 até o fim sem troca de voz. A pergunta do professor sobre
+como o projeto arquitetural ajudou a construir o MVP tem slide próprio, o 16. Os slides 27 a 29 são
 apêndice: o diagrama de implantação e as telas, para o caso de a demo falhar ou de perguntarem.
 
 A rubrica do T4 pesa a aplicação (30%), a aderência à arquitetura (20%), a documentação (15%), o
@@ -35,15 +36,15 @@ uso do Azure DevOps, GitHub e Kanban (10%), o Pitch e a demonstração (15%) e a
 | --------- | -------- | ----- | -------------------------------------------------------------- |
 | Andreas   | 1 a 7    | 5:30  | Problema, objetivo, personas, funcionalidades e backlog         |
 | Tiago     | 8 a 13   | 5:30  | Arquitetura prescritiva, descritiva, princípios e decisões      |
-| Gabriel   | 14 a 18  | 4:30  | Comparação entre as duas e a arquitetura no código              |
-| Guilherme | 19 a 25  | 8:30  | Tecnologias, demonstração, Scrum, dificuldades, IA e fechamento |
+| Gabriel   | 14 a 19  | 5:15  | Comparação, como a arquitetura ajudou e a arquitetura no código |
+| Guilherme | 20 a 26  | 8:15  | Tecnologias, demonstração, Scrum, dificuldades, IA e fechamento |
 
 Cerca de 24 minutos com as trocas. São quatro vozes em sequência, sem voltar a ninguém. O ensaio
-cronometrado é o que diz se cabe. Se passar, corta-se nesta ordem: a fala do slide 13 fica nas
-quatro decisões da primeira coluna; o slide 15 fica numa frase; o passo do convite lotado na demo
-fica só dito.
+cronometrado é o que diz se cabe. Se passar, corta-se nesta ordem: o passo 4 da demo, o link
+pessoal, fica só dito; a fala do slide 13 fica nas quatro decisões da primeira coluna; o slide 15
+fica numa frase.
 
-**Tela.** O Tiago compartilha o PDF do slide 1 ao 18. No slide 19 o Guilherme assume a tela, com o
+**Tela.** O Tiago compartilha o PDF do slide 1 ao 19. No slide 20 o Guilherme assume a tela, com o
 PDF, o navegador com a aplicação publicada, o quadro e o GitHub abertos na máquina dele, e segue até
 o fim. Uma troca só. Quem fala diz "próximo" para avançar.
 
@@ -70,40 +71,47 @@ começa com o nome, porque a avaliação é individual.
 
 ### Tiago, slides 8 a 13
 
-- **Slide 9, prescritiva.** O que foi planejado no Grau A e os diagramas que existem. Os quatro
-  diagramas do mosaico são só para mostrar que existem: o detalhe está no documento de arquitetura.
-- **Slide 10, camadas.** O diagrama de camadas atualizado, com o pacote de autenticação. Apontar o
-  caminho de leitura, pelo servidor do front-end, e o de escrita, direto do navegador.
-- **Slide 11, descritiva.** O mapa das pastas: a estrutura do código é a mesma do diagrama. Destacar
-  o pacote `contract` embaixo.
-- **Slide 12, princípios.** Dependência só desce, responsabilidade única, contrato explícito, baixo
-  acoplamento, alta coesão, fronteira que não vaza.
-- **Slide 13, decisões.** Oito decisões com o motivo. A última, a publicação, é desta sprint.
+- **Slide 9, prescritiva.** O que foi planejado no Grau A, com o diagrama de casos de uso grande ao
+  lado. Os outros diagramas são citados; o de sequência da confirmação é o mesmo caminho do código do
+  slide 18, e isso é dito na fala.
+- **Slide 10, camadas.** O diagrama de camadas do Grau A, só com o pacote de autenticação acrescentado
+  na revisão da Sprint 6. Apontar o caminho de leitura, pelo servidor do front-end, e o de escrita,
+  direto do navegador.
+- **Slide 11, descritiva.** O mapa das pastas, com `model/` e `templates/`. Dizer onde fica o Model do
+  MVC: na API, e o navegador recebe a projeção pelos tipos do `contract` (Guia, 7.2).
+- **Slide 12, princípios.** Separação de interesses, regra de dependência, interface explícita,
+  ocultação de informação, alta coesão e baixo acoplamento.
+- **Slide 13, decisões.** Oito decisões com o número do ADR. A stack, o Kysely e o Railway ficam para
+  o slide de tecnologias, para não repetir.
 - Passagem: "O Gabriel compara o planejado com o implementado."
 
-### Gabriel, slides 14 a 18
+### Gabriel, slides 14 a 19
 
-- **Slide 14, comparação.** Seis linhas com a situação de cada uma: igual ao plano, ajustado ou novo.
-  Duas linhas estão "iguais ao plano" porque divergiram na implementação e voltaram na integração: a
-  regra das vagas, que era da versão dele, e as regras do protótipo. Contar isso com franqueza.
+- **Slide 14, comparação.** Seis linhas com a situação de cada uma: igual ao plano, ajustado, novo ou
+  corrigido na integração. As duas corrigidas divergiram na implementação e voltaram ao plano: a regra
+  das vagas, que era da versão dele, e as regras do protótipo. Contar isso com franqueza. A lista de
+  presença não entra aqui: a consulta periódica já era a decisão do Grau A (ADR-0007), e o que mudou
+  foi a história, no refinamento do slide 7.
 - **Slide 15, semelhanças e diferenças.** Resumo em quatro tipos de mudança.
-- **Slide 17, código.** O caminho de uma resposta pelas três camadas. Os trechos são do código real,
+- **Slide 16, como a arquitetura ajudou.** Trabalho em paralelo pelo pacote de tipos, o Guia como
+  régua na integração, a regra conferida em todo PR e as decisões consultadas em vez de rediscutidas.
+- **Slide 18, código.** O caminho de uma resposta pelas três camadas. Os trechos são do código real,
   encurtados para caber.
-- **Slide 18, lint.** A regra de camadas no `eslint.config.mjs` e o erro que o PR recebe.
+- **Slide 19, lint.** A regra de camadas no `eslint.config.mjs` e o erro que o PR recebe.
 - Passagem: "O Guilherme apresenta as tecnologias e a aplicação funcionando."
 
-### Guilherme, slides 19 a 25
+### Guilherme, slides 20 a 26
 
-- **Slide 19, tecnologias.** Cada tecnologia pelo que resolve na arquitetura.
-- **Slide 20, demonstração.** O slide fica na tela enquanto a aplicação abre. O caminho está nas
+- **Slide 20, tecnologias.** Cada tecnologia pelo que resolve na arquitetura.
+- **Slide 21, demonstração.** O slide fica na tela enquanto a aplicação abre. O caminho está nas
   notas e abaixo, não no slide.
-- **Slide 22, Scrum.** O que o processo trouxe para o resultado. Dizer com franqueza que o time não
+- **Slide 23, Scrum.** O que o processo trouxe para o resultado. Dizer com franqueza que o time não
   usou o Teams, e sim o WhatsApp e as aulas.
-- **Slide 23, dificuldades.** Quatro dificuldades, cada uma com a lição.
-- **Slide 24, IA.** O professor pergunta explicitamente se usamos assistentes de IA e se fomos nós que
+- **Slide 24, dificuldades.** Quatro dificuldades, cada uma com a lição.
+- **Slide 25, IA.** O professor pergunta explicitamente se usamos assistentes de IA e se fomos nós que
   desenvolvemos. O slide diz onde usamos e o que foi do time. **O texto precisa ser confirmado pelos
   quatro antes do ensaio**, e cada um responde na arguição pelo que fez e revisou.
-- **Slide 25, fechamento.** A aplicação publicada e o time. Abre a arguição.
+- **Slide 26, fechamento.** A aplicação publicada e o time. Abre a arguição.
 
 ## Demonstração (4 minutos)
 
@@ -126,6 +134,8 @@ começa com o nome, porque a avaliação é individual.
 4. Abrir o link pessoal e trocar a resposta para "talvez".
 5. Voltar ao painel: a lista mostra a resposta. Baixar o CSV e mostrar na planilha.
 6. Despublicar e abrir de novo o link do convite: a página de não encontrado.
+
+Se o tempo apertar, o passo 4 fica só dito.
 
 Se der tempo, convidar o professor a abrir o link do convite no celular.
 
@@ -159,15 +169,30 @@ processo com o Guilherme.
   e `httpOnly`, sem tabela de sessão (ADR-0010).
 - **O backlog foi refinado como?** Pelos três exemplos do slide 7. A lista em tempo real virou consulta
   periódica porque a história pedia a lista atualizada, não latência (ADR-0007).
-- **Vocês usaram IA? Foram vocês que desenvolveram?** Pela resposta combinada no slide 24. Cada um diz
+- **Vocês usaram IA? Foram vocês que desenvolveram?** Pela resposta combinada no slide 25. Cada um diz
   o que fez, o que a IA fez na parte dele e o que revisou.
-- **Por que o histórico da main está quase todo em um nome?** A integração passou por quem montou a
-  base. O back-end entrou com a autoria do Gabriel e o front-end a partir do protótipo do Guilherme, e
-  as mensagens dos commits registram isso.
+- **A camada de Domínio depende das classes concretas dos repositórios. Isso não fere a inversão de
+  dependência?** Foi uma escolha consciente: a regra do projeto é a dependência num sentido só, e não
+  a inversão. Com uma implementação de cada repositório, uma interface a mais não pagava o código. Os
+  testes do Domínio substituem o repositório por um falso sem precisar dela.
+- **Por que o histórico da main está quase todo em um nome, e uma parte com autor "Claude"?** Quem
+  abrir o GitHub vê cerca de 70 commits do Tiago, cerca de 50 com o assistente de código como autor,
+  1 do Gabriel e nenhum do Andreas e do Guilherme. A resposta precisa ser a mesma para os quatro e
+  verdadeira: a integração passou por quem montou a base, com o assistente de código; o back-end
+  entrou com a autoria do Gabriel; o front-end veio do protótipo do Guilherme, feito fora do
+  repositório; e as mensagens dos commits registram de onde veio cada parte.
+- **O que cada um fez?** Cada um responde pela própria parte, sem tomar o trabalho do time como seu.
+  Rascunho para o time ajustar:
+  - Tiago: a base do repositório, o pacote de tipos, o lint, a CI, o compose, a integração e a
+    publicação, com o assistente de código.
+  - Gabriel: a primeira versão das rotas e das regras do back-end, incluindo a transação com trava.
+  - Guilherme: o protótipo das telas e o projeto no Azure DevOps. [Completar com o que mais foi dele.]
+  - Andreas: [o time precisa combinar com franqueza o que foi do Andreas, por exemplo nos artefatos
+    das Sprints 1 a 3, sem atribuir a ele o que ele não fez.]
 
 ## Checklist até 17/11
 
-- [ ] Os quatro confirmam o texto do slide 24, sobre IA, e a resposta para "foi você que desenvolveu?"
+- [ ] Os quatro confirmam o texto do slide 25, sobre IA, a resposta sobre o histórico do GitHub e o que cada um fez
 - [ ] Andreas preenche a ficha dele no Team Charter (#87 no quadro), que fecha também o #57
 - [ ] Guilherme prepara a conta de anfitrião e o convite de reserva no Railway antes da aula
 - [ ] Tiago deixa o compose local pronto para o plano B
