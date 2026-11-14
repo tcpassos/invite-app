@@ -516,43 +516,43 @@
         "icone": "camadas",
         "aspecto": "Camadas da API",
         "plano": "Apresentação, Domínio e Dados",
-        "feito": "As mesmas três. A Apresentação ganhou um pacote de autenticação, com o AuthController."
+        "feito": "Apresentação, Domínio e Dados, com um pacote de autenticação (AuthController) na Apresentação"
       },
       {
         "icone": "caixa",
         "aspecto": "Componentes",
-        "plano": "Os componentes do diagrama",
-        "feito": "Mesmos nomes no código. O TemplateSet virou arquivos de CSS e de imagem, e o RateLimitGuard virou um serviço chamado pelo controller."
+        "plano": "Componentes do diagrama",
+        "feito": "Os mesmos componentes; TemplateSet implementado como arquivos de CSS e imagens; RateLimitGuard implementado como serviço"
       },
       {
         "icone": "monitor",
         "aspecto": "Rotas de tela",
-        "plano": "Não detalhadas",
-        "feito": "Convite, link pessoal, painel e página de não encontrado."
+        "plano": "Sem detalhamento",
+        "feito": "Convite, link pessoal, painel e página de não encontrado"
       },
       {
         "icone": "container",
         "aspecto": "Implantação",
-        "plano": "Só local, com o compose (ADR-0003)",
-        "feito": "Local para desenvolver e Railway para a demonstração (ADR-0015)."
+        "plano": "Apenas local (ADR-0003)",
+        "feito": "Ambiente local e publicação no Railway (ADR-0015)"
       }
     ],
-    "faixa": "Corrigido na integração, pela revisão. O lint de camadas não acusou, porque não havia import errado.",
+    "faixa": "Ajustes feitos durante a integração, que o lint não detectou",
     "corrigidas": [
       {
         "icone": "engrenagem",
         "aspecto": "Regra das vagas",
-        "plano": "No Domínio",
-        "feito": "A primeira versão do back-end calculava na consulta SQL, na camada de Dados. O cálculo das vagas pedidas voltou ao Domínio."
+        "plano": "Cálculo no Domínio",
+        "feito": "Na primeira versão, o cálculo estava na consulta SQL; na integração, foi movido para o Domínio"
       },
       {
         "icone": "celular",
         "aspecto": "Regras no front-end",
-        "plano": "Nenhuma, a regra fica na API",
-        "feito": "O protótipo das telas contava vagas e montava o CSV no navegador. As duas coisas passaram para a API."
+        "plano": "Regras somente na API",
+        "feito": "O protótipo contava as vagas e gerava o CSV no navegador; essas regras foram movidas para a API"
       }
     ],
-    "notas": "Gabriel. Eu sou o Gabriel. A primeira versão das rotas e das regras do back-end foi minha. Aqui está o que planejamos no Grau A ao lado do que está no código. As camadas da API são as três do plano. A Apresentação ganhou um pacote de autenticação. Os componentes têm os mesmos nomes. O TemplateSet virou arquivos, e o RateLimitGuard virou um serviço que o controller chama. As rotas de tela o plano não detalhava. A implantação era só local, e hoje tem também o Railway, para a demonstração. As duas últimas linhas nós corrigimos na integração. A regra das vagas estava planejada no Domínio. Na minha versão, a conta ficava na consulta SQL, na camada de Dados. O cálculo das vagas pedidas voltou para o Domínio. A soma das vagas já gravadas continua na transação dos Dados, como o documento de arquitetura define. No front-end, o protótipo contava vagas e montava o CSV no navegador. Isso passou para a API. O lint não acusou nenhum dos dois casos, porque não havia import errado. Quem achou foi a revisão.",
+    "notas": "Gabriel. Eu sou o Gabriel e fiz a primeira versão das rotas e das regras do back-end. Neste slide comparamos o que foi planejado no Grau A com o que foi implementado. As camadas da API continuam as mesmas três, e a diferença é que a Apresentação ganhou um pacote para a autenticação. Os componentes também são os do diagrama, com dois ajustes: o TemplateSet foi implementado como arquivos de CSS e imagens, e o RateLimitGuard acabou sendo um serviço chamado pelo controller. As rotas de tela não estavam detalhadas no plano, e na implantação, além do ambiente local, agora temos a publicação no Railway. Os dois últimos itens foram problemas que encontramos na integração. Na primeira versão do back-end, que foi a minha, o cálculo das vagas estava na consulta SQL, e na integração ele foi movido para o Domínio, como estava planejado. A soma das vagas que já estão gravadas continua na transação da camada de Dados. No front-end, o protótipo contava as vagas e gerava o CSV no navegador, e isso também foi para a API. O lint não pegou esses dois casos porque não eram imports errados. Eles apareceram na revisão.",
     "n": 16
   },
   {

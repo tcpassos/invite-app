@@ -1030,8 +1030,8 @@ def m_comparacao(sl, s):
     xs = [128, 340, 640]
     ws = [200, 280, 568]
     y = 150
-    rotulo(sl, xs[1], y, ws[1], 'Prescritiva, planejada no Grau A', tam=15, cor=AZUL, peso=900)
-    rotulo(sl, xs[2], y, ws[2], 'Descritiva, o que está no código', tam=15, cor=AZUL, peso=900)
+    rotulo(sl, xs[1], y, ws[1], 'Planejado no Grau A', tam=15, cor=AZUL, peso=900)
+    rotulo(sl, xs[2], y, ws[2], 'Implementado', tam=15, cor=AZUL, peso=900)
     y += 32
 
     def linha_item(r, y, cor):
