@@ -70,8 +70,8 @@ add(modelo='refino', bloco=A, titulo='Como o backlog foi refinado',
             dict(s='Sprint 5', t='MVP de ponta a ponta', codigo=True), dict(s='Sprint 6', t='Publicação e consolidação', codigo=True)],
     tituloCartoes='O que mudou no backlog durante as sprints',
     cartoes=[
-        dict(t='Lista de presença', antes='atualização em tempo real.', depois='Atualiza sozinha a cada 20 segundos, decidido no Grau A. A história pedia a lista atualizada, sem exigir tempo real.'),
-        dict(t='Texto do convite', antes='saudação e recado livres.', depois='Saudação fixa do template. O recado saiu do MVP.'),
+        dict(t='Lista de presença', antes='atualização em tempo real.', depois='A lista se atualiza sozinha a cada 20 segundos. A história pedia que ela mudasse sem recarregar, e isso não exige tempo real.'),
+        dict(t='Texto do convite', antes='saudação e recado livres.', depois='Cada template tem uma saudação fixa, e o recado ficou fora do MVP, porque o caso de uso só previa nome e local.'),
         dict(t='Ordem das entregas', antes='seis histórias na Sprint 4.', depois='A Sprint 4 ficou com a base do código, e as doze histórias foram entregues na Sprint 5.'),
     ],
     notas='Andreas. As três primeiras sprints foram de requisitos e arquitetura. As três últimas foram de implementação. Nesse tempo o backlog mudou em três pontos. A lista de presença estava prevista em tempo real e ficou com atualização a cada 20 segundos. Decidimos isso ainda no Grau A, porque a história pedia a lista atualizada e não falava em tempo real. O recado livre do convite saiu do MVP. E a ordem das entregas mudou. Seis histórias estavam planejadas para a Sprint 4. Usamos a Sprint 4 para montar a base do código, e as doze histórias foram entregues na Sprint 5. Agora o Tiago apresenta a arquitetura.')
@@ -84,14 +84,14 @@ add(modelo='conteudoImagem', bloco=T, titulo='A arquitetura prescritiva, planeja
            '<strong>MVC no front-end</strong> e <strong>três camadas na API</strong> (Apresentação, Domínio e Dados)',
            '<strong>Três tiers</strong>, cada um num container: front-end, API e banco',
            '<strong>Regra de dependência</strong>, em que cada camada só conhece a de baixo',
-           '<strong>Quinze decisões</strong> registradas em ADRs, cada uma com o motivo'],
+           '<strong>Quinze decisões</strong> registradas em documentos de decisão (ADRs), cada um com o contexto e o motivo'],
     imagem='diagrama-casos-de-uso.png', legendaImagem='Diagrama de casos de uso do Grau A', altImagem=470, topoImagem=150,
     notas='Tiago. Eu sou o Tiago. Montei a base do projeto, a orquestração com Docker e a integração. A arquitetura prescritiva é a que planejamos no Grau A. Começamos pelos casos de uso, que saíram das histórias. Depois fizemos os diagramas de classes, sequência, componentes e implantação. Está tudo no documento de arquitetura. As decisões principais foram MVC no front-end, três camadas na API e três tiers em containers. A regra é que cada camada só conhece a de baixo. O diagrama de sequência da confirmação de presença descreve o mesmo caminho que o Gabriel vai mostrar no código.')
 
 add(modelo='conteudoImagem', bloco=T, titulo='O diagrama de camadas do Grau A', largTexto=600,
-    itens=['O navegador escreve direto na API, no painel e na resposta do convidado',
-           'A página do convite é lida pelo servidor do front-end, para a prévia do link no WhatsApp',
-           'Na API, cada camada só conhece a de baixo, e erros e log atravessam as três',
+    itens=['Quando o anfitrião usa o painel ou o convidado responde, o navegador chama a API diretamente',
+           'A página do convite é montada no servidor do front-end, para o WhatsApp mostrar a prévia do link com nome e imagem',
+           'Na API, cada camada só usa a de baixo, e o tratamento de erros e o log servem às três',
            'Camada é divisão lógica e tier é processo separado. As três camadas ficam no container da API'],
     imagem='diagrama-de-camadas-grau-a-slide.png', legendaImagem='Diagrama de camadas, como foi entregue no Grau A', altImagem=490, topoImagem=144,
     notas='Tiago. Este é o diagrama de camadas como entregamos no Grau A. Para escrever, o navegador fala direto com a API. Isso vale para o painel e para a resposta do convidado. A leitura do convite passa pelo servidor do front-end, porque a prévia do link no WhatsApp precisa das metatags prontas. Dentro da API, cada camada só conhece a de baixo. Camada é uma divisão lógica e tier é um processo separado. Por isso as três camadas ficam no mesmo container da API.')
@@ -103,10 +103,10 @@ add(modelo='capturas', bloco=T, titulo='Classes e sequência da confirmação de
 add(modelo='mapa', bloco=T, titulo='A arquitetura descritiva, que está no código',
     colunas=[
         dict(icone='monitor', t='Front-end', tec='Next.js, MVC', pastas=[('app/', 'rotas das telas'), ('view/', 'componentes de tela'), ('controller/', 'chamadas tipadas à API'), ('templates/', 'CSS de cada template')]),
-        dict(icone='servidor', t='API', tec='NestJS, três camadas', pastas=[('presentation/', 'rotas, sessão e limites'), ('domain/', 'regras do convite e da resposta'), ('data/', 'consultas e transações'), ('model/', 'classes do modelo, sem dependência')]),
-        dict(icone='banco', t='Banco', tec='PostgreSQL', pastas=[('migrations/', 'esquema e categorias'), ('transação', 'trava no convite para o teto')]),
+        dict(icone='servidor', t='API', tec='NestJS, três camadas', pastas=[('presentation/', 'rotas HTTP, sessão e limite de requisições'), ('domain/', 'regras do convite e da resposta'), ('data/', 'consultas e transações'), ('model/', 'classes do modelo, usadas pelas três camadas')]),
+        dict(icone='banco', t='Banco', tec='PostgreSQL', pastas=[('migrations/', 'esquema e categorias'), ('transação', 'trava o convite para não passar do teto de pessoas')]),
     ],
-    base=dict(icone='contrato', t='contract/', d='Tipos compartilhados. O Model do MVC fica na API, e o navegador recebe a projeção dele por esses tipos.'),
+    base=dict(icone='contrato', t='contract/', d='Tipos das requisições e respostas, usados pelo front-end e pela API. Se um lado muda e o outro não, o código não compila.'),
     notas='Tiago. A arquitetura descritiva é a que está no código, e ela tem a mesma estrutura da planejada. O front-end é em Next.js e as pastas seguem o MVC. A pasta app tem as rotas, view tem as telas, controller tem as chamadas à API e templates tem o CSS. A API é em NestJS e tem uma pasta por camada. Tem também a pasta model, com as classes usadas pelas três camadas. O lint impede que essas classes importem de qualquer camada. O Model do MVC fica na API, no Domínio e nos Dados. O navegador recebe só a projeção dele, pelos tipos do pacote contract. O front-end e a API importam esses tipos do mesmo lugar.')
 
 add(modelo='capturas', bloco=T, titulo='Implantação no ambiente local e no Railway', alt=440, topo=164,
@@ -117,9 +117,9 @@ add(modelo='capturas', bloco=T, titulo='Implantação no ambiente local e no Rai
 add(modelo='grade', bloco=T, titulo='Princípios de projeto na implementação', colunas=3, tamCorpo=17, tamTitulo=21, icone=60, gapY=56,
     celulas=[
         dict(icone='camadas', t='Separação de interesses', d='A Apresentação traduz HTTP, o Domínio aplica as regras e os Dados gravam.', destaque=True),
-        dict(icone='seta_baixo', t='Regra de dependência', d='O lint recusa import da camada de cima, em todo PR.'),
+        dict(icone='seta_baixo', t='Regra de dependência', d='Cada camada só usa a de baixo, e o lint barra o import ao contrário.'),
         dict(icone='contrato', t='Interface explícita', d='Front-end e API compartilham os tipos e conversam só por HTTP.'),
-        dict(icone='desacoplar', t='Ocultação de informação', d='O Domínio não conhece HTTP, cookie nem SQL.'),
+        dict(icone='desacoplar', t='Ocultação de informação', d='As regras de negócio não dependem de HTTP, cookie nem SQL, que ficam nas outras camadas.'),
         dict(icone='caixa', t='Alta coesão', d='Um service por assunto: convite, resposta, presença, dieta e conta.'),
         dict(icone='escudo', t='Baixo acoplamento', d='Cada tier é um processo, e trocar o front-end não muda o Domínio.'),
     ],
@@ -129,26 +129,26 @@ add(modelo='grade', bloco=T, titulo='Decisões arquiteturais e o motivo de cada 
     celulas=[
         dict(icone='camadas', t='MVC e três camadas', d='Tela, regra e armazenamento mudam por motivos diferentes.', etiqueta='ADR-0001'),
         dict(icone='container', t='Três tiers em containers', d='Front-end, API e banco como processos separados.', etiqueta='ADR-0002'),
-        dict(icone='link', t='Link com token aleatório', d='O link não pode ser adivinhado e não expõe o identificador.', etiqueta='ADR-0005'),
-        dict(icone='celular', t='Convidado sem conta', d='A identidade é criada na resposta, e o link pessoal permite voltar.', etiqueta='ADR-0006'),
+        dict(icone='link', t='Link com token aleatório', d='O link usa um código aleatório, que não dá para adivinhar, e não o número do convite.', etiqueta='ADR-0005'),
+        dict(icone='celular', t='Convidado sem conta', d='O convidado não cria conta. Ao responder, recebe um link pessoal para alterar a resposta.', etiqueta='ADR-0006'),
         dict(icone='atualizar', t='Consulta periódica', d='A lista se atualiza a cada 20 segundos, sem tempo real.', etiqueta='ADR-0007'),
-        dict(icone='escudo', t='Fronteira pública', d='Teto de vagas, limite de tráfego e o mesmo 404 para quem não tem acesso.', etiqueta='ADR-0008'),
-        dict(icone='cookie', t='Sessão em cookie assinado', d='Sem tabela de sessão, a guarda não depende do banco.', etiqueta='ADR-0010'),
-        dict(icone='relogio', t='Tempo do evento', d='Um instante único e o fuso do projeto, comparando por dia.', etiqueta='ADR-0013'),
+        dict(icone='escudo', t='Fronteira pública', d='As rotas públicas limitam requisições, respeitam o teto de pessoas e não revelam se um convite existe.', etiqueta='ADR-0008'),
+        dict(icone='cookie', t='Sessão em cookie assinado', d='A sessão do anfitrião fica num cookie assinado pela API, sem tabela de sessão no banco.', etiqueta='ADR-0010'),
+        dict(icone='relogio', t='Tempo do evento', d='Datas guardadas num formato só e comparadas por dia, no fuso de Brasília.', etiqueta='ADR-0013'),
     ],
     notas='Tiago. Aqui estão oito das quinze decisões, com o motivo de cada uma. Escolhemos MVC e três camadas porque tela, regra e armazenamento mudam por motivos diferentes. Os tiers rodam em containers separados. O link do convite usa um token aleatório, para não ser adivinhado. O convidado não tem conta e volta à resposta pelo link pessoal. A lista usa consulta periódica. A fronteira pública tem o teto de vagas e devolve o mesmo 404 para quem não tem acesso. A sessão fica num cookie assinado. O tempo do evento usa o fuso do projeto. As tecnologias também são decisões, e o Guilherme apresenta mais adiante. Agora o Gabriel compara o planejado com o implementado.')
 
 add(modelo='comparacao', bloco=GA, titulo='Arquitetura prescritiva e arquitetura descritiva',
     linhas=[
-        dict(icone='camadas', aspecto='Camadas da API', plano='Apresentação, Domínio e Dados', feito='Apresentação, Domínio e Dados, com um pacote de autenticação (AuthController) na Apresentação'),
-        dict(icone='caixa', aspecto='Componentes', plano='Componentes do diagrama', feito='Os mesmos componentes; TemplateSet implementado como arquivos de CSS e imagens; RateLimitGuard implementado como serviço'),
-        dict(icone='monitor', aspecto='Rotas de tela', plano='Sem detalhamento', feito='Convite, link pessoal, painel e página de não encontrado'),
-        dict(icone='container', aspecto='Implantação', plano='Apenas local (ADR-0003)', feito='Ambiente local e publicação no Railway (ADR-0015)'),
+        dict(icone='camadas', aspecto='Camadas da API', plano='Apresentação, Domínio e Dados', feito='As mesmas três, com um módulo a mais na Apresentação para o cadastro, a entrada e a saída do anfitrião'),
+        dict(icone='caixa', aspecto='Componentes', plano='Os do diagrama de componentes', feito='Os mesmos nomes. Os templates do convite viraram arquivos de CSS e imagem, e o limite de requisições é chamado dentro do controller'),
+        dict(icone='monitor', aspecto='Rotas de tela', plano='Não detalhadas', feito='Convite, link pessoal, painel e página de não encontrado'),
+        dict(icone='container', aspecto='Implantação', plano='Só local (ADR-0003)', feito='Local para desenvolver e publicada no Railway para a demonstração (ADR-0015)'),
     ],
     faixa='Ajustes feitos durante a integração, que o lint não detectou',
     corrigidas=[
-        dict(icone='engrenagem', aspecto='Regra das vagas', plano='Cálculo no Domínio', feito='Na primeira versão, o cálculo estava na consulta SQL; na integração, foi movido para o Domínio'),
-        dict(icone='celular', aspecto='Regras no front-end', plano='Regras somente na API', feito='O protótipo contava as vagas e gerava o CSV no navegador; essas regras foram movidas para a API'),
+        dict(icone='engrenagem', aspecto='Regra das vagas', plano='O Domínio calcula as vagas', feito='Na primeira versão do back-end, a consulta SQL fazia esse cálculo. Na integração, ele voltou para o Domínio'),
+        dict(icone='celular', aspecto='Regras no front-end', plano='O front-end só mostra os dados', feito='O protótipo das telas contava as vagas e gerava o CSV no navegador. Isso passou para a API'),
     ],
     notas='Gabriel. Eu sou o Gabriel e fiz a primeira versão das rotas e das regras do back-end. Neste slide comparamos o que foi planejado no Grau A com o que foi implementado. As camadas da API continuam as mesmas três, e a diferença é que a Apresentação ganhou um pacote para a autenticação. Os componentes também são os do diagrama, com dois ajustes: o TemplateSet foi implementado como arquivos de CSS e imagens, e o RateLimitGuard acabou sendo um serviço chamado pelo controller. As rotas de tela não estavam detalhadas no plano, e na implantação, além do ambiente local, agora temos a publicação no Railway. Os dois últimos itens foram problemas que encontramos na integração. Na primeira versão do back-end, que foi a minha, o cálculo das vagas estava na consulta SQL, e na integração ele foi movido para o Domínio, como estava planejado. A soma das vagas que já estão gravadas continua na transação da camada de Dados. No front-end, o protótipo contava as vagas e gerava o CSV no navegador, e isso também foi para a API. O lint não pegou esses dois casos porque não eram imports errados. Eles apareceram na revisão.')
 
@@ -161,7 +161,7 @@ add(modelo='duasIcones', bloco=GA, titulo='Semelhanças e diferenças entre o pl
 
 add(modelo='grade', bloco=GA, titulo='Como a arquitetura ajudou a construir o MVP', colunas=2, icone=60, tamTitulo=21, tamCorpo=17, gapY=48,
     celulas=[
-        dict(icone='contrato', t='Trabalho em paralelo', d='Com o pacote de tipos, o front-end foi feito contra um mock e o back-end contra o banco, sem um esperar o outro.', destaque=True),
+        dict(icone='contrato', t='Trabalho em paralelo', d='Com os tipos combinados no pacote compartilhado, o front-end foi feito com uma API simulada, sem esperar o back-end.', destaque=True),
         dict(icone='lupa', t='Referência na integração', d='Comparando o código com o Guia da Arquitetura, achamos as regras que estavam na camada errada.'),
         dict(icone='pr', t='Regra de dependência automatizada', d='O lint confere a dependência entre camadas em todo PR, além da revisão.'),
         dict(icone='lista', t='Decisões registradas', d='Com o motivo escrito no ADR, consultamos a decisão em vez de discutir de novo.'),
@@ -175,13 +175,13 @@ add(modelo='codigoFluxo', bloco='Implementação, Gabriel', titulo='A resposta d
     paineis=[
         dict(icone='servidor', camada='Apresentação', arquivo='public-rsvp.controller.ts',
              codigo=['enforceOriginLimit(clientIp(req));', 'const cmd = parseRsvpCommand(raw);', 'if (!(await getPublishedInvite(t)))', '  throw new NotFoundException();', 'enforceWriteLimit(t);', 'return rsvps.registerRsvp(t, cmd);'],
-             legenda='Confere o formato e os limites de tráfego, e traduz o HTTP num comando.'),
+             legenda='Confere o pedido e o limite de requisições, e passa os dados ao Domínio.'),
         dict(icone='engrenagem', camada='Domínio', arquivo='rsvp.service.ts', destaque=True,
              codigo=['const valid = validateRsvp(cmd, inv);', '// Sim ocupa 1 + acompanhantes', 'return invites.saveRsvpWithinCapacity(', '  invite.id, guest, note,', '  valid.seatsRequested,', ');'],
              legenda='Aplica as regras da resposta e calcula quantas vagas ela pede.'),
         dict(icone='banco', camada='Dados', arquivo='invite.repository.ts',
              codigo=['db.transaction().execute(async trx => {', '  // SELECT ... FOR UPDATE', '  const inv = await lockInvite(trx, id);', '  if (await exceedsCapacity(trx, ...))', '    return refused("CapacityExceeded");', '  // grava o convidado', '});'],
-             legenda='Trava o convite, confere o teto e grava, tudo na mesma transação.'),
+             legenda='Numa transação, trava o convite, confere se ainda há vaga e grava.'),
     ],
     notas='Gabriel. Este é o caminho de uma resposta do convidado no código. Na Apresentação, o controller confere os limites de tráfego e o formato, e transforma o HTTP num comando. Ele não decide nada. No Domínio, o service aplica as regras e calcula as vagas. O Sim ocupa uma vaga para o convidado e uma para cada acompanhante. Na camada de Dados, o repositório abre uma transação e trava a linha do convite com FOR UPDATE. Depois confere o teto e grava. Temos um teste com quatro respostas simultâneas num convite em que só cabem duas. Passam duas.')
 
@@ -191,7 +191,7 @@ add(modelo='codigoFluxo', bloco='Implementação, Gabriel', titulo='A regra de c
              codigo=['{ target: "./api/src/domain",', '  from: "./api/src/presentation",', '  message: "Domínio não importa',
                      '            da Apresentação" },', '{ target: "./api/src/presentation",', '  from: "./api/src/data",',
                      '  message: "A Apresentação não chama', '            a camada de Dados" },'],
-             legenda='Uma zona por regra do Guia da Arquitetura, cada uma com a mensagem do motivo.'),
+             legenda='Cada regra de camadas do Guia vira uma restrição de import, com a mensagem do motivo.'),
         dict(icone='pr', camada='O que o PR recebe', arquivo='npm run lint, na integração contínua', destaque=True,
              codigo=['domain/teste.ts', '  1:34  error  Unexpected path', '  "../presentation/...invite.controller"', '  imported in restricted zone.', '  Domínio não importa da Apresentação', '', '1 problem (1 error)'],
              legenda='O PR fica vermelho e não entra na main até o import ser corrigido.'),
@@ -201,8 +201,8 @@ add(modelo='codigoFluxo', bloco='Implementação, Gabriel', titulo='A regra de c
 add(modelo='grade', bloco='Implementação, Gabriel', titulo='Boas práticas de desenvolvimento', colunas=3, icone=56, tamTitulo=19, tamCorpo=16, gapY=40,
     celulas=[
         dict(icone='check', t='Testes do Domínio', d='As regras da resposta, das vagas, da data e da publicação, sem banco.', destaque=True),
-        dict(icone='banco', t='Testes contra o banco', d='As consultas rodam num PostgreSQL de verdade, inclusive a concorrência no teto.'),
-        dict(icone='fluxo', t='Testes das rotas', d='O fluxo completo pela API e o mesmo 404 para quem não tem acesso.'),
+        dict(icone='banco', t='Testes contra o banco', d='As consultas rodam num PostgreSQL de verdade, inclusive respostas simultâneas no último lugar.'),
+        dict(icone='fluxo', t='Testes das rotas', d='O fluxo completo pela API, inclusive quem tenta abrir um convite que não pode ver.'),
         dict(icone='pr', t='Integração contínua', d='Lint, formatação, tipos, testes e imagens em todo PR.'),
         dict(icone='git', t='Mudança por PR', d='A main só recebe mudança por PR, com a integração contínua verde.'),
         dict(icone='lista', t='Decisões registradas', d='Cada decisão de arquitetura tem um ADR com o contexto e o motivo.'),
@@ -211,10 +211,10 @@ add(modelo='grade', bloco='Implementação, Gabriel', titulo='Boas práticas de 
 
 add(modelo='grade', bloco=GU, titulo='Tecnologias e por que foram escolhidas', colunas=2, icone=52, tamTitulo=19, tamCorpo=17, gapY=28,
     celulas=[
-        dict(icone='chaves', t='TypeScript em tudo', d='O mesmo contrato de tipos no front-end e na API.'),
+        dict(icone='chaves', t='TypeScript em tudo', d='Front-end e API usam os mesmos tipos, então uma mudança num lado aparece no outro.'),
         dict(icone='monitor', t='Next.js', d='Renderiza o convite no servidor, para a prévia do link no WhatsApp.'),
         dict(icone='servidor', t='NestJS', d='Módulos e injeção de dependência organizam o código nas três camadas.'),
-        dict(icone='banco', t='PostgreSQL e Kysely', d='Transação com trava para o teto, e SQL tipado na camada de Dados.'),
+        dict(icone='banco', t='PostgreSQL e Kysely', d='A transação com trava garante o teto de pessoas, e o Kysely confere o SQL com os tipos.'),
         dict(icone='container', t='Docker Compose', d='Os três tiers sobem com um comando na máquina de cada um.'),
         dict(icone='pr', t='GitHub Actions', d='Lint, tipos, testes contra o banco e imagens em todo PR.'),
         dict(icone='foguete', t='Railway', d='As mesmas imagens publicadas, uma por serviço, para a demonstração.', destaque=True),
@@ -232,7 +232,7 @@ add(modelo='divisor', bloco='Reflexão', num='04', titulo='Reflexão',
 add(modelo='conteudoImagem', bloco=GU, titulo='Scrum no Azure DevOps, em seis sprints', largTexto=640,
     itens=['<strong>Sprints de duas semanas</strong>, cada uma com objetivo e entregáveis, do levantamento de requisitos à publicação',
            '<strong>Histórias com persona</strong> e tarefas de tela e de API, cada uma com responsável',
-           '<strong>Quadro Kanban</strong> para ver o andamento e o que estava travado',
+           '<strong>Quadro Kanban</strong> para ver o que estava em andamento, feito ou parado',
            '<strong>Desde a base do código, cada mudança por PR</strong>, entrando na main só com a integração contínua verde',
            'Decisões registradas no repositório, com o motivo de cada uma'],
     imagem='c10-kanban-done.png', legendaImagem='Histórias concluídas no quadro Kanban',
@@ -240,10 +240,10 @@ add(modelo='conteudoImagem', bloco=GU, titulo='Scrum no Azure DevOps, em seis sp
 
 add(modelo='cartoes', bloco=GU, titulo='Dificuldades e lições', colunas=2, tamCorpo=17,
     cartoes=[
-        dict(k='Integração', t='Front-end e back-end em paralelo', d='Foram juntados só na Sprint 5. <strong>Lição:</strong> integrar cedo, em cima do pacote de tipos, que existia desde o início.'),
+        dict(k='Integração', t='Front-end e back-end em paralelo', d='Foram feitos separados e juntados só na Sprint 5. <strong>Lição:</strong> integrar mais cedo, usando os tipos compartilhados desde o início.'),
         dict(k='Protótipo', t='Regras de negócio na tela', d='O protótipo contava vagas e montava o CSV. <strong>Lição:</strong> ler o protótipo contra o Guia antes de virar código.'),
         dict(k='Back-end', t='Regra na camada errada', d='O cálculo das vagas estava na consulta. <strong>Lição:</strong> o lint acusa import errado, e regra na camada errada depende da revisão.'),
-        dict(k='Publicação', t='A configuração da publicação', d='O cookie entre domínios e uma variável sem https derrubaram o login e a página do convite. <strong>Lição:</strong> testar a publicação antes do dia.'),
+        dict(k='Publicação', t='A configuração da publicação', d='No Railway, o cookie de sessão entre dois domínios e uma variável sem https quebraram o login e a página do convite. <strong>Lição:</strong> testar a publicação antes do dia.'),
     ],
     notas='Guilherme. Tivemos quatro dificuldades principais. Front-end e back-end foram feitos em paralelo e só juntamos os dois na Sprint 5, o que foi tarde. O meu protótipo fazia regras de negócio na tela, e isso teve que ir para a API. Na primeira versão do back-end, a regra das vagas estava na camada errada. Na publicação, a configuração derrubou o login e a página do convite. Nos quatro casos, o que aprendemos foi conferir mais cedo, contra a arquitetura, o que cada parte está fazendo.')
 

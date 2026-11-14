@@ -228,12 +228,12 @@
       {
         "t": "Lista de presença",
         "antes": "atualização em tempo real.",
-        "depois": "Atualiza sozinha a cada 20 segundos, decidido no Grau A. A história pedia a lista atualizada, sem exigir tempo real."
+        "depois": "A lista se atualiza sozinha a cada 20 segundos. A história pedia que ela mudasse sem recarregar, e isso não exige tempo real."
       },
       {
         "t": "Texto do convite",
         "antes": "saudação e recado livres.",
-        "depois": "Saudação fixa do template. O recado saiu do MVP."
+        "depois": "Cada template tem uma saudação fixa, e o recado ficou fora do MVP, porque o caso de uso só previa nome e local."
       },
       {
         "t": "Ordem das entregas",
@@ -262,7 +262,7 @@
       "<strong>MVC no front-end</strong> e <strong>três camadas na API</strong> (Apresentação, Domínio e Dados)",
       "<strong>Três tiers</strong>, cada um num container: front-end, API e banco",
       "<strong>Regra de dependência</strong>, em que cada camada só conhece a de baixo",
-      "<strong>Quinze decisões</strong> registradas em ADRs, cada uma com o motivo"
+      "<strong>Quinze decisões</strong> registradas em documentos de decisão (ADRs), cada um com o contexto e o motivo"
     ],
     "imagem": "diagrama-casos-de-uso.png",
     "legendaImagem": "Diagrama de casos de uso do Grau A",
@@ -277,9 +277,9 @@
     "titulo": "O diagrama de camadas do Grau A",
     "largTexto": 600,
     "itens": [
-      "O navegador escreve direto na API, no painel e na resposta do convidado",
-      "A página do convite é lida pelo servidor do front-end, para a prévia do link no WhatsApp",
-      "Na API, cada camada só conhece a de baixo, e erros e log atravessam as três",
+      "Quando o anfitrião usa o painel ou o convidado responde, o navegador chama a API diretamente",
+      "A página do convite é montada no servidor do front-end, para o WhatsApp mostrar a prévia do link com nome e imagem",
+      "Na API, cada camada só usa a de baixo, e o tratamento de erros e o log servem às três",
       "Camada é divisão lógica e tier é processo separado. As três camadas ficam no container da API"
     ],
     "imagem": "diagrama-de-camadas-grau-a-slide.png",
@@ -343,7 +343,7 @@
         "pastas": [
           [
             "presentation/",
-            "rotas, sessão e limites"
+            "rotas HTTP, sessão e limite de requisições"
           ],
           [
             "domain/",
@@ -355,7 +355,7 @@
           ],
           [
             "model/",
-            "classes do modelo, sem dependência"
+            "classes do modelo, usadas pelas três camadas"
           ]
         ]
       },
@@ -370,7 +370,7 @@
           ],
           [
             "transação",
-            "trava no convite para o teto"
+            "trava o convite para não passar do teto de pessoas"
           ]
         ]
       }
@@ -378,7 +378,7 @@
     "base": {
       "icone": "contrato",
       "t": "contract/",
-      "d": "Tipos compartilhados. O Model do MVC fica na API, e o navegador recebe a projeção dele por esses tipos."
+      "d": "Tipos das requisições e respostas, usados pelo front-end e pela API. Se um lado muda e o outro não, o código não compila."
     },
     "notas": "Tiago. A arquitetura descritiva é a que está no código, e ela tem a mesma estrutura da planejada. O front-end é em Next.js e as pastas seguem o MVC. A pasta app tem as rotas, view tem as telas, controller tem as chamadas à API e templates tem o CSS. A API é em NestJS e tem uma pasta por camada. Tem também a pasta model, com as classes usadas pelas três camadas. O lint impede que essas classes importem de qualquer camada. O Model do MVC fica na API, no Domínio e nos Dados. O navegador recebe só a projeção dele, pelos tipos do pacote contract. O front-end e a API importam esses tipos do mesmo lugar.",
     "n": 12
@@ -418,7 +418,7 @@
       {
         "icone": "seta_baixo",
         "t": "Regra de dependência",
-        "d": "O lint recusa import da camada de cima, em todo PR."
+        "d": "Cada camada só usa a de baixo, e o lint barra o import ao contrário."
       },
       {
         "icone": "contrato",
@@ -428,7 +428,7 @@
       {
         "icone": "desacoplar",
         "t": "Ocultação de informação",
-        "d": "O Domínio não conhece HTTP, cookie nem SQL."
+        "d": "As regras de negócio não dependem de HTTP, cookie nem SQL, que ficam nas outras camadas."
       },
       {
         "icone": "caixa",
@@ -470,13 +470,13 @@
       {
         "icone": "link",
         "t": "Link com token aleatório",
-        "d": "O link não pode ser adivinhado e não expõe o identificador.",
+        "d": "O link usa um código aleatório, que não dá para adivinhar, e não o número do convite.",
         "etiqueta": "ADR-0005"
       },
       {
         "icone": "celular",
         "t": "Convidado sem conta",
-        "d": "A identidade é criada na resposta, e o link pessoal permite voltar.",
+        "d": "O convidado não cria conta. Ao responder, recebe um link pessoal para alterar a resposta.",
         "etiqueta": "ADR-0006"
       },
       {
@@ -488,19 +488,19 @@
       {
         "icone": "escudo",
         "t": "Fronteira pública",
-        "d": "Teto de vagas, limite de tráfego e o mesmo 404 para quem não tem acesso.",
+        "d": "As rotas públicas limitam requisições, respeitam o teto de pessoas e não revelam se um convite existe.",
         "etiqueta": "ADR-0008"
       },
       {
         "icone": "cookie",
         "t": "Sessão em cookie assinado",
-        "d": "Sem tabela de sessão, a guarda não depende do banco.",
+        "d": "A sessão do anfitrião fica num cookie assinado pela API, sem tabela de sessão no banco.",
         "etiqueta": "ADR-0010"
       },
       {
         "icone": "relogio",
         "t": "Tempo do evento",
-        "d": "Um instante único e o fuso do projeto, comparando por dia.",
+        "d": "Datas guardadas num formato só e comparadas por dia, no fuso de Brasília.",
         "etiqueta": "ADR-0013"
       }
     ],
@@ -516,25 +516,25 @@
         "icone": "camadas",
         "aspecto": "Camadas da API",
         "plano": "Apresentação, Domínio e Dados",
-        "feito": "Apresentação, Domínio e Dados, com um pacote de autenticação (AuthController) na Apresentação"
+        "feito": "As mesmas três, com um módulo a mais na Apresentação para o cadastro, a entrada e a saída do anfitrião"
       },
       {
         "icone": "caixa",
         "aspecto": "Componentes",
-        "plano": "Componentes do diagrama",
-        "feito": "Os mesmos componentes; TemplateSet implementado como arquivos de CSS e imagens; RateLimitGuard implementado como serviço"
+        "plano": "Os do diagrama de componentes",
+        "feito": "Os mesmos nomes. Os templates do convite viraram arquivos de CSS e imagem, e o limite de requisições é chamado dentro do controller"
       },
       {
         "icone": "monitor",
         "aspecto": "Rotas de tela",
-        "plano": "Sem detalhamento",
+        "plano": "Não detalhadas",
         "feito": "Convite, link pessoal, painel e página de não encontrado"
       },
       {
         "icone": "container",
         "aspecto": "Implantação",
-        "plano": "Apenas local (ADR-0003)",
-        "feito": "Ambiente local e publicação no Railway (ADR-0015)"
+        "plano": "Só local (ADR-0003)",
+        "feito": "Local para desenvolver e publicada no Railway para a demonstração (ADR-0015)"
       }
     ],
     "faixa": "Ajustes feitos durante a integração, que o lint não detectou",
@@ -542,14 +542,14 @@
       {
         "icone": "engrenagem",
         "aspecto": "Regra das vagas",
-        "plano": "Cálculo no Domínio",
-        "feito": "Na primeira versão, o cálculo estava na consulta SQL; na integração, foi movido para o Domínio"
+        "plano": "O Domínio calcula as vagas",
+        "feito": "Na primeira versão do back-end, a consulta SQL fazia esse cálculo. Na integração, ele voltou para o Domínio"
       },
       {
         "icone": "celular",
         "aspecto": "Regras no front-end",
-        "plano": "Regras somente na API",
-        "feito": "O protótipo contava as vagas e gerava o CSV no navegador; essas regras foram movidas para a API"
+        "plano": "O front-end só mostra os dados",
+        "feito": "O protótipo das telas contava as vagas e gerava o CSV no navegador. Isso passou para a API"
       }
     ],
     "notas": "Gabriel. Eu sou o Gabriel e fiz a primeira versão das rotas e das regras do back-end. Neste slide comparamos o que foi planejado no Grau A com o que foi implementado. As camadas da API continuam as mesmas três, e a diferença é que a Apresentação ganhou um pacote para a autenticação. Os componentes também são os do diagrama, com dois ajustes: o TemplateSet foi implementado como arquivos de CSS e imagens, e o RateLimitGuard acabou sendo um serviço chamado pelo controller. As rotas de tela não estavam detalhadas no plano, e na implantação, além do ambiente local, agora temos a publicação no Railway. Os dois últimos itens foram problemas que encontramos na integração. Na primeira versão do back-end, que foi a minha, o cálculo das vagas estava na consulta SQL, e na integração ele foi movido para o Domínio, como estava planejado. A soma das vagas que já estão gravadas continua na transação da camada de Dados. No front-end, o protótipo contava as vagas e gerava o CSV no navegador, e isso também foi para a API. O lint não pegou esses dois casos porque não eram imports errados. Eles apareceram na revisão.",
@@ -599,7 +599,7 @@
       {
         "icone": "contrato",
         "t": "Trabalho em paralelo",
-        "d": "Com o pacote de tipos, o front-end foi feito contra um mock e o back-end contra o banco, sem um esperar o outro.",
+        "d": "Com os tipos combinados no pacote compartilhado, o front-end foi feito com uma API simulada, sem esperar o back-end.",
         "destaque": true
       },
       {
@@ -652,7 +652,7 @@
           "enforceWriteLimit(t);",
           "return rsvps.registerRsvp(t, cmd);"
         ],
-        "legenda": "Confere o formato e os limites de tráfego, e traduz o HTTP num comando."
+        "legenda": "Confere o pedido e o limite de requisições, e passa os dados ao Domínio."
       },
       {
         "icone": "engrenagem",
@@ -682,7 +682,7 @@
           "  // grava o convidado",
           "});"
         ],
-        "legenda": "Trava o convite, confere o teto e grava, tudo na mesma transação."
+        "legenda": "Numa transação, trava o convite, confere se ainda há vaga e grava."
       }
     ],
     "notas": "Gabriel. Este é o caminho de uma resposta do convidado no código. Na Apresentação, o controller confere os limites de tráfego e o formato, e transforma o HTTP num comando. Ele não decide nada. No Domínio, o service aplica as regras e calcula as vagas. O Sim ocupa uma vaga para o convidado e uma para cada acompanhante. Na camada de Dados, o repositório abre uma transação e trava a linha do convite com FOR UPDATE. Depois confere o teto e grava. Temos um teste com quatro respostas simultâneas num convite em que só cabem duas. Passam duas.",
@@ -712,7 +712,7 @@
           "  message: \"A Apresentação não chama",
           "            a camada de Dados\" },"
         ],
-        "legenda": "Uma zona por regra do Guia da Arquitetura, cada uma com a mensagem do motivo."
+        "legenda": "Cada regra de camadas do Guia vira uma restrição de import, com a mensagem do motivo."
       },
       {
         "icone": "pr",
@@ -753,12 +753,12 @@
       {
         "icone": "banco",
         "t": "Testes contra o banco",
-        "d": "As consultas rodam num PostgreSQL de verdade, inclusive a concorrência no teto."
+        "d": "As consultas rodam num PostgreSQL de verdade, inclusive respostas simultâneas no último lugar."
       },
       {
         "icone": "fluxo",
         "t": "Testes das rotas",
-        "d": "O fluxo completo pela API e o mesmo 404 para quem não tem acesso."
+        "d": "O fluxo completo pela API, inclusive quem tenta abrir um convite que não pode ver."
       },
       {
         "icone": "pr",
@@ -792,7 +792,7 @@
       {
         "icone": "chaves",
         "t": "TypeScript em tudo",
-        "d": "O mesmo contrato de tipos no front-end e na API."
+        "d": "Front-end e API usam os mesmos tipos, então uma mudança num lado aparece no outro."
       },
       {
         "icone": "monitor",
@@ -807,7 +807,7 @@
       {
         "icone": "banco",
         "t": "PostgreSQL e Kysely",
-        "d": "Transação com trava para o teto, e SQL tipado na camada de Dados."
+        "d": "A transação com trava garante o teto de pessoas, e o Kysely confere o SQL com os tipos."
       },
       {
         "icone": "container",
@@ -860,7 +860,7 @@
     "itens": [
       "<strong>Sprints de duas semanas</strong>, cada uma com objetivo e entregáveis, do levantamento de requisitos à publicação",
       "<strong>Histórias com persona</strong> e tarefas de tela e de API, cada uma com responsável",
-      "<strong>Quadro Kanban</strong> para ver o andamento e o que estava travado",
+      "<strong>Quadro Kanban</strong> para ver o que estava em andamento, feito ou parado",
       "<strong>Desde a base do código, cada mudança por PR</strong>, entrando na main só com a integração contínua verde",
       "Decisões registradas no repositório, com o motivo de cada uma"
     ],
@@ -879,7 +879,7 @@
       {
         "k": "Integração",
         "t": "Front-end e back-end em paralelo",
-        "d": "Foram juntados só na Sprint 5. <strong>Lição:</strong> integrar cedo, em cima do pacote de tipos, que existia desde o início."
+        "d": "Foram feitos separados e juntados só na Sprint 5. <strong>Lição:</strong> integrar mais cedo, usando os tipos compartilhados desde o início."
       },
       {
         "k": "Protótipo",
@@ -894,7 +894,7 @@
       {
         "k": "Publicação",
         "t": "A configuração da publicação",
-        "d": "O cookie entre domínios e uma variável sem https derrubaram o login e a página do convite. <strong>Lição:</strong> testar a publicação antes do dia."
+        "d": "No Railway, o cookie de sessão entre dois domínios e uma variável sem https quebraram o login e a página do convite. <strong>Lição:</strong> testar a publicação antes do dia."
       }
     ],
     "notas": "Guilherme. Tivemos quatro dificuldades principais. Front-end e back-end foram feitos em paralelo e só juntamos os dois na Sprint 5, o que foi tarde. O meu protótipo fazia regras de negócio na tela, e isso teve que ir para a API. Na primeira versão do back-end, a regra das vagas estava na camada errada. Na publicação, a configuração derrubou o login e a página do convite. Nos quatro casos, o que aprendemos foi conferir mais cedo, contra a arquitetura, o que cada parte está fazendo.",
