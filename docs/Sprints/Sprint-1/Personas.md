@@ -31,6 +31,8 @@ Nos work items, a tag não leva `@`: `MarinaAnfitriaPersona`. O caractere aparec
 - Criar e personalizar um convite bonito em poucos minutos
 - Compartilhar por link ou WhatsApp com facilidade
 - Acompanhar em tempo real quem confirmou presença
+
+> **Atualização da Sprint 6.** A lista de presença se atualiza sozinha a cada 20 segundos, sem recarregar a página, em vez de tempo real. A decisão está no [ADR-0007](../Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md).
 - Reunir as restrições alimentares automaticamente para repassar ao buffet
 
 ---

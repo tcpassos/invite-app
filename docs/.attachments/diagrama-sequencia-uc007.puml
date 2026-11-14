@@ -1,0 +1,187 @@
+@startuml diagrama-sequencia-uc007
+' Fonte do Diagrama de Sequência do UC007, Visualizar lista de presença, da Sprint 2.
+' Desenhado em 13/11/2026 a partir do código, porque o diagrama faltou na entrega do Grau A.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -e PLANTUML_LIMIT_SIZE=16384 -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-sequencia-uc007.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' Identificadores de método, de rota e de tabela em inglês, conforme o Guia de Estilo. Notas em português.
+' Os três tiers vêm do ADR-0002. As três camadas lógicas da API vêm do ADR-0001.
+' A consulta periódica vem do ADR-0007 e o recuo em falhas da seção 9.4 do Guia da Arquitetura.
+' Código de referência: front/src/controller/polling.ts, front/src/controller/host-panel.ts,
+' front/src/view/invite-responses-panel.tsx, api/src/presentation/authenticated/invite.controller.ts,
+' api/src/presentation/common/session.ts, api/src/domain/attendance.service.ts e
+' api/src/data/invite.repository.ts.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam sequenceMessageAlign first
+skinparam maxMessageSize 220
+hide footbox
+
+actor "Anfitrião" as Anfitriao
+
+box "Navegador"
+  participant "HostPanelPage\ntela de respostas" as HP
+  participant "ApiClient" as AC
+end box
+
+box "Tier API, container NestJS"
+  participant "Apresentação\nSessionGuard" as SG
+  participant "Apresentação\nInviteController" as PR
+  participant "Domínio\nAttendanceService" as DM
+  participant "Dados\nInviteRepository" as DA
+end box
+
+box "Tier Banco, container PostgreSQL"
+  participant "Banco\nPostgreSQL" as DB
+end box
+
+== UC007 passo 1, o painel abre e a consulta periódica começa ==
+
+Anfitriao -> HP : abre o painel de um convite já publicado (passo 1)
+activate HP
+
+note right of HP
+  A casca do painel já conferiu a sessão
+  com GET /auth/session antes de mostrar
+  a tela. Esse passo fica fora do diagrama.
+end note
+
+HP -> HP : usePolling(load, true)\nprimeira consulta imediata
+activate HP
+deactivate HP
+
+loop enquanto o painel estiver aberto, a cada nextPollDelay(failures) (ADR-0007)
+
+  HP -> AC : getAttendance(inviteId)
+  activate AC
+
+  note right of HP
+    Na mesma rodada, getDietarySummary(inviteId)
+    sai em paralelo e segue o Diagrama 3.
+  end note
+
+  AC -> SG : GET /invites/{inviteId}/attendance\ncookie de sessão, cache no-store
+  activate SG
+
+  alt a API responde
+
+  SG -> SG : authenticateSession(req, res)
+  activate SG
+  deactivate SG
+
+  alt a sessão é válida
+
+    SG -> PR : segue com o hostId, e o cookie renovado por mais 30 minutos (ADR-0010)
+    deactivate SG
+    activate PR
+
+    PR -> DM : listAttendance(inviteId, hostId)
+    activate DM
+
+    DM -> DA : findById(inviteId)
+    activate DA
+    DA -> DB : SELECT invite WHERE id = ?
+    activate DB
+    DB --> DA : linha do convite
+    deactivate DB
+    DA --> DM : Invite ou nada
+    deactivate DA
+
+    DM -> DM : validateOwnership(invite, hostId)
+    activate DM
+    deactivate DM
+
+    alt o convite é deste anfitrião
+
+      DM -> DA : findAttendanceByStatus(inviteId, [ACCEPTED, MAYBE, DECLINED])
+      activate DA
+      DA -> DB : SELECT name, status, companion_count, responded_at\nFROM guest WHERE invite_id = ? AND status IN (?)\nORDER BY responded_at DESC, id DESC
+      activate DB
+      DB --> DA : uma linha por convidado que respondeu
+      deactivate DB
+      DA --> DM : AttendanceEntry [0..*]
+      deactivate DA
+
+      DM -> DM : soma seatsRequested(status, companionCount)\nde cada linha (RN1)
+      activate DM
+      deactivate DM
+
+      DM --> PR : AttendanceList(guests, totalPeople)
+      PR --> AC : 200 { guests, totalPeople }\nCache-Control: private, no-store
+      AC --> HP : AttendanceList
+
+      HP -> HP : zera as falhas e guarda a lista e o horário
+      activate HP
+      deactivate HP
+
+      alt há pelo menos uma resposta
+
+        HP --> Anfitriao : convidados agrupados em confirmados, talvez e recusados (passo 2, ED1)
+        HP --> Anfitriao : total de pessoas com os acompanhantes e o horário da atualização (passo 3, RN1)
+
+      else A1, ainda não há respostas
+
+        HP --> Anfitriao : informa que nenhum convidado respondeu até o momento (A1.1)
+
+      end
+
+    else o convite não existe ou é de outro anfitrião
+
+      DM --> PR : NotInviteOwner
+      PR --> AC : 404 NOT_FOUND
+      AC --> HP : ApiRequestError
+      HP -> HP : conta uma falha, como no ramo de falha abaixo
+      activate HP
+      deactivate HP
+
+    end
+
+    deactivate DM
+    deactivate PR
+
+  else a sessão está ausente, adulterada ou vencida
+
+    SG --> AC : 401 UNAUTHENTICATED
+    deactivate SG
+    AC --> HP : ApiRequestError
+    HP --> Anfitriao : leva de volta à tela de entrada, e a consulta para
+
+  end
+
+  else a API não respondeu, por rede ou pelo prazo de 15 segundos
+
+    deactivate SG
+    AC -> AC : repete a leitura uma vez (retry once, Guia 9.4)
+    activate AC
+    deactivate AC
+    AC --> HP : ApiUnavailableError, se a repetição também falhar
+
+  end
+
+  deactivate AC
+
+  opt a consulta falhou
+
+    HP -> HP : failures + 1
+    activate HP
+    deactivate HP
+    HP --> Anfitriao : mantém a última lista e avisa que ela pode estar desatualizada
+
+    note right of HP
+      Primeira falha: o intervalo continua em 20 s.
+      A partir da segunda falha seguida, dobra a cada
+      falha até o teto de 120 s, e não para sozinho.
+    end note
+
+  end
+
+end
+
+Anfitriao -> HP : sai do painel
+HP -> HP : cancela o temporizador da próxima consulta
+activate HP
+deactivate HP
+deactivate HP
+
+@enduml

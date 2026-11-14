@@ -2,6 +2,7 @@
 // campo, nunca pela mensagem (Guia, 9.3). O texto que o usuário lê é da view.
 import { ErrorCode, type ValidationRule } from '@invite-app/contract';
 import { ApiRequestError, ApiUnavailableError } from './api-client';
+import { logServerError } from './server-env';
 
 export function errorCode(error: unknown): ErrorCode | undefined {
   return error instanceof ApiRequestError ? error.code : undefined;
@@ -48,9 +49,33 @@ export async function readPublic<T>(read: Promise<T>): Promise<PublicReadOutcome
     const code = errorCode(error);
     if (code === ErrorCode.NotFound) return { kind: 'notFound' };
     if (code === ErrorCode.RateLimited) return { kind: 'busy' };
-    if (error instanceof ApiRequestError || error instanceof ApiUnavailableError) {
+    if (error instanceof ApiUnavailableError) {
+      // A API não chegou a dizer o que houve, então o motivo fica na linha do tier Front,
+      // com o identificador de correlação da última tentativa (ADR-0012).
+      logServerError({
+        message: 'leitura pública sem resposta da API',
+        requestId: error.requestId,
+        cause: causeCode(error.cause),
+      });
       return { kind: 'unavailable' };
     }
+    if (error instanceof ApiRequestError) return { kind: 'unavailable' };
     throw error;
   }
+}
+
+/**
+ * O código da falha de rede (ECONNREFUSED, ENOTFOUND) ou o nome do erro (TimeoutError).
+ * A mensagem fica de fora, porque pode trazer o endereço com o token (ADR-0012).
+ */
+function causeCode(cause: unknown): string | undefined {
+  let name: string | undefined;
+  // A falha do fetch do Node guarda o código um nível abaixo. Três níveis bastam.
+  for (let depth = 0; depth < 3 && typeof cause === 'object' && cause !== null; depth++) {
+    const link = cause as { name?: unknown; code?: unknown; cause?: unknown };
+    if (typeof link.code === 'string') return link.code;
+    if (typeof link.name === 'string') name ??= link.name;
+    cause = link.cause;
+  }
+  return name;
 }

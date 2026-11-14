@@ -4,14 +4,24 @@
 import 'server-only';
 import { randomBytes } from 'node:crypto';
 import { ApiClient } from './api-client';
+import { apiUrlInternal } from './server-env';
 
 // O identificador de correlação nasce aqui e a API o reaproveita (ADR-0012).
 const newRequestId = () => randomBytes(8).toString('hex');
 
+// Sem endereço da API, a chamada falha como rede caída, e não como exceção solta que vira
+// o erro genérico do Next. O motivo já foi para o log em apiUrlInternal.
+const noApiAddress: typeof fetch = () =>
+  Promise.reject(new Error('API_URL_INTERNAL ausente ou inválida'));
+
 export function serverApi(): ApiClient {
-  const baseUrl = process.env.API_URL_INTERNAL;
-  if (!baseUrl) throw new Error('API_URL_INTERNAL não está definida');
+  const baseUrl = apiUrlInternal();
   // Salto 2 do Guia, 9.4: o tier Front desiste antes do convidado, para servir a página de
   // convite indisponível em vez do erro do navegador. Com a repetição, são até 8 segundos.
-  return new ApiClient({ baseUrl, requestId: newRequestId, timeoutMs: 4_000 });
+  return new ApiClient({
+    baseUrl: baseUrl ?? 'http://api-url-internal.invalid',
+    fetch: baseUrl ? undefined : noApiAddress,
+    requestId: newRequestId,
+    timeoutMs: 4_000,
+  });
 }

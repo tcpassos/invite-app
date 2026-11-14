@@ -5,6 +5,10 @@ export interface AppConfig {
   databaseUrl: string;
   frontOrigin: string;
   sessionSecret: string;
+  /** SESSION_COOKIE_CROSS_SITE=true: cookie com SameSite=None e Secure (ADR-0015). */
+  crossSiteCookie: boolean;
+  /** TRUST_PROXY: quantos proxies confiáveis há na frente da API, para o IP de origem (ADR-0015). */
+  trustProxy: number;
 }
 
 export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
@@ -16,10 +20,16 @@ export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
   if (!Number.isInteger(port) || port <= 0) {
     throw new Error('PORT precisa ser um número inteiro positivo');
   }
+  const trustProxy = Number(env.TRUST_PROXY ?? 0);
+  if (!Number.isInteger(trustProxy) || trustProxy < 0) {
+    throw new Error('TRUST_PROXY precisa ser um número inteiro, zero ou maior');
+  }
   return {
     port,
     databaseUrl: env.DATABASE_URL as string,
     frontOrigin: env.FRONT_ORIGIN as string,
     sessionSecret: env.SESSION_SECRET as string,
+    crossSiteCookie: env.SESSION_COOKIE_CROSS_SITE === 'true',
+    trustProxy,
   };
 }

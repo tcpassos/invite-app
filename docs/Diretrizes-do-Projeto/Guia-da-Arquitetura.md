@@ -71,7 +71,7 @@ O Team Charter descreve quatro integrantes com experiência desigual e duas spri
 
 O motivo principal, porém, é a forma do produto. O invite-app tem **duas Views sobre o mesmo Model**, o convite público aberto por link sem login e o painel do anfitrião autenticado. É o problema que o padrão foi criado para resolver, e é a vantagem mais conhecida do MVC: suporte a várias interfaces de usuário sobre o mesmo model.
 
-A camada de Apresentação, por consequência, tem **dois pacotes**, um por superfície. Uma única aplicação pode ter vários pacotes em cada uma das três camadas, como a que oferece linha de comando e interface gráfica. Aqui é a mesma estrutura com outras duas interfaces, uma anônima e uma autenticada. A divisão não é decorativa: ela aparece marcada rota por rota na tabela 4.1, desenhada no diagrama da seção 2, e vira regra de código na seção 5.3, que diz quais serviços de Domínio o pacote público pode chamar.
+A camada de Apresentação, por consequência, tem um pacote por superfície. Uma única aplicação pode ter vários pacotes em cada uma das três camadas, como a que oferece linha de comando e interface gráfica. Aqui é a mesma estrutura com outras duas interfaces, uma anônima e uma autenticada. A elas se soma um terceiro pacote, `auth`, com o cadastro, a entrada, a saída e a sessão do anfitrião, porque a entrada acontece antes de existir sessão e não cabe no pacote autenticado, e o pacote público não pode chamar os serviços do UC001. São, portanto, **três pacotes**: público, autenticado e `auth`. A divisão não é decorativa: ela aparece marcada rota por rota na tabela 4.1, desenhada no diagrama da seção 2, e vira regra de código na seção 5.3, que diz quais serviços de Domínio cada pacote pode chamar.
 
 ### 1.5 Os quatro critérios de qualidade
 
@@ -129,7 +129,7 @@ São dois caminhos até a camada de Apresentação, não um. O caminho de leitur
 
 **Não há atalho.** Não existe linha do navegador nem do tier Front para o Domínio ou para os Dados. A camada de Apresentação é a única porta de entrada do back-end, e é isso que torna verificável a frase do ADR-0001 de que trocar ou reescrever o front não afeta o Domínio.
 
-A camada de Apresentação aparece dividida em dois pacotes. O público, com o `PublicRsvpController`, e o autenticado, com o `InviteController` e o `DietaryController`, conforme a seção 1.4. A autenticação de sessão pertence ao pacote autenticado e não aos interesses transversais, porque autenticação é responsabilidade da Apresentação e o Domínio nunca vê sessão. As seções 3.1 e 3.2 dizem o mesmo.
+A camada de Apresentação aparece dividida em três pacotes, conforme a seção 1.4. O público, com o `PublicRsvpController`. O autenticado, com o `InviteController` e o `DietaryController`. E o `auth`, com o `AuthController`, que cuida do cadastro, da entrada, da saída e da sessão do anfitrião. No código, são as pastas `public/`, `authenticated/` e `auth/` de `api/src/presentation`. A autenticação de sessão pertence à Apresentação, nos pacotes autenticado e `auth`, e não aos interesses transversais, porque autenticação é responsabilidade da Apresentação e o Domínio nunca vê sessão. As seções 3.1 e 3.2 dizem o mesmo.
 
 Os interesses transversais são dois, não três. Tratamento de erros e registro de log atravessam as três camadas e por isso aparecem ligados às três por linha sem ponta. Eles não são uma quarta camada.
 
@@ -445,9 +445,9 @@ Esta regra é decisão nova deste guia, não algo que outro artefato já tenha r
 
 Os diagramas de sequência do UC005 e do UC008 mostravam `listDietaryCategories()` em `InviteRepository`, em três chamadas ao todo, duas no UC005 e uma no UC008. Os dois ganharam a linha de vida de `DietaryCategoryRepository` quando o Diagrama de Componentes separou os dois repositórios. O diagrama do UC004 não usa a operação e não mudou.
 
-### 5.3 Os dois pacotes da Apresentação, e a regra que faltava
+### 5.3 Os três pacotes da Apresentação, e a regra que faltava
 
-O acoplamento entre o pacote público e o pacote autenticado é zero, e assim deve continuar. Um não chama o outro, e nada é compartilhado entre eles além do filtro de exceção da seção 9.2.
+O acoplamento entre os três pacotes, público, autenticado e `auth`, é zero, e assim deve continuar. Nenhum chama outro, e o que eles compartilham fica no módulo comum da Apresentação, em `api/src/presentation/common`: o filtro de exceção da seção 9.2, as guardas de sessão e de limite de taxa e a conferência de forma.
 
 A consequência que a seção 1.4 anunciou e que faltava escrever é esta:
 
@@ -491,7 +491,7 @@ Lista concreta, para revisão de código e não para discussão de princípio.
 - Um número de status HTTP escrito fora da pasta da Apresentação.
 - SQL, nome de tabela ou nome de coluna fora da pasta de Dados.
 - Um controller chamando um repository direto, sem passar pelo service.
-- Um controller do pacote público chamando serviço de Domínio fora dos dois da seção 5.3.
+- Um controller do pacote público chamando serviço de Domínio fora dos quatro da seção 5.3.
 - O tier Front abrindo conexão com o banco, ou o navegador chamando qualquer coisa que não seja a camada de Apresentação.
 - Uma regra de negócio decidida no template, no formulário ou na rota do Next, sem ser revalidada no servidor.
 - Um repository recebendo `hostId` para decidir permissão, em vez de devolver o dado e deixar o Domínio decidir.
@@ -582,7 +582,7 @@ A primeira coluna mistura camada com peça do MVC de propósito, e diz qual é q
 | Camada ou peça do MVC | Tier | Tecnologia | Forma concreta |
 |---|---|---|---|
 | View e Controller do MVC, peças do padrão | Navegador e Front | Next.js sobre React | Rotas, componentes e os templates em HTML e CSS do [ADR-0009](../Sprints/Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) |
-| Apresentação, camada | API | NestJS | Controllers dos dois pacotes, guards de sessão, pipes de desserialização, contador de limite de taxa e o filtro de exceção da seção 9 |
+| Apresentação, camada | API | NestJS | Controllers dos três pacotes, guards de sessão, pipes de desserialização, contador de limite de taxa e o filtro de exceção da seção 9 |
 | Domínio, camada | API | NestJS, TypeScript puro | Providers de serviço, sem dependência de framework web |
 | Dados, camada | API | NestJS | Repositories e transações. O banco em si é o tier Banco, não uma quarta camada |
 | Nenhuma, é tier | Banco | PostgreSQL | Tabelas, índices e o `JSONB` das cores da personalização |
@@ -772,11 +772,11 @@ A leitura do diagrama está na seção 2 e aqui interessa uma contagem só. O fo
 
 - **Salto 1, navegador para o tier Front.** Só no caminho de leitura do convite público.
 - **Salto 2, tier Front para a API.** Mesmo caminho, mesma tela.
-- **Salto 3, navegador para o pacote público da API.** O POST do passo 7 do UC005.
-- **Salto 4, navegador para o pacote autenticado da API.** As cinco rotas de sessão da tabela 4.1.
-- **Salto 5, camada de Dados para o tier Banco.** Presente nas sete rotas, sem exceção.
+- **Salto 3, navegador para o pacote público da API.** O POST do passo 7 do UC005 e a alteração da resposta pelo link pessoal.
+- **Salto 4, navegador para os pacotes autenticado e `auth` da API.** As rotas do painel e as de cadastro, entrada, saída e sessão da tabela 4.1.
+- **Salto 5, camada de Dados para o tier Banco.** Presente em todas as rotas da tabela 4.1, menos a saída, `POST /auth/sign-out`, que só apaga o cookie.
 
-Os dois saltos que a seção 1.7 nomeia são o 1 e o 2, porque aquele parágrafo trata do caminho do convite público. Ele é a única rota da tabela 4.1 com dois saltos até a Apresentação. As outras seis têm um, **inclusive as leituras do painel**, que saem do navegador direto para a API: os diagramas do UC004 e do UC008 não têm linha de vida do tier Front em passo nenhum. O tier Front entrega o bundle do painel e não participa de nenhuma chamada de dado dele.
+Os dois saltos que a seção 1.7 nomeia são o 1 e o 2, porque aquele parágrafo trata do caminho do convite público. Ele e a leitura do link pessoal, que segue o mesmo caminho, são as únicas rotas da tabela 4.1 com dois saltos até a Apresentação. As outras têm um, **inclusive as leituras do painel**, que saem do navegador direto para a API: os diagramas do UC004 e do UC008 não têm linha de vida do tier Front em passo nenhum. O tier Front entrega o bundle do painel e não participa de nenhuma chamada de dado dele.
 
 A contagem importa porque cada salto falha de um jeito diferente e o usuário vê coisa diferente. O que muda de um para o outro não é a gravidade, é quem ainda tem código rodando para escrever a mensagem.
 
@@ -800,7 +800,7 @@ A tabela 4.1 tem quatro leituras e três escritas, e a diferença entre elas nã
 
 > **Só se repete automaticamente a operação que passa nos dois testes. Primeiro, a segunda execução deixa o banco no mesmo estado que a primeira. Segundo, a segunda execução devolve a mesma resposta que a primeira. São as quatro leituras da tabela 4.1 e `POST /invites/{inviteId}/publish`. `POST /public/invites/{publicToken}/rsvp` e `POST /invites/{inviteId}/unpublish` não se repetem, nunca, nem uma vez.**
 
-**Esta regra é decisão nova deste guia**, como são a página de convite indisponível, o recuo da consulta periódica e o comportamento do formulário depois de uma falha. Nenhum ADR trata de falha de rede. As cinco estão listadas na seção 11 e precisam de aval do time.
+**Esta regra é decisão nova deste guia**, como são a página de convite indisponível, o recuo da consulta periódica e o comportamento do formulário depois de uma falha. Nenhum ADR trata de falha de rede. As cinco estão listadas na seção 11 e receberam o aval do time.
 
 As quatro leituras passam nos dois testes porque não escrevem. O UC007 e o UC008 não declaram pós-condição, e nos diagramas de sequência dos passos 1 a 3 e 4 do UC008 não há uma única seta de escrita. O único efeito de repetir `GET /invites/{inviteId}/dietary-notes.csv` é dois arquivos baixados, que é do lado do cliente e não é erro.
 
@@ -907,7 +907,7 @@ Dois pontos não se fecham aqui e vão para a seção 11. Um terceiro, o identif
 
 ### 9.5 Política de exposição da fronteira pública
 
-As seções 9.1 a 9.3 decidem o que a API responde. Esta decide o que ela deixa de contar, e ela é da Apresentação pelo motivo que a 9.2 já registra: o Domínio distingue as situações e a fronteira escolhe o que o mundo lê. É também a versão de exposição da regra dos dois serviços da seção 5.3.
+As seções 9.1 a 9.3 decidem o que a API responde. Esta decide o que ela deixa de contar, e ela é da Apresentação pelo motivo que a 9.2 já registra: o Domínio distingue as situações e a fronteira escolhe o que o mundo lê. É também a versão de exposição da regra dos serviços do pacote público da seção 5.3.
 
 > **Quem está do lado de fora aprende o que precisa para agir, e nunca aprende que existe recurso que não é dele.** Erro sobre recurso que o solicitante não provou possuir tem uma resposta só, igual para todos os motivos. Erro sobre o que o próprio solicitante enviou pode ser específico, porque ele já conhece o que enviou.
 
@@ -916,6 +916,8 @@ O alcance, antes das medidas. O [ADR-0003](../Sprints/Sprint-2/Decisões-Arquite
 - **Vale na Sprint 3 e é conferível sem endereço público.** O colapso das cinco situações, o corpo do 404, a ordem das etapas na rota pública, os cabeçalhos de cache, o escape no painel, o tratamento do CSV e a proibição de token em log.
 - **Fica como intenção registrada até existir alvo de publicação.** O `robots.txt`, o cabeçalho de não indexação, o comportamento do rastreador que monta a prévia do link e qualquer medida contra medição de tempo. Sem endereço alcançável não há rastreador, não há índice e não há quem meça.
 - **Não é feito, por decisão já tomada.** Captcha está fora de escopo no ADR-0008, porque o que o mercado usa é borda gerenciada e este projeto não tem nem terá uma, conforme o ADR-0003.
+
+O [ADR-0015](../Sprints/Sprint-2/Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md), aceito na Sprint 6, substituiu o ADR-0003 e publicou os três tiers no Railway para a demonstração, mantendo o compose local. Com endereço alcançável, a segunda metade deixa de ser só intenção: o `robots.txt`, o cabeçalho `X-Robots-Tag: noindex` e as metatags de não indexação já estão no tier Front e passam a valer no endereço publicado. O captcha continua fora, porque a publicação não acrescenta borda gerenciada.
 
 A superfície pública é lista fechada, e tem três portas. A rota de leitura devolve `PublishedInvite(invite, customization, categories)`, que é o retorno desenhado no `.puml` do UC005, e nada além. A rota de escrita devolve `RsvpResult(guest, personalToken)`, que é a resposta do próprio solicitante. A terceira porta é `/r/{personalToken}`, o link pessoal da ED2 do UC005, que exibe e permite alterar apenas a resposta daquele convidado, conforme a RN3 do UC005. O que não está nessas três listas ou responde 404 ou não existe como rota.
 
@@ -991,7 +993,7 @@ Esta política supõe que o `personalToken` tenha pelo menos a entropia do `publ
 
 A exposição na direção contrária. Duas das cinco medidas do ADR-0008 não tratam do que o mundo lê e sim do que o anfitrião lê, e as duas pertencem a esta política porque são fronteira. A medida 4, o escape na renderização do painel, existe porque o texto da observação alimentar é escrito por um anônimo e exibido na tela de um usuário autenticado, o que sem escape é XSS armazenado com o anfitrião como alvo. **Nenhum artefato diz hoje quem aplica esse escape, e aqui ele fica nomeado: é a View do `HostPanelPage`, no tier Front, e não o filtro de exceção da Apresentação.** A regra de código é que nenhum dado vindo de convidado é inserido como HTML. A medida 5, o prefixo de aspa simples no CSV, fica na Apresentação em `neutralizeFormulaPrefix(field)` porque é forma de saída e não verdade do dado, conforme o primeiro critério auxiliar da seção 3.4. Nos dois casos o que está no banco continua íntegro, pelo mesmo argumento da seção 3.3. O CSV merece uma linha própria: **ele é a única saída do sistema que deixa o domínio de confiança da aplicação e é interpretada por outro programa**, a planilha aberta na cozinha do buffet, e por isso a política de exposição alcança arquivo e cabeçalho, e não só corpo de resposta.
 
-A observação alimentar é o dado mais sensível do sistema e nunca atravessa a fronteira pública. Nem em rota própria, nem agregada, nem em contagem. O texto livre é informação de saúde de pessoa identificável, e o risco concreto está escrito na seção 5.3: o dia em que alguém acrescentar ao pacote público uma rota que chame `consolidateDietaryNotes` para mostrar as restrições na página do convite, nenhum erro é levantado e nenhum teste falha. A regra dos dois serviços da seção 5.3 é a forma verificável desta política.
+A observação alimentar é o dado mais sensível do sistema e nunca atravessa a fronteira pública. Nem em rota própria, nem agregada, nem em contagem. O texto livre é informação de saúde de pessoa identificável, e o risco concreto está escrito na seção 5.3: o dia em que alguém acrescentar ao pacote público uma rota que chame `consolidateDietaryNotes` para mostrar as restrições na página do convite, nenhum erro é levantado e nenhum teste falha. A regra dos serviços do pacote público da seção 5.3 é a forma verificável desta política.
 
 O que o sistema guarda sobre quem sondou. O registro de log atravessa as três camadas como interesse transversal, conforme a seção 2, e nenhum artefato diz o que entra nele. Pela fronteira pública passam o token do convite, que é credencial de acesso, e o texto livre da observação alimentar. **O `publicToken`, o `personalToken` e o texto livre da observação alimentar não entram em log**, e essa é decisão nova. Sem ela, a informação que a política esconde do mundo fica escrita em claro no arquivo de log do container, e o 404 colapsado convive com um log que distingue as cinco situações. O log da fronteira pública registra rota, status e duração. Como correlacionar os dois lados de um erro que atravessa dois saltos é assunto da seção 9.4.
 
@@ -1010,7 +1012,7 @@ Como a revisão de código verifica. Política de exposição sem forma de confe
 - **Procurar pelo nome do campo de texto livre e pelos nomes dos dois tokens nas chamadas de registro de log.** Nenhum resultado.
 - **Comparar as respostas de não encontrado duas a duas.** Token inexistente, convite em rascunho, convite despublicado, token malformado e convite de outro anfitrião precisam devolver a mesma resposta. É um teste de integração e não uma leitura de código, porque a diferença costuma nascer em cabeçalho, não em `return`.
 
-O que esta seção obriga a corrigir em outro artefato. A tabela 9.1 recebe a nota que separa o 404 do 409 na rota pública. A seção 3.1 recebe a correção da ordem do limite de taxa, junto com a da assinatura dupla que o Diagrama de Componentes já tinha pedido. A seção 3.2 daquela página recebe a mesma nota sobre a ordem das três etapas, e o inventário de artefatos dela recebe a linha do `robots.txt`. O `diagrama-sequencia-uc005.puml` ganha o ramo do POST em token que não resolve. E a rota do link pessoal, `/r/{personalToken}`, sobre a qual esta seção legisla, **não existe em artefato nenhum**: não está na tabela 4.1, não tem serviço na 4.2, não tem consulta na 4.3 e não aparece no Diagrama de Componentes. Ela precisa ser especificada junto com o fluxo de alteração da resposta, que é a pendência 3 dos Diagramas de Sequência. As decisões novas desta seção estão listadas na seção 11 e precisam de aval do time.
+O que esta seção obriga a corrigir em outro artefato. A tabela 9.1 recebe a nota que separa o 404 do 409 na rota pública. A seção 3.1 recebe a correção da ordem do limite de taxa, junto com a da assinatura dupla que o Diagrama de Componentes já tinha pedido. A seção 3.2 daquela página recebe a mesma nota sobre a ordem das três etapas, e o inventário de artefatos dela recebe a linha do `robots.txt`. O `diagrama-sequencia-uc005.puml` ganha o ramo do POST em token que não resolve. E a rota do link pessoal, `/r/{personalToken}`, sobre a qual esta seção legisla, **não existe em artefato nenhum**: não está na tabela 4.1, não tem serviço na 4.2, não tem consulta na 4.3 e não aparece no Diagrama de Componentes. Ela precisa ser especificada junto com o fluxo de alteração da resposta, que é a pendência 3 dos Diagramas de Sequência. As decisões novas desta seção estão listadas na seção 11 e receberam o aval do time. Atualização da Sprint 6: a rota `/r/{personalToken}` existe no código e foi associada ao `PublicInvitePage` no Diagrama de Componentes.
 
 ---
 
@@ -1111,7 +1113,7 @@ O que não entra: nenhum arquivo de `templates/` e nenhum artefato do tier Front
 | O que entra | Artefato | Por quê |
 |---|---|---|
 | A imagem do PostgreSQL, obtida do registry | `postgres:<tag>@<digest>` | Não é construída pelo time, e é a única das três nessa condição |
-| O esquema | `migrations/` | Script versionado no repositório e aplicado contra o banco. É decisão nova do Diagrama de Componentes, item 8 da seção 10.1 daquela página, e ainda precisa de aval do time |
+| O esquema | `migrations/` | Script versionado no repositório e aplicado contra o banco. É decisão nova do Diagrama de Componentes, item 8 da seção 10.1 daquela página, e recebeu o aval do time |
 | O estado do sistema | Volume nomeado | Exigência escrita do ADR-0002 |
 
 O que não entra: nenhuma linha de código do sistema, nenhum arquivo de mídia e nenhum `Dockerfile`.
@@ -1185,8 +1187,8 @@ O ADR-0002 assumiu cinco consequências negativas por escrito. Apresentar três 
 |---|---|
 | O acoplamento entre camadas não desaparece, muda de forma, e passa a ter latência de rede, falha parcial e ordem de subida | Falha parcial é consequência aceita e não risco remoto. O tratamento é da seção 9.4 |
 | Exige `HEALTHCHECK` com `condition: service_healthy`, senão a API sobe antes do banco estar pronto | Cumprida no `docker-compose.yml`, em que a API só sobe depois do `HEALTHCHECK` do banco. A tabela 9.1 lista "container não subiu" como exemplo de falha de infraestrutura, a categoria sem dono que vira 500 `INTERNAL_ERROR` |
-| O compose é de host único e precisa de revisão se o projeto precisar de mais de uma máquina | O [ADR-0003](../Sprints/Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) fecha no host de desenvolvimento e não abre alvo de publicação |
-| Três containers custam mais memória na máquina de cada integrante do que um processo único | Recai sobre as quatro máquinas do time, que são o único ambiente do projeto |
+| O compose é de host único e precisa de revisão se o projeto precisar de mais de uma máquina | O [ADR-0003](../Sprints/Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) fecha no host de desenvolvimento e não abre alvo de publicação. O [ADR-0015](../Sprints/Sprint-2/Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md), que o substituiu, publica os três tiers como três serviços do Railway, sem usar o compose |
+| Três containers custam mais memória na máquina de cada integrante do que um processo único | Recai sobre as quatro máquinas do time, que são o único ambiente de desenvolvimento do projeto. No Railway, cada tier é um serviço separado |
 | Dois saltos de rede no caminho do convite público, com o erro tendo dois lados e nada correlacionando os dois sozinho | Seção 10.2 pelo lado da topologia, seção 9.4 pelo lado da falha |
 
 Duas decisões posteriores aliviaram parte do quadro, e as duas registram isso por escrito, então não é otimismo deste guia. O [ADR-0007](../Sprints/Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md) registra que a consulta periódica não cria nenhuma conexão de longa duração, o que simplifica o container da API e a ordem de subida. O ADR-0009 registra que os três tiers continuam de pé sem alteração, porque sem upload de mídia nenhum dos três precisou virar quatro para guardar bytes.
@@ -1199,6 +1201,8 @@ O que o ADR-0003 cobra e o que ele proíbe prometer. Os três containers rodam n
 - O projeto não exercita deploy, lacuna que o próprio time reconhece nos Pontos de Melhoria do Team Charter.
 - Não existe ambiente compartilhado acessível fora da apresentação.
  Se o time decidir publicar, o ADR-0003 não se edita, um ADR novo o substitui.
+
+O time decidiu publicar. O [ADR-0015](../Sprints/Sprint-2/Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md), aceito em 13/11/2026, substituiu o ADR-0003 e acrescentou a publicação no Railway para a demonstração. O que está acima continua valendo para o ambiente local, que segue sendo o de desenvolvimento e o plano B da demonstração. Das três negativas, a primeira e a terceira deixam de valer enquanto a publicação estiver no ar, e a segunda fica menor, porque o projeto passou a exercitar um deploy. O nó do Railway está na seção 11 do [Diagrama de Implantação](../Sprints/Sprint-2/Diagrama-de-Implantação.md).
 
 ### 10.7 O que fica para o item #60
 
@@ -1230,7 +1234,7 @@ Esta seção também entrega insumo para dois artefatos que a cobraram pelo nome
 
 Esta seção reúne duas coisas: o que o guia decidiu sozinho e o que continua sem decisão. A introdução já fixou o peso da primeira. **Decisão nova deste guia não tem o mesmo peso de um ADR aceito e precisa de aval do time.** Até o aval, ela vale como regra de código e não vale como fonte da decisão.
 
-Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O próximo número livre no índice de [Decisões Arquiteturais](../Sprints/Sprint-2/Decisões-Arquiteturais.md) é o 0010.
+Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O próximo número livre no índice de [Decisões Arquiteturais](../Sprints/Sprint-2/Decisões-Arquiteturais.md) é o 0016.
 
 ### 11.1 As decisões novas deste guia
 
@@ -1278,7 +1282,7 @@ Quando o time aprovar uma linha da 11.1, ela sai desta tabela e vira ADR. O pró
 | 39 | As operações da camada de Dados das rotas novas da 4.1, com as assinaturas da segunda tabela da 4.3 | 4.3 | Os diagramas de sequência cobrem só o UC004, o UC005 e o UC008 | Cada parte escolhe nome e assinatura, e a revisão perde a tabela que diz o que cada repositório pode fazer |
 | 40 | O tempo limite de cada tentativa do `ApiClient`: 4 segundos na cópia do servidor do tier Front e 15 segundos na do navegador | 9.4 | A seção 9.4 fixou a ordem, o tier Front desiste antes do convidado, e deixou os números em aberto | Sem número, o tier Front espera a API pelo tempo do sistema operacional, e o convidado vê o erro do navegador em vez da página de convite indisponível |
 
-As linhas 20 a 33 receberam o aval do time em 07/10/2026, e a linha 34 em 08/10/2026. As linhas 35 a 40 vieram dos [Ajustes de Arquitetura da Sprint 5](../Sprints/Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md) e aguardam o aval do time.
+As linhas 1 a 19 receberam o aval do time em 13/11/2026, junto com o fechamento da Sprint 6. As linhas 20 a 33 receberam o aval do time em 07/10/2026, e a linha 34 em 08/10/2026. As linhas 35 a 40 vieram dos [Ajustes de Arquitetura da Sprint 5](../Sprints/Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md) e receberam o aval do time em 13/11/2026.
 
 > **Nenhuma linha desta tabela vale contra um ADR.** Se um ADR futuro decidir o contrário de qualquer uma delas, o ADR é a fonte da decisão e a linha sai daqui, conforme a divisão de trabalho declarada na introdução.
 
@@ -1290,7 +1294,7 @@ O que esta lista não traz, de propósito. Alocação que já sai de um diagrama
 
 As pendências que a seção 10.2 do [Diagrama de Componentes](../Sprints/Sprint-2/Diagrama-de-Componentes.md) já lista não são repetidas aqui. O que segue é o que é do guia, ou o que aquela seção registra sem dizer o que o guia perde junto.
 
-- **Os serviços do UC001.** **Resolvido nas seções 4.1 e 4.2, linhas 21, 23 e 25 da 11.1.** A tabela 4.2 tem sete linhas e nenhuma é do UC001. O Diagrama de Componentes nomeia `AuthController`, `HostService` e `HostRepository`, com as interfaces `AuthHttp`, `HostOperations` e `HostStore`, e as três ficaram sem assinatura fechada por falta de diagrama de sequência. O que é do guia são duas consequências. `AuthController` não cabe nos dois pacotes da seção 1.4, porque a regra da 5.3 fecha o pacote público em dois serviços e a rota de entrada é anterior à sessão, então falta decidir se entra um terceiro pacote. E a frase dos cinco serviços da 5.3 precisa ser reescrita no mesmo dia em que `HostOperations` ganhar assinatura. O ADR de autenticação existe e é o [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md). O diagrama de sequência do UC001 também, desenhado na task #123, só que em notação BCE, que reúne `AuthController` e `HostService` num objeto de controle só. Ele nomeia `signIn`, `signUp`, `findByEmail`, `hashPassword`, `verifyPassword` e `issueSession`, e não separa `HostOperations` de `AuthHttp`. A assinatura de `HostOperations` foi fechada pelas linhas do UC001 na tabela 4.2, e a frase da 5.3 passou a quatro serviços do pacote público, com os três do UC001 exclusivos do pacote `auth`. A implementação está em `api/src/domain/host.service.ts`. O #62 e o #63 estão encerrados.
+- **Os serviços do UC001.** **Resolvido nas seções 4.1 e 4.2, linhas 21, 23 e 25 da 11.1.** A tabela 4.2 tem sete linhas e nenhuma é do UC001. O Diagrama de Componentes nomeia `AuthController`, `HostService` e `HostRepository`, com as interfaces `AuthHttp`, `HostOperations` e `HostStore`, e as três ficaram sem assinatura fechada por falta de diagrama de sequência. O que é do guia são duas consequências. `AuthController` não cabe nos dois pacotes da seção 1.4, porque a regra da 5.3 fecha o pacote público em dois serviços e a rota de entrada é anterior à sessão, então falta decidir se entra um terceiro pacote. E a frase dos cinco serviços da 5.3 precisa ser reescrita no mesmo dia em que `HostOperations` ganhar assinatura. O ADR de autenticação existe e é o [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md). O diagrama de sequência do UC001 também, desenhado na task #123, só que em notação BCE, que reúne `AuthController` e `HostService` num objeto de controle só. Ele nomeia `signIn`, `signUp`, `findByEmail`, `hashPassword`, `verifyPassword` e `issueSession`, e não separa `HostOperations` de `AuthHttp`. A assinatura de `HostOperations` foi fechada pelas linhas do UC001 na tabela 4.2, e a frase da 5.3 passou a quatro serviços do pacote público, com os três do UC001 exclusivos do pacote `auth`. A implementação está em `api/src/domain/host.service.ts`. O terceiro pacote entrou: é o `auth`, em `api/src/presentation/auth`, descrito nas seções 1.4 e 2. O #62 e o #63 estão encerrados.
 - **As rotas do UC002 e do UC003.** **Resolvido nas seções 4.1 e 4.2, linhas 21 e 25 da 11.1.** Não existem em artefato nenhum. A tabela 4.1 tem sete rotas e nenhuma cria convite nem grava personalização, e a tabela 4.2 não tem serviço para elas. O que é do guia é uma dívida mais concreta que a ausência: a tabela 9.1 já compromete duas regras desses casos de uso com o Domínio, a data no passado da RN1 do UC002 e o texto acima do limite do campo da RN2 do UC003, as duas como `ValidationError` e 422. O guia aloca regra a serviço que ele mesmo não lista. Enquanto isso não fecha, a responsabilidade fica em `InviteController` e `InviteService`, e o teste de coesão da 5.1 precisa ser refeito quando as rotas existirem, porque `InviteController` passa de três para cinco rotas e `InviteService` já reúne criação, personalização, publicação e despublicação. Resolve: diagramas de sequência do UC002 e do UC003, e a atualização das tabelas 4.1 e 4.2. O #62 está encerrado e não há item aberto para isso.
 - **A projeção que `findAttendanceByStatus` devolve não tem nome.** **Resolvido no código da Sprint 5:** ela se chama `AttendanceEntry`, em `api/src/model/projections.ts`, junto com `CategoryCount`, `DietaryDescription` e `GuestExportRow`, que são os nomes que a implementação deu aos tipos do diagrama do UC008. O diagrama de sequência do UC007 continua sem existir. É por isso que o quarto tipo de retorno da 5.2 não fecha. `CategoryCount`, `AllergyDescription` e `ExportRow` estão nomeados no `diagrama-sequencia-uc008.puml`, e a projeção da ED1 do UC007, com nome, status e número de acompanhantes, não está nomeada em lugar nenhum. Resolve: o diagrama de sequência do UC007, que não existe. O #62 está encerrado e não há item aberto para isso.
 - **O contador do limite de taxa cai se a API ganhar réplica.** O [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md) fechou onde as duas guardas guardam estado, e o guia tinha registrado que a escolha não era livre. A leitura estrita da 6.2 proíbe a Apresentação de falar com o banco, então tabela de sessão ou tabela de contador no banco principal é violação direta da regra da seção 6, e a segunda busca da 6.4 a encontra em revisão. Contador em memória do processo não cria dependência nenhuma e deixa de valer se a API ganhar réplica. **Resolvido pelo [ADR-0010](../Sprints/Sprint-2/Decisões-Arquiteturais/0010-Autenticação-do-anfitrião.md)**, que escolheu cookie assinado para a sessão e contador em memória para o limite de taxa, deixando as duas guardas sem interface requerida. Continua aberta a hipótese de réplica, que derruba o contador.

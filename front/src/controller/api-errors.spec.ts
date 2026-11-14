@@ -27,6 +27,24 @@ describe('readPublic', () => {
     await expect(foraDoAr).resolves.toEqual({ kind: 'unavailable' });
   });
 
+  it('registra a API sem resposta com o código da falha, sem a mensagem', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const rede = new TypeError('fetch failed /public/invites/TOKEN', {
+      cause: Object.assign(new Error('connect'), { code: 'ECONNREFUSED' }),
+    });
+    await readPublic(Promise.reject(new ApiUnavailableError('0011223344556677', { cause: rede })));
+    expect(log).toHaveBeenCalledOnce();
+    const linha = JSON.parse(String(log.mock.calls[0]![0]));
+    expect(linha).toEqual({
+      level: 'error',
+      tier: 'front',
+      message: 'leitura pública sem resposta da API',
+      requestId: '0011223344556677',
+      cause: 'ECONNREFUSED',
+    });
+    log.mockRestore();
+  });
+
   it('não engole erro de programação', async () => {
     await expect(readPublic(Promise.reject(new TypeError('bug')))).rejects.toThrow('bug');
   });

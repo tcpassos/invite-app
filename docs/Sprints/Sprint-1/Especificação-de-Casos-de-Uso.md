@@ -129,6 +129,8 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 (RN1) O anfitrião parte sempre de um template, que pode ser ajustado em cores e textos.
 (RN2) Cada texto do convite tem tamanho máximo definido por campo, para não quebrar o layout do template. Não existe upload de mídia no sistema. Ver ADR-0009.
 
+> **Atualização da Sprint 6.** Na implementação, a personalização vale em qualquer situação do convite, e não só no rascunho, porque o nome do evento e o local continuam ajustáveis depois de publicado (RN3 do UC002). Os textos do passo 3 são o nome do evento e o local, a saudação é texto fixo do convite, igual nos três templates, e não há recado livre. As cores ajustáveis são duas, a principal e a de destaque. Ver os [Ajustes de Arquitetura para o MVP](../Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md), seções 1.1 e 1.2, e a seção 4.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md).
+
 ### UC004 - Compartilhar convite (gerar link)
 
 **Descrição:** o anfitrião publica o convite e obtém o link para enviar aos convidados.
@@ -241,6 +243,8 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 (RN2) Se a categoria alergia for marcada, a descrição no texto livre é obrigatória.
 (RN3) A lista de categorias é fechada e tem cinco entradas, carregadas na inicialização do banco. São elas `VEGETARIAN` (Vegetariano), `VEGAN` (Vegano), `GLUTEN_FREE` (Sem glúten), `LACTOSE_FREE` (Sem lactose) e `ALLERGY` (Alergia). Apenas `ALLERGY` exige descrição. O anfitrião não cria categoria, porque a contagem por categoria do UC008 só serve ao buffet se for comparável entre convites.
 
+> **Atualização da Sprint 6.** Na tela do convidado, o campo de texto livre do passo 1 só aparece quando uma categoria que exige descrição é marcada, ou seja, alergia. A API aceita texto livre sem categoria, mas o formulário não oferece esse caminho. Ver o [Protótipo de Baixa Fidelidade](../Sprint-3/Protótipo-de-Baixa-Fidelidade.md), telas 5 e 8.
+
 ### UC007 - Visualizar lista de presença
 
 **Descrição:** o anfitrião acompanha quem confirmou presença. A lista mostra apenas quem respondeu, porque o convite tem link único e não existe cadastro prévio de convidados. Ver ADR-0006.
@@ -267,6 +271,8 @@ Os casos seguem o padrão `UCxxx - <verbo + objeto>`. Cada um informa descriçã
 
 **Regras de Negócio:**
 (RN1) O total de pessoas soma cada convidado confirmado mais os seus acompanhantes.
+
+> **Atualização da Sprint 6.** Com o painel aberto, a lista se atualiza por consulta periódica a cada 20 segundos, pelo [ADR-0007](../Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md). O diagrama de sequência do UC007 foi desenhado na Sprint 6, nos [Diagramas de Sequência](../Sprint-2/Diagramas-de-Sequência.md).
 
 ### UC008 - Consolidar e exportar observações alimentares
 

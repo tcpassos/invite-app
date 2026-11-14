@@ -9,7 +9,7 @@ import {
   type INestApplication,
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import type { Request, Response } from 'express';
+import type { CookieOptions, Request, Response } from 'express';
 import request from 'supertest';
 import { configureApp } from '../../bootstrap.js';
 import { CommonModule } from './common.module.js';
@@ -52,6 +52,17 @@ describe('SessionCookie', () => {
   it('recusa cookie com o hostId trocado', () => {
     const [, expiresAt, signature] = issued('42').split('.');
     expect(session.verify(withCookie(`43.${expiresAt}.${signature}`), now)).toBeNull();
+  });
+
+  it('com front e API em sites diferentes, emite SameSite=None com Secure (ADR-0015)', () => {
+    let options: CookieOptions | undefined;
+    const res = {
+      cookie: (_name: string, _value: string, opts: CookieOptions) => {
+        options = opts;
+      },
+    } as unknown as Response;
+    new SessionCookie(SECRET, true).issue(res, '42', now);
+    expect(options).toMatchObject({ httpOnly: true, sameSite: 'none', secure: true });
   });
 
   it('recusa cookie assinado com outro segredo', () => {

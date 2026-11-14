@@ -23,6 +23,8 @@ describe.skipIf(!url)('rotas da API de ponta a ponta', () => {
           databaseUrl: url as string,
           frontOrigin: FRONT,
           sessionSecret: 'segredo-de-teste',
+          crossSiteCookie: false,
+          trustProxy: 0,
         }),
       ],
     }).compile();

@@ -32,11 +32,15 @@ Critérios de aceitação:
 - Ajusto as cores e os textos do convite.
 - Vejo as mudanças na hora.
 
+> **Atualização da Sprint 6.** Os textos que o anfitrião ajusta são o nome do evento e o local. A saudação "você está convidado(a)!" é texto fixo do convite, igual nos três templates, e o recado livre saiu. As cores ajustáveis são duas, a principal e a de destaque. Ver os [Ajustes de Arquitetura para o MVP](../Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md), seções 1.1 e 1.2.
+
 ### H04
 Como anfitrião, quero visualizar o convite antes de publicar para conferir como ele será exibido aos convidados.
 Critérios de aceitação:
 - Abro uma prévia igual à que o convidado vai ver.
 - Volto para a edição a partir da prévia.
+
+> **Atualização da Sprint 6.** A prévia não é uma tela separada. Ela fica ao lado do editor, montada com o mesmo componente que o convidado vê, e muda a cada alteração do formulário, então a edição continua na mesma tela. Ver o [Protótipo de Baixa Fidelidade](../Sprint-3/Protótipo-de-Baixa-Fidelidade.md), tela 3.
 
 ## Épico 3: Compartilhamento
 
@@ -93,6 +97,8 @@ Critérios de aceitação:
 - Vejo os confirmados, os que responderam talvez e os que recusaram.
 - Vejo o total de pessoas somando os acompanhantes.
 - O painel se atualiza sozinho enquanto fica aberto, sem precisar recarregar a página.
+
+> **Atualização da Sprint 6.** A atualização é por consulta periódica a cada 20 segundos, e não em tempo real, pelo [ADR-0007](../Sprint-2/Decisões-Arquiteturais/0007-Atualização-da-lista-de-presença.md).
 
 ### H12
 Como anfitrião, quero reunir as restrições alimentares para repassá-las ao buffet sem retrabalho.

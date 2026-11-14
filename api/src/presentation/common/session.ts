@@ -7,13 +7,14 @@ import { createHmac, timingSafeEqual } from 'node:crypto';
 import {
   Inject,
   Injectable,
+  Optional,
   UnauthorizedException,
   createParamDecorator,
   type CanActivate,
   type ExecutionContext,
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
-import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_IDLE_MS } from './session-cookie.js';
+import { SESSION_COOKIE_NAME, SESSION_IDLE_MS, sessionCookieOptions } from './session-cookie.js';
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -24,6 +25,9 @@ declare module 'express-serve-static-core' {
 
 /** O segredo que assina o cookie, lido de SESSION_SECRET na subida da API. */
 export const SESSION_SECRET = Symbol('SESSION_SECRET');
+
+/** Verdadeiro quando front e API estão em sites diferentes, como na publicação (ADR-0015). */
+export const SESSION_CROSS_SITE = Symbol('SESSION_CROSS_SITE');
 
 export function readCookie(header: string | undefined, name: string): string | undefined {
   if (!header) return undefined;
@@ -38,17 +42,24 @@ export function readCookie(header: string | undefined, name: string): string | u
 
 @Injectable()
 export class SessionCookie {
-  constructor(@Inject(SESSION_SECRET) private readonly secret: string) {}
+  private readonly options;
+
+  constructor(
+    @Inject(SESSION_SECRET) private readonly secret: string,
+    @Optional() @Inject(SESSION_CROSS_SITE) crossSite = false,
+  ) {
+    this.options = sessionCookieOptions(crossSite);
+  }
 
   /** Abre a sessão, ou renova a janela de 30 minutos de uma sessão válida. */
   issue(res: Response, hostId: string, now = Date.now()): void {
     const payload = `${hostId}.${now + SESSION_IDLE_MS}`;
-    res.cookie(SESSION_COOKIE_NAME, `${payload}.${this.sign(payload)}`, SESSION_COOKIE_OPTIONS);
+    res.cookie(SESSION_COOKIE_NAME, `${payload}.${this.sign(payload)}`, this.options);
   }
 
   /** Apaga o cookie no navegador. O ADR-0010 registra que a sessão não é revogável no servidor. */
   clear(res: Response): void {
-    const { maxAge: _maxAge, ...options } = SESSION_COOKIE_OPTIONS;
+    const { maxAge: _maxAge, ...options } = this.options;
     res.clearCookie(SESSION_COOKIE_NAME, options);
   }
 

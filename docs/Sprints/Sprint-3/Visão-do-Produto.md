@@ -25,5 +25,7 @@ Tratar a observação alimentar como recurso principal do app. Ela é capturada 
 6. Alteração da resposta pelo convidado, por link pessoal entregue na confirmação, até o fim do dia do evento.
 7. Painel de presença e consolidação alimentar com exportação (CSV).
 
+> **Atualização da Sprint 6.** As sete funcionalidades do MVP estão implementadas, nas histórias H01 a H12. Duas diferenças em relação ao texto acima. No item 2, os textos do evento são o nome e o local, e a saudação é fixa do convite, como registram os [Ajustes de Arquitetura para o MVP](../Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md), seção 1.1. No item 5 e no Diferencial, o texto livre aparece na tela do convidado só junto da categoria alergia, para a descrição que ela exige. A aplicação também foi publicada no Railway para a demonstração, pelo [ADR-0015](../Sprint-2/Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md).
+
 ### Fora do escopo (MVP)
 Upload de imagem própria pelo anfitrião, lembretes automáticos, check-in por QR code, geração de arte ou texto por IA, lista de presentes e pagamentos. Ficam como candidatos a sprints futuras.

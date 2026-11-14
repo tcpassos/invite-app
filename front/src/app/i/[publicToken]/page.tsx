@@ -7,6 +7,7 @@ import { cache } from 'react';
 import { readPublic } from '../../../controller/api-errors';
 import { getPublishedInvite } from '../../../controller/public-invite';
 import { serverApi } from '../../../controller/server-api';
+import { frontOrigin } from '../../../controller/server-env';
 import { formatEventDate } from '../../../view/format';
 import { templateFor } from '../../../view/invite-card';
 import { InviteBusy, InviteUnavailable } from '../../../view/invite-unavailable';
@@ -26,12 +27,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const robots = { index: false, follow: false };
   if (outcome.kind !== 'ok') return { title: 'Convite', robots };
   // A prévia do link leva nome, data e a imagem do template, e o endereço do evento fica
-  // fora (ADR-0008 e ADR-0009). A imagem é ativo estático em public/templates.
+  // fora (ADR-0008 e ADR-0009). A imagem é ativo estático em public/templates. Com
+  // FRONT_ORIGIN inválida, a prévia perde a base e a página abre mesmo assim.
   const { eventName, eventStartsAt, customization } = outcome.data;
   const description = `Você está convidado(a)! ${formatEventDate(eventStartsAt)}.`;
   const image = `/templates/${templateFor(customization.templateCode).code}.png`;
   return {
-    metadataBase: new URL(process.env.FRONT_ORIGIN ?? 'http://127.0.0.1:3000'),
+    metadataBase: frontOrigin(),
     title: eventName,
     description,
     robots,
