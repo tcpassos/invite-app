@@ -52,6 +52,8 @@ Quatro casos de uso, os mesmos marcados como arquiteturalmente significativos na
 
 Ficam de fora UC002, UC003 e UC007. Os dois primeiros são cadastro atrás de sessão e ainda não têm rota especificada. O UC007 é leitura de projeção com a mesma guarda e a mesma entidade do UC008, então não demonstra nada que o UC008 já não demonstre.
 
+> **Atualização da Sprint 6.** As rotas do UC002 e do UC003 foram especificadas depois, na seção 4.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), e o UC007 ganhou diagrama de sequência na notação de camadas, nos [Diagramas de Sequência](../Sprint-2/Diagramas-de-Sequência.md). Os três continuam sem realização em BCE.
+
 ### 1.3 Notação
 
 As figuras usam **BCE**, que é a notação de análise com três tipos de objeto:
@@ -77,6 +79,8 @@ Nos diagramas de sequência, **só as chamadas são numeradas**, com numeração
 A `LoginScreen` recebe as credenciais e não as julga. Ela entrega o par ao `AuthController`, que é quem sabe o que torna uma credencial válida. O controle pede ao `Host` a conta daquele email, compara a senha com o hash guardado e, quando confere, emite a sessão. A fronteira só exibe o resultado.
 
 O controle devolve `InvalidCredentials` sem dizer se o errado foi o email ou a senha, e a fronteira mostra a mesma mensagem nos dois casos. A decisão só funciona se os dois objetos concordarem, porque bastaria a tela distinguir os casos para o segredo vazar por outro caminho.
+
+> **Atualização da Sprint 6.** Na implementação, a `LoginScreen` é a tela `/sign-in` do componente `HostPanelPage`, que também faz o cadastro, e o controle se divide em `AuthController`, no pacote `auth` da Apresentação, e `HostService`, no Domínio. A recusa de credencial responde 401 sem campo apontado, pela linha 23 da seção 11.1 do Guia.
 
 No cadastro, a ordem importa. O controle consulta o `Host` por email antes de criar qualquer coisa, e só então gera o hash e cria a entidade. Inverter isso gravaria uma conta que a regra de email único recusaria logo depois, e deixaria um hash calculado à toa.
 
@@ -113,6 +117,8 @@ Na resposta, o controle valida primeiro o que dá para decidir com o que já tem
 `reserveSeats` é a mensagem que carrega o teto de capacidade. Ela devolve booleano, e o ramo do diagrama guarda nesse retorno. Na notação de camadas o teto aparecia como uma verificação dentro de uma transação, com trava na linha do convite. BCE não tem onde mostrar isso, então a garantia foi para o retorno da mensagem. O `opt` acima dela registra que só a resposta sim ocupa vaga, porque não e talvez passam sem reservar nada.
 
 O `Guest` nasce com o token pessoal já gerado pelo controle, e a `DietaryNote` só nasce se o convidado tiver marcado categoria ou escrito texto livre. As duas levam `«create»` porque a identidade do convidado não existe antes da resposta: não há cadastro prévio, e é a resposta que cria o registro.
+
+> **Atualização da Sprint 6.** A `PublicInviteScreen` corresponde ao componente `PublicInvitePage`, que também serve o link pessoal em `/r/{personalToken}`, onde o convidado altera a resposta pela RN3 do UC005. Essa alteração não tem realização nesta página. O `RsvpController` do diagrama é o `PublicRsvpController` do pacote público, junto com o `RsvpService`.
 
 ![Diagrama de sequência do UC005](../../.attachments/diagrama-sequencia-bce-uc005.png)
 

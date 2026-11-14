@@ -1,7 +1,8 @@
 # ADR-0015, Publicação para a demonstração
 
-**Status:** Proposta
+**Status:** Aceita
 **Data do registro:** 27/10/2026
+**Data da aceitação:** 13/11/2026
 
 ## Contexto
 
@@ -40,4 +41,4 @@ Publicar no Railway muda três coisas que o ambiente local escondia:
 
 ## Revisão
 
-Com o aval do time, o ADR-0003 passa para o status Substituída, e o Diagrama de Implantação ganha o nó do Railway ao lado do host de desenvolvimento.
+O time aceitou esta decisão em 13/11/2026. O [ADR-0003](0003-Ambiente-de-execução.md) passou para o status Substituída, com o link para este registro, e o [Diagrama de Implantação](../Diagrama-de-Implantação.md) ganhou o nó do Railway ao lado do host de desenvolvimento.

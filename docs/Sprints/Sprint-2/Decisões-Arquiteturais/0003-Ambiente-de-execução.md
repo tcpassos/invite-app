@@ -1,6 +1,6 @@
 # ADR-0003, Ambiente de execução
 
-**Status:** Aceita
+**Status:** Substituída pelo [ADR-0015](0015-Publicação-para-a-demonstração.md)
 **Data do registro:** 13/09/2026
 
 ## Contexto

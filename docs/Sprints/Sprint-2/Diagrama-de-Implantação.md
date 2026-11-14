@@ -18,6 +18,8 @@ A seção 10 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquit
 
 O diagrama descreve a estrutura prevista para a Sprint 3. O `docker-compose.yml` já está na raiz do repositório, mas os serviços `front` e `api` dependem do código que será implementado na próxima sprint.
 
+> **Atualização da Sprint 6.** O [ADR-0015](Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md), aceito em 13/11/2026, substituiu o ADR-0003 e acrescentou um segundo ambiente: a publicação no Railway para a demonstração. A figura ganhou o nó do Railway ao lado do host de desenvolvimento, e a seção 11 descreve esse ambiente. As seções 1 a 10 continuam descrevendo o ambiente local, que segue valendo para o desenvolvimento e como plano B da demonstração.
+
 ---
 
 ## 1. Passo 1, os nós de implantação
@@ -39,6 +41,8 @@ O [ADR-0003](Decisões-Arquiteturais/0003-Ambiente-de-execução.md) limita a ex
 
 São seis nós, dos quais um é um dispositivo. O volume nomeado aparece ao lado do `db` como local de persistência, não como nó.
 
+Com o ADR-0015, a figura passou a ter também o Railway e o dispositivo de quem abre o link publicado. Esses nós estão na seção 11.1.
+
 ### 1.2 Navegador como nó
 
 Neste diagrama, o navegador aparece como local de execução do `front-client.bundle`.
@@ -56,6 +60,8 @@ O `db`, por outro lado, é tanto tier quanto nó. A distinção importa porque t
 Não há nó de rede ou balanceador. O ADR-0003 limita o ambiente ao host local, e a seção 10.6 do guia registra que não existe um ambiente compartilhado.
 
 Também não há um segundo dispositivo para o convidado. Neste ambiente, o convite é aberto no mesmo computador que executa o Compose, por isso os endereços do passo 5 usam `127.0.0.1`. Se houver publicação, o navegador passará para outro dispositivo e o diagrama deverá ser atualizado.
+
+A publicação veio com o ADR-0015, e o diagrama foi atualizado na Sprint 6: no ambiente publicado, o navegador está no celular ou no computador de quem abre o link, como mostra a seção 11.
 
 ---
 
@@ -133,7 +139,7 @@ As explicações dos símbolos ficam nesta seção, seguindo o padrão dos demai
 
 ### Decisões mostradas na figura
 
-Todos os nós ficam dentro de um único dispositivo, conforme o ambiente local definido no ADR-0003.
+No ambiente local, todos os nós ficam dentro de um único dispositivo, conforme o ADR-0003. O ambiente publicado, à direita na figura, é o do ADR-0015 e está explicado na seção 11.
 
 O `front-client.bundle` aparece no container e no navegador porque é entregue de um nó para executar no outro. A relação `<<deploy>>` representa esse movimento.
 
@@ -242,6 +248,8 @@ Essa limitação foi aceita porque o ADR-0003 restringe o ambiente ao desenvolvi
 
 > Esta decisão deve ser revista antes de usar o sistema com dados que precisem ser preservados ou em um ambiente publicado.
 
+O ambiente publicado do ADR-0015 revisou a decisão e manteve a mesma regra. No Railway, quem aplica as `migrations/` é o comando de pré-deploy da API, e só em banco vazio, como o volume vazio do compose. A limitação continua: uma migração acrescentada depois exige um banco novo. Ela foi aceita porque a publicação vale para a demonstração e não guarda dados que precisem ser preservados. A seção 11.4 detalha.
+
 ---
 
 ## 9. Pendências
@@ -261,8 +269,57 @@ Depois da criação do `docker-compose.yml`, permanecem três pontos em aberto:
 | Seção 10 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) | Entrada direta. A 10.3 deu os artefatos por container, a 10.4 deu os caminhos e a 10.7 deu a lista do que decidir aqui |
 | [Diagrama de Componentes](Diagrama-de-Componentes.md) | A seção 4.2 daquela página ligou componente a artefato, e esta liga artefato a nó. Nenhum componente novo foi criado |
 | [ADR-0002](Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) | Os três containers e a exigência de `HEALTHCHECK` e de volume |
-| [ADR-0003](Decisões-Arquiteturais/0003-Ambiente-de-execução.md) | O dispositivo único e a ausência de ambiente publicado |
+| [ADR-0003](Decisões-Arquiteturais/0003-Ambiente-de-execução.md) | O dispositivo único e a ausência de ambiente publicado. Substituído pelo ADR-0015 na Sprint 6 |
+| [ADR-0015](Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md) | O nó do Railway, com os três serviços, os domínios públicos, a rede privada e as migrations pelo pré-deploy, descritos na seção 11 |
+| [Publicação no Railway](../../Começando/Publicação-no-Railway.md) | O passo a passo do ambiente da seção 11, com as variáveis de cada serviço |
 | `docker-compose.yml` | **Escrito**, na raiz do repositório. O ADR-0002 registra que ele é a forma executável deste diagrama, e as sete decisões da seção 8 estão todas dentro dele. O `db` sobe e fica saudável hoje. O `api` e o `front` esperam o código da Sprint 3 |
+
+---
+
+## 11. Ambiente publicado no Railway
+
+Acrescentado na Sprint 6, pelo [ADR-0015](Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md). Os dois ambientes valem: o compose local continua sendo o ambiente de desenvolvimento e o plano B da demonstração, e o Railway é o ambiente da demonstração. O passo a passo está em [Publicação no Railway](../../Começando/Publicação-no-Railway.md).
+
+### 11.1 Os nós
+
+| Nó | Tipo | O que é |
+|---|---|---|
+| Celular ou computador de quem abre o link | Dispositivo | O aparelho do convidado ou do anfitrião, fora da infraestrutura do projeto |
+| Navegador | Ambiente de execução | O mesmo papel da seção 1.2, agora em outro dispositivo |
+| Railway | Ambiente de execução | A plataforma que constrói e executa os três serviços, num projeto só |
+| `front` | Container | O tier Front, construído pelo `front/Dockerfile` |
+| `api` | Container | O tier API, construído pelo `api/Dockerfile` |
+| `Postgres` | Container | O PostgreSQL gerenciado do Railway |
+
+Os três serviços são os três tiers do [ADR-0002](Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md), cada um num serviço, com as mesmas imagens que o compose constrói. O Railway não mostra a máquina física onde os serviços rodam, por isso o diagrama não desenha um dispositivo dentro dele, só o ambiente de execução. Os nomes dos serviços importam, porque o endereço da rede privada sai do nome.
+
+### 11.2 Os artefatos
+
+Os artefatos do `front` são os mesmos da seção 3.2. A `api` leva dois a mais. O `migrate.js` é a saída de `api/src/migrate.ts`, executada como comando de pré-deploy, e a pasta `migrations/` entra na imagem da API, que antes só o container do banco montava. O `Postgres` não recebe artefato do time, porque o banco é criado pelo Railway.
+
+No lugar do `docker-compose.yml` e do `.env`, a configuração fica nas variáveis de cada serviço, desenhadas como `Variables`. As duas que só existem na publicação são `SESSION_COOKIE_CROSS_SITE=true`, que emite o cookie de sessão com `SameSite=None` e `Secure`, e `TRUST_PROXY=1`, que faz a API ler o IP do convidado no `X-Forwarded-For` do proxy do Railway. Sem as duas, a API se comporta como no compose.
+
+### 11.3 Os links de comunicação
+
+| # | De | Para | Protocolo | Endereço usado por quem chama | Alcance |
+|---|---|---|---|---|---|
+| 1 | Navegador | `front` | HTTPS | `<front>.up.railway.app` | Domínio público |
+| 2 | Navegador | `api` | HTTPS | `<api>.up.railway.app` | Domínio público |
+| 3 | `front` | `api` | HTTP | `api.railway.internal:3000` | Rede privada |
+| 4 | `api` | `Postgres` | TCP | `postgres.railway.internal:5432`, pela `DATABASE_URL` | Rede privada |
+
+Os links têm a mesma forma da seção 5.1. O caminho de dois saltos do convite público é o 1 com o 3, e o POST do UC005 e as rotas do painel vão pelo 2. O `front` e a `api` têm domínio público com HTTPS, porque os dois recebem chamada do navegador, pelo mesmo motivo da seção 5.3. O banco fica só na rede privada, como no compose ele não publica porta.
+
+A regra da seção 5.2 continua. O servidor do `front` chama a API pela rede privada, com `API_URL_INTERNAL`, e o código entregue ao navegador usa o domínio público da API, com `NEXT_PUBLIC_API_URL`. O endereço `api.railway.internal` não pode aparecer no `front-client.bundle`.
+
+Não há volume desenhado. O armazenamento do banco é gerenciado pelo Railway e não é configurado pelo time.
+
+### 11.4 O que muda em relação ao ambiente local
+
+- **Migrations.** O comando de pré-deploy da API, `node api/dist/migrate.js`, aplica os scripts de `migrations/` numa transação só quando o banco está vazio, e não faz nada quando já há tabelas. É a regra do volume vazio da seção 8.1, com outro executor.
+- **Cookie entre sites.** O `front` e a `api` ficam em dois domínios `*.up.railway.app`, que para o navegador são sites diferentes. O anfitrião precisa entrar pelo Chrome, pelo Edge ou pelo Firefox, em janela normal. O convidado não usa cookie e não é afetado.
+- **Origem do tráfego.** A API fica atrás do proxy do Railway, e o limite de tráfego por origem do ADR-0008 passa a contar pelo IP que o proxy repassa.
+- **Uma instância de cada serviço.** A pendência 3 da seção 9 continua igual. Com uma réplica só da API, o contador em memória do `RateLimitGuard` vale.
 
 ## Fonte do diagrama
 

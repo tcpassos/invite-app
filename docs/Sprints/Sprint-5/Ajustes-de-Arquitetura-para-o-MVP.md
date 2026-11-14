@@ -4,7 +4,7 @@ A Sprint 5 começou com o front da parte 2 entrando no repositório, e logo depo
 
 São cinco partes. A seção 1 trata do que mudou em artefato da arquitetura, ou foi decidido onde nenhum artefato decidia, por causa do front. A seção 2 trata do contrário, o que o protótipo do front fazia e a arquitetura não permite. A seção 3 faz o mesmo para o backend. A seção 4 registra as pendências fechadas para o MVP ficar pronto, e a seção 5 o que continua em aberto.
 
-A regra de precedência é a de sempre. Se um ponto daqui divergir de um ADR, o ADR vale. As decisões que nenhum documento cobria entraram como linhas 35 a 40 da seção 11.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) e precisam do aval do time.
+A regra de precedência é a de sempre. Se um ponto daqui divergir de um ADR, o ADR vale. As decisões que nenhum documento cobria entraram como linhas 35 a 40 da seção 11.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) e receberam o aval do time em 13/11/2026, na Sprint 6.
 
 ## 1. O que a arquitetura precisou ajustar
 
@@ -25,7 +25,7 @@ A regra de precedência é a de sempre. Se um ponto daqui divergir de um ADR, o 
 
 **O que a arquitetura dizia.** Nada, e é por isso que o ponto existe. O passo 3 do UC003 fala em ajustar "as cores e os textos do convite" sem nomear os textos. O Diagrama de Classes registrou a dúvida como pendência 1, e enquanto ela não fosse fechada `InviteCustomization` ficava sem atributo de texto. O contrato seguiu a mesma linha: `CustomizeInviteRequest` carrega só `eventName` e `location`, e o `TemplateDefinition` só tem limite de tamanho para esses dois. A delimitação do ADR-0004 diz que os textos do convite ficam em colunas próprias, porque são dado consultado.
 
-**O que foi decidido para o MVP.** A saudação passa a ser **texto fixo de cada template**, parte do HTML e do CSS do ADR-0009, e o recado sai. O convite continua com a saudação manuscrita, mas quem a escreve é o template, não o anfitrião. Com isso a pendência 1 do Diagrama de Classes fecha no estado em que estava: o UC003 não prevê texto além do nome e do local.
+**O que foi decidido para o MVP.** A saudação passa a ser **texto fixo**, igual nos três templates, e o recado sai. O texto está no componente do cartão do convite (`front/src/view/invite-card.tsx`), e o CSS de cada template do ADR-0009 só muda a aparência dele. O convite continua com a saudação manuscrita, mas quem a escreve é o template, não o anfitrião. Com isso a pendência 1 do Diagrama de Classes fecha no estado em que estava: o UC003 não prevê texto além do nome e do local.
 
 **Por quê.** Os dois campos não são de graça. Cada um atravessaria tudo o que a seção 1.7 do Guia chama de propagação de alterações:
 
@@ -178,8 +178,8 @@ Com o front e o backend juntos, quatro pendências que impediam chamar o MVP de 
 
 ## 5. O que continua em aberto
 
-- **O Protótipo de Baixa Fidelidade da Sprint 3** segue a preencher. As telas que agora existem podem servir de base.
+- **O Protótipo de Baixa Fidelidade da Sprint 3** segue a preencher. As telas que agora existem podem servir de base. Completado na Sprint 6, a partir das telas implementadas.
 - **A hipótese de réplica da API.** O contador do limite de taxa fica na memória do processo, pelo ADR-0010, e deixa de valer se a API ganhar uma segunda instância. Não há réplica no ADR-0003, então não é defeito hoje.
 - **A assimetria entre `publish` e `unpublish`**, registrada na seção 9.4 do Guia. O `unpublish` continua sem repetição automática.
 - **O diagrama de sequência do UC007**, que nunca existiu. A projeção dele já tem nome no código.
-- **O aval do time às linhas 35 a 40 da seção 11.1 do Guia.**
+- **O aval do time às linhas 35 a 40 da seção 11.1 do Guia.** Dado em 13/11/2026, na Sprint 6.

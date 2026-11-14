@@ -28,3 +28,5 @@ As tabelas mostram o caminho das [personas](Personas.md) até seus objetivos, in
 | 5 | Marca que é vegetariano e adiciona uma observação | App | Aliviado por não precisar avisar à parte |
 | 6 | Recebe a confirmação na tela | App | Seguro |
 | 7 | Dias depois, muda de ideia e reabre o link para alterar a resposta | App | Tranquilo |
+
+> **Atualização da Sprint 6.** No passo 5, a aplicação implementada só oferece o campo de texto livre quando o convidado marca alergia. Quem marca vegetariano registra a categoria, sem observação escrita. No passo 7, o link que o convidado reabre é o link pessoal recebido na confirmação, e não o link do convite. Ver a [Especificação de Casos de Uso](Especificação-de-Casos-de-Uso.md), UC005 ED2 e UC006.

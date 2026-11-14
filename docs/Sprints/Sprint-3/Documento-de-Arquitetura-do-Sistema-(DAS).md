@@ -19,6 +19,7 @@
 | 07/10/2026 | 1.1 | Acesso a dados (ADR-0014) nas restrições e nas referências | Tiago Passos |
 | 07/10/2026 | 1.2 | Rotas e serviços do UC001, do UC002, do UC003 e do link pessoal, pacote `auth` confirmado e limite de tentativas na entrada, conforme as decisões 21 a 33 do Guia da Arquitetura | Tiago Passos |
 | 08/10/2026 | 1.3 | Operações do `RateLimitGuard` separadas em antes e depois da resolução do token, conforme a seção 9.5 do Guia da Arquitetura | Tiago Passos |
+| 13/11/2026 | 1.4 | Notas de atualização da Sprint 6 onde o documento diverge do implementado, e a publicação no Railway (ADR-0015) | Tiago Passos |
 
 ---
 
@@ -98,7 +99,7 @@ Todos versionados em `docs/` no repositório GitHub do projeto e publicados na w
 | [Diagrama de Classes](../Sprint-2/Diagrama-de-Classes.md) | 2 |
 | [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) | 2 |
 | [Diagrama de Implantação](../Sprint-2/Diagrama-de-Implantação.md) | 2 |
-| [Decisões Arquiteturais](../Sprint-2/Decisões-Arquiteturais.md), catorze ADRs | 2, 3 e 4 |
+| [Decisões Arquiteturais](../Sprint-2/Decisões-Arquiteturais.md), quinze ADRs | 2, 3 e 4 |
 | [Documento de Realização de Casos de Uso](Documento-de-Realização-de-Casos-de-Uso.md) | 3 |
 | [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md), documento de trabalho do time | 2 |
 
@@ -135,6 +136,8 @@ Cada visão descreve o mesmo sistema, e o que muda é o tipo de elemento. O mesm
 | Exibição do convite | Renderização no servidor, para que o link mostre prévia ao ser compartilhado e a página chegue pronta ao convidado | 0004 |
 | Simplicidade deliberada | Consulta periódica em vez de Server-Sent Events no painel, e personalização por template em HTML e CSS em vez de upload de mídia | 0007, 0009 |
 
+> **Atualização da Sprint 6.** Na publicação do Railway, o cookie de sessão sai com `SameSite=None` e `Secure`, porque o front e a API ficam em domínios diferentes. No ambiente local continua `SameSite=Lax`. Ver o [ADR-0015](../Sprint-2/Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md).
+
 ### 3.2 Restrições
 
 | Restrição | De onde vem |
@@ -147,6 +150,8 @@ Cada visão descreve o mesmo sistema, e o que muda é o tipo de elemento. O mesm
 | **Não há observabilidade além do log em saída padrão.** Sem coletor de métricas, sem painel e sem rastreamento distribuído | ADR-0012 |
 | **O fuso é um só para o projeto inteiro**, `America/Sao_Paulo`, então evento fora dele exibe hora local errada | ADR-0013 |
 | **A equipe tem quatro pessoas e o prazo é o semestre letivo**, o que pesou contra toda decisão que exigisse container ou serviço novo | [Team Charter](../../Team-Charter.md) e [Proposta de Trabalho](../../Proposta-de-Trabalho.md) |
+
+> **Atualização da Sprint 6.** A primeira restrição mudou. O [ADR-0015](../Sprint-2/Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md), aceito em 13/11/2026, substituiu o ADR-0003: o compose local continua sendo o ambiente de desenvolvimento, e os três tiers também são publicados no Railway para a demonstração, com domínio público em HTTPS para o front e a API.
 
 ---
 
@@ -228,6 +233,8 @@ O pacote existe porque `AuthController` precisa morar em algum lugar, e **ele n�
 
 A pendência 2 da seção 10.2 do [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md) registrava que faltava decidir se entrava um terceiro pacote. **O time confirmou o terceiro pacote** junto com as rotas do UC001, na linha 24 da seção 11.1 do [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md). A regra da seção 5.3 do Guia fecha o pacote nos três serviços do UC001, do mesmo jeito que fecha o pacote público nos quatro serviços dele.
 
+> **Atualização da Sprint 6.** O código tem os três pacotes, nas pastas `public/`, `authenticated/` e `auth/` de `api/src/presentation`, e o Guia passou a descrever os três nas seções 1.4, 2 e 5.3.
+
 ### Formato da descrição de classe
 
 São dois formatos, usados em toda a seção 5 sem variação entre quem escreve. O critério é estrutural: **classe com atributo próprio leva a descrição completa, classe sem atributo leva a curta.** As nove classes do modelo ficam no primeiro caso, e as vinte comportamentais no segundo.
@@ -264,11 +271,15 @@ São 29 classes e dois enums, na ordem dos pacotes da seção 5.1.
 
 `PublicInvitePage` é partida entre o processo do tier Front, que faz a leitura, e o navegador, que faz a escrita. É a mesma classe em dois lugares de execução, e a seção 6 mostra a divisão em dois artefatos.
 
+> **Atualização da Sprint 6.** `PublicInvitePage` também serve o link pessoal do convidado, em `/r/{personalToken}`, com a mesma divisão entre leitura no servidor e alteração no navegador. `HostPanelPage` também serve a tela de entrada e cadastro, em `/sign-in`, além de `/invites` e `/invites/{inviteId}`. Ver o [Diagrama de Componentes](../Sprint-2/Diagrama-de-Componentes.md), seção 1.
+
 #### `front.templates`
 
 | Classe | Descrição | Operações |
 |---|---|---|
 | `TemplateSet` | Guarda o HTML, o CSS e a imagem de Open Graph de cada template do [ADR-0009](../Sprint-2/Decisões-Arquiteturais/0009-Personalização-por-template.md) | A classe `invite-template--{code}` em `src/templates/invite-templates.css` e a imagem de prévia em `public/templates/{code}.png`, escolhidas pelo `templateCode` do convite |
+
+> **Atualização da Sprint 6.** Na implementação, `TemplateSet` não tem HTML por template. O HTML do convite é um só, o componente de View `InviteCard`, e cada template é uma classe no mesmo arquivo CSS e uma imagem PNG de prévia do link. A saudação "você está convidado(a)!" fica nesse HTML comum, igual nos três templates. Ver os [Ajustes de Arquitetura para o MVP](../Sprint-5/Ajustes-de-Arquitetura-para-o-MVP.md), seções 1.1 e 1.2.
 
 #### `contract`
 
@@ -446,6 +457,8 @@ E `front.view` não tem classe nomeada, conforme registrado acima.
 ![Diagrama de Implantação](../../.attachments/diagrama-de-implantacao.png)
 
 O sistema roda inteiro num dispositivo só, o computador de quem levanta o ambiente com `docker compose up`. O [ADR-0003](../Sprint-2/Decisões-Arquiteturais/0003-Ambiente-de-execução.md) fecha a execução no host de desenvolvimento, sem ambiente publicado, então não existe máquina separada para aplicação e banco, nem balanceador, nem nó de nuvem.
+
+> **Atualização da Sprint 6.** O [ADR-0015](../Sprint-2/Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md) substituiu o ADR-0003, e a figura acima já mostra o segundo ambiente: o Railway, com os serviços `front`, `api` e `Postgres`, o front e a API com domínio público em HTTPS, o banco só na rede privada, o servidor do front chamando a API por `api.railway.internal:3000` e as migrations aplicadas pelo comando de pré-deploy da API. O texto desta seção continua descrevendo o ambiente local. O ambiente publicado está na seção 11 do [Diagrama de Implantação](../Sprint-2/Diagrama-de-Implantação.md).
 
 São seis nós, um dispositivo e cinco ambientes de execução aninhados dentro dele.
 

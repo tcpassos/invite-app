@@ -16,7 +16,7 @@ Status possíveis: **Proposta**, **Aceita**, **Substituída** e **Descartada**.
 |---|---|---|
 | [0001](Decisões-Arquiteturais/0001-Estilo-arquitetural.md) | MVC no front-end e três camadas no back-end | Aceita |
 | [0002](Decisões-Arquiteturais/0002-Empacotamento-em-tiers.md) | Três tiers em containers separados, orquestrados por compose | Aceita |
-| [0003](Decisões-Arquiteturais/0003-Ambiente-de-execução.md) | Execução apenas local durante o desenvolvimento | Aceita |
+| [0003](Decisões-Arquiteturais/0003-Ambiente-de-execução.md) | Execução apenas local durante o desenvolvimento | Substituída pelo [0015](Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md) |
 | [0004](Decisões-Arquiteturais/0004-Stack-de-implementação.md) | Next.js no front, NestJS na API e PostgreSQL no banco | Aceita |
 | [0005](Decisões-Arquiteturais/0005-Identificador-público-do-convite.md) | Token CSPRNG de 128 bits em base32, separado da chave primária | Aceita |
 | [0006](Decisões-Arquiteturais/0006-Identidade-do-convidado.md) | Link único por convite, identidade criada na resposta | Aceita |
@@ -28,10 +28,10 @@ Status possíveis: **Proposta**, **Aceita**, **Substituída** e **Descartada**.
 | [0012](Decisões-Arquiteturais/0012-Observabilidade-entre-os-tiers.md) | Log em saída padrão e correlação por cabeçalho entre os dois saltos | Aceita |
 | [0013](Decisões-Arquiteturais/0013-Tempo-do-evento.md) | Instante único, fuso do projeto e fim do dia como fronteira da alteração | Aceita |
 | [0014](Decisões-Arquiteturais/0014-Acesso-a-dados.md) | Kysely sobre o driver `pg`, com o tipo do banco preso na camada de Dados | Aceita |
-| [0015](Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md) | Publicação no Railway para a demonstração, com o compose local mantido | Proposta |
+| [0015](Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md) | Publicação no Railway para a demonstração, com o compose local mantido | Aceita |
 
 As decisões de 0004 a 0008 foram confrontadas com um levantamento de 19 plataformas equivalentes de convite e RSVP. O relatório fica em `pesquisa-stack-benchmark.md`, no repositório do GitHub.
 
 Ainda em aberto, e previsto como ADR: **o envio de e-mail com recuperação de senha**. Ele continua fora porque nenhum caso de uso o pede. O UC001 tem entrada, cadastro e credencial inválida, e não tem fluxo de recuperação. Decidir transporte de e-mail e política de redefinição antes de existir requisito seria responder uma pergunta que ninguém fez, no mesmo raciocínio que o ADR-0007 usou para descartar o Server-Sent Events.
 
-Há também decisões que o [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) tomou onde nenhum ADR decidia, listadas na seção 11.1 daquele documento. Elas valem como regra de código, precisam de aval do time e não têm o peso de um ADR aceito.
+Há também decisões que o [Guia da Arquitetura](../../Diretrizes-do-Projeto/Guia-da-Arquitetura.md) tomou onde nenhum ADR decidia, listadas na seção 11.1 daquele documento. Elas valem como regra de código e não têm o peso de um ADR aceito. Todas receberam o aval do time, e a última leva em 13/11/2026.
