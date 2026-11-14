@@ -52,7 +52,6 @@ add(modelo='grade', bloco=A, titulo='Funcionalidades do MVP', colunas=2, tamCorp
         dict(icone='prato', t='Restrições alimentares', d='Informar a restrição. Alergia pede descrição.', etiqueta=['Rafael', 'Jorge']),
         dict(icone='prancheta', t='Painel e CSV', d='Lista de presença que se atualiza sozinha e restrições em CSV.', etiqueta=['Marina', 'Jorge']),
     ],
-    legenda='As doze histórias de usuário do MVP estão implementadas e publicadas.',
     notas='Andreas. O MVP tem seis grupos de funcionalidades e doze histórias de usuário. As doze estão implementadas. A Marina cria a conta, monta o convite e compartilha o link. O Rafael confirma presença sem conta, informa acompanhantes e restrição alimentar, e pode alterar a resposta depois. O painel mostra a lista de presença e as restrições, e o anfitrião baixa as restrições em CSV para o Jorge. Vamos mostrar isso funcionando na demonstração.')
 
 add(modelo='numeros', bloco=A, titulo='Como o backlog foi organizado',
@@ -73,9 +72,9 @@ add(modelo='refino', bloco=A, titulo='Como o backlog foi refinado',
     cartoes=[
         dict(t='Lista de presença', antes='atualização em tempo real.', depois='Atualiza sozinha a cada 20 segundos, decidido no Grau A. A história pedia a lista atualizada, sem exigir tempo real.'),
         dict(t='Texto do convite', antes='saudação e recado livres.', depois='Saudação fixa do template. O recado saiu do MVP.'),
-        dict(t='Fluxo central', antes='previsto para a Sprint 4.', depois='Entrou na Sprint 5, junto com o resto do MVP, depois da base pronta.'),
+        dict(t='Primeiras histórias', antes='conta, convite, link e resposta do convidado na Sprint 4.', depois='Entraram na Sprint 5, junto com o resto do MVP, porque a Sprint 4 montou a base do código.'),
     ],
-    notas='Andreas. As três primeiras sprints foram de requisitos e arquitetura. As três últimas foram de implementação. Nesse tempo o backlog mudou em três pontos. A lista de presença estava prevista em tempo real e ficou com atualização a cada 20 segundos. Decidimos isso ainda no Grau A, porque a história pedia a lista atualizada e não falava em tempo real. O recado livre do convite saiu do MVP. O fluxo central estava previsto para a Sprint 4 e entrou na Sprint 5, depois que a base ficou pronta. Agora o Tiago apresenta a arquitetura.')
+    notas='Andreas. As três primeiras sprints foram de requisitos e arquitetura. As três últimas foram de implementação. Nesse tempo o backlog mudou em três pontos. A lista de presença estava prevista em tempo real e ficou com atualização a cada 20 segundos. Decidimos isso ainda no Grau A, porque a história pedia a lista atualizada e não falava em tempo real. O recado livre do convite saiu do MVP. E as primeiras histórias, de criar a conta e o convite, gerar o link e responder, estavam previstas para a Sprint 4. Elas entraram na Sprint 5, porque a Sprint 4 foi usada para montar a base do código. Agora o Tiago apresenta a arquitetura.')
 
 add(modelo='divisor', bloco='Arquitetura', num='02', titulo='Arquitetura',
     notas='Tiago. Nesta parte mostramos a arquitetura que planejamos no Grau A, a que está no código e a comparação entre as duas.')

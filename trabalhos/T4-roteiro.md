@@ -69,7 +69,8 @@ começa com o nome, porque a avaliação é individual.
   tarefas do quadro, das seis sprints. Os épicos existem no quadro, mas a organização foi por sprint. Se perguntarem, as histórias
   são H01 a H12 no quadro, cada uma com a tag da persona.
 - **Slide 7, refinamento.** As sprints e três refinamentos que mantiveram o valor: lista a cada
-  20 segundos, saudação fixa, fluxo central na Sprint 5.
+  20 segundos, saudação fixa, e as primeiras histórias (conta, convite, link e resposta),
+  previstas para a Sprint 4, entregues na Sprint 5.
 - Passagem: "O Tiago apresenta a arquitetura."
 
 ### Tiago, slides 8 a 14

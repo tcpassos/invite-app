@@ -141,7 +141,6 @@
         ]
       }
     ],
-    "legenda": "As doze histórias de usuário do MVP estão implementadas e publicadas.",
     "notas": "Andreas. O MVP tem seis grupos de funcionalidades e doze histórias de usuário. As doze estão implementadas. A Marina cria a conta, monta o convite e compartilha o link. O Rafael confirma presença sem conta, informa acompanhantes e restrição alimentar, e pode alterar a resposta depois. O painel mostra a lista de presença e as restrições, e o anfitrião baixa as restrições em CSV para o Jorge. Vamos mostrar isso funcionando na demonstração.",
     "n": 5
   },
@@ -237,12 +236,12 @@
         "depois": "Saudação fixa do template. O recado saiu do MVP."
       },
       {
-        "t": "Fluxo central",
-        "antes": "previsto para a Sprint 4.",
-        "depois": "Entrou na Sprint 5, junto com o resto do MVP, depois da base pronta."
+        "t": "Primeiras histórias",
+        "antes": "conta, convite, link e resposta do convidado na Sprint 4.",
+        "depois": "Entraram na Sprint 5, junto com o resto do MVP, porque a Sprint 4 montou a base do código."
       }
     ],
-    "notas": "Andreas. As três primeiras sprints foram de requisitos e arquitetura. As três últimas foram de implementação. Nesse tempo o backlog mudou em três pontos. A lista de presença estava prevista em tempo real e ficou com atualização a cada 20 segundos. Decidimos isso ainda no Grau A, porque a história pedia a lista atualizada e não falava em tempo real. O recado livre do convite saiu do MVP. O fluxo central estava previsto para a Sprint 4 e entrou na Sprint 5, depois que a base ficou pronta. Agora o Tiago apresenta a arquitetura.",
+    "notas": "Andreas. As três primeiras sprints foram de requisitos e arquitetura. As três últimas foram de implementação. Nesse tempo o backlog mudou em três pontos. A lista de presença estava prevista em tempo real e ficou com atualização a cada 20 segundos. Decidimos isso ainda no Grau A, porque a história pedia a lista atualizada e não falava em tempo real. O recado livre do convite saiu do MVP. E as primeiras histórias, de criar a conta e o convite, gerar o link e responder, estavam previstas para a Sprint 4. Elas entraram na Sprint 5, porque a Sprint 4 foi usada para montar a base do código. Agora o Tiago apresenta a arquitetura.",
     "n": 7
   },
   {
