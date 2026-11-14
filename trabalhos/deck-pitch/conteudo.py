@@ -97,6 +97,10 @@ add(modelo='conteudoImagem', bloco=T, titulo='O diagrama de camadas do Grau A', 
     imagem='diagrama-de-camadas-slide.png', legendaImagem='Com o pacote de autenticação, acrescentado na Sprint 6', altImagem=490, topoImagem=144,
     notas='Tiago. Este é o diagrama de camadas do Grau A. A única mudança é o pacote de autenticação, que acrescentamos na revisão da Sprint 6 porque já existia no código. Para escrever, o navegador fala direto com a API. Isso vale para o painel e para a resposta do convidado. A leitura do convite passa pelo servidor do front-end, porque a prévia do link no WhatsApp precisa das metatags prontas. Dentro da API, cada camada só conhece a de baixo. Camada é uma divisão lógica e tier é um processo separado. Por isso as três camadas ficam no mesmo container da API.')
 
+add(modelo='capturas', bloco=T, titulo='Classes e sequência da confirmação de presença', alt=440, topo=160,
+    imagens=[dict(arq='diagrama-de-classes.png', t='Diagrama de classes'), dict(arq='diagrama-sequencia-uc005-trecho.png', t='Trecho da sequência da confirmação')],
+    notas='Tiago. À esquerda, o diagrama de classes do Grau A: o anfitrião, o convite, a personalização, o convidado e a observação alimentar. A nota marca o teto de pessoas como invariante do convite. À direita, um trecho do diagrama de sequência da confirmação de presença: a Apresentação confere o limite e o formato, o Domínio registra a resposta e consulta os repositórios. É esse caminho que o Gabriel mostra no código.')
+
 add(modelo='mapa', bloco=T, titulo='A arquitetura descritiva, que está no código',
     colunas=[
         dict(icone='monitor', t='Front-end', tec='Next.js, MVC', pastas=[('app/', 'rotas das telas'), ('view/', 'componentes de tela'), ('controller/', 'chamadas tipadas à API'), ('templates/', 'CSS de cada template')]),
@@ -186,7 +190,18 @@ add(modelo='codigoFluxo', bloco='Implementação, Gabriel', titulo='A regra de c
              codigo=['domain/teste.ts', '  1:34  error  Unexpected path', '  "../presentation/...invite.controller"', '  imported in restricted zone.', '  Domínio não importa da Apresentação', '', '1 problem (1 error)'],
              legenda='O PR fica vermelho e não entra na main até o import ser corrigido.'),
     ],
-    notas='Gabriel. A regra de camadas é conferida pelo lint. No eslint.config.mjs, cada regra do Guia da Arquitetura vira uma zona proibida. Por exemplo, o Domínio não importa da Apresentação, e a Apresentação não chama a camada de Dados. A integração contínua roda o lint em todo PR. Um import errado gera este erro, o PR fica vermelho e não entra na main. Agora o Guilherme apresenta as tecnologias e a aplicação funcionando.')
+    notas='Gabriel. A regra de camadas é conferida pelo lint. No eslint.config.mjs, cada regra do Guia da Arquitetura vira uma zona proibida. Por exemplo, o Domínio não importa da Apresentação, e a Apresentação não chama a camada de Dados. A integração contínua roda o lint em todo PR. Um import errado gera este erro, o PR fica vermelho e não entra na main.')
+
+add(modelo='grade', bloco='Implementação, Gabriel', titulo='Boas práticas de desenvolvimento', colunas=3, icone=56, tamTitulo=19, tamCorpo=16, gapY=40,
+    celulas=[
+        dict(icone='check', t='Testes do Domínio', d='As regras da resposta, das vagas, da data e da publicação, sem banco.', destaque=True),
+        dict(icone='banco', t='Testes contra o banco', d='As consultas rodam num PostgreSQL de verdade, inclusive a concorrência no teto.'),
+        dict(icone='fluxo', t='Testes das rotas', d='O fluxo completo pela API e o mesmo 404 para quem não tem acesso.'),
+        dict(icone='pr', t='Integração contínua', d='Lint, formatação, tipos, testes e imagens em todo PR.'),
+        dict(icone='git', t='Mudança por PR', d='A main só recebe mudança por PR, com a integração contínua verde.'),
+        dict(icone='lista', t='Decisões registradas', d='Cada decisão de arquitetura tem um ADR com o contexto e o motivo.'),
+    ],
+    notas='Gabriel. As práticas de desenvolvimento que seguimos. Os testes têm três níveis. Os do Domínio testam as regras sem banco. Os da camada de Dados rodam num PostgreSQL de verdade, e um deles manda quatro respostas ao mesmo tempo num convite com teto de cinco: passam exatamente duas. Os testes das rotas cobrem o fluxo completo pela API. Tudo isso roda na integração contínua em todo PR, e a main só recebe mudança por PR. As decisões de arquitetura ficam registradas em ADRs. Agora o Guilherme mostra as tecnologias e a aplicação funcionando.')
 
 add(modelo='grade', bloco=GU, titulo='Tecnologias e por que foram escolhidas', colunas=2, icone=52, tamTitulo=19, tamCorpo=17, gapY=28,
     celulas=[
