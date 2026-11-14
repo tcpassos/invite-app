@@ -1,0 +1,918 @@
+[
+  {
+    "modelo": "capaPitch",
+    "bloco": "",
+    "cartola": "Pitch Final, Time 04",
+    "titulo": "App de gerenciamento<br>de convites",
+    "tam": 56,
+    "sub": "Problema, arquitetura, implementação e resultado do projeto",
+    "equipe": "Andreas Grings, Gabriel Tomasi,<br>Guilherme Toebe e Tiago Passos",
+    "disciplina": "Arquitetura de Software<br>Prof. Kleinner Farias",
+    "data": "17/11/2026",
+    "captura": "c03-convite.png",
+    "notas": "Andreas. Boa noite. Somos o Time 04. O nosso projeto é um app para gerenciar convites de festa: o anfitrião cria o convite e acompanha quem vai, e o convidado responde pelo link. Vamos mostrar o produto, a arquitetura planejada e a implementada, a aplicação funcionando e o que aprendemos.",
+    "n": 1
+  },
+  {
+    "modelo": "divisor",
+    "bloco": "Produto e backlog, Andreas",
+    "num": "01",
+    "titulo": "O produto e o backlog",
+    "quem": [
+      [
+        "Andreas Grings",
+        "pessoas"
+      ]
+    ],
+    "notas": "Andreas. Primeiro, o problema, para quem é o produto e como organizamos o backlog.",
+    "n": 2
+  },
+  {
+    "modelo": "problema",
+    "bloco": "Produto e backlog, Andreas",
+    "titulo": "O problema que o app resolve",
+    "linhas": [
+      {
+        "icone": "conversa",
+        "t": "Confirmações espalhadas",
+        "d": "Quem organiza uma festa junta as respostas em conversas de WhatsApp, uma por convidado."
+      },
+      {
+        "icone": "pessoas",
+        "t": "Ninguém sabe quantas pessoas vêm",
+        "d": "Cada convidado pode levar acompanhantes, e a conta se perde."
+      },
+      {
+        "icone": "prato",
+        "t": "A restrição alimentar se perde",
+        "d": "O aviso de alergia fica numa mensagem e não chega ao buffet."
+      }
+    ],
+    "cartao": {
+      "rotulo": "Objetivo do projeto",
+      "icone": "alvo",
+      "texto": "Um convite com link, que o convidado responde sem criar conta, e um painel para o anfitrião.",
+      "itens": [
+        "O anfitrião sabe quem vai e quantos são",
+        "O convidado responde em poucos toques",
+        "O buffet recebe a lista de restrições"
+      ]
+    },
+    "notas": "Andreas. O problema é comum: quem organiza uma festa recebe as confirmações espalhadas no WhatsApp, perde a conta de quantas pessoas vêm com os acompanhantes, e o aviso de alergia de um convidado se perde antes de chegar ao buffet. O objetivo do projeto foi resolver isso com um convite com link: o convidado responde sem criar conta, e o anfitrião acompanha tudo num painel, com a lista pronta para o buffet.",
+    "n": 3
+  },
+  {
+    "modelo": "personas",
+    "bloco": "Produto e backlog, Andreas",
+    "titulo": "Para quem é o produto",
+    "personas": [
+      {
+        "icone": "festa",
+        "nome": "Marina",
+        "papel": "Anfitriã",
+        "precisa": "Criar um convite bonito em poucos minutos e saber quantas pessoas vão.",
+        "app": "Cria, personaliza e publica o convite, e acompanha a lista no painel."
+      },
+      {
+        "icone": "celular",
+        "nome": "Rafael",
+        "papel": "Convidado",
+        "precisa": "Responder pelo celular, sem cadastro, e poder mudar de ideia.",
+        "app": "Responde pelo link, sem conta, e altera pelo link pessoal."
+      },
+      {
+        "icone": "chef",
+        "nome": "Jorge",
+        "papel": "Buffet",
+        "precisa": "Saber quantas pessoas vêm e quais restrições alimentares existem.",
+        "app": "Recebe do anfitrião o CSV com as restrições por categoria."
+      }
+    ],
+    "notas": "Andreas. Levantamos três personas na Sprint 1. A Marina é a anfitriã: quer um convite bonito, rápido, e fica ansiosa sem saber quantas pessoas vêm. O Rafael é o convidado: abre o convite pelo WhatsApp e desiste se precisar criar conta. O Jorge é o buffet: precisa da quantidade e das restrições com antecedência. Cada funcionalidade do MVP atende uma delas, como mostra o próximo slide.",
+    "n": 4
+  },
+  {
+    "modelo": "grade",
+    "bloco": "Produto e backlog, Andreas",
+    "titulo": "Funcionalidades do MVP",
+    "colunas": 3,
+    "tamCorpo": 16,
+    "tamTitulo": 20,
+    "icone": 56,
+    "gapY": 44,
+    "celulas": [
+      {
+        "icone": "chave",
+        "t": "Conta do anfitrião",
+        "d": "Cadastro e entrada com e-mail e senha.",
+        "etiqueta": "Marina"
+      },
+      {
+        "icone": "paleta",
+        "t": "Criação do convite",
+        "d": "Dados da festa, teto de pessoas, template, cores e prévia.",
+        "etiqueta": "Marina"
+      },
+      {
+        "icone": "compartilhar",
+        "t": "Compartilhamento",
+        "d": "Publicar, copiar o link para o WhatsApp e despublicar.",
+        "etiqueta": "Marina"
+      },
+      {
+        "icone": "calendario",
+        "t": "Confirmação de presença",
+        "d": "Responder sem conta, com acompanhantes até o limite, e alterar depois.",
+        "etiqueta": "Rafael"
+      },
+      {
+        "icone": "prato",
+        "t": "Restrições alimentares",
+        "d": "Informar a restrição. Alergia pede descrição.",
+        "etiqueta": [
+          "Rafael",
+          "Jorge"
+        ]
+      },
+      {
+        "icone": "prancheta",
+        "t": "Painel e CSV",
+        "d": "Lista de presença que se atualiza sozinha e restrições em CSV.",
+        "etiqueta": [
+          "Marina",
+          "Jorge"
+        ]
+      }
+    ],
+    "legenda": "As doze histórias de usuário do MVP estão implementadas e publicadas.",
+    "notas": "Andreas. O MVP tem seis grupos de funcionalidades, que somam doze histórias de usuário, e as doze estão implementadas. A Marina cria a conta, cria e personaliza o convite e compartilha o link. O Rafael confirma presença sem conta, informa acompanhantes e restrição alimentar, e pode alterar depois. E o painel junta a lista de presença e as restrições, que viram um CSV para o Jorge. A aplicação funcionando aparece na demonstração.",
+    "n": 5
+  },
+  {
+    "modelo": "numeros",
+    "bloco": "Produto e backlog, Andreas",
+    "titulo": "Como o backlog foi organizado",
+    "numeros": [
+      {
+        "v": "6",
+        "r": "épicos, um por grupo de funcionalidades"
+      },
+      {
+        "v": "12",
+        "r": "histórias de usuário, todas entregues",
+        "destaque": true
+      },
+      {
+        "v": "6",
+        "r": "sprints de duas semanas no Azure Boards"
+      },
+      {
+        "v": "3",
+        "r": "personas marcadas nas histórias"
+      }
+    ],
+    "fluxo": {
+      "titulo": "Do épico à tarefa",
+      "passos": [
+        {
+          "icone": "camadas",
+          "t": "Épico",
+          "d": "Um grupo de funcionalidades, como Confirmação de presença."
+        },
+        {
+          "icone": "lista",
+          "t": "História",
+          "d": "O valor para uma persona, com critério de aceitação."
+        },
+        {
+          "icone": "kanban",
+          "t": "Tarefas",
+          "d": "Uma de tela e uma de API, cada uma com responsável."
+        }
+      ]
+    },
+    "notas": "Andreas. O backlog fica no Azure Boards. São seis épicos, um por grupo de funcionalidades, e doze histórias, cada uma escrita para uma persona, com a tag dela e critério de aceitação. Na implementação, cada história foi dividida em tarefas de tela e de API, cada uma com responsável, e o andamento foi acompanhado no quadro Kanban, sprint por sprint.",
+    "n": 6
+  },
+  {
+    "modelo": "refino",
+    "bloco": "Produto e backlog, Andreas",
+    "titulo": "Como o backlog foi refinado",
+    "marcos": [
+      {
+        "s": "Sprint 1",
+        "t": "Requisitos e casos de uso"
+      },
+      {
+        "s": "Sprint 2",
+        "t": "Arquitetura e decisões"
+      },
+      {
+        "s": "Sprint 3",
+        "t": "Documento de arquitetura"
+      },
+      {
+        "s": "Sprint 4",
+        "t": "Base do código",
+        "codigo": true
+      },
+      {
+        "s": "Sprint 5",
+        "t": "MVP de ponta a ponta",
+        "codigo": true
+      },
+      {
+        "s": "Sprint 6",
+        "t": "Publicação e consolidação",
+        "codigo": true
+      }
+    ],
+    "tituloCartoes": "Refinamentos que mantiveram o foco no valor",
+    "cartoes": [
+      {
+        "t": "Lista de presença",
+        "antes": "atualização em tempo real.",
+        "depois": "Atualiza sozinha a cada 20 segundos. A história pedia a lista atualizada, não latência."
+      },
+      {
+        "t": "Texto do convite",
+        "antes": "saudação e recado livres.",
+        "depois": "Saudação fixa do template. O recado saiu do MVP."
+      },
+      {
+        "t": "Fluxo central",
+        "antes": "previsto para a Sprint 4.",
+        "depois": "Entrou na Sprint 5, junto com o resto do MVP, depois da base pronta."
+      }
+    ],
+    "notas": "Andreas. As três primeiras sprints foram de requisitos e arquitetura, e as três últimas de implementação. Ao longo delas o backlog foi refinado sem perder o valor para o usuário. A lista de presença pedia tempo real, e ficou com atualização a cada 20 segundos, porque a história pedia a lista atualizada, não latência. O recado livre do convite saiu do MVP. E o fluxo central, previsto para a Sprint 4, entrou na Sprint 5, depois que a base ficou pronta. Passagem: o Tiago apresenta a arquitetura.",
+    "n": 7
+  },
+  {
+    "modelo": "divisor",
+    "bloco": "Arquitetura, Tiago",
+    "num": "02",
+    "titulo": "Arquitetura",
+    "quem": [
+      [
+        "Tiago Passos",
+        "camadas"
+      ],
+      [
+        "Gabriel Tomasi",
+        "diff"
+      ]
+    ],
+    "notas": "Tiago. Agora a arquitetura: a que planejamos no Grau A, a que está no código e a comparação entre as duas.",
+    "n": 8
+  },
+  {
+    "modelo": "mosaico",
+    "bloco": "Arquitetura, Tiago",
+    "titulo": "Arquitetura prescritiva: o que planejamos no Grau A",
+    "largTexto": 420,
+    "itens": [
+      "<strong>MVC no front-end</strong> e <strong>três camadas na API</strong>: Apresentação, Domínio e Dados",
+      "<strong>Três tiers</strong>, cada um num container: front-end, API e banco",
+      "A regra que amarra tudo: <strong>a dependência só desce</strong>",
+      "Casos de uso, classes, sequência, componentes e implantação, reunidos no documento de arquitetura",
+      "<strong>Quinze decisões arquiteturais</strong> registradas, cada uma com o motivo"
+    ],
+    "imagens": [
+      {
+        "arq": "diagrama-casos-de-uso.png",
+        "t": "Casos de uso"
+      },
+      {
+        "arq": "diagrama-de-classes.png",
+        "t": "Classes"
+      },
+      {
+        "arq": "diagrama-sequencia-uc005.png",
+        "t": "Sequência da confirmação"
+      },
+      {
+        "arq": "diagrama-de-componentes.png",
+        "t": "Componentes"
+      }
+    ],
+    "notas": "Tiago. Aqui é o Tiago. Eu montei a base do projeto, a orquestração com Docker e a integração. A arquitetura prescritiva é a que planejamos no Grau A. No front-end, MVC. Na API, três camadas: Apresentação, Domínio e Dados. E três tiers, cada um num container. A regra que amarra tudo é que a dependência só desce. Os diagramas de casos de uso, classes, sequência, componentes e implantação estão no documento de arquitetura, e cada decisão está registrada num ADR com o motivo.",
+    "n": 9
+  },
+  {
+    "modelo": "conteudoImagem",
+    "bloco": "Arquitetura, Tiago",
+    "titulo": "Camadas e tiers, como foram desenhados",
+    "largTexto": 640,
+    "itens": [
+      "O navegador fala com a API direto para escrever: o painel e a resposta do convidado",
+      "A página do convite é lida pelo servidor do front-end, para a prévia do link no WhatsApp",
+      "Na API, cada camada só conhece a de baixo, e erros e log atravessam as três",
+      "Camada é divisão lógica e tier é processo separado: as três camadas moram no container da API"
+    ],
+    "imagem": "diagrama-de-camadas-slide.png",
+    "legendaImagem": "Diagrama de camadas, atualizado na Sprint 6",
+    "altImagem": 474,
+    "topoImagem": 150,
+    "notas": "Tiago. Este é o diagrama de camadas. O navegador fala com a API direto para escrever, no painel e na resposta do convidado. A leitura do convite passa pelo servidor do front-end, porque a prévia do link no WhatsApp precisa das metatags prontas. Dentro da API, cada camada só conhece a de baixo. Camada é divisão lógica, tier é processo separado: as três camadas ficam no mesmo container da API.",
+    "n": 10
+  },
+  {
+    "modelo": "mapa",
+    "bloco": "Arquitetura, Tiago",
+    "titulo": "Arquitetura descritiva: o que está no código",
+    "colunas": [
+      {
+        "icone": "monitor",
+        "t": "Front-end",
+        "tec": "Next.js, MVC",
+        "pastas": [
+          [
+            "app/",
+            "rotas das telas"
+          ],
+          [
+            "view/",
+            "componentes de tela"
+          ],
+          [
+            "controller/",
+            "chamadas tipadas à API"
+          ]
+        ]
+      },
+      {
+        "icone": "servidor",
+        "t": "API",
+        "tec": "NestJS, três camadas",
+        "pastas": [
+          [
+            "presentation/",
+            "rotas, sessão e limites"
+          ],
+          [
+            "domain/",
+            "regras do convite e da resposta"
+          ],
+          [
+            "data/",
+            "consultas e transações"
+          ]
+        ]
+      },
+      {
+        "icone": "banco",
+        "t": "Banco",
+        "tec": "PostgreSQL",
+        "pastas": [
+          [
+            "migrations/",
+            "esquema e categorias"
+          ],
+          [
+            "transação",
+            "trava no convite para o teto"
+          ]
+        ]
+      }
+    ],
+    "base": {
+      "icone": "contrato",
+      "t": "contract/",
+      "d": "Tipos compartilhados entre front-end e API. Os dois lados importam o mesmo contrato, e o código não compila se divergir."
+    },
+    "notas": "Tiago. A arquitetura descritiva é a que está no código, e ela tem a mesma forma. No front-end, em Next.js, as pastas seguem o MVC: app com as rotas, view com as telas e controller com as chamadas à API. Na API, em NestJS, uma pasta por camada. O banco é o PostgreSQL, com o esquema nas migrations. E embaixo, o pacote contract, com os tipos que o front-end e a API importam do mesmo lugar: se um lado mudar e o outro não, o código não compila.",
+    "n": 11
+  },
+  {
+    "modelo": "grade",
+    "bloco": "Arquitetura, Tiago",
+    "titulo": "Princípios de projeto na implementação",
+    "colunas": 3,
+    "tamCorpo": 17,
+    "tamTitulo": 21,
+    "icone": 60,
+    "gapY": 56,
+    "celulas": [
+      {
+        "icone": "seta_baixo",
+        "t": "Dependência só desce",
+        "d": "O lint recusa import da camada de cima, e a integração contínua roda em todo PR.",
+        "destaque": true
+      },
+      {
+        "icone": "camadas",
+        "t": "Responsabilidade única",
+        "d": "Apresentação traduz HTTP, Domínio decide, Dados guarda."
+      },
+      {
+        "icone": "contrato",
+        "t": "Contrato explícito",
+        "d": "Front-end e API compartilham os tipos. A conversa é só por HTTP."
+      },
+      {
+        "icone": "desacoplar",
+        "t": "Baixo acoplamento",
+        "d": "O Domínio não conhece HTTP, cookie nem SQL."
+      },
+      {
+        "icone": "caixa",
+        "t": "Alta coesão",
+        "d": "Um service por assunto: convite, resposta, presença, dieta e conta."
+      },
+      {
+        "icone": "escudo",
+        "t": "Fronteira que não vaza",
+        "d": "Link inválido, despublicado ou de outro anfitrião dão o mesmo 404."
+      }
+    ],
+    "notas": "Tiago. Os princípios de projeto que aparecem no código. O principal é a regra de dependência: só desce, e não fica no documento, o lint recusa o import errado. Cada camada tem uma responsabilidade: a Apresentação traduz HTTP, o Domínio decide, os Dados guardam. O Domínio não conhece HTTP, cookie nem SQL, o que dá baixo acoplamento. Um service por assunto dá coesão. E a fronteira pública não vaza informação: quem não tem acesso recebe o mesmo 404 para qualquer caso.",
+    "n": 12
+  },
+  {
+    "modelo": "grade",
+    "bloco": "Arquitetura, Tiago",
+    "titulo": "Decisões arquiteturais e o motivo de cada uma",
+    "colunas": 2,
+    "icone": 50,
+    "tamTitulo": 18,
+    "tamCorpo": 15,
+    "gapY": 26,
+    "celulas": [
+      {
+        "icone": "camadas",
+        "t": "MVC no front-end e três camadas na API",
+        "d": "Separar tela, regra e armazenamento, que mudam por motivos diferentes."
+      },
+      {
+        "icone": "container",
+        "t": "Três tiers em containers",
+        "d": "Front-end, API e banco como processos separados, subindo com um comando."
+      },
+      {
+        "icone": "chaves",
+        "t": "Next.js, NestJS e PostgreSQL",
+        "d": "Prévia do link no servidor, módulos que casam com as camadas e transação com trava."
+      },
+      {
+        "icone": "link",
+        "t": "Link com token aleatório",
+        "d": "O link do convite não pode ser adivinhado e não expõe o identificador."
+      },
+      {
+        "icone": "atualizar",
+        "t": "Consulta periódica",
+        "d": "A lista se atualiza a cada 20 segundos, sem a complexidade do tempo real."
+      },
+      {
+        "icone": "cookie",
+        "t": "Sessão em cookie assinado",
+        "d": "Sem tabela de sessão: a guarda da Apresentação não depende do banco."
+      },
+      {
+        "icone": "banco",
+        "t": "SQL tipado com Kysely",
+        "d": "A consulta fica visível e verificada contra o esquema, sem ORM escondendo."
+      },
+      {
+        "icone": "foguete",
+        "t": "Publicação no Railway",
+        "d": "A demonstração não depende da máquina de quem apresenta.",
+        "destaque": true
+      }
+    ],
+    "notas": "Tiago. As decisões principais, cada uma com o motivo registrado. As três camadas e o MVC separam o que muda por motivos diferentes. Os três tiers em containers sobem com um comando. A stack foi escolhida pelo que cada peça resolve: a prévia do link renderizada no servidor, os módulos do NestJS casando com as camadas, e a transação com trava do PostgreSQL para o teto de vagas. O link usa token aleatório. A lista usa consulta periódica. A sessão é um cookie assinado, sem tabela. E a última decisão, desta sprint: publicar no Railway, para a demonstração não depender da máquina de ninguém. Passagem: o Gabriel compara o planejado com o implementado.",
+    "n": 13
+  },
+  {
+    "modelo": "comparacao",
+    "bloco": "Arquitetura e código, Gabriel",
+    "titulo": "Prescritiva e descritiva, lado a lado",
+    "linhas": [
+      {
+        "aspecto": "Camadas da API",
+        "plano": "Apresentação, Domínio e Dados",
+        "feito": "As mesmas três, com a regra verificada pelo lint, e um pacote de autenticação a mais",
+        "status": "Igual ao plano"
+      },
+      {
+        "aspecto": "Componentes",
+        "plano": "Os componentes do diagrama",
+        "feito": "Os mesmos nomes no código. Os templates viraram arquivos e o limite de tráfego virou serviço",
+        "status": "Ajustado"
+      },
+      {
+        "aspecto": "Regra das vagas",
+        "plano": "No Domínio",
+        "feito": "A primeira versão calculava na consulta. Na integração, o cálculo voltou ao Domínio",
+        "status": "Igual ao plano"
+      },
+      {
+        "aspecto": "Regras no front-end",
+        "plano": "Só tela. A regra fica na API",
+        "feito": "O protótipo contava vagas e montava o CSV. Isso foi para a API",
+        "status": "Igual ao plano"
+      },
+      {
+        "aspecto": "Lista de presença",
+        "plano": "Tempo real",
+        "feito": "Atualiza sozinha a cada 20 segundos",
+        "status": "Ajustado"
+      },
+      {
+        "aspecto": "Implantação",
+        "plano": "Só local, com o compose",
+        "feito": "Local para desenvolver, e Railway para a demonstração",
+        "status": "Novo"
+      }
+    ],
+    "legenda": "Cada diferença está registrada com o motivo nos Ajustes de Arquitetura da Sprint 5 e na decisão da publicação.",
+    "notas": "Gabriel. Aqui é o Gabriel. A primeira versão das rotas e das regras do back-end foi minha. Comparando o planejado com o implementado: as camadas são as mesmas, com um pacote de autenticação a mais. Os componentes têm os mesmos nomes no código, com dois ajustes: os templates viraram arquivos, e o limite de tráfego virou um serviço chamado pelo controller, porque a ordem dos limites depende do token já resolvido. Dois pontos divergiram na implementação e voltaram ao plano na integração: a regra das vagas, que na minha primeira versão estava na consulta da camada de Dados, e as regras que o protótipo do front-end fazia na tela. A lista de presença foi simplificada, e a publicação no Railway é nova.",
+    "n": 14
+  },
+  {
+    "modelo": "duasIcones",
+    "bloco": "Arquitetura e código, Gabriel",
+    "titulo": "O que se manteve e o que mudou",
+    "colunas": [
+      {
+        "icone": "check",
+        "t": "Semelhanças",
+        "itens": [
+          "Os mesmos três tiers e as mesmas três camadas",
+          "Os componentes do diagrama existem no código, com o mesmo nome",
+          "A regra de dependência vale sem exceção, conferida em todo PR",
+          "As decisões do Grau A continuam valendo"
+        ]
+      },
+      {
+        "icone": "diff",
+        "t": "Diferenças, e por quê",
+        "destaque": true,
+        "marcador": "seta",
+        "itens": [
+          "Detalhes que o plano não previa: o pacote de autenticação e a página do link pessoal",
+          "Simplificações do MVP: consulta periódica e saudação fixa",
+          "Correções de rota: regras que estavam na camada errada voltaram ao lugar",
+          "A publicação, para a demonstração não depender de uma máquina"
+        ]
+      }
+    ],
+    "notas": "Gabriel. Resumindo a comparação. O que se manteve é a estrutura inteira: tiers, camadas, componentes e a regra de dependência, que não tem exceção. O que mudou cabe em quatro tipos: detalhes que o plano não previa, simplificações do MVP, correções de regras que estavam na camada errada, e a publicação. Nenhuma mudança quebrou uma decisão do Grau A sem registro.",
+    "n": 15
+  },
+  {
+    "modelo": "divisor",
+    "bloco": "Arquitetura e código, Gabriel",
+    "num": "03",
+    "titulo": "Implementação<br>e demonstração",
+    "quem": [
+      [
+        "Gabriel Tomasi",
+        "codigo"
+      ],
+      [
+        "Guilherme Toebe",
+        "telas"
+      ]
+    ],
+    "notas": "Gabriel. Agora como a arquitetura aparece no código, e depois a aplicação funcionando.",
+    "n": 16
+  },
+  {
+    "modelo": "codigoFluxo",
+    "bloco": "Arquitetura e código, Gabriel",
+    "titulo": "A arquitetura no código: a resposta do convidado",
+    "tamCodigo": 12,
+    "paineis": [
+      {
+        "icone": "servidor",
+        "camada": "Apresentação",
+        "arquivo": "public-rsvp.controller.ts",
+        "codigo": [
+          "enforceOriginLimit(clientIp(req));",
+          "const cmd = parseRsvpCommand(raw);",
+          "if (!(await rsvps.getPublishedInvite(t)))",
+          "  throw new NotFoundException();",
+          "enforceWriteLimit(t);",
+          "return rsvps.registerRsvp(t, cmd);"
+        ],
+        "legenda": "Confere o formato e os limites de tráfego, e traduz o HTTP num comando."
+      },
+      {
+        "icone": "engrenagem",
+        "camada": "Domínio",
+        "arquivo": "rsvp.service.ts",
+        "destaque": true,
+        "codigo": [
+          "const valid = validateRsvp(cmd, invite);",
+          "// Sim ocupa 1 + acompanhantes",
+          "return invites.saveRsvpWithinCapacity(",
+          "  invite.id, guest, note,",
+          "  valid.seatsRequested,",
+          ");"
+        ],
+        "legenda": "Aplica as regras da resposta e calcula quantas vagas ela pede."
+      },
+      {
+        "icone": "banco",
+        "camada": "Dados",
+        "arquivo": "invite.repository.ts",
+        "codigo": [
+          "db.transaction().execute(async (trx) => {",
+          "  // SELECT ... FOR UPDATE",
+          "  const invite = await lockInvite(trx, id);",
+          "  if (await exceedsCapacity(trx, ...))",
+          "    return refused(\"CapacityExceeded\");",
+          "  // grava o convidado",
+          "});"
+        ],
+        "legenda": "Trava o convite, confere o teto e grava, tudo na mesma transação."
+      }
+    ],
+    "notas": "Gabriel. O caminho de uma resposta do convidado, em código. Na Apresentação, o controller confere os limites de tráfego e o formato e transforma o HTTP num comando. Ele não decide nada. No Domínio, o service aplica as regras e calcula as vagas: o Sim ocupa uma para o convidado e uma para cada acompanhante. Na camada de Dados, o repositório abre uma transação, trava a linha do convite com FOR UPDATE, confere o teto e grava. Com quatro respostas simultâneas num convite que só cabe duas, passam exatamente duas, e isso tem teste.",
+    "n": 17
+  },
+  {
+    "modelo": "codigoFluxo",
+    "bloco": "Arquitetura e código, Gabriel",
+    "titulo": "A regra de camadas é verificada em todo PR",
+    "tamCodigo": 13,
+    "larguras": [
+      620,
+      472
+    ],
+    "paineis": [
+      {
+        "icone": "lista",
+        "camada": "Regra no lint",
+        "arquivo": "eslint.config.mjs",
+        "codigo": [
+          "{ target: \"./api/src/domain\",",
+          "  from: \"./api/src/presentation\",",
+          "  message: \"Domínio não importa",
+          "            da Apresentação\" },",
+          "{ target: \"./api/src/presentation\",",
+          "  from: \"./api/src/data\",",
+          "  message: \"A Apresentação não chama",
+          "            a camada de Dados\" },"
+        ],
+        "legenda": "Uma zona por regra do Guia da Arquitetura, cada uma com a mensagem do motivo."
+      },
+      {
+        "icone": "pr",
+        "camada": "O que o PR recebe",
+        "arquivo": "npm run lint, na integração contínua",
+        "destaque": true,
+        "codigo": [
+          "domain/teste.ts",
+          "  1:34  error  Unexpected path",
+          "  \"../presentation/...invite.controller\"",
+          "  imported in restricted zone.",
+          "  Domínio não importa da Apresentação",
+          "",
+          "1 problem (1 error)"
+        ],
+        "legenda": "O PR fica vermelho e não entra na main até a camada voltar a respeitar a regra."
+      }
+    ],
+    "notas": "Gabriel. E a regra de camadas não depende de revisão. No eslint.config.mjs, cada regra do Guia vira uma zona proibida: o Domínio não importa da Apresentação, a Apresentação não chama a camada de Dados, e assim por diante. A integração contínua roda o lint em todo PR. Um import errado produz este erro, o PR fica vermelho e não entra na main. Passagem: o Guilherme apresenta as tecnologias e a aplicação funcionando.",
+    "n": 18
+  },
+  {
+    "modelo": "grade",
+    "bloco": "Demonstração e reflexão, Guilherme",
+    "titulo": "Tecnologias e por que foram escolhidas",
+    "colunas": 2,
+    "icone": 52,
+    "tamTitulo": 19,
+    "tamCorpo": 16,
+    "gapY": 30,
+    "celulas": [
+      {
+        "icone": "chaves",
+        "t": "TypeScript em tudo",
+        "d": "O mesmo contrato de tipos no front-end e na API."
+      },
+      {
+        "icone": "monitor",
+        "t": "Next.js",
+        "d": "Renderiza o convite no servidor, para a prévia do link no WhatsApp."
+      },
+      {
+        "icone": "servidor",
+        "t": "NestJS",
+        "d": "Módulos e injeção de dependência que casam com as três camadas."
+      },
+      {
+        "icone": "banco",
+        "t": "PostgreSQL e Kysely",
+        "d": "Transação com trava para o teto, e SQL tipado na camada de Dados."
+      },
+      {
+        "icone": "container",
+        "t": "Docker Compose",
+        "d": "Os três tiers sobem com um comando na máquina de cada um."
+      },
+      {
+        "icone": "pr",
+        "t": "GitHub Actions",
+        "d": "Lint, tipos, testes contra o banco e imagens em todo PR."
+      },
+      {
+        "icone": "foguete",
+        "t": "Railway",
+        "d": "As mesmas imagens publicadas, uma por serviço, para a demonstração.",
+        "destaque": true
+      },
+      {
+        "icone": "kanban",
+        "t": "Azure DevOps",
+        "d": "Backlog, sprints e quadro Kanban do projeto."
+      }
+    ],
+    "notas": "Guilherme. Aqui é o Guilherme. O protótipo das telas foi meu, e o projeto no Azure DevOps é da minha organização. As tecnologias foram escolhidas pelo que resolvem na arquitetura. TypeScript em tudo, para o front-end e a API compartilharem os tipos. Next.js porque o convite precisa ser renderizado no servidor para a prévia do link aparecer no WhatsApp. NestJS porque os módulos e a injeção de dependência casam com as camadas. PostgreSQL pela transação com trava, que garante o teto de vagas. Docker Compose para subir os três tiers, GitHub Actions para conferir tudo em todo PR, e o Railway para publicar.",
+    "n": 19
+  },
+  {
+    "modelo": "demo",
+    "bloco": "Demonstração e reflexão, Guilherme",
+    "cartola": "Aplicação publicada",
+    "titulo": "Demonstração",
+    "url": "front-production-5556.up.railway.app",
+    "nota": "Front-end, API e banco no Railway, um serviço por tier.",
+    "notas": "Guilherme compartilha a tela e conduz, no endereço público. Conta de anfitrião já criada e convite de reserva lotado prontos antes da aula. 1. Criar o convite com teto de 4 pessoas e 1 acompanhante, trocar template e cores, mostrar a prévia e publicar. 2. Abrir o link na janela anônima ou no celular: não pede conta; confirmar com 1 acompanhante e alergia. 3. No convite de reserva, tentar confirmar: aparece a lotação. 4. Abrir o link pessoal e trocar para talvez. 5. Voltar ao painel: lista atualizada, restrições, baixar o CSV e mostrar na planilha. 6. Despublicar e abrir o link do convite: página de não encontrado. Se der tempo, convidar o professor a abrir o link no celular. Plano B: o Tiago com o compose local.",
+    "n": 20
+  },
+  {
+    "modelo": "divisor",
+    "bloco": "Demonstração e reflexão, Guilherme",
+    "num": "04",
+    "titulo": "Reflexão",
+    "quem": [
+      [
+        "Guilherme Toebe",
+        "ideia"
+      ]
+    ],
+    "notas": "Guilherme. Para fechar, o que o processo trouxe para o resultado, o que foi difícil e como usamos IA.",
+    "n": 21
+  },
+  {
+    "modelo": "conteudoImagem",
+    "bloco": "Demonstração e reflexão, Guilherme",
+    "titulo": "Scrum no Azure DevOps, em seis sprints",
+    "largTexto": 640,
+    "itens": [
+      "<strong>Sprints de duas semanas</strong>, cada uma com objetivo e entregáveis, do levantamento de requisitos à publicação",
+      "<strong>Histórias com persona</strong> e tarefas de tela e de API, cada uma com responsável",
+      "<strong>Quadro Kanban</strong> para ver o andamento e o que estava travado",
+      "<strong>Cada mudança por PR</strong>, entrando na main só com a integração contínua verde",
+      "As decisões registradas no repositório, para quem entrasse depois entender o porquê"
+    ],
+    "imagem": "c10-kanban-done.png",
+    "legendaImagem": "Histórias concluídas no quadro Kanban",
+    "notas": "Guilherme. O Scrum com seis sprints ajudou de três formas. As sprints com objetivo e entregáveis deram ritmo: as três primeiras fecharam a arquitetura antes do código, e por isso a implementação não precisou inventar estrutura. As histórias com persona e as tarefas de tela e de API mostravam no quadro o que faltava. E cada mudança entrou na main por PR, com a integração contínua verde. Não usamos o Teams: conversamos pelo WhatsApp e nas aulas, e as decisões ficaram registradas no repositório.",
+    "n": 22
+  },
+  {
+    "modelo": "cartoes",
+    "bloco": "Demonstração e reflexão, Guilherme",
+    "titulo": "Dificuldades e lições",
+    "colunas": 2,
+    "tamCorpo": 15,
+    "cartoes": [
+      {
+        "k": "Integração",
+        "t": "Front-end e back-end em paralelo",
+        "d": "Foram juntados só na Sprint 5. <strong>Lição:</strong> integrar cedo, em cima do pacote de tipos, que existia desde o início."
+      },
+      {
+        "k": "Protótipo",
+        "t": "Regras de negócio na tela",
+        "d": "O protótipo contava vagas e montava o CSV. <strong>Lição:</strong> ler o protótipo contra o Guia antes de virar código."
+      },
+      {
+        "k": "Back-end",
+        "t": "Regra na camada errada",
+        "d": "O cálculo das vagas estava na consulta. <strong>Lição:</strong> o lint pega import errado, mas regra fora do lugar só a revisão pega."
+      },
+      {
+        "k": "Publicação",
+        "t": "Configuração também é arquitetura",
+        "d": "O cookie entre domínios e uma variável sem https derrubaram o login e a página do convite. <strong>Lição:</strong> testar a publicação antes do dia."
+      }
+    ],
+    "notas": "Guilherme. As principais dificuldades, cada uma com o que aprendemos. A integração foi tardia: front-end e back-end foram feitos em paralelo e só juntados na Sprint 5. O meu protótipo fazia regras de negócio na tela, e isso teve que ir para a API. A regra das vagas estava na camada errada na primeira versão do back-end. E na publicação, a configuração derrubou o login e a página do convite. A lição comum é conferir mais cedo, contra a arquitetura, o que cada parte está fazendo.",
+    "n": 23
+  },
+  {
+    "modelo": "duasIcones",
+    "bloco": "Demonstração e reflexão, Guilherme",
+    "titulo": "Assistentes de IA no projeto",
+    "colunas": [
+      {
+        "icone": "robo",
+        "t": "Onde usamos",
+        "marcador": "seta",
+        "itens": [
+          "Uma ferramenta de prototipação gerou o protótipo das telas",
+          "Um assistente de código escreveu boa parte da integração, dos testes e da documentação",
+          "O mesmo assistente ajudou na publicação e na revisão dos artefatos"
+        ]
+      },
+      {
+        "icone": "usuario_ok",
+        "t": "O que foi do time",
+        "destaque": true,
+        "itens": [
+          "Os requisitos, as personas e as histórias",
+          "As decisões de arquitetura e o que aceitar ou recusar",
+          "A revisão de cada mudança antes de entrar na main",
+          "Cada integrante responde pelo que fez e pelo que revisou"
+        ]
+      }
+    ],
+    "notas": "Guilherme. Sim, usamos assistentes de IA, e preferimos dizer onde. O protótipo das telas foi gerado numa ferramenta de prototipação. Um assistente de código escreveu boa parte da integração, dos testes e da documentação, e ajudou na publicação. O que foi do time: os requisitos, as decisões de arquitetura, a escolha do que aceitar, e a revisão de cada mudança. Por isso, se perguntarem sobre qualquer parte, cada um responde pelo que fez e pelo que revisou. [Confirmar este texto com o time antes da apresentação.]",
+    "n": 24
+  },
+  {
+    "modelo": "encerramento",
+    "bloco": "Time 04",
+    "titulo": "Obrigado",
+    "linhas": [
+      [
+        "link",
+        "Aplicação publicada",
+        "front-production-5556.up.railway.app"
+      ],
+      [
+        "git",
+        "Código e documentação",
+        "Repositório do projeto no GitHub e no Azure DevOps"
+      ],
+      [
+        "pessoas",
+        "Time 04",
+        "Andreas Grings, Gabriel Tomasi, Guilherme Toebe e Tiago Passos"
+      ]
+    ],
+    "notas": "Guilherme, fechamento: o MVP tem as doze histórias implementadas e publicadas, a arquitetura planejada no Grau A está no código, e as diferenças estão registradas com o motivo. Obrigado. Ficamos à disposição para perguntas.",
+    "n": 25
+  },
+  {
+    "modelo": "capturas",
+    "bloco": "Apêndice",
+    "titulo": "Diagrama de implantação",
+    "alt": 470,
+    "topo": 160,
+    "imagens": [
+      {
+        "arq": "diagrama-de-implantacao.png",
+        "t": ""
+      }
+    ],
+    "legenda": "O ambiente local, à esquerda, e o publicado no Railway, à direita.",
+    "n": 26
+  },
+  {
+    "modelo": "capturas",
+    "bloco": "Apêndice",
+    "titulo": "Telas do anfitrião",
+    "imagens": [
+      {
+        "arq": "c02-editor.png",
+        "t": "Editor com a prévia"
+      },
+      {
+        "arq": "c07-painel.png",
+        "t": "Painel de respostas"
+      }
+    ],
+    "n": 27
+  },
+  {
+    "modelo": "capturas",
+    "bloco": "Apêndice",
+    "titulo": "Telas do convidado",
+    "imagens": [
+      {
+        "arq": "c03-convite.png",
+        "t": "Convite"
+      },
+      {
+        "arq": "c04-resposta.png",
+        "t": "Resposta enviada"
+      },
+      {
+        "arq": "c05-lotado.png",
+        "t": "Convite lotado"
+      },
+      {
+        "arq": "c06-link-pessoal.png",
+        "t": "Link pessoal"
+      }
+    ],
+    "n": 28
+  }
+]
