@@ -15,8 +15,7 @@ add(modelo='capaPitch', bloco='', cartola='Pitch Final, Time 04',
     captura='c03-capa.png',
     notas='Andreas. Boa noite. Somos o Time 04. O nosso projeto é um app para gerenciar convites de festa: o anfitrião cria o convite e acompanha quem vai, e o convidado responde pelo link. Vamos mostrar o produto, a arquitetura planejada e a implementada, a aplicação funcionando e o que aprendemos.')
 
-add(modelo='divisor', bloco=A, num='01', titulo='O produto e o backlog',
-    quem=[('Andreas Grings', 'pessoas')],
+add(modelo='divisor', bloco='Produto e backlog', num='01', titulo='O produto e o backlog',
     notas='Andreas. Primeiro, o problema, para quem é o produto e como organizamos o backlog.')
 
 add(modelo='problema', bloco=A, titulo='O problema que o app resolve',
@@ -78,7 +77,7 @@ add(modelo='refino', bloco=A, titulo='Como o backlog foi refinado',
     ],
     notas='Andreas. As três primeiras sprints foram de requisitos e arquitetura, e as três últimas de implementação. Ao longo delas o backlog foi refinado sem perder o valor para o usuário. A lista de presença pedia tempo real, e ficou com atualização a cada 20 segundos, decisão tomada ainda no Grau A, porque a história pedia a lista atualizada e não um prazo de atualização. O recado livre do convite saiu do MVP. E o fluxo central, previsto para a Sprint 4, entrou na Sprint 5, depois que a base ficou pronta. Passagem: o Tiago apresenta a arquitetura.')
 
-add(modelo='divisor', bloco=T, num='02', titulo='Arquitetura', quem=[('Tiago Passos', 'camadas'), ('Gabriel Tomasi', 'diff')],
+add(modelo='divisor', bloco='Arquitetura', num='02', titulo='Arquitetura',
     notas='Tiago. Agora a arquitetura: a que planejamos no Grau A, a que está no código e a comparação entre as duas.')
 
 add(modelo='conteudoImagem', bloco=T, titulo='Arquitetura prescritiva: o que planejamos no Grau A', largTexto=600,
@@ -159,7 +158,7 @@ add(modelo='grade', bloco=GA, titulo='Como a arquitetura ajudou a construir o MV
     ],
     notas='Gabriel. O professor pergunta como a arquitetura ajudou a construir o MVP. Foram quatro formas. O pacote de tipos deixou o front-end e o back-end andarem em paralelo. Na integração, o Guia serviu de régua: foi comparando com ele que achamos as regras fora do lugar. A regra de dependência é conferida em todo PR. E as decisões registradas não precisaram ser rediscutidas, só consultadas.')
 
-add(modelo='divisor', bloco='Implementação e demonstração, Gabriel e Guilherme', num='03', titulo='Implementação<br>e demonstração', quem=[('Gabriel Tomasi', 'codigo'), ('Guilherme Toebe', 'telas')],
+add(modelo='divisor', bloco='Implementação e demonstração', num='03', titulo='Implementação<br>e demonstração',
     notas='Gabriel. Agora como a arquitetura aparece no código, e depois a aplicação funcionando.')
 
 add(modelo='codigoFluxo', bloco='Implementação, Gabriel', titulo='A arquitetura no código: a resposta do convidado', tamCodigo=13, larguras=[340, 332, 376],
@@ -206,7 +205,7 @@ add(modelo='demo', bloco=GU, cartola='Aplicação publicada', titulo='Demonstra�
     nota='Front-end, API e banco no Railway, um serviço por tier.',
     notas='Guilherme compartilha a tela e conduz, no endereço público. Conta de anfitrião já criada e convite de reserva lotado prontos antes da aula. 1. Criar o convite com teto de 4 pessoas e 1 acompanhante, trocar template e cores, mostrar a prévia e publicar. 2. Abrir o link na janela anônima ou no celular: não pede conta; confirmar com 1 acompanhante e alergia. 3. No convite de reserva, tentar confirmar: aparece a lotação. 4. Abrir o link pessoal e trocar para talvez. 5. Voltar ao painel: lista atualizada, restrições, baixar o CSV e mostrar na planilha. 6. Despublicar e abrir o link do convite: página de não encontrado. Se o tempo apertar, o passo 4 fica só dito. Se der tempo, convidar o professor a abrir o link no celular. Plano B: o Tiago com o compose local.')
 
-add(modelo='divisor', bloco=GU, num='04', titulo='Reflexão', quem=[('Guilherme Toebe', 'ideia')],
+add(modelo='divisor', bloco='Reflexão', num='04', titulo='Reflexão',
     notas='Guilherme. Para fechar, o que o processo trouxe para o resultado, o que foi difícil e como usamos IA.')
 
 add(modelo='conteudoImagem', bloco=GU, titulo='Scrum no Azure DevOps, em seis sprints', largTexto=640,

@@ -15,15 +15,9 @@
   },
   {
     "modelo": "divisor",
-    "bloco": "Produto e backlog, Andreas",
+    "bloco": "Produto e backlog",
     "num": "01",
     "titulo": "O produto e o backlog",
-    "quem": [
-      [
-        "Andreas Grings",
-        "pessoas"
-      ]
-    ],
     "notas": "Andreas. Primeiro, o problema, para quem é o produto e como organizamos o backlog.",
     "n": 2
   },
@@ -253,19 +247,9 @@
   },
   {
     "modelo": "divisor",
-    "bloco": "Arquitetura, Tiago",
+    "bloco": "Arquitetura",
     "num": "02",
     "titulo": "Arquitetura",
-    "quem": [
-      [
-        "Tiago Passos",
-        "camadas"
-      ],
-      [
-        "Gabriel Tomasi",
-        "diff"
-      ]
-    ],
     "notas": "Tiago. Agora a arquitetura: a que planejamos no Grau A, a que está no código e a comparação entre as duas.",
     "n": 8
   },
@@ -603,19 +587,9 @@
   },
   {
     "modelo": "divisor",
-    "bloco": "Implementação e demonstração, Gabriel e Guilherme",
+    "bloco": "Implementação e demonstração",
     "num": "03",
     "titulo": "Implementação<br>e demonstração",
-    "quem": [
-      [
-        "Gabriel Tomasi",
-        "codigo"
-      ],
-      [
-        "Guilherme Toebe",
-        "telas"
-      ]
-    ],
     "notas": "Gabriel. Agora como a arquitetura aparece no código, e depois a aplicação funcionando.",
     "n": 17
   },
@@ -791,15 +765,9 @@
   },
   {
     "modelo": "divisor",
-    "bloco": "Demonstração e reflexão, Guilherme",
+    "bloco": "Reflexão",
     "num": "04",
     "titulo": "Reflexão",
-    "quem": [
-      [
-        "Guilherme Toebe",
-        "ideia"
-      ]
-    ],
     "notas": "Guilherme. Para fechar, o que o processo trouxe para o resultado, o que foi difícil e como usamos IA.",
     "n": 22
   },

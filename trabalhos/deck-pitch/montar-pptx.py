@@ -1119,7 +1119,7 @@ def m_divisor(sl, s):
     tb, tf = caixa(sl, 96, 340, 900, 140)
     escrever(tf, s['titulo'], tam=54, cor=BRANCO, peso=900, entre=1.05)
     y = 420 + (60 if '<br>' in s['titulo'] else 0)
-    for k, (nome, ic) in enumerate(s['quem']):
+    for k, (nome, ic) in enumerate(s.get('quem') or []):
         icone(sl, ic, 96 + k * 300, y + 40, 44, fundo=LARANJA)
         rotulo(sl, 152 + k * 300, y + 50, 240, nome, tam=19, cor=BRANCO, peso=700)
     rodape(sl, s['n'], s['bloco'], True)
