@@ -93,8 +93,8 @@ add(modelo='conteudoImagem', bloco=T, titulo='O diagrama de camadas do Grau A', 
            'A página do convite é lida pelo servidor do front-end, para a prévia do link no WhatsApp',
            'Na API, cada camada só conhece a de baixo, e erros e log atravessam as três',
            'Camada é divisão lógica e tier é processo separado. As três camadas ficam no container da API'],
-    imagem='diagrama-de-camadas-slide.png', legendaImagem='Com o pacote de autenticação, acrescentado na Sprint 6', altImagem=490, topoImagem=144,
-    notas='Tiago. Este é o diagrama de camadas do Grau A. A única mudança é o pacote de autenticação, que acrescentamos na revisão da Sprint 6 porque já existia no código. Para escrever, o navegador fala direto com a API. Isso vale para o painel e para a resposta do convidado. A leitura do convite passa pelo servidor do front-end, porque a prévia do link no WhatsApp precisa das metatags prontas. Dentro da API, cada camada só conhece a de baixo. Camada é uma divisão lógica e tier é um processo separado. Por isso as três camadas ficam no mesmo container da API.')
+    imagem='diagrama-de-camadas-grau-a-slide.png', legendaImagem='Diagrama de camadas, como foi entregue no Grau A', altImagem=490, topoImagem=144,
+    notas='Tiago. Este é o diagrama de camadas como entregamos no Grau A. Para escrever, o navegador fala direto com a API. Isso vale para o painel e para a resposta do convidado. A leitura do convite passa pelo servidor do front-end, porque a prévia do link no WhatsApp precisa das metatags prontas. Dentro da API, cada camada só conhece a de baixo. Camada é uma divisão lógica e tier é um processo separado. Por isso as três camadas ficam no mesmo container da API.')
 
 add(modelo='capturas', bloco=T, titulo='Classes e sequência da confirmação de presença', alt=440, topo=160,
     imagens=[dict(arq='diagrama-de-classes.png', t='Diagrama de classes'), dict(arq='diagrama-sequencia-uc005-trecho.png', t='Trecho da sequência da confirmação')],
@@ -108,6 +108,11 @@ add(modelo='mapa', bloco=T, titulo='A arquitetura descritiva, que está no códi
     ],
     base=dict(icone='contrato', t='contract/', d='Tipos compartilhados. O Model do MVC fica na API, e o navegador recebe a projeção dele por esses tipos.'),
     notas='Tiago. A arquitetura descritiva é a que está no código, e ela tem a mesma estrutura da planejada. O front-end é em Next.js e as pastas seguem o MVC. A pasta app tem as rotas, view tem as telas, controller tem as chamadas à API e templates tem o CSS. A API é em NestJS e tem uma pasta por camada. Tem também a pasta model, com as classes usadas pelas três camadas. O lint impede que essas classes importem de qualquer camada. O Model do MVC fica na API, no Domínio e nos Dados. O navegador recebe só a projeção dele, pelos tipos do pacote contract. O front-end e a API importam esses tipos do mesmo lugar.')
+
+add(modelo='capturas', bloco=T, titulo='Implantação no ambiente local e no Railway', alt=440, topo=164,
+    imagens=[dict(arq='diagrama-de-implantacao-slide.png', t='')],
+    legenda='À esquerda, o ambiente local com o compose. À direita, a publicação no Railway, um serviço por tier.',
+    notas='Tiago. Este é o diagrama de implantação atual. À esquerda está o ambiente local. O compose sobe os três containers, e o banco não publica porta. À direita está a publicação no Railway, que entrou nesta sprint. São as mesmas imagens, uma por serviço. O servidor do front-end chama a API pela rede privada, e o banco fica só nessa rede. As migrations rodam no pré-deploy da API. No Grau A, o ambiente era só local. A decisão de publicar está no ADR-0015, que substituiu o ADR-0003.')
 
 add(modelo='grade', bloco=T, titulo='Princípios de projeto na implementação', colunas=3, tamCorpo=17, tamTitulo=21, icone=60, gapY=56,
     celulas=[
@@ -253,8 +258,6 @@ add(modelo='encerramento', bloco='Time 04', titulo='Obrigado',
     notas='Guilherme. O MVP tem as doze histórias implementadas e publicadas. A arquitetura planejada no Grau A está no código, e as diferenças estão registradas com o motivo. Obrigado. Ficamos à disposição para perguntas.')
 
 # Apêndice
-add(modelo='capturas', bloco='Apêndice', titulo='Diagrama de implantação', alt=470, topo=160,
-    imagens=[dict(arq='diagrama-de-implantacao.png', t='')], legenda='O ambiente local, à esquerda, e o publicado no Railway, à direita.')
 add(modelo='capturas', bloco='Apêndice', titulo='Telas do anfitrião', imagens=[dict(arq='c02-editor.png', t='Editor com a prévia'), dict(arq='c07-painel.png', t='Painel de respostas')])
 add(modelo='capturas', bloco='Apêndice', titulo='Telas do convidado', imagens=[dict(arq='c03-convite.png', t='Convite'), dict(arq='c04-resposta.png', t='Resposta enviada'), dict(arq='c05-lotado.png', t='Convite lotado'), dict(arq='c06-link-pessoal.png', t='Link pessoal')])
 

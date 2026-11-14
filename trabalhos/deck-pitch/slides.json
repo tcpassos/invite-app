@@ -282,11 +282,11 @@
       "Na API, cada camada só conhece a de baixo, e erros e log atravessam as três",
       "Camada é divisão lógica e tier é processo separado. As três camadas ficam no container da API"
     ],
-    "imagem": "diagrama-de-camadas-slide.png",
-    "legendaImagem": "Com o pacote de autenticação, acrescentado na Sprint 6",
+    "imagem": "diagrama-de-camadas-grau-a-slide.png",
+    "legendaImagem": "Diagrama de camadas, como foi entregue no Grau A",
     "altImagem": 490,
     "topoImagem": 144,
-    "notas": "Tiago. Este é o diagrama de camadas do Grau A. A única mudança é o pacote de autenticação, que acrescentamos na revisão da Sprint 6 porque já existia no código. Para escrever, o navegador fala direto com a API. Isso vale para o painel e para a resposta do convidado. A leitura do convite passa pelo servidor do front-end, porque a prévia do link no WhatsApp precisa das metatags prontas. Dentro da API, cada camada só conhece a de baixo. Camada é uma divisão lógica e tier é um processo separado. Por isso as três camadas ficam no mesmo container da API.",
+    "notas": "Tiago. Este é o diagrama de camadas como entregamos no Grau A. Para escrever, o navegador fala direto com a API. Isso vale para o painel e para a resposta do convidado. A leitura do convite passa pelo servidor do front-end, porque a prévia do link no WhatsApp precisa das metatags prontas. Dentro da API, cada camada só conhece a de baixo. Camada é uma divisão lógica e tier é um processo separado. Por isso as três camadas ficam no mesmo container da API.",
     "n": 10
   },
   {
@@ -384,6 +384,22 @@
     "n": 12
   },
   {
+    "modelo": "capturas",
+    "bloco": "Arquitetura, Tiago",
+    "titulo": "Implantação no ambiente local e no Railway",
+    "alt": 440,
+    "topo": 164,
+    "imagens": [
+      {
+        "arq": "diagrama-de-implantacao-slide.png",
+        "t": ""
+      }
+    ],
+    "legenda": "À esquerda, o ambiente local com o compose. À direita, a publicação no Railway, um serviço por tier.",
+    "notas": "Tiago. Este é o diagrama de implantação atual. À esquerda está o ambiente local. O compose sobe os três containers, e o banco não publica porta. À direita está a publicação no Railway, que entrou nesta sprint. São as mesmas imagens, uma por serviço. O servidor do front-end chama a API pela rede privada, e o banco fica só nessa rede. As migrations rodam no pré-deploy da API. No Grau A, o ambiente era só local. A decisão de publicar está no ADR-0015, que substituiu o ADR-0003.",
+    "n": 13
+  },
+  {
     "modelo": "grade",
     "bloco": "Arquitetura, Tiago",
     "titulo": "Princípios de projeto na implementação",
@@ -426,7 +442,7 @@
       }
     ],
     "notas": "Tiago. Estes são os princípios de projeto que aparecem no código. Na separação de interesses, a Apresentação traduz HTTP, o Domínio aplica as regras e os Dados gravam. A dependência vai num sentido só, e o lint recusa o import errado. A interface entre o front-end e a API é explícita, pelos tipos compartilhados. O Domínio não conhece HTTP, cookie nem SQL. Isso é ocultação de informação. Tem um service por assunto, o que dá coesão. Os tiers são processos separados, então trocar o front-end não mexe no Domínio.",
-    "n": 13
+    "n": 14
   },
   {
     "modelo": "grade",
@@ -489,7 +505,7 @@
       }
     ],
     "notas": "Tiago. Aqui estão oito das quinze decisões, com o motivo de cada uma. Escolhemos MVC e três camadas porque tela, regra e armazenamento mudam por motivos diferentes. Os tiers rodam em containers separados. O link do convite usa um token aleatório, para não ser adivinhado. O convidado não tem conta e volta à resposta pelo link pessoal. A lista usa consulta periódica. A fronteira pública tem o teto de vagas e devolve o mesmo 404 para quem não tem acesso. A sessão fica num cookie assinado. O tempo do evento usa o fuso do projeto. As tecnologias também são decisões, e o Guilherme apresenta mais adiante. Agora o Gabriel compara o planejado com o implementado.",
-    "n": 14
+    "n": 15
   },
   {
     "modelo": "comparacao",
@@ -535,7 +551,7 @@
     ],
     "legenda": "O lint não detectou esses dois casos. Ele acusa import errado, e regra na camada errada depende da revisão.",
     "notas": "Gabriel. Eu sou o Gabriel. A primeira versão das rotas e das regras do back-end foi minha. Na comparação, as camadas são as do plano, com um pacote de autenticação a mais. Os componentes têm os mesmos nomes, com dois ajustes. As rotas de tela não estavam detalhadas no plano. A implantação passou a ter também o Railway. Duas linhas foram corrigidas na integração. Uma é a regra das vagas, que na minha versão estava na consulta da camada de Dados. A outra são as regras que o protótipo fazia na tela. O lint não pegou nenhuma das duas, porque não eram import errado.",
-    "n": 15
+    "n": 16
   },
   {
     "modelo": "duasIcones",
@@ -566,7 +582,7 @@
       }
     ],
     "notas": "Gabriel. A estrutura do código é a do plano. Os tiers, as camadas e os componentes são os mesmos, e a regra de dependência não tem exceção. As diferenças são de quatro tipos. Tem detalhes que o plano não previa, como o pacote de autenticação. Tem simplificações do MVP. Tem regras que estavam na camada errada e foram corrigidas. E tem a publicação. Nenhuma decisão do Grau A foi alterada sem registro.",
-    "n": 16
+    "n": 17
   },
   {
     "modelo": "grade",
@@ -601,7 +617,7 @@
       }
     ],
     "notas": "Gabriel. A arquitetura ajudou a construir o MVP de quatro formas. Com o pacote de tipos, o front-end e o back-end foram feitos em paralelo. Na integração, comparamos o código com o Guia da Arquitetura e achamos as regras que estavam fora do lugar. O lint confere a regra de dependência em todo PR. E as decisões estavam registradas com o motivo, então a gente consultava em vez de discutir de novo.",
-    "n": 17
+    "n": 18
   },
   {
     "modelo": "divisor",
@@ -609,7 +625,7 @@
     "num": "03",
     "titulo": "Implementação<br>e demonstração",
     "notas": "Gabriel. Agora mostramos a arquitetura no código e, depois, a aplicação funcionando.",
-    "n": 18
+    "n": 19
   },
   {
     "modelo": "codigoFluxo",
@@ -668,7 +684,7 @@
       }
     ],
     "notas": "Gabriel. Este é o caminho de uma resposta do convidado no código. Na Apresentação, o controller confere os limites de tráfego e o formato, e transforma o HTTP num comando. Ele não decide nada. No Domínio, o service aplica as regras e calcula as vagas. O Sim ocupa uma vaga para o convidado e uma para cada acompanhante. Na camada de Dados, o repositório abre uma transação e trava a linha do convite com FOR UPDATE. Depois confere o teto e grava. Temos um teste com quatro respostas simultâneas num convite em que só cabem duas. Passam duas.",
-    "n": 19
+    "n": 20
   },
   {
     "modelo": "codigoFluxo",
@@ -714,7 +730,7 @@
       }
     ],
     "notas": "Gabriel. A regra de camadas é conferida pelo lint. No eslint.config.mjs, cada regra do Guia da Arquitetura vira uma zona proibida. Por exemplo, o Domínio não importa da Apresentação, e a Apresentação não chama a camada de Dados. A integração contínua roda o lint em todo PR. Um import errado gera este erro, o PR fica vermelho e não entra na main.",
-    "n": 20
+    "n": 21
   },
   {
     "modelo": "grade",
@@ -759,7 +775,7 @@
       }
     ],
     "notas": "Gabriel. As práticas de desenvolvimento que seguimos. Os testes têm três níveis. Os do Domínio testam as regras sem banco. Os da camada de Dados rodam num PostgreSQL de verdade, e um deles manda quatro respostas ao mesmo tempo num convite com teto de cinco: passam exatamente duas. Os testes das rotas cobrem o fluxo completo pela API. Tudo isso roda na integração contínua em todo PR, e a main só recebe mudança por PR. As decisões de arquitetura ficam registradas em ADRs. Agora o Guilherme mostra as tecnologias e a aplicação funcionando.",
-    "n": 21
+    "n": 22
   },
   {
     "modelo": "grade",
@@ -814,7 +830,7 @@
       }
     ],
     "notas": "Guilherme. Eu sou o Guilherme. O protótipo das telas foi meu, e o projeto no Azure DevOps é da minha organização. Escolhemos cada tecnologia por um motivo ligado à arquitetura. Usamos TypeScript em tudo para o front-end e a API compartilharem os tipos. O Next.js renderiza o convite no servidor, e por isso a prévia do link aparece no WhatsApp. No NestJS, os módulos e a injeção de dependência ajudam a organizar o código nas camadas. O PostgreSQL tem a transação com trava, que garante o teto de vagas. O Docker Compose sobe os três tiers na máquina de cada um. O GitHub Actions roda lint, tipos e testes em todo PR. E o Railway é onde a aplicação está publicada.",
-    "n": 22
+    "n": 23
   },
   {
     "modelo": "demo",
@@ -824,7 +840,7 @@
     "url": "front-production-5556.up.railway.app",
     "nota": "Front-end, API e banco no Railway, um serviço por tier.",
     "notas": "Guilherme compartilha a tela e conduz, no endereço público. Conta de anfitrião já criada e convite de reserva lotado prontos antes da aula. 1. Criar o convite com teto de 4 pessoas e 1 acompanhante, trocar template e cores, mostrar a prévia e publicar. 2. Abrir o link na janela anônima ou no celular: não pede conta; confirmar com 1 acompanhante e alergia. 3. No convite de reserva, tentar confirmar: aparece a lotação. 4. Abrir o link pessoal e trocar para talvez. 5. Voltar ao painel: lista atualizada, restrições, baixar o CSV e mostrar na planilha. 6. Despublicar e abrir o link do convite: página de não encontrado. Se o tempo apertar, o passo 4 fica só dito. Se der tempo, convidar o professor a abrir o link no celular. Plano B: o Tiago com o compose local.",
-    "n": 23
+    "n": 24
   },
   {
     "modelo": "divisor",
@@ -832,7 +848,7 @@
     "num": "04",
     "titulo": "Reflexão",
     "notas": "Guilherme. Na última parte falamos do processo, das dificuldades e do uso de IA.",
-    "n": 24
+    "n": 25
   },
   {
     "modelo": "conteudoImagem",
@@ -849,7 +865,7 @@
     "imagem": "c10-kanban-done.png",
     "legendaImagem": "Histórias concluídas no quadro Kanban",
     "notas": "Guilherme. Usamos Scrum em seis sprints. Cada sprint tinha objetivo e entregáveis. As três primeiras fecharam a arquitetura antes do código, e depois conferimos o código contra ela. As histórias tinham persona e tarefas de tela e de API, então o quadro mostrava o que faltava. Cada mudança entrou na main por PR, com a integração contínua verde. Não usamos o Teams. Conversamos pelo WhatsApp e nas aulas, e as decisões ficaram registradas no repositório.",
-    "n": 25
+    "n": 26
   },
   {
     "modelo": "cartoes",
@@ -880,7 +896,7 @@
       }
     ],
     "notas": "Guilherme. Tivemos quatro dificuldades principais. Front-end e back-end foram feitos em paralelo e só juntamos os dois na Sprint 5, o que foi tarde. O meu protótipo fazia regras de negócio na tela, e isso teve que ir para a API. Na primeira versão do back-end, a regra das vagas estava na camada errada. Na publicação, a configuração derrubou o login e a página do convite. Nos quatro casos, o que aprendemos foi conferir mais cedo, contra a arquitetura, o que cada parte está fazendo.",
-    "n": 26
+    "n": 27
   },
   {
     "modelo": "duasIcones",
@@ -910,7 +926,7 @@
       }
     ],
     "notas": "Guilherme. Usamos assistentes de IA, e este slide mostra onde. O protótipo das telas foi gerado numa ferramenta de prototipação. Um assistente de código escreveu boa parte da integração, dos testes e da documentação, e ajudou na publicação. O time fez os requisitos, tomou as decisões de arquitetura, escolheu o que aceitar e revisou cada mudança. Cada integrante responde pelo que fez e pelo que revisou. [Confirmar este texto com o time antes da apresentação.]",
-    "n": 27
+    "n": 28
   },
   {
     "modelo": "encerramento",
@@ -934,21 +950,6 @@
       ]
     ],
     "notas": "Guilherme. O MVP tem as doze histórias implementadas e publicadas. A arquitetura planejada no Grau A está no código, e as diferenças estão registradas com o motivo. Obrigado. Ficamos à disposição para perguntas.",
-    "n": 28
-  },
-  {
-    "modelo": "capturas",
-    "bloco": "Apêndice",
-    "titulo": "Diagrama de implantação",
-    "alt": 470,
-    "topo": 160,
-    "imagens": [
-      {
-        "arq": "diagrama-de-implantacao.png",
-        "t": ""
-      }
-    ],
-    "legenda": "O ambiente local, à esquerda, e o publicado no Railway, à direita.",
     "n": 29
   },
   {
