@@ -72,9 +72,9 @@ add(modelo='refino', bloco=A, titulo='Como o backlog foi refinado',
     cartoes=[
         dict(t='Lista de presença', antes='atualização em tempo real.', depois='Atualiza sozinha a cada 20 segundos, decidido no Grau A. A história pedia a lista atualizada, sem exigir tempo real.'),
         dict(t='Texto do convite', antes='saudação e recado livres.', depois='Saudação fixa do template. O recado saiu do MVP.'),
-        dict(t='Primeiras histórias', antes='conta, convite, link e resposta do convidado na Sprint 4.', depois='Entraram na Sprint 5, junto com o resto do MVP, porque a Sprint 4 montou a base do código.'),
+        dict(t='Ordem das entregas', antes='seis histórias na Sprint 4.', depois='A Sprint 4 ficou com a base do código, e as doze histórias foram entregues na Sprint 5.'),
     ],
-    notas='Andreas. As três primeiras sprints foram de requisitos e arquitetura. As três últimas foram de implementação. Nesse tempo o backlog mudou em três pontos. A lista de presença estava prevista em tempo real e ficou com atualização a cada 20 segundos. Decidimos isso ainda no Grau A, porque a história pedia a lista atualizada e não falava em tempo real. O recado livre do convite saiu do MVP. E as primeiras histórias, de criar a conta e o convite, gerar o link e responder, estavam previstas para a Sprint 4. Elas entraram na Sprint 5, porque a Sprint 4 foi usada para montar a base do código. Agora o Tiago apresenta a arquitetura.')
+    notas='Andreas. As três primeiras sprints foram de requisitos e arquitetura. As três últimas foram de implementação. Nesse tempo o backlog mudou em três pontos. A lista de presença estava prevista em tempo real e ficou com atualização a cada 20 segundos. Decidimos isso ainda no Grau A, porque a história pedia a lista atualizada e não falava em tempo real. O recado livre do convite saiu do MVP. E a ordem das entregas mudou. Seis histórias estavam planejadas para a Sprint 4. Usamos a Sprint 4 para montar a base do código, e as doze histórias foram entregues na Sprint 5. Agora o Tiago apresenta a arquitetura.')
 
 add(modelo='divisor', bloco='Arquitetura', num='02', titulo='Arquitetura',
     notas='Tiago. Nesta parte mostramos a arquitetura que planejamos no Grau A, a que está no código e a comparação entre as duas.')
