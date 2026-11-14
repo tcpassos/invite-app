@@ -1023,36 +1023,36 @@ def m_mapa(sl, s):
     rotulo(sl, 156, yb + 42, 1030, b['d'], tam=14, cor=RGBColor(0xE2, 0xDE, 0xF5), peso=400)
     rodape(sl, s['n'], s['bloco'])
 
-CORES_STATUS = {
-    'Igual ao plano': (AZUL, BRANCO),
-    'Ajustado': (LARANJA, BRANCO),
-    'Novo': (LILAS, AZUL),
-    'Corrigido na integração': (GRAFITE, BRANCO),
-}
 
 def m_comparacao(sl, s):
-    """Tabela planejado e implementado, com uma etiqueta de situação por linha."""
+    """Planejado ao lado do implementado, uma linha por item; as linhas corrigidas na integração ficam num grupo à parte."""
     cabeca(sl, s)
-    xs = [72, 272, 568, 980]
-    ws = [186, 280, 392, 228]
-    cab = ['Aspecto', 'Planejado no Grau A', 'Implementado']
-    y = 168
-    for x, t in zip(xs, cab):
-        rotulo(sl, x, y, 300, t, tam=12, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
-    rotulo(sl, xs[3], y, ws[3], 'Situação', tam=12, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
-    y += 28
-    for r in s['linhas']:
-        h = max(alt_par(r['plano'], 16, ws[1]), alt_par(r['feito'], 16, ws[2]), alt_par(r['aspecto'], 17, ws[0]), 26) + 16
+    xs = [128, 340, 640]
+    ws = [200, 280, 568]
+    y = 150
+    rotulo(sl, xs[1], y, ws[1], 'Prescritiva, planejada no Grau A', tam=15, cor=AZUL, peso=900)
+    rotulo(sl, xs[2], y, ws[2], 'Descritiva, o que está no código', tam=15, cor=AZUL, peso=900)
+    y += 32
+
+    def linha_item(r, y, cor):
+        h = max(alt_par(r['plano'], 16, ws[1]), alt_par(r['feito'], 16, ws[2]), 40) + 20
         retangulo(sl, 72, y, 1136, 1, preencher=CINZA_CLARO)
-        paragrafo(sl, xs[0], y + 11, ws[0], r['aspecto'], tam=17, cor=AZUL, peso=900, entre=1.2)
-        paragrafo(sl, xs[1], y + 11, ws[1], r['plano'], tam=16, cor=CINZA)
-        paragrafo(sl, xs[2], y + 11, ws[2], r['feito'], tam=16, cor=GRAFITE, peso=400)
-        f, c = CORES_STATUS[r['status']]
-        pilula(sl, xs[3], y + 13, r['status'], fundo=f, cor=c)
-        y += h
+        icone(sl, r['icone'], 72, y + (h - 40) / 2, 40, fundo=cor)
+        paragrafo(sl, xs[0], y + (h - 24) / 2, ws[0], r['aspecto'], tam=17, cor=AZUL, peso=900, entre=1.2)
+        paragrafo(sl, xs[1], y + 10, ws[1], r['plano'], tam=16, cor=CINZA, peso=400)
+        paragrafo(sl, xs[2], y + 10, ws[2], r['feito'], tam=16, cor=GRAFITE, peso=400)
+        return y + h
+
+    for r in s['linhas']:
+        y = linha_item(r, y, AZUL)
+    if s.get('corrigidas'):
+        retangulo(sl, 72, y, 1136, 34, preencher=QUASE)
+        retangulo(sl, 72, y, 4, 34, preencher=LARANJA)
+        rotulo(sl, 92, y + 6, 1100, s['faixa'], tam=15, cor=GRAFITE, peso=700)
+        y += 34
+        for k, r in enumerate(s['corrigidas']):
+            y = linha_item(r, y, LARANJA)
     retangulo(sl, 72, y, 1136, 1, preencher=CINZA_CLARO)
-    if s.get('legenda'):
-        paragrafo(sl, 72, y + 18, 1136, s['legenda'], tam=16, cor=GRAFITE, peso=400)
     rodape(sl, s['n'], s['bloco'])
 
 def m_duas_icones(sl, s):

@@ -97,11 +97,11 @@ começa com o nome, porque a avaliação é individual.
 
 ### Gabriel, slides 16 a 22
 
-- **Slide 16, comparação.** Seis linhas com a situação de cada uma: igual ao plano, ajustado, novo ou
-  corrigido na integração. As duas corrigidas divergiram na implementação e voltaram ao plano: a regra
-  das vagas, que era da versão dele, e as regras do protótipo. Contar isso com franqueza. A lista de
-  presença não entra aqui: a consulta periódica já era a decisão do Grau A (ADR-0007), e o que mudou
-  foi a história, no refinamento do slide 7.
+- **Slide 16, comparação.** O planejado no Grau A ao lado do que está no código, em seis linhas. As
+  quatro primeiras são o que se manteve ou foi ajustado. As duas de baixo, separadas por uma faixa, são
+  as correções feitas na integração: a regra das vagas, que era da versão dele, e as regras do
+  protótipo. Contar isso com franqueza. A lista de presença não entra aqui: a consulta periódica já
+  era a decisão do Grau A (ADR-0007), e o que mudou foi a história, no refinamento do slide 7.
 - **Slide 17, semelhanças e diferenças.** Resumo em quatro tipos de mudança.
 - **Slide 18, como a arquitetura ajudou.** Trabalho em paralelo pelo pacote de tipos, o Guia como
   referência na integração, a regra conferida em todo PR e as decisões registradas.

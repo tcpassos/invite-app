@@ -138,17 +138,19 @@ add(modelo='grade', bloco=T, titulo='Decisões arquiteturais e o motivo de cada 
     ],
     notas='Tiago. Aqui estão oito das quinze decisões, com o motivo de cada uma. Escolhemos MVC e três camadas porque tela, regra e armazenamento mudam por motivos diferentes. Os tiers rodam em containers separados. O link do convite usa um token aleatório, para não ser adivinhado. O convidado não tem conta e volta à resposta pelo link pessoal. A lista usa consulta periódica. A fronteira pública tem o teto de vagas e devolve o mesmo 404 para quem não tem acesso. A sessão fica num cookie assinado. O tempo do evento usa o fuso do projeto. As tecnologias também são decisões, e o Guilherme apresenta mais adiante. Agora o Gabriel compara o planejado com o implementado.')
 
-add(modelo='comparacao', bloco=GA, titulo='Prescritiva e descritiva, lado a lado',
+add(modelo='comparacao', bloco=GA, titulo='Arquitetura prescritiva e arquitetura descritiva',
     linhas=[
-        dict(aspecto='Camadas da API', plano='Apresentação, Domínio e Dados', feito='As mesmas três, com um pacote de autenticação a mais', status='Igual ao plano'),
-        dict(aspecto='Componentes', plano='Os componentes do diagrama', feito='Mesmos nomes. Os templates viraram arquivos e o limite de tráfego virou serviço', status='Ajustado'),
-        dict(aspecto='Rotas de tela', plano='Não detalhadas', feito='Rotas do convite, do link pessoal, do painel e da página de não encontrado', status='Novo'),
-        dict(aspecto='Regra das vagas', plano='No Domínio', feito='A primeira versão calculava na consulta. O cálculo foi para o Domínio', status='Corrigido na integração'),
-        dict(aspecto='Regras no front-end', plano='Nenhuma. A regra fica na API', feito='O protótipo contava vagas e montava o CSV. Isso foi para a API', status='Corrigido na integração'),
-        dict(aspecto='Implantação', plano='Só local, com o compose', feito='Local para desenvolver, e Railway para a demonstração', status='Novo'),
+        dict(icone='camadas', aspecto='Camadas da API', plano='Apresentação, Domínio e Dados', feito='As mesmas três. A Apresentação ganhou um pacote de autenticação, com o AuthController.'),
+        dict(icone='caixa', aspecto='Componentes', plano='Os componentes do diagrama', feito='Mesmos nomes no código. O TemplateSet virou arquivos de CSS e de imagem, e o RateLimitGuard virou um serviço chamado pelo controller.'),
+        dict(icone='monitor', aspecto='Rotas de tela', plano='Não detalhadas', feito='Convite, link pessoal, painel e página de não encontrado.'),
+        dict(icone='container', aspecto='Implantação', plano='Só local, com o compose (ADR-0003)', feito='Local para desenvolver e Railway para a demonstração (ADR-0015).'),
     ],
-    legenda='O lint não detectou esses dois casos. Ele acusa import errado, e regra na camada errada depende da revisão.',
-    notas='Gabriel. Eu sou o Gabriel. A primeira versão das rotas e das regras do back-end foi minha. Na comparação, as camadas são as do plano, com um pacote de autenticação a mais. Os componentes têm os mesmos nomes, com dois ajustes. As rotas de tela não estavam detalhadas no plano. A implantação passou a ter também o Railway. Duas linhas foram corrigidas na integração. Uma é a regra das vagas, que na minha versão estava na consulta da camada de Dados. A outra são as regras que o protótipo fazia na tela. O lint não pegou nenhuma das duas, porque não eram import errado.')
+    faixa='Corrigido na integração, pela revisão. O lint de camadas não acusou, porque não havia import errado.',
+    corrigidas=[
+        dict(icone='engrenagem', aspecto='Regra das vagas', plano='No Domínio', feito='A primeira versão do back-end calculava na consulta SQL, na camada de Dados. O cálculo das vagas pedidas voltou ao Domínio.'),
+        dict(icone='celular', aspecto='Regras no front-end', plano='Nenhuma, a regra fica na API', feito='O protótipo das telas contava vagas e montava o CSV no navegador. As duas coisas passaram para a API.'),
+    ],
+    notas='Gabriel. Eu sou o Gabriel. A primeira versão das rotas e das regras do back-end foi minha. Aqui está o que planejamos no Grau A ao lado do que está no código. As camadas da API são as três do plano. A Apresentação ganhou um pacote de autenticação. Os componentes têm os mesmos nomes. O TemplateSet virou arquivos, e o RateLimitGuard virou um serviço que o controller chama. As rotas de tela o plano não detalhava. A implantação era só local, e hoje tem também o Railway, para a demonstração. As duas últimas linhas nós corrigimos na integração. A regra das vagas estava planejada no Domínio. Na minha versão, a conta ficava na consulta SQL, na camada de Dados. O cálculo das vagas pedidas voltou para o Domínio. A soma das vagas já gravadas continua na transação dos Dados, como o documento de arquitetura define. No front-end, o protótipo contava vagas e montava o CSV no navegador. Isso passou para a API. O lint não acusou nenhum dos dois casos, porque não havia import errado. Quem achou foi a revisão.')
 
 add(modelo='duasIcones', bloco=GA, titulo='Semelhanças e diferenças entre o plano e o código',
     colunas=[
