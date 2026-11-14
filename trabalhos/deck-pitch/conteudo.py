@@ -12,7 +12,7 @@ add(modelo='capaPitch', bloco='', cartola='Pitch Final, Time 04',
     sub='Problema, arquitetura, implementação e resultado do projeto',
     equipe='Andreas Grings, Gabriel Tomasi,<br>Guilherme Toebe e Tiago Passos',
     disciplina='Arquitetura de Software<br>Prof. Kleinner Farias', data='17/11/2026',
-    captura='c03-convite.png',
+    captura='c03-capa.png',
     notas='Andreas. Boa noite. Somos o Time 04. O nosso projeto é um app para gerenciar convites de festa: o anfitrião cria o convite e acompanha quem vai, e o convidado responde pelo link. Vamos mostrar o produto, a arquitetura planejada e a implementada, a aplicação funcionando e o que aprendemos.')
 
 add(modelo='divisor', bloco=A, num='01', titulo='O produto e o backlog',
@@ -91,12 +91,12 @@ add(modelo='mosaico', bloco=T, titulo='Arquitetura prescritiva: o que planejamos
              dict(arq='diagrama-sequencia-uc005.png', t='Sequência da confirmação'), dict(arq='diagrama-de-componentes.png', t='Componentes')],
     notas='Tiago. Aqui é o Tiago. Eu montei a base do projeto, a orquestração com Docker e a integração. A arquitetura prescritiva é a que planejamos no Grau A. No front-end, MVC. Na API, três camadas: Apresentação, Domínio e Dados. E três tiers, cada um num container. A regra que amarra tudo é que a dependência só desce. Os diagramas de casos de uso, classes, sequência, componentes e implantação estão no documento de arquitetura, e cada decisão está registrada num ADR com o motivo.')
 
-add(modelo='conteudoImagem', bloco=T, titulo='Camadas e tiers, como foram desenhados', largTexto=640,
+add(modelo='conteudoImagem', bloco=T, titulo='Camadas e tiers, como foram desenhados', largTexto=600,
     itens=['O navegador fala com a API direto para escrever: o painel e a resposta do convidado',
            'A página do convite é lida pelo servidor do front-end, para a prévia do link no WhatsApp',
            'Na API, cada camada só conhece a de baixo, e erros e log atravessam as três',
            'Camada é divisão lógica e tier é processo separado: as três camadas moram no container da API'],
-    imagem='diagrama-de-camadas-slide.png', legendaImagem='Diagrama de camadas, atualizado na Sprint 6', altImagem=474, topoImagem=150,
+    imagem='diagrama-de-camadas-slide.png', legendaImagem='Diagrama de camadas, atualizado na Sprint 6', altImagem=490, topoImagem=144,
     notas='Tiago. Este é o diagrama de camadas. O navegador fala com a API direto para escrever, no painel e na resposta do convidado. A leitura do convite passa pelo servidor do front-end, porque a prévia do link no WhatsApp precisa das metatags prontas. Dentro da API, cada camada só conhece a de baixo. Camada é divisão lógica, tier é processo separado: as três camadas ficam no mesmo container da API.')
 
 add(modelo='mapa', bloco=T, titulo='Arquitetura descritiva: o que está no código',
@@ -151,24 +151,24 @@ add(modelo='duasIcones', bloco=GA, titulo='O que se manteve e o que mudou',
     ],
     notas='Gabriel. Resumindo a comparação. O que se manteve é a estrutura inteira: tiers, camadas, componentes e a regra de dependência, que não tem exceção. O que mudou cabe em quatro tipos: detalhes que o plano não previa, simplificações do MVP, correções de regras que estavam na camada errada, e a publicação. Nenhuma mudança quebrou uma decisão do Grau A sem registro.')
 
-add(modelo='divisor', bloco=GA, num='03', titulo='Implementação<br>e demonstração', quem=[('Gabriel Tomasi', 'codigo'), ('Guilherme Toebe', 'telas')],
+add(modelo='divisor', bloco='Implementação e demonstração, Gabriel e Guilherme', num='03', titulo='Implementação<br>e demonstração', quem=[('Gabriel Tomasi', 'codigo'), ('Guilherme Toebe', 'telas')],
     notas='Gabriel. Agora como a arquitetura aparece no código, e depois a aplicação funcionando.')
 
-add(modelo='codigoFluxo', bloco=GA, titulo='A arquitetura no código: a resposta do convidado', tamCodigo=12,
+add(modelo='codigoFluxo', bloco=GA, titulo='A arquitetura no código: a resposta do convidado', tamCodigo=13, larguras=[340, 332, 376],
     paineis=[
         dict(icone='servidor', camada='Apresentação', arquivo='public-rsvp.controller.ts',
-             codigo=['enforceOriginLimit(clientIp(req));', 'const cmd = parseRsvpCommand(raw);', 'if (!(await rsvps.getPublishedInvite(t)))', '  throw new NotFoundException();', 'enforceWriteLimit(t);', 'return rsvps.registerRsvp(t, cmd);'],
+             codigo=['enforceOriginLimit(clientIp(req));', 'const cmd = parseRsvpCommand(raw);', 'if (!(await getPublishedInvite(t)))', '  throw new NotFoundException();', 'enforceWriteLimit(t);', 'return rsvps.registerRsvp(t, cmd);'],
              legenda='Confere o formato e os limites de tráfego, e traduz o HTTP num comando.'),
         dict(icone='engrenagem', camada='Domínio', arquivo='rsvp.service.ts', destaque=True,
-             codigo=['const valid = validateRsvp(cmd, invite);', '// Sim ocupa 1 + acompanhantes', 'return invites.saveRsvpWithinCapacity(', '  invite.id, guest, note,', '  valid.seatsRequested,', ');'],
+             codigo=['const valid = validateRsvp(cmd, inv);', '// Sim ocupa 1 + acompanhantes', 'return invites.saveRsvpWithinCapacity(', '  invite.id, guest, note,', '  valid.seatsRequested,', ');'],
              legenda='Aplica as regras da resposta e calcula quantas vagas ela pede.'),
         dict(icone='banco', camada='Dados', arquivo='invite.repository.ts',
-             codigo=['db.transaction().execute(async (trx) => {', '  // SELECT ... FOR UPDATE', '  const invite = await lockInvite(trx, id);', '  if (await exceedsCapacity(trx, ...))', '    return refused("CapacityExceeded");', '  // grava o convidado', '});'],
+             codigo=['db.transaction().execute(async trx => {', '  // SELECT ... FOR UPDATE', '  const inv = await lockInvite(trx, id);', '  if (await exceedsCapacity(trx, ...))', '    return refused("CapacityExceeded");', '  // grava o convidado', '});'],
              legenda='Trava o convite, confere o teto e grava, tudo na mesma transação.'),
     ],
     notas='Gabriel. O caminho de uma resposta do convidado, em código. Na Apresentação, o controller confere os limites de tráfego e o formato e transforma o HTTP num comando. Ele não decide nada. No Domínio, o service aplica as regras e calcula as vagas: o Sim ocupa uma para o convidado e uma para cada acompanhante. Na camada de Dados, o repositório abre uma transação, trava a linha do convite com FOR UPDATE, confere o teto e grava. Com quatro respostas simultâneas num convite que só cabe duas, passam exatamente duas, e isso tem teste.')
 
-add(modelo='codigoFluxo', bloco=GA, titulo='A regra de camadas é verificada em todo PR', tamCodigo=13, larguras=[620, 472],
+add(modelo='codigoFluxo', bloco=GA, titulo='A regra de camadas é verificada em todo PR', tamCodigo=15, larguras=[620, 472],
     paineis=[
         dict(icone='lista', camada='Regra no lint', arquivo='eslint.config.mjs',
              codigo=['{ target: "./api/src/domain",', '  from: "./api/src/presentation",', '  message: "Domínio não importa',

@@ -792,8 +792,12 @@ def pilula(sl, x, y, texto, *, fundo=LILAS, cor=AZUL, tam=11, alt=24):
            alinhar=PP_ALIGN.CENTER, maiusc=True, espacar=0.6)
     return larg
 
+def alt_par(html, tam, w):
+    """Altura que o paragrafo ocupa. A Roboto renderizada sai mais larga que a medida, daí a folga."""
+    return altura_estimada(html, tam, w * 0.9) * 1.1
+
 def paragrafo(sl, x, y, w, html, *, tam=16, cor=TEXTO, peso=300, entre=1.4, alinhar=PP_ALIGN.LEFT):
-    alt = altura_estimada(html, tam, w * 0.9) * 1.1
+    alt = alt_par(html, tam, w)
     tb, tf = caixa(sl, x, y, w, alt + 10, alinhar=alinhar)
     escrever(tf, html, tam=tam, cor=cor, peso=peso, entre=entre)
     return alt
@@ -834,7 +838,7 @@ def m_personas(sl, s):
     gap = 28
     larg = (1136 - gap * (len(ps) - 1)) / len(ps)
     alt_nec = max(altura_estimada(p['precisa'], 17, (larg - 56) * 0.9) for p in ps) * 1.1
-    alt_ent = max(altura_estimada(p['app'], 17, (larg - 88) * 0.9) for p in ps) * 1.1
+    alt_ent = max(altura_estimada(p['app'], 17, (larg - 88) * 0.9) for p in ps) * 1.1 + 12
     alt = 32 + 72 + 24 + 24 + alt_nec + 24 + (alt_ent + 36) + 18
     y = centrar(alt, 180, 630)
     for k, p in enumerate(ps):
@@ -844,7 +848,7 @@ def m_personas(sl, s):
         rotulo(sl, x + 116, y + 42, larg - 140, p['nome'], tam=24, cor=AZUL, peso=900)
         rotulo(sl, x + 116, y + 76, larg - 140, p['papel'], tam=12, cor=LARANJA, peso=900, maiusc=True, espacar=1.2)
         yy = y + 32 + 72 + 24
-        rotulo(sl, x + 28, yy, larg - 56, 'O que precisa', tam=11, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
+        rotulo(sl, x + 28, yy, larg - 56, 'O que precisa', tam=12, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
         paragrafo(sl, x + 28, yy + 24, larg - 56, p['precisa'], tam=17)
         yy += 24 + alt_nec + 24
         retangulo(sl, x + 16, yy, larg - 32, alt_ent + 36, preencher=BRANCO, raio=10)
@@ -898,29 +902,30 @@ def m_numeros(sl, s):
     """Números grandes com rótulo, e embaixo um fluxo de etiquetas ligadas por setas."""
     cabeca(sl, s)
     nums = s['numeros']
-    larg = 1136 / len(nums)
-    y = 206
+    gn = 24
+    larg = (1136 - gn * (len(nums) - 1)) / len(nums)
+    y = 196
     for k, n in enumerate(nums):
-        x = 72 + k * larg
-        retangulo(sl, x + 8, y, larg - 16, 176, preencher=QUASE, raio=14)
+        x = 72 + k * (larg + gn)
+        retangulo(sl, x, y, larg, 176, preencher=QUASE, raio=14)
         cor = LARANJA if n.get('destaque') else AZUL
-        rotulo(sl, x + 8, y + 18, larg - 16, n['v'], tam=72, cor=cor, peso=900, alinhar=PP_ALIGN.CENTER)
-        tb, tf = caixa(sl, x + 24, y + 118, larg - 48, 50, alinhar=PP_ALIGN.CENTER)
+        rotulo(sl, x, y + 18, larg, n['v'], tam=72, cor=cor, peso=900, alinhar=PP_ALIGN.CENTER)
+        tb, tf = caixa(sl, x + 16, y + 118, larg - 32, 50, alinhar=PP_ALIGN.CENTER)
         escrever(tf, n['r'], tam=15, cor=TEXTO, peso=400, entre=1.25)
     fl = s.get('fluxo')
     if fl:
-        rotulo(sl, 72, 420, 1136, fl['titulo'], tam=12, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
+        rotulo(sl, 72, 400, 1136, fl['titulo'], tam=13, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
         passos = fl['passos']
         gap = 56
         w = (1136 - gap * (len(passos) - 1)) / len(passos)
         for k, p in enumerate(passos):
             x = 72 + k * (w + gap)
-            retangulo(sl, x, 452, w, 128, preencher=BRANCO, borda=CINZA_CLARO, largura=1, raio=12)
-            icone_claro(sl, p['icone'], x + 20, 472, 44)
-            rotulo(sl, x + 76, 476, w - 92, p['t'], tam=18, cor=AZUL, peso=900)
-            paragrafo(sl, x + 20, 528, w - 40, p['d'], tam=14)
+            retangulo(sl, x, 432, w, 152, preencher=BRANCO, borda=CINZA_CLARO, largura=1, raio=12)
+            icone_claro(sl, p['icone'], x + 20, 452, 44)
+            rotulo(sl, x + 76, 458, w - 92, p['t'], tam=19, cor=AZUL, peso=900)
+            paragrafo(sl, x + 20, 510, w - 40, p['d'], tam=15)
             if k < len(passos) - 1:
-                seta(sl, x + w + 10, 516, x + w + gap - 10, 516, LARANJA, 2.5)
+                seta(sl, x + w + 10, 508, x + w + gap - 10, 508, LARANJA, 2.5)
     rodape(sl, s['n'], s['bloco'])
 
 def m_refino(sl, s):
@@ -988,14 +993,14 @@ def m_mapa(sl, s):
         retangulo(sl, x, y0, w, altura_col, preencher=QUASE, raio=14)
         icone(sl, c['icone'], x + 20, y0 + 18, 48)
         rotulo(sl, x + 80, y0 + 22, w - 96, c['t'], tam=19, cor=AZUL, peso=900)
-        rotulo(sl, x + 80, y0 + 48, w - 96, c['tec'], tam=12, cor=LARANJA, peso=900, maiusc=True, espacar=1.2)
+        rotulo(sl, x + 80, y0 + 48, w - 96, c['tec'], tam=13, cor=LARANJA, peso=900, maiusc=True, espacar=1.2)
         n = len(c['pastas'])
         hh = (altura_col - 96 - 10 * (n - 1) - 18) / n
         for j, (pasta, desc) in enumerate(c['pastas']):
             yy = y0 + 86 + j * (hh + 10)
             retangulo(sl, x + 16, yy, w - 32, hh, preencher=BRANCO, raio=8)
             rotulo(sl, x + 30, yy + hh / 2 - 22, w - 60, pasta, tam=15, cor=GRAFITE, peso=700, fonte=MONO)
-            rotulo(sl, x + 30, yy + hh / 2, w - 60, desc, tam=13, cor=CINZA, peso=400)
+            rotulo(sl, x + 30, yy + hh / 2, w - 60, desc, tam=14, cor=CINZA, peso=400)
     b = s['base']
     yb = y0 + altura_col + 22
     retangulo(sl, 72, yb, 1136, 78, preencher=AZUL, raio=14)
@@ -1018,8 +1023,8 @@ def m_comparacao(sl, s):
     cab = ['Aspecto', 'Planejado no Grau A', 'Implementado']
     y = 176
     for x, t in zip(xs, cab):
-        rotulo(sl, x, y, 300, t, tam=11, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
-    rotulo(sl, xs[3], y, ws[3], 'Situação', tam=11, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
+        rotulo(sl, x, y, 300, t, tam=12, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
+    rotulo(sl, xs[3], y, ws[3], 'Situação', tam=12, cor=CINZA, peso=900, maiusc=True, espacar=1.4)
     y += 28
     for r in s['linhas']:
         h = max(altura_estimada(r['plano'], 15, ws[1]), altura_estimada(r['feito'], 15, ws[2]), 24) * 1.1 + 22
@@ -1028,7 +1033,7 @@ def m_comparacao(sl, s):
         paragrafo(sl, xs[1], y + 11, ws[1], r['plano'], tam=15, cor=CINZA)
         paragrafo(sl, xs[2], y + 11, ws[2], r['feito'], tam=15, cor=GRAFITE, peso=400)
         f, c = CORES_STATUS[r['status']]
-        pilula(sl, xs[3], y + 10, r['status'], fundo=f, cor=c)
+        pilula(sl, xs[3], y + 13, r['status'], fundo=f, cor=c)
         y += h
     retangulo(sl, 72, y, 1136, 1, preencher=CINZA_CLARO)
     if s.get('legenda'):
@@ -1041,7 +1046,7 @@ def m_duas_icones(sl, s):
     gap = 40
     w = (1136 - gap) / 2
     cols = s['colunas']
-    alts = [80 + sum(altura_estimada(i, 17, w - 100) * 1.1 + 24 for i in c['itens']) + 20 for c in cols]
+    alts = [96 + sum(altura_estimada(i, 17, (w - 100) * 0.95) * 1.1 + 24 for i in c['itens']) + 12 for c in cols]
     h = max(alts)
     y = centrar(h, 180, 630)
     for k, c in enumerate(cols):
@@ -1051,8 +1056,9 @@ def m_duas_icones(sl, s):
         rotulo(sl, x + 92, y + 34, w - 120, c['t'], tam=20, cor=AZUL, peso=900)
         yy = y + 96
         for it in c['itens']:
-            icone_claro(sl, c.get('marcador', 'check'), x + 32, yy, 26)
-            hh = paragrafo(sl, x + 72, yy + 1, w - 100, it, tam=17, cor=GRAFITE, peso=400)
+            icone_claro(sl, c.get('marcador', 'check'), x + 32, yy + 2, 26)
+            hh = altura_estimada(it, 17, (w - 100) * 0.95) * 1.1
+            paragrafo(sl, x + 72, yy, w - 100, it, tam=17, cor=GRAFITE, peso=400)
             yy += hh + 24
     if s.get('legenda'):
         paragrafo(sl, 72, y + h + 18, 1136, s['legenda'], tam=15, cor=CINZA, peso=400)
@@ -1115,26 +1121,26 @@ def m_capa_pitch(sl, s):
         captura(sl, s['captura'], 940, 110, alt=500, borda=RGBColor(0x6E, 0x59, 0xD2))
     for i, (rot, val) in enumerate([('EQUIPE', s['equipe']), ('DISCIPLINA', s['disciplina']), ('DATA', s['data'])]):
         cx = 72 + i * 290
-        rotulo(sl, cx, 560, 280, rot, tam=10, cor=RGBColor(0x9C, 0x90, 0xD4), espacar=1.4)
+        rotulo(sl, cx, 560, 280, rot, tam=11, cor=RGBColor(0xC9, 0xC1, 0xEE), peso=700, espacar=1.4)
         tb3, tf3 = caixa(sl, cx, 580, 270, 80)
         escrever(tf3, val, tam=13, cor=RGBColor(0xE0, 0xDB, 0xF2), peso=400, entre=1.4)
 
 def m_encerramento(sl, s):
-    fundo_imagem(sl, 'fundo-secao.jpg')
+    fundo(sl, AZUL)
     logo(sl, claro=True)
     tb, tf = caixa(sl, 96, 190, 1000, 140)
     escrever(tf, s['titulo'], tam=64, cor=BRANCO, peso=900, entre=1.05)
     y = 330
     for ic, rot, val in s['linhas']:
         icone(sl, ic, 96, y, 48, fundo=LARANJA)
-        rotulo(sl, 162, y + 2, 800, rot, tam=12, cor=LILAS_ESC, peso=900, maiusc=True, espacar=1.4)
-        rotulo(sl, 162, y + 22, 900, val, tam=20, cor=BRANCO, peso=400)
-        y += 78
+        rotulo(sl, 162, y, 800, rot, tam=13, cor=RGBColor(0xE2, 0xDE, 0xF5), peso=900, maiusc=True, espacar=1.4)
+        rotulo(sl, 162, y + 24, 900, val, tam=21, cor=BRANCO, peso=400)
+        y += 84
     rodape(sl, s['n'], s['bloco'], True)
 
 def m_demo(sl, s):
     """Slide que fica na tela enquanto a demo começa: o endereço público e o que vai ser mostrado."""
-    fundo_imagem(sl, 'fundo-secao.jpg')
+    fundo(sl, AZUL)
     logo(sl, claro=True)
     rotulo(sl, 96, 150, 900, s['cartola'], tam=15, cor=LARANJA, peso=900, maiusc=True, espacar=1.6)
     tb, tf = caixa(sl, 96, 178, 1000, 100)

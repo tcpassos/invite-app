@@ -2,7 +2,7 @@
 ' Versão para o deck do Pitch: o mesmo conteúdo de docs/.attachments/diagrama-de-camadas.puml,
 ' só com fonte maior, para ler numa chamada do Teams. Gera o PNG desta pasta com:
 '   docker run --rm --user 0:0 -v "<caminho desta pasta>:/data" plantuml/plantuml -tpng /data/diagrama-de-camadas-slide.puml
-skinparam defaultFontSize 19
+skinparam defaultFontSize 28
 skinparam dpi 150
 ' Fonte do Diagrama de Camadas do Guia da Arquitetura.
 ' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
