@@ -63,7 +63,8 @@ começa com o nome, porque a avaliação é individual.
   São as personas da Sprint 1, cadastradas no Azure Boards.
 - **Slide 5, funcionalidades.** Seis grupos, doze histórias, todas implementadas. A etiqueta de cada
   grupo diz para qual persona ele foi feito.
-- **Slide 6, backlog.** Os números e o fluxo épico, história, tarefas. Se perguntarem, as histórias
+- **Slide 6, backlog.** Os números e o fluxo sprint, item do backlog, tarefas. Os 115 são todas as
+  tarefas do quadro, das seis sprints. Os épicos existem no quadro, mas a organização foi por sprint. Se perguntarem, as histórias
   são H01 a H12 no quadro, cada uma com a tag da persona.
 - **Slide 7, refinamento.** As sprints e três refinamentos que mantiveram o valor: lista a cada
   20 segundos, saudação fixa, fluxo central na Sprint 5.

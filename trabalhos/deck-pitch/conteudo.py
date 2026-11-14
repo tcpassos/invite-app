@@ -56,14 +56,14 @@ add(modelo='grade', bloco=A, titulo='Funcionalidades do MVP', colunas=2, tamCorp
     notas='Andreas. O MVP tem seis grupos de funcionalidades e doze histórias de usuário. As doze estão implementadas. A Marina cria a conta, monta o convite e compartilha o link. O Rafael confirma presença sem conta, informa acompanhantes e restrição alimentar, e pode alterar a resposta depois. O painel mostra a lista de presença e as restrições, e o anfitrião baixa as restrições em CSV para o Jorge. Vamos mostrar isso funcionando na demonstração.')
 
 add(modelo='numeros', bloco=A, titulo='Como o backlog foi organizado',
-    numeros=[dict(v='6', r='épicos, um por grupo de funcionalidades'), dict(v='12', r='histórias de usuário, todas entregues', destaque=True),
-             dict(v='6', r='sprints de duas semanas no Azure Boards'), dict(v='3', r='personas marcadas nas histórias')],
-    fluxo=dict(titulo='Do épico à tarefa', passos=[
-        dict(icone='camadas', t='Épico', d='Um grupo de funcionalidades, como Confirmação de presença.'),
-        dict(icone='lista', t='História', d='O valor para uma persona, com critério de aceitação.'),
-        dict(icone='kanban', t='Tarefas', d='Uma de tela e uma de API, cada uma com responsável.'),
+    numeros=[dict(v='6', r='sprints de duas semanas no Azure Boards'), dict(v='12', r='histórias de usuário, todas entregues', destaque=True),
+             dict(v='115', r='tarefas distribuídas nas sprints'), dict(v='3', r='personas marcadas nas histórias')],
+    fluxo=dict(titulo='Da sprint à tarefa', passos=[
+        dict(icone='calendario', t='Sprint', d='Duas semanas, com objetivo e os itens do backlog daquele período.'),
+        dict(icone='lista', t='Item do backlog', d='Uma história para uma persona ou um artefato, como um diagrama.'),
+        dict(icone='kanban', t='Tarefas', d='O trabalho do item dividido, cada tarefa com responsável.'),
     ]),
-    notas='Andreas. O backlog fica no Azure Boards. São seis épicos, um por grupo de funcionalidades, e doze histórias. Cada história foi escrita para uma persona, tem a tag dela e um critério de aceitação. Na implementação, dividimos cada história em tarefas de tela e de API, cada uma com responsável. Acompanhamos o andamento no quadro Kanban a cada sprint.')
+    notas='Andreas. O backlog fica no Azure Boards e foi organizado por sprints de duas semanas. Cada sprint tem um objetivo e os itens daquele período. Nas três primeiras, os itens são os artefatos de requisitos e de arquitetura. Nas três últimas, são as doze histórias, cada uma escrita para uma persona, com a tag dela e um critério de aceitação. Cada item foi dividido em tarefas com responsável. Nas histórias, uma tarefa de tela e uma de API. Acompanhamos o andamento no quadro Kanban.')
 
 add(modelo='refino', bloco=A, titulo='Como o backlog foi refinado',
     marcos=[dict(s='Sprint 1', t='Requisitos e casos de uso'), dict(s='Sprint 2', t='Arquitetura e decisões'),

@@ -152,7 +152,7 @@
     "numeros": [
       {
         "v": "6",
-        "r": "épicos, um por grupo de funcionalidades"
+        "r": "sprints de duas semanas no Azure Boards"
       },
       {
         "v": "12",
@@ -160,8 +160,8 @@
         "destaque": true
       },
       {
-        "v": "6",
-        "r": "sprints de duas semanas no Azure Boards"
+        "v": "115",
+        "r": "tarefas distribuídas nas sprints"
       },
       {
         "v": "3",
@@ -169,26 +169,26 @@
       }
     ],
     "fluxo": {
-      "titulo": "Do épico à tarefa",
+      "titulo": "Da sprint à tarefa",
       "passos": [
         {
-          "icone": "camadas",
-          "t": "Épico",
-          "d": "Um grupo de funcionalidades, como Confirmação de presença."
+          "icone": "calendario",
+          "t": "Sprint",
+          "d": "Duas semanas, com objetivo e os itens do backlog daquele período."
         },
         {
           "icone": "lista",
-          "t": "História",
-          "d": "O valor para uma persona, com critério de aceitação."
+          "t": "Item do backlog",
+          "d": "Uma história para uma persona ou um artefato, como um diagrama."
         },
         {
           "icone": "kanban",
           "t": "Tarefas",
-          "d": "Uma de tela e uma de API, cada uma com responsável."
+          "d": "O trabalho do item dividido, cada tarefa com responsável."
         }
       ]
     },
-    "notas": "Andreas. O backlog fica no Azure Boards. São seis épicos, um por grupo de funcionalidades, e doze histórias. Cada história foi escrita para uma persona, tem a tag dela e um critério de aceitação. Na implementação, dividimos cada história em tarefas de tela e de API, cada uma com responsável. Acompanhamos o andamento no quadro Kanban a cada sprint.",
+    "notas": "Andreas. O backlog fica no Azure Boards e foi organizado por sprints de duas semanas. Cada sprint tem um objetivo e os itens daquele período. Nas três primeiras, os itens são os artefatos de requisitos e de arquitetura. Nas três últimas, são as doze histórias, cada uma escrita para uma persona, com a tag dela e um critério de aceitação. Cada item foi dividido em tarefas com responsável. Nas histórias, uma tarefa de tela e uma de API. Acompanhamos o andamento no quadro Kanban.",
     "n": 6
   },
   {
