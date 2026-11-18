@@ -52,7 +52,7 @@ Os artefatos das Sprints 1 a 3 foram revisados contra o código. O que era plano
 
 A apresentação do Pitch Final, feita em 17/11/2026, segue o roteiro sugerido pelo professor: o problema e as personas, as funcionalidades do MVP, a organização e o refinamento do backlog, a arquitetura prescritiva do Grau A com os diagramas de casos de uso, camadas, classes e sequência, a arquitetura descritiva com a implantação, os princípios e as decisões, a comparação entre as duas, o caminho de uma resposta pelas três camadas do código, a regra de camadas no lint, as boas práticas, as tecnologias, a demonstração no Railway e a reflexão sobre o Scrum, as dificuldades e o uso de assistentes de IA. Os slides são gerados pelo código em `trabalhos/deck-pitch`.
 
-Ficam para fechar até 17/11 o PR para a `main`, a ficha do Andreas no Team Charter e o ensaio do Pitch Final.
+O ensaio cronometrado e a entrega dos slides fecharam o #185. Continua em aberto a ficha do #87 no Team Charter.
 
 ## Principais Artefatos
 
