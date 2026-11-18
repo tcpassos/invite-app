@@ -1,0 +1,74 @@
+@startuml diagrama-de-camadas-slide
+' Versão para o deck do Pitch: o mesmo conteúdo de docs/.attachments/diagrama-de-camadas.puml,
+' só com fonte maior, para ler numa chamada do Teams. Gera o PNG desta pasta com:
+'   docker run --rm --user 0:0 -v "<caminho desta pasta>:/data" plantuml/plantuml -tpng /data/diagrama-de-camadas-slide.puml
+skinparam defaultFontSize 28
+skinparam dpi 150
+' Fonte do Diagrama de Camadas do Guia da Arquitetura.
+' Gera o PNG sem instalar nada além do Docker, a partir da pasta onde este arquivo está:
+'   docker run --rm -v "<caminho>:/data" plantuml/plantuml -tpng /data/diagrama-de-camadas.puml
+' No Windows, <caminho> é o caminho absoluto da pasta, por exemplo D:\invite-app\docs\.attachments
+' As três camadas lógicas vêm do ADR-0001 e os três tiers do ADR-0002.
+' O diagrama traz rótulo, não explicação. A leitura fica na seção 2 do Guia da Arquitetura.
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+skinparam nodesep 25
+skinparam ranksep 45
+
+actor "Anfitrião" as HOST
+actor "Convidado" as GUEST
+
+node "Navegador" as BROWSER {
+  component "View" as VIEW
+  component "Controller" as CTRLW
+  component "Model" as MODEL
+}
+
+package "Tier Front, container Next.js" {
+  component "Controller de renderização" as SSR
+}
+
+package "Tier API, container NestJS" {
+  package "Camada de Apresentação" as PRESL {
+    component "PublicRsvpController" as PUB
+    component "InviteController\nDietaryController" as AUT
+    component "AuthController" as AUTH
+  }
+  component "Camada de Domínio\nServices" as DOM
+  component "Camada de Dados\nRepositories" as DATA
+  component "Erros e log" as CROSS
+}
+
+package "Tier Banco, container PostgreSQL" {
+  database "invite_app" as DB
+}
+
+HOST -[dotted]-> VIEW
+GUEST -[dotted]-> VIEW
+
+VIEW -[dotted]-> CTRLW
+VIEW --> MODEL
+CTRLW --> MODEL
+
+VIEW -[dashed]-> SSR : HTTP
+SSR -[dashed]-> PUB : HTTP
+CTRLW -[dashed]-> PUB : HTTP
+CTRLW -[dashed]-> AUT : HTTP
+CTRLW -[dashed]-> AUTH : HTTP
+
+MODEL --> PRESL : contrato de tipos
+
+PUB --> DOM
+AUT --> DOM
+AUTH --> DOM
+DOM --> DATA
+DATA -[dashed]-> DB : SQL
+
+PRESL -[norank]- CROSS
+DOM -[norank]- CROSS
+DATA -[norank]- CROSS
+
+@enduml
