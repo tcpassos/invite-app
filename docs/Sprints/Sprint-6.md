@@ -31,7 +31,11 @@ A Sprint 6 vai de 03/11 a 16/11 e fecha o projeto para o Pitch Final de 17/11.
   - **#182** Aceitar as decisões novas do Guia da Arquitetura
   - **#183** Página da Sprint 6
   - **#184** PR para a `main`
-- **#185** T4, Pitch Final
+- **#185** T4, Pitch Final, com as tasks:
+  - **#186** Slides do Pitch no roteiro sugerido pelo professor
+  - **#187** Roteiro e divisão das falas
+  - **#188** Ensaio cronometrado com a demonstração no Railway
+  - **#189** Subir os slides no Moodle, se houver tarefa de entrega
 - **#87** Ficha do Andreas no Team Charter, que veio pendente das sprints anteriores
 
 ## Resultado
@@ -46,10 +50,13 @@ O [Protótipo de Baixa Fidelidade](Sprint-3/Protótipo-de-Baixa-Fidelidade.md), 
 
 Os artefatos das Sprints 1 a 3 foram revisados contra o código. O que era plano do Grau A ficou como estava, e onde o implementado diverge, o artefato recebeu uma nota "Atualização da Sprint 6" apontando para o ADR ou para os Ajustes de Arquitetura. As divergências são a lista de presença por consulta periódica de 20 segundos no lugar do tempo real, a saudação fixa do template sem recado livre, os templates como um CSS com uma classe por template e uma imagem de prévia por template, o terceiro pacote da Apresentação, as telas do link pessoal e da entrada dentro de `PublicInvitePage` e `HostPanelPage`, e a publicação no Railway.
 
+A apresentação do Pitch Final, feita em 17/11/2026, segue o roteiro sugerido pelo professor: o problema e as personas, as funcionalidades do MVP, a organização e o refinamento do backlog, a arquitetura prescritiva do Grau A com os diagramas de casos de uso, camadas, classes e sequência, a arquitetura descritiva com a implantação, os princípios e as decisões, a comparação entre as duas, o caminho de uma resposta pelas três camadas do código, a regra de camadas no lint, as boas práticas, as tecnologias, a demonstração no Railway e a reflexão sobre o Scrum, as dificuldades e o uso de assistentes de IA. Os slides são gerados pelo código em `trabalhos/deck-pitch`.
+
 Ficam para fechar até 17/11 o PR para a `main`, a ficha do Andreas no Team Charter e o ensaio do Pitch Final.
 
 ## Principais Artefatos
 
+- [Apresentação do Pitch Final, em PDF](../../trabalhos/T4-Pitch-Final.pdf) e [em PowerPoint](../../trabalhos/T4-Pitch-Final.pptx), com as falas nas notas do apresentador. Os dois arquivos também estão anexados ao #185 no Azure Boards
 - [ADR-0015, Publicação para a demonstração](Sprint-2/Decisões-Arquiteturais/0015-Publicação-para-a-demonstração.md)
 - [Diagrama de Implantação](Sprint-2/Diagrama-de-Implantação.md), com o ambiente publicado na seção 11
 - [Protótipo de Baixa Fidelidade](Sprint-3/Protótipo-de-Baixa-Fidelidade.md)
